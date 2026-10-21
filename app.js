@@ -278,6 +278,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   });
 });
 
+let reloadForWorkerUpdate = false;
 function showUpdateToast(reg){
   const host = pwaToastHost();
   const el = document.createElement('div');
@@ -286,14 +287,17 @@ function showUpdateToast(reg){
   host.appendChild(el);
   requestAnimationFrame(()=>el.classList.add('in'));
   el.querySelector('.toast-btn').addEventListener('click', ()=>{
-    if(reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
+    if(reg.waiting){
+      reloadForWorkerUpdate = true;
+      reg.waiting.postMessage({type:'SKIP_WAITING'});
+    } else window.location.reload();
   });
 }
 
 if('serviceWorker' in navigator){
   let refreshingAfterUpdate = false;
   navigator.serviceWorker.addEventListener('controllerchange', ()=>{
-    if(refreshingAfterUpdate) return;
+    if(!reloadForWorkerUpdate || refreshingAfterUpdate) return;
     refreshingAfterUpdate = true;
     window.location.reload();
   });
@@ -1845,9 +1849,12 @@ function findSubContext(pathId, subId){
 }
 
 /* --- Router --- */
-window.addEventListener('hashchange', route);
-window.addEventListener('DOMContentLoaded', route);
-window.addEventListener('popstate', route);
+function routeFromLocation(){
+  if(activeRoute() !== renderedRoute) route();
+}
+window.addEventListener('hashchange', routeFromLocation);
+window.addEventListener('DOMContentLoaded', routeFromLocation);
+window.addEventListener('popstate', routeFromLocation);
 
 // Public lessons, labs, tools, and key hubs have real static HTML pages.
 // Keep their URL in the address bar for readers and crawlers alike.
@@ -1859,6 +1866,8 @@ function canonicalPathForHash(hash){
   if(hash === '#/faq') return '/faq.html';
   if(hash === '#/tasks') return '/practice.html';
   if(hash === '#/exam') return '/exam.html';
+  const legal = hash.match(/^#\/(about|contact|privacy|terms)$/);
+  if(legal) return `/${legal[1]}.html`;
   const lesson = hash.match(/^#\/lesson\/([a-z0-9-]+)(?:\/([a-z0-9-]+))?$/);
   if(lesson) return lesson[2] ? `/lesson/${lesson[1]}/${lesson[2]}.html` : `/lesson/${lesson[1]}/`;
   const item = hash.match(/^#\/(labs|tools)\/([a-z0-9-]+)$/);
@@ -1874,6 +1883,8 @@ function hashRouteForPath(pathname){
   if(pathname === '/faq.html') return '#/faq';
   if(pathname === '/practice.html') return '#/tasks';
   if(pathname === '/exam.html') return '#/exam';
+  const legal = pathname.match(/^\/(about|contact|privacy|terms)\.html$/);
+  if(legal) return `#/${legal[1]}`;
   const lesson = pathname.match(/^\/lesson\/([a-z0-9-]+)\/(?:([a-z0-9-]+)\.html)?$/);
   if(lesson) return lesson[2] ? `#/lesson/${lesson[1]}/${lesson[2]}` : `#/lesson/${lesson[1]}`;
   const item = pathname.match(/^\/(labs|tools)\/([a-z0-9-]+)\.html$/);
@@ -1883,26 +1894,57 @@ function hashRouteForPath(pathname){
 
 const activeRoute = ()=>location.hash.startsWith('#/') ? location.hash : (hashRouteForPath(location.pathname) || '#/');
 
+function navigateTo(hash, {replace = false} = {}){
+  const url = canonicalPathForHash(hash) || '/' + hash;
+  if(location.pathname + location.search + location.hash !== url){
+    history[replace ? 'replaceState' : 'pushState'](null, '', url);
+  }
+  routeFromLocation();
+}
+
 document.addEventListener('click', e=>{
-  const anchor = e.target.closest?.('a[href^="#/"]');
+  const anchor = e.target.closest?.('a[href]');
   if(!anchor || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-  const path = canonicalPathForHash(anchor.getAttribute('href'));
-  if(!path) return;
+  if(anchor.hasAttribute('download') || (anchor.target && anchor.target !== '_self')) return;
+  if(anchor.matches('.skip')){
+    e.preventDefault();
+    app.focus({preventScroll:true});
+    app.scrollIntoView({block:'start',behavior:'instant'});
+    return;
+  }
+  const url = new URL(anchor.href);
+  if(url.origin !== location.origin || url.search || (url.hash && !url.hash.startsWith('#/'))) return;
+  const hash = url.hash.startsWith('#/') ? url.hash : hashRouteForPath(url.pathname);
+  if(!hash) return;
   e.preventDefault();
-  location.assign(path);
+  navigateTo(hash);
 });
 
 /* Bumped on every navigation so in-flight async work (a lesson fetch
    still resolving after the user clicked elsewhere) can tell it's stale
    and skip writing into DOM nodes that no longer exist. */
 let renderGeneration = 0;
+let renderedRoute = null;
 let currentLessonScrollController = null;
 let currentLessonMenuController = null;
+let currentLessonLoadController = null;
+let currentLessonNotesFlush = null;
+const lessonFallbacks = new Map();
 let currentLabMessageController = null;
 let currentCvssWorker = null;
 
+// Flush the debounce before navigation, backgrounding, or a page refresh.
+window.addEventListener('pagehide', ()=>currentLessonNotesFlush?.());
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState === 'hidden') currentLessonNotesFlush?.();
+});
+
 function route(){
+  currentLessonNotesFlush?.();
+  currentLessonNotesFlush = null;
   renderGeneration++;
+  currentLessonLoadController?.abort();
+  currentLessonLoadController = null;
   currentLessonScrollController?.abort();
   currentLessonScrollController = null;
   currentLessonMenuController?.abort();
@@ -1927,13 +1969,9 @@ function route(){
   }
   const hash = activeRoute();
   if(location.hash.startsWith('#/')){
-    const canonical = canonicalPathForHash(hash);
-    if(canonical){ location.replace(canonical); return; }
-    if(location.pathname !== '/' && location.pathname !== '/index.html'){
-      location.replace('/' + hash);
-      return;
-    }
+    history.replaceState(null, '', canonicalPathForHash(hash) || '/' + hash);
   }
+  renderedRoute = hash;
   // Explicit 'instant' bypasses the site-wide CSS scroll-behavior:smooth —
   // without it, this scroll animates and gets cut short the instant the
   // new page's (possibly much shorter) content replaces the old DOM a
@@ -2065,10 +2103,13 @@ function decorateLabHeading(){
    first page had, so tabs, history entries, bookmarks and screen-reader page
    announcements all named the wrong page. */
 const STATIC_TITLE = document.title;
+const STATIC_ROUTE = hashRouteForPath(location.pathname);
 const HOME_TITLE = 'KashSec Academy — Free cybersecurity course from absolute zero';
 // Page names for app-only routes. Their h1s are headlines ("Track
 // everything in one place"), which read badly as a tab or history entry.
 const ROUTE_TITLES = {
+  '#/course':'Cybersecurity course', '#/labs':'Security labs', '#/tools':'Security tools',
+  '#/tasks':'Practice tasks', '#/exam':'Mock exam', '#/faq':'Frequently asked questions',
   '#/progress':'My progress', '#/glossary':'Cybersecurity glossary', '#/tracks':'Career tracks',
   '#/careers':'Cybersecurity careers', '#/certs':'Certification roadmap', '#/career-quiz':'Career-fit quiz',
   '#/roadmap':'Learning roadmap', '#/review':'Flashcard review', '#/changelog':"What's new",
@@ -2080,16 +2121,22 @@ const ROUTE_TITLES = {
 function syncDocTitle(){
   const r = activeRoute();
   if(r.startsWith('#/search')) return; // the search page titles itself with the query
-  if(hashRouteForPath(location.pathname) === r){ document.title = STATIC_TITLE; return; }
+  if(STATIC_ROUTE === r){ document.title = STATIC_TITLE; return; }
   if(r === '#/'){ document.title = HOME_TITLE; return; }
   const h1 = app.querySelector('h1');
-  const name = ROUTE_TITLES[r] || h1?.dataset.pageTitle || (h1?.textContent || '').replace(/\s+/g, ' ').trim();
+  const lesson = r.match(/^#\/lesson\/([^/]+)(?:\/([^/]+))?$/);
+  const path = lesson && findPath(lesson[1]);
+  const lessonTitle = path && (lesson[2] ? path.subs.find(s=>s.id === lesson[2])?.title : path.title);
+  const name = ROUTE_TITLES[r] || lessonTitle || h1?.dataset.pageTitle || (h1?.textContent || '').replace(/\s+/g, ' ').trim();
   if(!name) return;
   const full = `${name} · KashSec Academy`;
   document.title = full.length <= 65 ? full : `${name} · KashSec`;
 }
 
 function afterRender(){
+  const canonical = new URL(canonicalPathForHash(activeRoute()) || '/', location.origin).href;
+  document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonical);
+  document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonical);
   decorateLabHeading();
   syncDocTitle();
   updateActiveNav();
@@ -2121,7 +2168,7 @@ function maybeStartTour(){
   if(Object.keys(STATE.completed).length > 0){ STATE.tourSeen = true; saveState(); return; }
   if(document.getElementById('tourOverlay')) return;
   tourIndex = 0;
-  setTimeout(()=>paintTourStep(), 700); // let the hero animation settle first
+  setTimeout(()=>{ if(activeRoute() === '#/' && !STATE.tourSeen) paintTourStep(); }, 700);
 }
 function endTour(){
   STATE.tourSeen = true;
@@ -3324,8 +3371,26 @@ function wireFAQ(){
 async function renderSubLesson(pathId, subId){
   const ctx = findSubContext(pathId, subId);
   if(!ctx) return renderNotFound();
+  currentLessonNotesFlush?.();
+  currentLessonNotesFlush = null;
+  currentLessonLoadController?.abort();
   const myGen = renderGeneration;
   const updatedOn = typeof LESSON_UPDATED === 'undefined' ? null : LESSON_UPDATED[`${pathId}/${subId}`];
+  // Canonical HTML already contains sanitized, readable lesson text. Keep it
+  // while the richer Markdown view loads, and as a fallback if loading fails.
+  const article = hashRouteForPath(location.pathname) === `#/lesson/${pathId}/${subId}`
+    ? document.querySelector('#content > article')?.cloneNode(true) : null;
+  article?.querySelector('.pager')?.remove();
+  article?.querySelectorAll('table').forEach(table=>{
+    if(table.closest('.table-scroll')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'table-scroll';
+    table.replaceWith(wrap);
+    wrap.appendChild(table);
+  });
+  const lessonRoute = `#/lesson/${pathId}/${subId}`;
+  if(article) lessonFallbacks.set(lessonRoute, article.innerHTML);
+  const fallbackHtml = lessonFallbacks.get(lessonRoute) || '';
 
   app.innerHTML = `
     <div class="reader-progress" id="rprog" style="width:0%"></div>
@@ -3377,13 +3442,13 @@ async function renderSubLesson(pathId, subId){
           <div>This lesson has been <b>updated</b> since you marked it complete — worth a skim.</div>
           <button class="btn-ghost sm" id="dismissUpdated" type="button">Got it</button>
         </div>` : ''}
-        <div class="md" id="content"><div class="loading">Loading…</div></div>
+        <div class="md" id="content" aria-busy="true">${fallbackHtml ? `<article>${fallbackHtml}</article>` : '<div class="loading" role="status">Loading lesson…</div>'}</div>
         <div id="microCheck"></div>
         <details class="notes-panel">
           <summary><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> My notes on this lesson</summary>
           <div class="notes-panel-body">
             <textarea id="lessonNotes" aria-label="Your private notes for this lesson" placeholder="Jot down anything you want to remember — only visible to you, saved automatically.">${escapeHtml(getNote(pathId,subId))}</textarea>
-            <div class="notes-status" id="notesStatus"></div>
+            <div class="notes-status" id="notesStatus" role="status"></div>
           </div>
         </details>
         <div class="lesson-rating" id="lessonRating">
@@ -3538,82 +3603,90 @@ async function renderSubLesson(pathId, subId){
   });
 
   let notesTimer = null;
+  let notesPending = false;
   const notesEl = document.getElementById('lessonNotes');
   const notesStatus = document.getElementById('notesStatus');
+  const flushNotes = ()=>{
+    clearTimeout(notesTimer);
+    if(!notesPending) return;
+    notesPending = false;
+    setNote(pathId, subId, notesEl.value);
+    notesStatus.textContent = 'Saved';
+  };
+  currentLessonNotesFlush = flushNotes;
+  notesEl.addEventListener('blur', flushNotes);
   notesEl.addEventListener('input', ()=>{
     clearTimeout(notesTimer);
+    notesPending = true;
     notesStatus.textContent = 'Saving…';
-    notesTimer = setTimeout(()=>{
-      setNote(pathId, subId, notesEl.value);
-      notesStatus.textContent = 'Saved';
-      setTimeout(()=>{ if(notesStatus.textContent==='Saved') notesStatus.textContent=''; }, 1800);
-    }, 500);
+    notesTimer = setTimeout(flushNotes, 500);
   });
   wireProgress();
 
-  try{
-    await ensureMarked();
-  }catch(e){
-    if(myGen !== renderGeneration) return; // navigated away while loading — don't touch a dead DOM
+  async function loadLesson(retrying = false){
+    currentLessonLoadController?.abort();
+    const controller = new AbortController();
+    currentLessonLoadController = controller;
+    const isCurrent = ()=>myGen === renderGeneration && currentLessonLoadController === controller;
     const contentEl = document.getElementById('content');
-    if(!contentEl) return;
-    contentEl.innerHTML = `
-      <h1>Couldn't load the lesson renderer</h1>
-      <p>Something blocked <code>${escapeHtml(MARKED_LOCAL)}</code> from loading. Check your network and try again.</p>
-      <p><button class="btn-amber sm" id="retryLibs" type="button">Retry</button></p>
-    `;
-    document.getElementById('retryLibs')?.addEventListener('click', ()=>renderSubLesson(pathId, subId));
-    return;
-  }
-  if(myGen !== renderGeneration) return;
-
-  try{
-    const res = await fetch(`course/${pathId}/${subId}.md`);
-    if(!res.ok) throw new Error(res.status);
-    const md = await res.text();
-    if(myGen !== renderGeneration) return;
-    const contentEl = document.getElementById('content');
-    if(!contentEl) return;
-    contentEl.innerHTML = enrichMarkdown(md);
-
-    // Reading time — shown in the breadcrumb (~200 wpm)
-    const mins = Math.max(1, Math.round(md.split(/\s+/).length / 200));
-    const crumb = document.querySelector('.reader-crumb');
-    if(crumb) crumb.insertAdjacentHTML('beforeend', ` &nbsp;·&nbsp; <span class="read-time">⏱ ~${mins} min read</span>`);
-
-    // In-page table of contents for longer lessons (3+ sections)
-    buildLessonToc(contentEl);
-
-    // Copy buttons + syntax highlighting on code blocks
-    enhanceCodeBlocks(contentEl);
-
-    // Key terms list → term cards
-    enhanceKeyTerms(contentEl);
-
-    // Wide tables become keyboard-scrollable regions.
+    contentEl.setAttribute('aria-busy', 'true');
+    contentEl.innerHTML = fallbackHtml ? `<article>${fallbackHtml}</article>`
+      : '<div class="loading" role="status">Loading lesson…</div>';
     markScrollableTables(contentEl);
+    let timer = null;
+    let stage = 'renderer';
+    try{
+      await ensureMarked();
+      if(!isCurrent()) return;
+      stage = 'content';
+      timer = setTimeout(()=>controller.abort(new DOMException('Lesson request timed out', 'TimeoutError')), 15000);
+      const res = await fetch(`course/${pathId}/${subId}.md`, {signal:controller.signal});
+      if(!res.ok) throw new Error('Lesson request failed');
+      const md = await res.text();
+      if(!isCurrent()) return;
+      contentEl.innerHTML = enrichMarkdown(md);
 
-    // End-of-lesson quick check, drawn from this path's quiz bank.
-    renderMicroCheck(ctx);
-
-    // Diagrams, callouts and code ease in as they scroll into view.
-    animateLessonBlocks(contentEl);
-
-    // Diagrams fill in progressively — deliberately not awaited, so the text
-    // above is readable immediately even on a slow connection, and stays
-    // readable if Mermaid never loads at all.
-    renderMermaidIn(contentEl);
-  }catch(e){
-    if(myGen !== renderGeneration) return;
-    const contentEl = document.getElementById('content');
-    if(!contentEl) return;
-    contentEl.innerHTML = `
-      <h1>Coming soon</h1>
-      <p>This sub-lesson (<code>course/${pathId}/${subId}.md</code>) hasn't been written yet.</p>
-      <p>Path ${ctx.path.n} is being expanded into detailed sub-lessons — check back soon!</p>
-      <p><a href="#/lesson/${pathId}">← Back to Path ${ctx.path.n}</a></p>
-    `;
+      const mins = Math.max(1, Math.round(md.split(/\s+/).length / 200));
+      const crumb = document.querySelector('.reader-crumb');
+      crumb?.querySelector('.read-time')?.remove();
+      if(crumb) crumb.insertAdjacentHTML('beforeend', ` &nbsp;·&nbsp; <span class="read-time">⏱ ~${mins} min read</span>`);
+      buildLessonToc(contentEl);
+      enhanceCodeBlocks(contentEl);
+      enhanceKeyTerms(contentEl);
+      markScrollableTables(contentEl);
+      renderMicroCheck(ctx);
+      animateLessonBlocks(contentEl);
+      // Optional diagrams never delay readable lesson text.
+      renderMermaidIn(contentEl);
+      if(retrying){
+        const heading = contentEl.querySelector('h1');
+        heading?.setAttribute('tabindex', '-1');
+        heading?.focus({preventScroll:true});
+      }
+    }catch(error){
+      if(!isCurrent()) return;
+      const title = stage === 'renderer' ? "Couldn't load the interactive lesson" : "Couldn't finish loading this lesson";
+      const detail = controller.signal.reason?.name === 'TimeoutError'
+        ? 'The connection took too long. Try again when it improves.'
+        : !navigator.onLine ? 'You appear to be offline. Reconnect to try again.'
+        : 'Check your connection and try again.';
+      contentEl.innerHTML = `<div class="lesson-load-notice" role="status">
+        ${fallbackHtml ? `<p><strong>${title}</strong></p>` : `<h1>${title}</h1>`}
+        <p>${detail}${fallbackHtml ? ' You can keep reading the text below.' : ''}</p>
+        <div class="lesson-load-actions"><button class="btn-amber sm" id="retryLesson" type="button">Retry lesson</button>
+        <a class="btn-ghost sm" href="#/lesson/${pathId}">Back to Path ${ctx.path.n}</a></div>
+      </div>${fallbackHtml ? `<article>${fallbackHtml}</article>` : ''}`;
+      markScrollableTables(contentEl);
+      document.getElementById('retryLesson').addEventListener('click', ()=>loadLesson(true), {once:true});
+    }finally{
+      clearTimeout(timer);
+      if(isCurrent()){
+        contentEl.setAttribute('aria-busy', 'false');
+        currentLessonLoadController = null;
+      }
+    }
   }
+  await loadLesson();
 }
 
 function renderSidebar(activePathId, activeSubId){
@@ -9599,7 +9672,9 @@ function wireTaskCards(root, onSolved){
 }
 
 function renderTasksPage(pathId){
+  const myGen = renderGeneration;
   const paint = ()=>{
+    if(myGen !== renderGeneration) return;
     if(typeof TASKS === 'undefined'){
       app.innerHTML = `<section class="sec"><div class="loading">Loading practice tasks…</div></section>`;
       return;
@@ -9649,6 +9724,7 @@ function renderTasksPage(pathId){
         </div>
       </section>`;
     setupReveal();
+    syncDocTitle();
     wireTaskCards(app, ()=>{
       // Repaint the rank bar in place so the score visibly moves, without
       // re-rendering the cards and losing revealed explanations.
@@ -9662,8 +9738,10 @@ function renderTasksPage(pathId){
     });
   };
 
+  if(typeof TASKS !== 'undefined'){ paint(); return; }
   paint();
   ensureTasks().then(paint).catch(()=>{
+    if(myGen !== renderGeneration) return;
     app.innerHTML = `<section class="sec"><h1 class="sec-title">Practice tasks</h1>
       <p class="sec-sub">Couldn't load the tasks. Check your connection and try again.</p></section>`;
   });
@@ -12196,9 +12274,29 @@ if(typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED){
       if(authCallbackUrl && location.pathname === authCallbackUrl.pathname &&
           (!location.hash || location.hash === '#' || location.hash === authCallbackUrl.hash)){
         // Clean callback parameters, and respect navigation during the merge.
-        history.replaceState(null, '', '/#/progress');
+        navigateTo('#/progress', {replace:true});
+      } else if(renderedRoute === null){
+        routeFromLocation();
+      } else {
+        // Session restoration updates state without replacing the page the
+        // learner is using. In particular, do not clear forms or refetch it.
+        const lesson = activeRoute().match(/^#\/lesson\/([^/]+)\/([^/]+)$/);
+        const ctx = lesson && findSubContext(lesson[1], lesson[2]);
+        if(ctx){
+          const complete = document.getElementById('completeBtn');
+          const done = isComplete(ctx.path.id, ctx.sub.id);
+          complete?.classList.toggle('done', done);
+          complete?.setAttribute('aria-pressed', String(done));
+          const label = document.getElementById('completeBtnLabel');
+          if(label) label.textContent = done ? 'Completed' : 'Mark complete';
+          const bookmark = document.getElementById('bookmarkBtn');
+          const saved = isBookmarked(ctx.path.id, ctx.sub.id);
+          bookmark?.classList.toggle('active', saved);
+          bookmark?.setAttribute('aria-pressed', String(saved));
+          bookmark?.querySelector('svg')?.setAttribute('fill', saved ? 'currentColor' : 'none');
+          refreshLessonTrack(ctx);
+        }
       }
-      route();
       if(authOverlay && authOverlay.classList.contains('open')) closeAuth();
     }
     if(!user) handledInitialSignIn = false;
