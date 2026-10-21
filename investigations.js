@@ -248,7 +248,8 @@ Retain the alert, commit references, and audit exports as evidence.`}
       });
     };
   }
-  function renderCase(id){
+  function renderCase(rawId){
+    const {id,lesson}=practiceLessonContext('investigations',rawId);
     const item=CASES.find(item=>item.id===id);
     if(!item){renderNotFound();return;}
     recordFor(id);
@@ -257,6 +258,7 @@ Retain the alert, commit references, and audit exports as evidence.`}
     app.innerHTML=`<section class="sec iw-case">
       <a class="iw-back" href="#/investigations">← All investigations</a>
       ${STATE.learningGuide.updatedAt?'<a class="iw-back sg-case-back" href="#/start">Back to my starting route →</a>':''}
+      ${practiceReturnHTML(lesson)}
       <div class="sec-head"><div class="sec-eyebrow">Case ${item.number} · ${item.category}</div><h1>${escapeHtml(item.title)}</h1><p class="sec-lead">${escapeHtml(item.intro)}</p><div class="iw-case-chips"><span>${item.minutes} min · self-paced</span><span>${item.level}</span><span>Fictional training environment</span></div></div>
       <details class="iw-guide"><summary>First investigation? Follow these three steps</summary><ol><li><strong>Open the evidence.</strong> Read E1, E2, and E3. The small labels tell you which file you are viewing.</li><li><strong>Connect the clues.</strong> Use the notebook to record what happened and what is still unknown. Your notes save automatically.</li><li><strong>Try a decision.</strong> Use the optional hints if you get stuck. Review your findings to see explanations, then retry freely.</li></ol><a href="#/playground">Start with a beginner experiment instead →</a></details>
       <div class="iw-brief"><strong>Your assignment</strong><p>${escapeHtml(item.mission)}</p></div>
