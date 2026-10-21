@@ -359,6 +359,7 @@ function defaultState(){
     readingPrefs:{size:'normal', width:'normal', legible:false}, // size: normal|large|xlarge; width: normal|wide
     studyPlan:{pathId:'all', dailyGoal:2, updatedAt:0},
     investigations:{}, // caseId: saved decisions, evidence opened, notes, review history
+    playgroundCompleted:{}, // exerciseId: completion timestamp; demo inputs are never stored
     daily:{}, // { "YYYY-MM-DD": { qi, chosen, correct } }
     leaderboardOptIn:false,
     leaderboardName:'',
@@ -409,6 +410,7 @@ function normalizeState(input){
     daily:isStateRecord,
     certTracker:v=>typeof v === 'string',
     labsCompleted:v=>Number.isFinite(v) && v > 0,
+    playgroundCompleted:v=>Number.isFinite(v) && v > 0,
     weeklyChain:v=>isStateRecord(v) && Array.isArray(v.answers),
     pomodoroSessions:v=>Number.isFinite(v) && v >= 0,
     lessonRatings:v=>v === 'up' || v === 'down',
@@ -1975,6 +1977,7 @@ let currentLessonNotesFlush = null;
 let currentPlannerRefresh = null;
 let currentInvestigationFlush = null;
 let currentInvestigationRefresh = null;
+let currentPlaygroundRefresh = null;
 const lessonFallbacks = new Map();
 let currentLabMessageController = null;
 let currentCvssWorker = null;
@@ -1989,6 +1992,7 @@ function route(){
   currentInvestigationFlush?.();
   currentInvestigationFlush = null;
   currentInvestigationRefresh = null;
+  currentPlaygroundRefresh = null;
   currentPlannerRefresh = null;
   currentLessonNotesFlush?.();
   currentLessonNotesFlush = null;
@@ -2054,6 +2058,8 @@ function route(){
   else if(hash === '#/planner') renderStudyPlanner();
   else if(hash === '#/investigations') renderInvestigationsRoute();
   else if(hash.startsWith('#/investigations/')) renderInvestigationsRoute(hash.slice(17));
+  else if(hash === '#/playground') renderPlaygroundRoute();
+  else if(hash.startsWith('#/playground/')) renderPlaygroundRoute(hash.slice(13));
   else if(hash === '#/certificate') renderCertificate();
   else if(hash === '#/search' || hash.startsWith('#/search?')){
     const qs = hash.indexOf('?');
@@ -2165,6 +2171,7 @@ const ROUTE_TITLES = {
   '#/tasks':'Practice tasks', '#/exam':'Mock exam', '#/faq':'Frequently asked questions',
   '#/planner':'Study planner',
   '#/investigations':'Incident Workbench',
+  '#/playground':'Learning Playground',
   '#/progress':'My progress', '#/glossary':'Cybersecurity glossary', '#/tracks':'Career tracks',
   '#/careers':'Cybersecurity careers', '#/certs':'Certification roadmap', '#/career-quiz':'Career-fit quiz',
   '#/roadmap':'Learning roadmap', '#/review':'Flashcard review', '#/changelog':"What's new",
@@ -2503,6 +2510,7 @@ function renderHome(){
             : `<a class="btn-amber" href="#/lesson/01-introduction/what-is-cybersecurity">Begin lesson 1 →</a>`}
           <a class="btn-ghost" href="#/roadmap">See the roadmap</a>
         </div>
+        <p class="pg-home-link" data-reveal style="--i:3">Prefer to try things first? <a href="#/playground">Start with a 5-minute experiment →</a></p>
         <div class="daily-lesson" data-reveal style="--i:3">
           <span class="daily-tag">${cardIco('calendar')}Lesson of the day</span>
           <a class="daily-link" href="#/lesson/${daily.pathId}/${daily.subId}">${daily.pathN}.${daily.subN} · ${daily.subTitle}</a>
@@ -2645,6 +2653,7 @@ function renderCourseIndex(){
         <p class="sec-lead">Each path is split into short focused sub-lessons. Click a path to see its map.</p>
       </div>
       ${studyPlannerEntryHtml()}
+      <p class="pg-course-link">New to security? <a href="#/playground">Try the beginner Learning Playground →</a></p>
       ${(()=>{
         // Level filter. The tier is already on every card (data-tier) and
         // colour-coded on its edge; this lets a newcomer narrow 26 cards to
@@ -3216,7 +3225,7 @@ const LEGAL = {
         'Nothing here is sold, and nothing is shared with anyone beyond the specific services named below.'
       ]},
       {h:'What is stored on your device', p:[
-        'KashSec progress normally uses one browser-storage entry, <code>kashsec_state_v1</code>. It holds your lesson progress, quiz and exam results, practice-task answers, flashcard scheduling, notes you have written, lessons you have rated, your streak, study-plan settings, investigation decisions and analyst notes, and display settings. If this record becomes unreadable, KashSec tries to keep an untouched second local entry, <code>kashsec_state_recovery_v1</code>, so you can download the original data. Clearing this site\'s storage deletes both entries.',
+        'KashSec progress normally uses one browser-storage entry, <code>kashsec_state_v1</code>. It holds your lesson progress, quiz and exam results, practice-task answers, flashcard scheduling, notes you have written, lessons you have rated, your streak, study-plan settings, investigation decisions and analyst notes, playground completion, and display settings. Playground messages and experiment settings are not saved or synced. If this record becomes unreadable, KashSec tries to keep an untouched second local entry, <code>kashsec_state_recovery_v1</code>, so you can download the original data. Clearing this site\'s storage deletes both entries.',
         'This is stored by your browser, on your device. Without an account it is never transmitted anywhere, and it is not readable by this site\'s author or anyone else. Clearing browser storage for this site erases both entries permanently — export a copy first if you need one.'
       ]},
       {h:'If you create an account (optional)', p:[
@@ -7244,6 +7253,11 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-10-21', title:'Learn by doing, one small experiment at a time', items:[
+    'A new beginner Learning Playground explains web requests, UTF-8 and Base64, and invoice access checks through short interactive experiments with immediate feedback.',
+    'Follow small goals at your own pace, restart freely, and continue into related lessons or an investigation. Completed experiments are saved with your progress; typed messages and demo settings are not stored.',
+    'Investigation cases now include a quick-start guide, plain-language term explanations, and pointers to the evidence for each decision.'
+  ]},
   {date:'2026-10-21', title:'Incident Workbench: build a case from the evidence', items:[
     'Investigate three fictional incidents: mailbox compromise, cross-tenant API access, and an exposed cloud key. Each case includes three evidence files and three decisions to review.',
     'Search the evidence, keep an analyst notebook, resume saved decisions, and download evidence packs or a completed case report.',
@@ -11382,7 +11396,16 @@ function investigationEntryHtml(){
 }
 
 let investigationsPromise = null;
-let investigationsCacheScheduled = false;
+const openedBundlesScheduled = new Set();
+function cacheOpenedBundle(src){
+  if(!('serviceWorker' in navigator) || openedBundlesScheduled.has(src)) return;
+  openedBundlesScheduled.add(src);
+  navigator.serviceWorker.ready.then(async()=>{
+    if(!navigator.serviceWorker.controller) await new Promise(resolve=>
+      navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true}));
+    if(!await caches.match(new URL(src,location.href).href)) await fetch(src);
+  }).catch(()=>{});
+}
 async function renderInvestigationsRoute(id){
   const generation = renderGeneration;
   app.innerHTML = '<div class="loading" role="status">Opening the Incident Workbench…</div>';
@@ -11396,20 +11419,36 @@ async function renderInvestigationsRoute(id){
     if(!window.KashInvestigations) throw new Error('Workbench unavailable');
     // A first-ever direct visit can load this bundle before the worker controls
     // the page. Give that worker a request to cache once installation finishes.
-    if('serviceWorker' in navigator && !investigationsCacheScheduled){
-      investigationsCacheScheduled = true;
-      navigator.serviceWorker.ready.then(async()=>{
-        if(!navigator.serviceWorker.controller) await new Promise(resolve=>
-          navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true}));
-        if(!await caches.match(new URL('investigations.js',location.href).href)) await fetch('investigations.js');
-      }).catch(()=>{});
-    }
+    cacheOpenedBundle('investigations.js');
     if(id) KashInvestigations.renderCase(id); else KashInvestigations.renderIndex();
     afterRender();
   }catch(error){
     if(generation !== renderGeneration) return;
     app.innerHTML = '<section class="sec"><h1>The workbench could not load</h1><p>Check your connection and try again. Your saved casework is still in this browser.</p><button class="btn-amber" id="iwLoadRetry" type="button">Try again</button><p><a href="#/labs">Back to labs</a></p></section>';
     document.getElementById('iwLoadRetry').addEventListener('click',()=>renderInvestigationsRoute(id));
+    afterRender();
+  }
+}
+
+let playgroundPromise = null;
+async function renderPlaygroundRoute(id){
+  const generation = renderGeneration;
+  app.innerHTML = '<div class="loading" role="status">Opening the Learning Playground…</div>';
+  try{
+    if(!window.KashPlayground){
+      if(!playgroundPromise) playgroundPromise = withTimeout(loadScript('playground.js'),12000,'Opening the Learning Playground')
+        .catch(error=>{playgroundPromise=null;throw error;});
+      await playgroundPromise;
+    }
+    if(generation !== renderGeneration) return;
+    if(!window.KashPlayground) throw new Error('Playground unavailable');
+    cacheOpenedBundle('playground.js');
+    if(id) KashPlayground.renderExercise(id); else KashPlayground.renderIndex();
+    afterRender();
+  }catch(error){
+    if(generation !== renderGeneration) return;
+    app.innerHTML = '<section class="sec"><h1>The playground could not load</h1><p>Check your connection and try again. Your completed experiments are still saved in this browser.</p><button class="btn-amber" id="pgLoadRetry" type="button">Try again</button><p><a href="#/course">Back to the course</a></p></section>';
+    document.getElementById('pgLoadRetry').addEventListener('click',()=>renderPlaygroundRoute(id));
     afterRender();
   }
 }
@@ -11498,6 +11537,11 @@ function renderProgressHub(){
       <div class="hub-section" data-reveal style="--i:2">
         <div class="hub-section-head"><h2 class="hub-h">${hubIco('calendar')}Activity</h2></div>
         ${heatmapHtml()}
+      </div>
+
+      <div class="hub-section" data-reveal style="--i:2">
+        <div class="hub-section-head"><h2 class="hub-h">${hubIco('compass')}Learning Playground</h2></div>
+        <a class="hub-list-item" href="#/playground"><div><div class="hli-t">${Object.keys(STATE.playgroundCompleted).length} experiments completed</div><div class="hli-d">Try a web request, explore text encoding, and check who can open an invoice.</div></div><span aria-hidden="true">→</span></a>
       </div>
 
       ${(()=>{ const t = trendChartHtml(); return t ? `
@@ -12051,7 +12095,7 @@ function getCommands(){
      palette showed SVG for tools and labs and raw emoji for navigation, in
      the same list. Finishing the migration is what makes it one set. */
   const nav = [
-    ['Home','#/','house'],['Course','#/course','doc'],['Study planner','#/planner','calendar'],['Incident Workbench','#/investigations','microscope'],['Roadmap','#/roadmap','mapPin'],
+    ['Home','#/','house'],['Course','#/course','doc'],['Learning Playground','#/playground','compass'],['Study planner','#/planner','calendar'],['Incident Workbench','#/investigations','microscope'],['Roadmap','#/roadmap','mapPin'],
     ['Practice tracks','#/tracks','layers'],['Labs','#/labs','microscope'],['Tools','#/tools','toolbox'],
     ['Practice tasks','#/tasks','check'],['Timed mock exam','#/exam','timer'],['Search','#/search','search'],
     ['Glossary','#/glossary','scroll'],['Flashcards','#/review','folders'],['Daily challenge','#/daily','clock'],
@@ -12528,6 +12572,7 @@ if(typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED){
       }
       currentPlannerRefresh?.();
       currentInvestigationRefresh?.();
+      currentPlaygroundRefresh?.();
       if(authOverlay && authOverlay.classList.contains('open')) closeAuth();
     }
     if(!user) handledInitialSignIn = false;
