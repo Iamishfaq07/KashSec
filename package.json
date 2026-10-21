@@ -19,7 +19,7 @@
     "build:hashes": "node generate-lesson-hashes.js",
     "test:data": "node tests/data-integrity.test.js",
     "test:smoke": "node tests/smoke.spec.js",
-    "test:cdn": "node tests/cdn-resilience.spec.js",
+    "test:cdn": "node tests/cdn-resilience.spec.js && node tests/lesson-resilience.spec.js",
     "test:ui": "node tests/ui-quality.spec.js && node tests/navigation-quality.spec.js",
     "test:offline": "node tests/offline-pack.spec.js",
     "test:progress": "node tests/progress-recovery.spec.js",

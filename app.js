@@ -1898,11 +1898,24 @@ document.addEventListener('click', e=>{
 let renderGeneration = 0;
 let currentLessonScrollController = null;
 let currentLessonMenuController = null;
+let currentLessonLoadController = null;
+let currentLessonNotesFlush = null;
+const lessonFallbacks = new Map();
 let currentLabMessageController = null;
 let currentCvssWorker = null;
 
+// Flush the debounce before navigation, backgrounding, or a page refresh.
+window.addEventListener('pagehide', ()=>currentLessonNotesFlush?.());
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState === 'hidden') currentLessonNotesFlush?.();
+});
+
 function route(){
+  currentLessonNotesFlush?.();
+  currentLessonNotesFlush = null;
   renderGeneration++;
+  currentLessonLoadController?.abort();
+  currentLessonLoadController = null;
   currentLessonScrollController?.abort();
   currentLessonScrollController = null;
   currentLessonMenuController?.abort();
@@ -3324,8 +3337,26 @@ function wireFAQ(){
 async function renderSubLesson(pathId, subId){
   const ctx = findSubContext(pathId, subId);
   if(!ctx) return renderNotFound();
+  currentLessonNotesFlush?.();
+  currentLessonNotesFlush = null;
+  currentLessonLoadController?.abort();
   const myGen = renderGeneration;
   const updatedOn = typeof LESSON_UPDATED === 'undefined' ? null : LESSON_UPDATED[`${pathId}/${subId}`];
+  // Canonical HTML already contains sanitized, readable lesson text. Keep it
+  // while the richer Markdown view loads, and as a fallback if loading fails.
+  const article = hashRouteForPath(location.pathname) === `#/lesson/${pathId}/${subId}`
+    ? document.querySelector('#content > article')?.cloneNode(true) : null;
+  article?.querySelector('.pager')?.remove();
+  article?.querySelectorAll('table').forEach(table=>{
+    if(table.closest('.table-scroll')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'table-scroll';
+    table.replaceWith(wrap);
+    wrap.appendChild(table);
+  });
+  const lessonRoute = `#/lesson/${pathId}/${subId}`;
+  if(article) lessonFallbacks.set(lessonRoute, article.innerHTML);
+  const fallbackHtml = lessonFallbacks.get(lessonRoute) || '';
 
   app.innerHTML = `
     <div class="reader-progress" id="rprog" style="width:0%"></div>
@@ -3377,13 +3408,13 @@ async function renderSubLesson(pathId, subId){
           <div>This lesson has been <b>updated</b> since you marked it complete — worth a skim.</div>
           <button class="btn-ghost sm" id="dismissUpdated" type="button">Got it</button>
         </div>` : ''}
-        <div class="md" id="content"><div class="loading">Loading…</div></div>
+        <div class="md" id="content" aria-busy="true">${fallbackHtml ? `<article>${fallbackHtml}</article>` : '<div class="loading" role="status">Loading lesson…</div>'}</div>
         <div id="microCheck"></div>
         <details class="notes-panel">
           <summary><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> My notes on this lesson</summary>
           <div class="notes-panel-body">
             <textarea id="lessonNotes" aria-label="Your private notes for this lesson" placeholder="Jot down anything you want to remember — only visible to you, saved automatically.">${escapeHtml(getNote(pathId,subId))}</textarea>
-            <div class="notes-status" id="notesStatus"></div>
+            <div class="notes-status" id="notesStatus" role="status"></div>
           </div>
         </details>
         <div class="lesson-rating" id="lessonRating">
@@ -3538,82 +3569,90 @@ async function renderSubLesson(pathId, subId){
   });
 
   let notesTimer = null;
+  let notesPending = false;
   const notesEl = document.getElementById('lessonNotes');
   const notesStatus = document.getElementById('notesStatus');
+  const flushNotes = ()=>{
+    clearTimeout(notesTimer);
+    if(!notesPending) return;
+    notesPending = false;
+    setNote(pathId, subId, notesEl.value);
+    notesStatus.textContent = 'Saved';
+  };
+  currentLessonNotesFlush = flushNotes;
+  notesEl.addEventListener('blur', flushNotes);
   notesEl.addEventListener('input', ()=>{
     clearTimeout(notesTimer);
+    notesPending = true;
     notesStatus.textContent = 'Saving…';
-    notesTimer = setTimeout(()=>{
-      setNote(pathId, subId, notesEl.value);
-      notesStatus.textContent = 'Saved';
-      setTimeout(()=>{ if(notesStatus.textContent==='Saved') notesStatus.textContent=''; }, 1800);
-    }, 500);
+    notesTimer = setTimeout(flushNotes, 500);
   });
   wireProgress();
 
-  try{
-    await ensureMarked();
-  }catch(e){
-    if(myGen !== renderGeneration) return; // navigated away while loading — don't touch a dead DOM
+  async function loadLesson(retrying = false){
+    currentLessonLoadController?.abort();
+    const controller = new AbortController();
+    currentLessonLoadController = controller;
+    const isCurrent = ()=>myGen === renderGeneration && currentLessonLoadController === controller;
     const contentEl = document.getElementById('content');
-    if(!contentEl) return;
-    contentEl.innerHTML = `
-      <h1>Couldn't load the lesson renderer</h1>
-      <p>Something blocked <code>${escapeHtml(MARKED_LOCAL)}</code> from loading. Check your network and try again.</p>
-      <p><button class="btn-amber sm" id="retryLibs" type="button">Retry</button></p>
-    `;
-    document.getElementById('retryLibs')?.addEventListener('click', ()=>renderSubLesson(pathId, subId));
-    return;
-  }
-  if(myGen !== renderGeneration) return;
-
-  try{
-    const res = await fetch(`course/${pathId}/${subId}.md`);
-    if(!res.ok) throw new Error(res.status);
-    const md = await res.text();
-    if(myGen !== renderGeneration) return;
-    const contentEl = document.getElementById('content');
-    if(!contentEl) return;
-    contentEl.innerHTML = enrichMarkdown(md);
-
-    // Reading time — shown in the breadcrumb (~200 wpm)
-    const mins = Math.max(1, Math.round(md.split(/\s+/).length / 200));
-    const crumb = document.querySelector('.reader-crumb');
-    if(crumb) crumb.insertAdjacentHTML('beforeend', ` &nbsp;·&nbsp; <span class="read-time">⏱ ~${mins} min read</span>`);
-
-    // In-page table of contents for longer lessons (3+ sections)
-    buildLessonToc(contentEl);
-
-    // Copy buttons + syntax highlighting on code blocks
-    enhanceCodeBlocks(contentEl);
-
-    // Key terms list → term cards
-    enhanceKeyTerms(contentEl);
-
-    // Wide tables become keyboard-scrollable regions.
+    contentEl.setAttribute('aria-busy', 'true');
+    contentEl.innerHTML = fallbackHtml ? `<article>${fallbackHtml}</article>`
+      : '<div class="loading" role="status">Loading lesson…</div>';
     markScrollableTables(contentEl);
+    let timer = null;
+    let stage = 'renderer';
+    try{
+      await ensureMarked();
+      if(!isCurrent()) return;
+      stage = 'content';
+      timer = setTimeout(()=>controller.abort(new DOMException('Lesson request timed out', 'TimeoutError')), 15000);
+      const res = await fetch(`course/${pathId}/${subId}.md`, {signal:controller.signal});
+      if(!res.ok) throw new Error('Lesson request failed');
+      const md = await res.text();
+      if(!isCurrent()) return;
+      contentEl.innerHTML = enrichMarkdown(md);
 
-    // End-of-lesson quick check, drawn from this path's quiz bank.
-    renderMicroCheck(ctx);
-
-    // Diagrams, callouts and code ease in as they scroll into view.
-    animateLessonBlocks(contentEl);
-
-    // Diagrams fill in progressively — deliberately not awaited, so the text
-    // above is readable immediately even on a slow connection, and stays
-    // readable if Mermaid never loads at all.
-    renderMermaidIn(contentEl);
-  }catch(e){
-    if(myGen !== renderGeneration) return;
-    const contentEl = document.getElementById('content');
-    if(!contentEl) return;
-    contentEl.innerHTML = `
-      <h1>Coming soon</h1>
-      <p>This sub-lesson (<code>course/${pathId}/${subId}.md</code>) hasn't been written yet.</p>
-      <p>Path ${ctx.path.n} is being expanded into detailed sub-lessons — check back soon!</p>
-      <p><a href="#/lesson/${pathId}">← Back to Path ${ctx.path.n}</a></p>
-    `;
+      const mins = Math.max(1, Math.round(md.split(/\s+/).length / 200));
+      const crumb = document.querySelector('.reader-crumb');
+      crumb?.querySelector('.read-time')?.remove();
+      if(crumb) crumb.insertAdjacentHTML('beforeend', ` &nbsp;·&nbsp; <span class="read-time">⏱ ~${mins} min read</span>`);
+      buildLessonToc(contentEl);
+      enhanceCodeBlocks(contentEl);
+      enhanceKeyTerms(contentEl);
+      markScrollableTables(contentEl);
+      renderMicroCheck(ctx);
+      animateLessonBlocks(contentEl);
+      // Optional diagrams never delay readable lesson text.
+      renderMermaidIn(contentEl);
+      if(retrying){
+        const heading = contentEl.querySelector('h1');
+        heading?.setAttribute('tabindex', '-1');
+        heading?.focus({preventScroll:true});
+      }
+    }catch(error){
+      if(!isCurrent()) return;
+      const title = stage === 'renderer' ? "Couldn't load the interactive lesson" : "Couldn't finish loading this lesson";
+      const detail = controller.signal.reason?.name === 'TimeoutError'
+        ? 'The connection took too long. Try again when it improves.'
+        : !navigator.onLine ? 'You appear to be offline. Reconnect to try again.'
+        : 'Check your connection and try again.';
+      contentEl.innerHTML = `<div class="lesson-load-notice" role="status">
+        ${fallbackHtml ? `<p><strong>${title}</strong></p>` : `<h1>${title}</h1>`}
+        <p>${detail}${fallbackHtml ? ' You can keep reading the text below.' : ''}</p>
+        <div class="lesson-load-actions"><button class="btn-amber sm" id="retryLesson" type="button">Retry lesson</button>
+        <a class="btn-ghost sm" href="#/lesson/${pathId}">Back to Path ${ctx.path.n}</a></div>
+      </div>${fallbackHtml ? `<article>${fallbackHtml}</article>` : ''}`;
+      markScrollableTables(contentEl);
+      document.getElementById('retryLesson').addEventListener('click', ()=>loadLesson(true), {once:true});
+    }finally{
+      clearTimeout(timer);
+      if(isCurrent()){
+        contentEl.setAttribute('aria-busy', 'false');
+        currentLessonLoadController = null;
+      }
+    }
   }
+  await loadLesson();
 }
 
 function renderSidebar(activePathId, activeSubId){
