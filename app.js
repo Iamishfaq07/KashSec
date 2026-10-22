@@ -4483,6 +4483,10 @@ async function renderGlossary(){
    "I knew it" is remembered (STATE.flashcards.known); unknown cards
    keep coming back in later sessions.
    ============================================================ */
+function flashcardReview(card){
+  const r=STATE.flashcards.reviews[`${card.pathId}/${card.subId}/${card.term}`];
+  return r&&Number.isFinite(r.interval)&&r.interval>=1&&r.interval<=36500&&Number.isFinite(r.ease)&&r.ease>=1.3&&r.ease<=3&&Number.isInteger(r.streak)&&r.streak>=0&&/^\d{4}-\d{2}-\d{2}$/.test(r.due)&&!Number.isNaN(Date.parse(r.due))?r:null;
+}
 async function renderReview(){
   const myGen=renderGeneration;
   app.innerHTML='<div class="loading" role="status">Loading flashcards…</div>';
@@ -4502,15 +4506,13 @@ async function renderReview(){
   let lessonFilter=GLOSSARY.some(e=>e.pathId===pathFilter&&e.subId===params.get('lesson'))?params.get('lesson'):'all';
   let mode=['due','new','all'].includes(params.get('mode'))?params.get('mode'):'due';
   let size=['5','10','20','all'].includes(params.get('size'))?params.get('size'):'10';
+  let studiedOnly=params.get('studied')==='1';
   const invalidScope=(params.has('path')&&params.get('path')!=='all'&&pathFilter==='all')||(params.has('lesson')&&params.get('lesson')!=='all'&&lessonFilter==='all');
   const termKey=e=>`${e.pathId}/${e.subId}/${e.term}`;
   const today=()=>studyDayKey(new Date());
   const dateAdd=(iso,days)=>{const d=new Date(iso+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+days);return d.toISOString().slice(0,10);};
-  const review=e=>{
-    const r=STATE.flashcards.reviews[termKey(e)];
-    return r&&Number.isFinite(r.interval)&&r.interval>=1&&r.interval<=36500&&Number.isFinite(r.ease)&&r.ease>=1.3&&r.ease<=3&&Number.isInteger(r.streak)&&r.streak>=0&&/^\d{4}-\d{2}-\d{2}$/.test(r.due)&&!Number.isNaN(Date.parse(r.due))?r:null;
-  };
-  const pool=()=>GLOSSARY.filter(e=>(pathFilter==='all'||e.pathId===pathFilter)&&(lessonFilter==='all'||e.subId===lessonFilter));
+  const review=flashcardReview;
+  const pool=()=>GLOSSARY.filter(e=>(pathFilter==='all'||e.pathId===pathFilter)&&(lessonFilter==='all'||e.subId===lessonFilter)&&(!studiedOnly||isComplete(e.pathId,e.subId)));
   const shuffle=items=>{for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]];}return items;};
   function nextInterval(card,perf){
     const r=review(card)||{interval:0,ease:2.5,streak:0};
@@ -4525,6 +4527,7 @@ async function renderReview(){
     <div class="fc-tools"><label>Course path<select id="fcPathFilter" class="fc-select"><option value="all">All paths</option>${PATHS.filter(p=>GLOSSARY.some(e=>e.pathId===p.id)).map(p=>`<option value="${p.id}">Path ${p.n} — ${escapeHtml(p.title)}</option>`).join('')}</select></label>
     <label>Lesson<select id="fcLessonFilter" class="fc-select"></select></label><label>Session size<select id="fcSize" class="fc-select"><option value="5">5 terms</option><option value="10">10 terms</option><option value="20">20 terms</option><option value="all">Entire selected deck</option></select></label>
     <div class="fc-mode-toggle" role="group" aria-label="Deck mode"><button class="fc-mode" data-mode="due" type="button">Due + new</button><button class="fc-mode" data-mode="new" type="button">Unseen</button><button class="fc-mode" data-mode="all" type="button">All terms</button></div>
+    <label class="fc-studied"><input type="checkbox" id="fcStudiedOnly" ${studiedOnly?'checked':''}>Only lessons I’ve marked complete</label>
     <button class="btn-ghost sm" id="ankiExportBtn" type="button">${cardIco('download')}Export selected deck (.csv)</button></div>
     <p id="fcScope" class="fc-scope"></p><div class="fc-stats" id="fcStats"></div><p id="fcSaveStatus" class="fc-save-status" role="status"></p><div id="fcSession"></div>
     <p class="fc-help">Use Tab to move between controls and Enter or Space to activate them. “Again” gives a term one extra try in this session and schedules it for tomorrow. No timer, no automatic restart.</p>
@@ -4543,6 +4546,7 @@ async function renderReview(){
     if(lessonFilter!=='all')query.set('lesson',lessonFilter);
     if(mode!=='due')query.set('mode',mode);
     if(size!=='10')query.set('size',size);
+    if(studiedOnly)query.set('studied','1');
     history.replaceState(null,'','/#/review'+(query.size?'?'+query:''));renderedRoute=activeRoute();
   }
   function paintStats(){
@@ -4553,6 +4557,7 @@ async function renderReview(){
     document.getElementById('fcScope').innerHTML=ctx?`Practising: <strong>${escapeHtml(ctx.sub.title)}</strong> · <a href="#/lesson/${pathFilter}/${lessonFilter}">Back to this lesson →</a>`:`${pathFilter==='all'?'Choose any path or lesson to focus your practice.':`Practising Path ${escapeHtml(findPath(pathFilter).n)} · <a href="#/lesson/${pathFilter}">Back to path overview →</a>`} Due + new starts with due terms, then adds up to 20 unseen terms.`;
     app.querySelectorAll('.fc-mode').forEach(button=>{const selected=button.dataset.mode===mode;button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));});
     document.getElementById('ankiExportBtn').disabled=cards.length===0;
+    if(studiedOnly)document.getElementById('fcScope').insertAdjacentText('beforeend',' Only terms from lessons you have marked complete are included.');
   }
   function paintIntervals(){
     const card=deck[index];if(!card)return;
@@ -4573,7 +4578,7 @@ async function renderReview(){
     const card=deck[index];flipped=false;
     if(!card){
       const familiar=[...results.values()].filter(perf=>perf!=='again').length;
-      session.innerHTML=`<section class="fc-empty" aria-labelledby="fcResultHeading"><div class="sec-eyebrow">${initialCount?'Session complete':'No terms in this session'}</div><h2 id="fcResultHeading" tabindex="-1">${initialCount?'A small session, finished.':'Nothing to review in this selection.'}</h2><p>${initialCount?`You reviewed ${results.size} distinct term${results.size===1?'':'s'} in ${attempts} attempt${attempts===1?'':'s'}. ${familiar} felt familiar on the last try; ${results.size-familiar} need another look.`:'Choose another lesson or use All terms to revisit scheduled cards.'}</p><p>Each rating sets a next review date. Finishing a session does not mark a lesson complete.</p><button class="btn-amber" id="fcRestart" type="button">Start another session</button>${!initialCount?'<button class="btn-ghost" type="button" id="fcBrowseAll">Practise all terms in this selection</button>':''}</section>`;
+      session.innerHTML=`<section class="fc-empty" aria-labelledby="fcResultHeading"><div class="sec-eyebrow">${initialCount?'Session complete':'No terms in this session'}</div><h2 id="fcResultHeading" tabindex="-1">${initialCount?'A small session, finished.':'Nothing to review in this selection.'}</h2><p>${initialCount?`You reviewed ${results.size} distinct term${results.size===1?'':'s'} in ${attempts} attempt${attempts===1?'':'s'}. ${familiar} felt familiar on the last try; ${results.size-familiar} need another look.`:studiedOnly&&!pool().length?'No terms from completed lessons in this selection. Mark a lesson complete, choose another path, or turn off the completed-lessons filter.':'Choose another lesson or use All terms to revisit scheduled cards.'}</p><p>Each rating sets a next review date. Finishing a session does not mark a lesson complete.</p><button class="btn-amber" id="fcRestart" type="button">Start another session</button>${!initialCount&&pool().length?'<button class="btn-ghost" type="button" id="fcBrowseAll">Practise all terms in this selection</button>':''}${!initialCount&&!pool().length?'<a class="btn-ghost" href="#/course">Find a lesson →</a>':''}</section>`;
       document.getElementById('fcRestart').onclick=()=>{start();session.querySelector('#fcTerm,#fcResultHeading')?.focus({preventScroll:true});};
       document.getElementById('fcBrowseAll')?.addEventListener('click',()=>{mode='all';updateURL();start();session.querySelector('#fcTerm,#fcResultHeading')?.focus({preventScroll:true});});
       if(focus)document.getElementById('fcResultHeading').focus({preventScroll:true});return;
@@ -4601,6 +4606,7 @@ async function renderReview(){
   pathSelect.onchange=()=>{pathFilter=pathSelect.value;lessonFilter='all';fillLessons();change();};
   lessonSelect.onchange=()=>{const parts=lessonSelect.value.split('/');lessonFilter=parts[1]||'all';if(parts[1]){pathFilter=parts[0];pathSelect.value=pathFilter;fillLessons();}change();};
   sizeSelect.onchange=()=>{size=sizeSelect.value;change();};
+  document.getElementById('fcStudiedOnly').onchange=event=>{studiedOnly=event.target.checked;change();};
   app.querySelectorAll('.fc-mode').forEach(button=>button.onclick=()=>{mode=button.dataset.mode;change();});
   document.getElementById('ankiExportBtn').onclick=()=>{
     const csvEscape=value=>`"${String(value).replace(/"/g,'""').replace(/\n/g,'<br>')}"`;
@@ -7270,6 +7276,12 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-10-22', title:'A review queue for what you have already learned', items:[
+    'The study planner now finds due flashcards and unseen key terms from lessons you have marked complete, within your saved learning focus.',
+    'Switch between due, unseen, and all studied lessons. Open a short review, revisit lesson notes, or try a related experiment or investigation. Nothing is graded or marked complete by opening a recommendation.',
+    'A completed-lessons filter in Flashcards keeps review sessions and deck exports within studied material. Its selection is shareable and survives a refresh.',
+    'Review terms load only when requested. The queue uses local calendar dates, preserves planner drafts during sync, and works offline once the terms have been opened.'
+  ]},
   {date:'2026-10-22', title:'Flashcards that follow your lesson and finish with you', items:[
     'Open the actual terms from a lesson, or choose a course path and lesson in Flashcards. Deck selections can be shared and survive a refresh.',
     'Choose 5, 10, or 20 terms for a short session. Due terms come first, Again offers one extra try, and a clear finish screen replaces automatic restarts.',
@@ -11306,7 +11318,7 @@ function renderTranscript(){
 function studyPlannerEntryHtml(){
   return `<aside class="study-entry">
     <span class="study-entry-icon" aria-hidden="true">${cardIco('calendar')}</span>
-    <div><h2>Make your next lesson a small, clear goal</h2><p>Pick a focus, set a daily target, and see your next steps.</p></div>
+    <div><h2>Make your next lesson a small, clear goal</h2><p>Pick a focus, set a daily target, and revisit what you have already studied.</p></div>
     <a class="btn-ghost sm" href="#/planner">Open study planner →</a>
   </aside>`;
 }
@@ -11340,6 +11352,79 @@ function studyPlanSnapshot(now = new Date()){
     remaining,total:lessons.length,done:lessons.length - remaining.length};
 }
 
+function studyReviewSnapshot(now=new Date()){
+  const focus=findPath(STATE.studyPlan.pathId);
+  const paths=focus?[focus]:PATHS;
+  const groups=new Map();
+  paths.forEach(path=>path.subs.forEach(sub=>{
+    const key=lessonKey(path.id,sub.id);
+    if(isComplete(path.id,sub.id))groups.set(key,{path,sub,key,completedAt:STATE.completed[key],due:0,unseen:0,later:0,total:0,firstDue:'9999-12-31',hasNotes:!!getNote(path.id,sub.id).trim()});
+  }));
+  const today=studyDayKey(now);
+  if(typeof GLOSSARY!=='undefined')GLOSSARY.forEach(card=>{
+    const group=groups.get(lessonKey(card.pathId,card.subId));if(!group)return;
+    group.total++;const record=flashcardReview(card);
+    if(!record)group.unseen++;
+    else if(record.due<=today){group.due++;if(record.due<group.firstDue)group.firstDue=record.due;}
+    else group.later++;
+  });
+  const lessons=[...groups.values()].filter(group=>group.total);
+  return {focus,completed:groups.size,withoutTerms:groups.size-lessons.length,lessons,
+    due:lessons.reduce((n,row)=>n+row.due,0),unseen:lessons.reduce((n,row)=>n+row.unseen,0)};
+}
+function wireStudyReviews(){
+  const generation=renderGeneration;
+  const root=document.getElementById('studyReviews');
+  const load=document.getElementById('studyReviewLoad');
+  const status=document.getElementById('studyReviewStatus');
+  const content=document.getElementById('studyReviewContent');
+  const list=document.getElementById('studyReviewList');
+  const more=document.getElementById('studyReviewMore');
+  let loaded=false,mode='due',visible=5;
+  const current=()=>generation===renderGeneration&&root.isConnected;
+  function paint(){
+    if(!loaded||!current())return;
+    const data=studyReviewSnapshot();
+    document.getElementById('studyReviewSummary').textContent=`${data.due} term${data.due===1?'':'s'} due · ${data.unseen} unseen · ${data.completed} completed lesson${data.completed===1?'':'s'} in ${data.focus?.title||'all paths'}`;
+    root.querySelectorAll('.sr-filter').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.reviewMode===mode)));
+    const rows=data.lessons.filter(row=>mode==='due'?row.due:mode==='new'?row.unseen:true).sort((a,b)=>
+      (mode==='due'?a.firstDue.localeCompare(b.firstDue):0)||b.completedAt-a.completedAt||a.key.localeCompare(b.key));
+    const activeHref=list.contains(document.activeElement)?document.activeElement.getAttribute('href'):null;
+    const moreFocused=document.activeElement===more;
+    list.innerHTML=rows.slice(0,visible).map(row=>{
+      const query=new URLSearchParams({path:row.path.id,lesson:row.sub.id,mode,studied:'1',size:'5'});
+      const activity=lessonPracticeItems({path:row.path,sub:row.sub})[0];
+      return `<li class="sr-card"><div class="sec-eyebrow">Path ${row.path.n} · ${row.path.n}.${row.sub.n}</div><h3 tabindex="-1">${escapeHtml(row.sub.title)}</h3><p>${row.due} due · ${row.unseen} unseen · ${row.later} scheduled for later${row.hasNotes?' · You have notes':''}</p><div class="sr-card-actions"><a class="btn-amber sm" href="#/review?${query}">Review up to 5 terms →</a><a class="sr-text-link" href="#/lesson/${row.path.id}/${row.sub.id}">Read lesson & notes →</a>${activity?`<a class="sr-text-link" href="#/${activity.kind}/${activity.id}?from=${encodeURIComponent(row.key)}">Try the related ${activity.kind==='playground'?'experiment':'investigation'} →</a>`:''}</div></li>`;
+    }).join('');
+    const empty=document.getElementById('studyReviewEmpty');
+    empty.hidden=!!rows.length;
+    empty.innerHTML=!data.completed?'<p>Start with a lesson and mark it complete when you are ready. Its key terms can then join your review queue.</p><a class="sr-text-link" href="#/course">Find a lesson →</a>':!data.lessons.length?'<p>Your completed lessons in this focus do not have flashcards. You can still revisit their text and notes from My Progress.</p><a class="sr-text-link" href="#/progress">Open My Progress →</a>':mode==='due'?`<p>No terms are due in your completed lessons for this focus.${data.unseen?' You can start with unseen terms or revisit all studied terms.':' You can revisit studied terms whenever you like.'}</p>`:'<p>No unseen terms remain in your completed lessons for this focus. Use All studied to revisit them.</p>';
+    document.getElementById('studyReviewCoverage').textContent=`${rows.length?`Showing ${Math.min(visible,rows.length)} of ${rows.length} lessons. `:''}${data.withoutTerms?`${data.withoutTerms} completed lesson${data.withoutTerms===1?' has':'s have'} no flashcards. `:''}This queue uses your saved learning focus. Reviewing terms does not count toward your daily lesson goal.`;
+    more.hidden=rows.length<=visible;
+    if(moreFocused&&more.hidden)(list.lastElementChild?.querySelector('h3')||document.getElementById('studyReviewSummary')).focus({preventScroll:true});
+    if(activeHref){
+      const restored=[...list.querySelectorAll('a')].find(link=>link.getAttribute('href')===activeHref);
+      (restored||document.getElementById('studyReviewSummary')).focus({preventScroll:true});
+    }
+  }
+  load.addEventListener('click',async()=>{
+    const focusRequested=document.activeElement===load;
+    load.disabled=true;status.textContent='Finding terms from your completed lessons…';
+    try{
+      await ensureGlossary();if(typeof GLOSSARY==='undefined')throw new Error('Glossary unavailable');
+      if(!current())return;
+      const keepFocus=focusRequested&&(document.activeElement===load||document.activeElement===document.body);
+      cacheOpenedAsset('glossary.js');loaded=true;content.hidden=false;load.hidden=true;status.textContent='Your review queue is ready.';paint();
+      if(keepFocus)document.getElementById('studyReviewSummary').focus({preventScroll:true});
+    }catch(error){
+      if(!current())return;
+      glossaryPromise=null;load.disabled=false;load.textContent='Try loading reviews again';status.textContent='The terms could not load. Your plan is still available; reconnect or try again.';
+    }
+  });
+  root.querySelectorAll('.sr-filter').forEach(button=>button.addEventListener('click',()=>{mode=button.dataset.reviewMode;visible=5;paint();}));
+  more.addEventListener('click',()=>{visible+=5;paint();});
+  return paint;
+}
 function renderStudyPlanner(){
   app.innerHTML = `<section class="sec study-planner">
     <div class="sec-head" data-reveal><div class="sec-eyebrow">Study planner</div>
@@ -11367,6 +11452,7 @@ function renderStudyPlanner(){
         <section class="study-next" aria-labelledby="studyNextHeading"><div id="studyPlanQueue"></div></section>
       </div>
     </div>
+    <section class="study-reviews" id="studyReviews" aria-labelledby="studyReviewHeading"><div class="sec-eyebrow">Keep it familiar</div><h2 id="studyReviewHeading">Come back to what you learned</h2><p>Find flashcards from lessons you have marked complete. Start with due terms, explore unseen ones, or connect an idea to hands-on practice.</p><button type="button" class="btn-ghost" id="studyReviewLoad">Find terms to revisit</button><p id="studyReviewStatus" class="study-hint" role="status"></p><div id="studyReviewContent" hidden><h3 id="studyReviewSummary" tabindex="-1"></h3><div class="sr-filters" role="group" aria-label="Review queue filter"><button type="button" class="sr-filter" data-review-mode="due" aria-pressed="true">Due now</button><button type="button" class="sr-filter" data-review-mode="new" aria-pressed="false">Unseen terms</button><button type="button" class="sr-filter" data-review-mode="all" aria-pressed="false">All studied</button></div><ol id="studyReviewList" class="sr-list"></ol><div id="studyReviewEmpty" class="sr-empty" hidden></div><button type="button" id="studyReviewMore" class="btn-ghost sm" hidden>Show 5 more lessons</button><p id="studyReviewCoverage" class="study-hint"></p></div></section>
     <section class="study-week-section" aria-labelledby="studyWeekHeading">
       <div class="study-week-head"><div><div class="sec-eyebrow">Your rhythm</div><h2 id="studyWeekHeading">This week's completions</h2></div><p class="study-hint">Monday–Sunday · your local time</p></div>
       <div id="studyPlanWeek"></div>
@@ -11395,7 +11481,7 @@ function renderStudyPlanner(){
       <p class="study-hint">Unfinished lessons in course order. Your queue updates as you mark them complete.</p>
       ${next.length ? `<ol class="study-queue">${next.map((lesson,i)=>`<li><a class="study-lesson" href="#/lesson/${lesson.path.id}/${lesson.sub.id}">
         <span class="study-step" aria-hidden="true">${i+1}</span><span><span class="study-lesson-meta">Path ${lesson.path.n} · ${lesson.path.n}.${lesson.sub.n}</span><strong>${escapeHtml(lesson.sub.title)}</strong></span><span aria-hidden="true">→</span>
-      </a></li>`).join('')}</ol>` : `<div class="study-empty"><p>All lessons in this focus are complete. Choose another path or revisit your key terms.</p><a class="btn-ghost sm" href="#/review">Review flashcards →</a></div>`}`;
+      </a></li>`).join('')}</ol>` : `<div class="study-empty"><p>All lessons in this focus are complete. Choose another path or revisit your key terms.</p><a class="btn-ghost sm" href="#/review?studied=1&amp;size=5${data.focus?'&amp;path='+data.focus.id:''}">Review flashcards →</a></div>`}`;
     document.getElementById('studyPlanWeek').innerHTML = `<ol class="study-week">${data.week.map(day=>{
       const label = day.date.toLocaleDateString(undefined,{weekday:'short'});
       const fullDate = day.date.toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'});
@@ -11406,6 +11492,7 @@ function renderStudyPlanner(){
   };
   readSettings();
   paint();
+  const refreshReviews=wireStudyReviews();
   form.addEventListener('input', ()=>{ dirty = true; status.textContent = 'Unsaved changes'; });
   form.addEventListener('change', ()=>{ dirty = true; status.textContent = 'Unsaved changes'; });
   form.addEventListener('submit', event=>{
@@ -11415,12 +11502,12 @@ function renderStudyPlanner(){
     saveState();
     dirty = false;
     paint();
+    refreshReviews();
     status.textContent = 'Study plan saved.';
   });
   currentPlannerRefresh = ()=>{
-    if(dirty) return;
-    readSettings();
-    paint();
+    if(!dirty){readSettings();paint();}
+    refreshReviews();
   };
 }
 

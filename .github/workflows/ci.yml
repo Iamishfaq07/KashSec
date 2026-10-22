@@ -112,6 +112,11 @@ jobs:
         env:
           BASE: http://127.0.0.1:8000
 
+      - name: Study review (completed lessons, due queue, focus, sync, offline)
+        run: npm run test:study-review
+        env:
+          BASE: http://127.0.0.1:8000
+
       # Nothing graded before submit, a paper that survives a refresh, an
       # expired clock that submits rather than resumes.
       - name: Timed mock exam

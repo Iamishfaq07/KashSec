@@ -1467,6 +1467,25 @@ mark{background:rgba(239,164,58,.35);color:var(--text);border-radius:3px;padding
 .fc-maintenance{margin-top:2rem;font-size:.85rem;color:var(--muted)}
 .fc-maintenance summary{min-height:44px;align-content:center;cursor:pointer;color:var(--text)}
 .fc-help{max-width:640px;margin:1.5rem auto}
+.fc-page .fc-tools .fc-studied{grid-column:1/-1;flex-direction:row;align-items:center;min-height:44px;gap:.7rem;color:var(--text);cursor:pointer}
+.fc-studied input{width:20px;height:20px;flex-shrink:0;accent-color:var(--teal-ink)}
+.study-reviews{margin:2.5rem 0;padding:1.6rem;border:1px solid var(--border-strong);border-radius:var(--r-lg);background:var(--surface)}
+.study-reviews>h2{font-family:var(--font-display);font-size:1.5rem;margin:.5rem 0 .8rem}
+.study-reviews>p{color:var(--muted);font-size:.9rem;line-height:1.8;max-width:65ch}
+.study-reviews>.btn-ghost{min-height:44px;white-space:normal}
+#studyReviewSummary{font-size:.95rem;color:var(--text);line-height:1.8;margin:1.2rem 0}
+.sr-filters{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+.sr-filter{font:inherit;font-size:.85rem;min-height:44px;padding:.6rem 1rem;color:var(--muted);border:1px solid var(--border);border-radius:999px;background:var(--bg);cursor:pointer}
+.sr-filter[aria-pressed="true"]{color:var(--teal-ink);border-color:var(--teal-ink);background:var(--surface2)}
+.sr-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;list-style:none;margin:1.3rem 0;padding:0}
+.sr-card{display:flex;flex-direction:column;min-width:0;border:1px solid var(--border);border-radius:var(--r);background:var(--bg);padding:1.2rem}
+.sr-card h3{font-family:var(--font-display);font-size:1.1rem;line-height:1.6;margin:.6rem 0}
+.sr-card p,.sr-empty p{font-size:.85rem;line-height:1.8;color:var(--muted)}
+.sr-card-actions{display:flex;flex-direction:column;align-items:flex-start;gap:.35rem;margin-top:auto;padding-top:.6rem}
+.sr-card-actions .btn-amber{min-height:44px;white-space:normal}
+.sr-text-link{display:inline-flex;align-items:center;min-height:44px;color:var(--teal-ink);font-size:.85rem;line-height:1.7}
+.sr-empty{padding:1rem 0}
+@media(max-width:700px){.study-reviews{padding:1rem}.sr-list{grid-template-columns:1fr}}
 @media(max-width:700px){.fc-page .fc-tools{grid-template-columns:1fr}.fc-study-card{padding:1.3rem}.fc-page .fc-empty{padding:1.2rem}}
 .fc-actions .btn-amber small,.fc-actions .btn-ghost small{display:block;font-weight:400;font-size:.66rem;opacity:.75;margin-top:.15rem;font-family:var(--font-mono)}
 .fc-empty{text-align:center;max-width:520px;margin:2rem auto;padding:2rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r)}
