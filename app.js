@@ -11408,12 +11408,14 @@ function wireStudyReviews(){
     }
   }
   load.addEventListener('click',async()=>{
+    const focusRequested=document.activeElement===load;
     load.disabled=true;status.textContent='Finding terms from your completed lessons…';
     try{
       await ensureGlossary();if(typeof GLOSSARY==='undefined')throw new Error('Glossary unavailable');
       if(!current())return;
+      const keepFocus=focusRequested&&(document.activeElement===load||document.activeElement===document.body);
       cacheOpenedAsset('glossary.js');loaded=true;content.hidden=false;load.hidden=true;status.textContent='Your review queue is ready.';paint();
-      document.getElementById('studyReviewSummary').focus({preventScroll:true});
+      if(keepFocus)document.getElementById('studyReviewSummary').focus({preventScroll:true});
     }catch(error){
       if(!current())return;
       glossaryPromise=null;load.disabled=false;load.textContent='Try loading reviews again';status.textContent='The terms could not load. Your plan is still available; reconnect or try again.';

@@ -92,6 +92,9 @@ try{
     await failedPage.getByLabel('Lessons per day',{exact:true}).fill('3');await failedPage.getByRole('button',{name:'Save plan',exact:true}).click();await load(failedPage);
     check(await failedPage.locator('#studyReviewContent').isVisible()&&await failedPage.evaluate(()=>STATE.studyPlan.dailyGoal)===3,`a ${status} glossary failure keeps the plan usable and offers a working retry`);await failed.close();
   }
+  const draft=await makeContext();let draftHeld,draftRelease;const draftReady=new Promise(resolve=>{draftRelease=resolve;});await draft.route('**/glossary.js',r=>{draftHeld=r;draftRelease();},{times:1});const draftPage=await draft.newPage();await draftPage.goto(BASE+'/#/planner');await draftPage.locator('#studyReviewLoad').click();await draftReady;
+  await draftPage.getByLabel('Lessons per day',{exact:true}).fill('7');await draftHeld.fulfill({response:await draftHeld.fetch()});await draftPage.locator('#studyReviewContent').waitFor({state:'visible'});
+  check(await draftPage.getByLabel('Lessons per day',{exact:true}).inputValue()==='7'&&await draftPage.evaluate(()=>document.activeElement.id)==='studyGoal','finishing a review load does not steal focus from an edited planner field');await draft.close();
   const delayed=await makeContext();let held,release;const ready=new Promise(resolve=>{release=resolve;});await delayed.route('**/glossary.js',r=>{held=r;release();},{times:1});const delayedPage=await delayed.newPage();await delayedPage.goto(BASE+'/#/planner');await delayedPage.locator('#studyReviewLoad').click();await ready;
   await delayedPage.evaluate(()=>navigateTo('#/course'));await held.fulfill({response:await held.fetch()});await delayedPage.waitForFunction(()=>typeof GLOSSARY!=='undefined');
   check(await delayedPage.locator('.path-card').count()>0&&await delayedPage.locator('#studyReviews').count()===0,'a late review load cannot replace the next chosen page');await delayed.close();
