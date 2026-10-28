@@ -38,4 +38,12 @@ Both complete dependency audits report zero vulnerabilities at verification time
 
 Rendering and route checks do not establish that every technical explanation or every possible lab answer is correct. The two beginner study lessons and specific lab wording were revised; the full course has not received a line-by-line subject-matter review. External VM labs and a real upstream-provider OAuth sign-in were not executed.
 
-GitHub Actions could not start: its annotation reports failed account payments or a spending limit. Vercel preview deployment is passing. No production merge or deployment is claimed; PR #40 contains the changes for review.
+PR #40 was merged as `c49fa04`, and its loading fixes were verified on the live site. GitHub Actions still cannot start because of the account's billing/spending limit. Vercel deployment is passing.
+
+## Reader experience follow-up
+
+The next change adds optional reading-place hints for unfinished lessons, bounded to 30 entries on this device. Hints are not completion records and are not synced; completing a lesson, choosing Start from the top, or resetting progress clears them. Changed lesson hashes prevent outdated hints from being applied. Navigation owns scroll restoration, so reopening a lesson never jumps without the reader choosing Continue reading.
+
+Progress measures the article instead of notes and footer, using a composited transform instead of changing layout width. The sidebar creates lesson links for the active path first and fills other paths on demand. Adjacent-lesson prefetch starts only on focus, hover or touch, keeps at most two short-lived entries, consumes each once and respects data-saving/slow connections. Failed or non-Markdown responses are discarded. Mobile contents start compact and keep focus at the selected section. Clipboard denial selects the code, and failed note persistence is reported honestly.
+
+`npm run test:reader` has 16 passing cases covering resume/restart/completion, changed text, blocked storage, article progress, successful and invalid prefetch, data-saving/slow connections, mobile targets, keyboard section links, note persistence status, lazy sidebar links, correct lesson ownership of fallback text, and manual code copying. Existing resilience/navigation/accessibility checks continue to cover the reader.
