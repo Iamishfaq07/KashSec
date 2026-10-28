@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"Securing the CI/CD Pipeline","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/cicd-security.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Securing the CI/CD Pipeline","headline":"Securing the CI/CD Pipeline","description":"The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they don't need to find a bug in your app at all — they can often reach secrets, production, or every developer who pushes code, in one move.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/cicd-security.html","inLanguage":"en","dateModified":"2026-07-25","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/22-devsecops-appsec.jpg","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The pipeline itself is a target: secrets, permissions, and supply-chain trust.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/cicd-security.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Securing the CI/CD Pipeline","headline":"Securing the CI/CD Pipeline","description":"The pipeline that builds and deploys your software is itself a high-value target. If an attacker can run code in CI, they don't need to find a bug in your app at all — they can often reach secrets, production, or every developer who pushes code, in one move.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/cicd-security.html","inLanguage":"en","dateModified":"2026-10-28","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/22-devsecops-appsec.jpg","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"The pipeline itself is a target: secrets, permissions, and supply-chain trust.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/cicd-security.html"}}
 </script>
 </head>
 <body>
@@ -105,7 +105,7 @@
 <li>A compromised pipeline is a <strong>supply-chain attack</strong>: instead of attacking one company, an attacker who compromises a popular CI action or a widely-used base image attacks every downstream user at once</li>
 </ul>
 <h2>The 2021 Codecov incident, briefly</h2>
-<p>A real example worth knowing: attackers modified Codecov's bash uploader script, used by thousands of CI pipelines to send test coverage data. The modified script quietly exfiltrated environment variables — which is exactly where CI secrets live — from every pipeline that ran it, for months, before anyone noticed. Nobody's <em>application</em> was vulnerable. Their <em>pipeline dependency</em> was, and that was enough.</p>
+<p>A real example worth knowing: attackers modified Codecov's bash uploader script, used by thousands of CI pipelines to send test coverage data. The modified script quietly exfiltrated environment variables — which is exactly where CI secrets live — from every pipeline that ran it, for months, before anyone noticed. The incident illustrates how a compromised pipeline dependency can expose credentials even without exploiting the application itself.</p>
 <h2>Common CI/CD risks</h2>
 <ol>
 <li><strong>Secrets in plaintext</strong> in pipeline YAML or environment variables visible in logs</li>
@@ -116,13 +116,13 @@
 <li><strong>Artifact tampering</strong> — no signing or verification of what gets deployed, so a build step that never ran through the real pipeline can be substituted in</li>
 </ol>
 <p>:::warn
-<code>pull_request_target</code> is the single most dangerous trigger in GitHub Actions. Unlike <code>pull_request</code>, it runs with access to the base repo's secrets <em>and</em> can be told to check out the fork's untrusted code. Combine those two and a stranger's pull request can exfiltrate your production secrets before a human ever reviews it.</p>
+<code>pull_request_target</code> runs in the base-repository context and may have access to privileged tokens and secrets. Do not combine that context with checkout or execution of untrusted pull-request code. Inspect the actual permissions, environments, and code executed; the trigger name alone does not describe the entire trust boundary.</p>
 <h2>Hardening checklist</h2>
 <h3>Secrets</h3>
 <ul>
 <li>Store secrets in a proper secret manager (GitHub Secrets, Vault, cloud secret managers) — never in the YAML file itself, never in a <code>.env</code> committed "just for now"</li>
 <li>Never echo secrets in logs. Most CI systems mask known secret values automatically, but a secret assembled at runtime (e.g. concatenated into a URL) often slips past the masker</li>
-<li>Prefer short-lived, OIDC-based cloud credentials over long-lived access keys. A static AWS access key sitting in GitHub Secrets is a permanent target; an OIDC-issued token expires in an hour and was never stored anywhere to begin with</li>
+<li>Prefer short-lived, OIDC-based cloud credentials over long-lived access keys. With OIDC federation, a trusted job can obtain temporary cloud credentials instead of storing a long-lived cloud key in GitHub. The lifetime depends on provider policy; restrict the trust policy to the intended repository, workflow, branch or environment, and audience. Grant <code>id-token: write</code> only to the jobs that need it</li>
 </ul>
 <h3>Least privilege</h3>
 <ul>
@@ -132,13 +132,13 @@
 <h3>Trust boundaries</h3>
 <ul>
 <li>Do not run privileged workflows on <code>pull_request_target</code> with untrusted code checked out</li>
-<li>Pin third-party actions to full commit SHAs, not tags: <code>uses: actions/checkout@8f4b7f8</code> not <code>uses: actions/checkout@v4</code></li>
+<li>Pin actions to the full 40-character commit SHA from a reviewed official release, rather than a branch, version tag, or abbreviated SHA. Keep a version comment for readability and a process for reviewing updates</li>
 <li>Review and vendor critical actions when possible, especially for anything that touches secrets or deploy credentials</li>
 </ul>
 <h3>Integrity</h3>
 <ul>
-<li>Sign artifacts (Sigstore / cosign, etc.) so a build's origin can be cryptographically verified later</li>
-<li>Verify signatures before deploy — signing that nothing ever checks is theater</li>
+<li>Sign artifacts and, where appropriate, generate provenance. Verify the artifact digest, expected signer or workflow identity, and required provenance policy before deployment</li>
+<li>A valid signature does not mean the software is free of vulnerabilities or that a compromised trusted builder behaved honestly. Decide which identity and build context you trust, and actually enforce that policy</li>
 <li>Use immutable, digested image references (<code>image@sha256:...</code>) instead of mutable tags (<code>image:latest</code>)</li>
 </ul>
 <h3>Visibility</h3>
@@ -160,7 +160,7 @@
 <h2>🧪 Hands-on lab — audit a real workflow</h2>
 <ol>
 <li>Pick any GitHub repository you maintain (or fork a public one) with a <code>.github/workflows/</code> directory.</li>
-<li>Open each workflow file and answer, for every job: what permissions does it declare? If none are declared, GitHub's default (often <code>write</code> on many scopes) silently applies — that's a finding by itself.</li>
+<li>Open each workflow file and answer, for every job: what permissions does it declare? If none are declared, inspect the effective organization/repository defaults and any job-level overrides. Defaults can be restricted; do not assume missing YAML automatically grants write access. Recommend an explicit minimum permission set.</li>
 <li>Search for any <code>uses: owner/action@&lt;tag&gt;</code> where <code>&lt;tag&gt;</code> is a branch or version tag rather than a full commit SHA. List them.</li>
 <li>Check for <code>pull_request_target</code> anywhere in the file. If present, confirm the job does <strong>not</strong> also check out <code>github.event.pull_request.head.sha</code> or otherwise run fork code.</li>
 <li>Write a one-paragraph risk summary: if this pipeline were fully compromised today, what could an attacker do with the credentials it holds?</li>
@@ -176,7 +176,7 @@
 <li><strong>OIDC federation</strong> — exchanging a short-lived pipeline identity for cloud credentials, without ever storing a long-lived key</li>
 <li><strong>Pinned action</strong> — referencing a GitHub Action by commit SHA, not a moving tag, so the code that runs can't change out from under you</li>
 <li><strong>Artifact signing</strong> — cryptographic proof of who built a binary/image, checkable before it's ever deployed</li>
-<li><strong><code>pull_request_target</code></strong> — a GitHub Actions trigger that runs with base-repo secrets even when the PR comes from a fork</li>
+<li><strong><code>pull_request_target</code></strong> — a GitHub Actions trigger that uses the base-repository context; combining its privileges with untrusted code can expose credentials</li>
 <li><strong>Blast radius</strong> — the scope of damage possible if a given credential or system is fully compromised</li>
 </ul>
 <h2>Recap</h2>

@@ -6,13 +6,13 @@
   "type": "module",
   "scripts": {
     "dev": "python3 -m http.server 8000",
-    "build": "node generate-glossary.js && node generate-search-index.js && node generate-lesson-hashes.js && node generate-tasks.js && node generate-feed.js && node generate-prerender.js && node generate-llms.js && node generate-sw.js",
+    "build": "node generate-glossary.js && node generate-search-index.js && node generate-lesson-hashes.js && node generate-tasks.js && node generate-feed.js && node generate-prerender.js && node generate-llms.js && node generate-preview-content.js && node generate-sw.js",
     "build:sw": "node generate-sw.js",
     "build:glossary": "node generate-glossary.js",
     "build:search": "node generate-search-index.js",
     "build:feed": "node generate-feed.js",
     "build:prerender": "node generate-prerender.js",
-    "test": "node tests/data-integrity.test.js && npm run test:canonical && npm run test:cvss && npm run test:smoke && npm run test:cdn && npm run test:ui && npm run test:offline && npm run test:progress && npm run test:planner && npm run test:investigations && npm run test:playground && npm run test:guide && npm run test:lesson-practice && npm run test:flashcards && npm run test:study-review && npm run test:exam && npm run test:search && npm run test:tasks && npm run test:audit && npm run test:reader",
+    "test": "node tests/data-integrity.test.js && npm run test:canonical && npm run test:cvss && npm run test:smoke && npm run test:cdn && npm run test:ui && npm run test:offline && npm run test:progress && npm run test:planner && npm run test:investigations && npm run test:playground && npm run test:guide && npm run test:lesson-practice && npm run test:flashcards && npm run test:study-review && npm run test:exam && npm run test:search && npm run test:tasks && npm run test:audit && npm run test:reader && npm run test:path-guides",
     "test:canonical": "node tests/canonical-security.spec.js && npm run test:auth-navigation && node tests/navigation-refresh.spec.js",
     "test:auth-navigation": "node tests/auth-navigation.spec.js",
     "test:cvss": "node tests/cvss.spec.js",
@@ -39,7 +39,9 @@
     "test:preview-lessons": "node tests/preview-lessons.spec.js",
     "test:preview-platform": "node tests/preview-platform.spec.js",
     "test:preview-runtime": "node tests/preview-runtime-resilience.spec.js",
-    "test:reader": "node tests/reader-experience.spec.js"
+    "test:reader": "node tests/reader-experience.spec.js",
+    "test:path-guides": "node tests/path-guides.test.js && node tests/path-guides.spec.js",
+    "test:preview-path-guides": "node tests/preview-path-guides.spec.js"
   },
   "repository": {
     "type": "git",

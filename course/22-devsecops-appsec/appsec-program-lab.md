@@ -40,7 +40,7 @@ Here's an abbreviated example answer for deliverable #1, so you have something t
 
 > **Weeks 1–2**: Interview the 6 team leads owning the 25 services. Build a spreadsheet: service name, owner, language, data sensitivity (none/internal/customer PII/payment), internet-facing (Y/N). This alone usually surfaces 2–3 services nobody remembered were internet-facing.
 >
-> **Weeks 3–4**: Turn on Dependabot (SCA) org-wide, non-blocking. Turn on GitHub secret scanning org-wide. Zero developer friction, immediate visibility.
+> **Weeks 3–4**: Pilot dependency alerts and secret scanning on a few representative repositories, non-blocking. Check repository support, licensing, permissions, noise, and an owner for each alert before expanding.
 >
 > **Weeks 5–6**: Stand up a single Jira project for all security findings. Define severities (see deliverable #2). Findings route here regardless of source (SCA, manual report, pentest).
 >
@@ -48,7 +48,17 @@ Here's an abbreviated example answer for deliverable #1, so you have something t
 >
 > **Weeks 9–12**: Publish a one-page dashboard: SCA coverage %, critical findings older than SLA, count of design reviews run. Report to leadership with a trend, even if it's only 3 weeks of data.
 
-Notice what this plan does *not* attempt in 90 days: no SAST gate that blocks merges, no DAST, no policy-as-code. Those are Level 2–3 maturity, deliberately deferred.
+Notice what this plan does *not* attempt in 90 days: no SAST gate that blocks merges, no DAST, no policy-as-code. Those are deliberately deferred for this scenario; they are not universal maturity levels or a rule that every program must follow.
+
+## 5. Include technical evidence
+
+Attach the report from the **AppSec Fix & Verify Lab**. Include the failing behavior, your change, the passing result from your own implementation, and one remaining integration test. Do not submit only a scanner screenshot or the result from reference mode.
+
+Add a small requirements-to-evidence table for the invoice feature: requirement, test or review, result, owner, and reviewed version. Map formal ASVS references to a named release and its exact requirement identifiers.
+
+## 6. Plan the next learning step
+
+Choose one role to work toward: application security reviewer, product security engineer, or DevSecOps/platform security engineer. List two skills you still need and one project that would demonstrate them. Use the certification options on the path overview if a credential supports that goal. An external exam is optional and is separate from completing this course.
 
 ## Stretch goals
 

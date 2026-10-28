@@ -2376,3 +2376,56 @@ label.tool-note{display:block}
 .toc summary:focus-visible{outline:2px solid var(--amber-ink);outline-offset:4px;border-radius:4px}
 
 @media(prefers-reduced-motion:reduce){.reader-progress{transition:none}}
+
+/* Path roadmaps use ordinary links and CSS connectors: no diagram runtime. */
+.path-guide{margin:2.5rem 0}
+.path-guide h2{font-family:var(--font-display);font-size:clamp(1.35rem,2.5vw,1.85rem);line-height:1.3;max-width:42rem;margin:0 0 .65rem}
+.path-guide h3{font-size:1rem;line-height:1.4;margin:.45rem 0 .65rem}
+.path-guide p{line-height:1.65}
+.path-guide-note{font-size:.88rem;color:var(--muted);line-height:1.65}
+.path-preparation{margin:1.3rem 0 1.8rem;color:var(--muted);font-size:.82rem}
+.path-preparation>span{display:block;margin-bottom:.55rem;font-weight:600}
+.path-preparation>div{display:flex;flex-wrap:wrap;gap:.5rem}
+.path-preparation a{display:inline-flex;align-items:center;min-height:44px;padding:.5rem .75rem;border:1px solid var(--line);border-radius:999px;color:var(--text);text-decoration:none;line-height:1.4}
+.path-map,.md .path-map{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;list-style:none;padding:0;margin:1.6rem 0 2rem;isolation:isolate}
+.path-map-step,.md .path-map>.path-map-step{position:relative;padding:0;min-width:0;display:flex;flex-direction:column;align-items:flex-start}
+.path-map-step:not(:last-child)::after{content:"";position:absolute;top:20px;left:40px;width:calc(100% + 1rem - 40px);height:2px;background:var(--line);z-index:-1}
+.path-map-marker{display:grid;place-items:center;flex-shrink:0;width:42px;height:42px;border:2px solid var(--line);border-radius:50%;background:var(--bg);color:var(--muted);font-weight:700;font-size:.9rem}
+.path-map-card{display:flex;flex-direction:column;flex:1;width:100%;min-width:0;margin-top:.9rem;padding:1rem;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.path-map-card p{font-size:.86rem;color:var(--muted);margin:0 0 .8rem}
+.path-stage-status{display:block;font-size:.74rem;font-weight:600;color:var(--muted);line-height:1.6}
+.path-stage-count{font-size:.74rem;color:var(--muted);margin-top:auto;line-height:1.6}
+.path-map-card>a{display:flex;align-items:center;min-height:44px;margin-top:.35rem;color:var(--amber-ink);font-size:.84rem;font-weight:600}
+.path-map-step.is-current .path-map-marker{border-color:var(--amber);color:var(--amber-ink)}
+.path-map-step.is-current .path-map-card{border-color:var(--amber)}
+.path-map-step.is-done .path-map-marker{border-color:var(--teal);color:var(--teal)}
+.path-proof{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.8rem;margin:1.5rem 0 2.5rem;padding:1.5rem;border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+.path-proof>div{min-width:0}
+.path-proof p{color:var(--muted);margin:.5rem 0}
+.path-practice ul{list-style:none;padding:0;margin:0}
+.path-practice li+li{margin-top:.7rem}
+.path-practice a{display:inline-flex;align-items:center;min-height:44px;color:var(--amber-ink);font-size:.9rem;font-weight:600}
+.path-practice p{font-size:.84rem}
+.path-cert-note{padding:.9rem 1rem;border-left:3px solid var(--amber);color:var(--muted);font-size:.9rem}
+.path-cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:1rem;margin:1.3rem 0 1rem}
+.path-cert-card{display:flex;flex-direction:column;min-width:0;padding:1.25rem;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.path-cert-card p{font-size:.86rem;color:var(--muted);margin:.35rem 0 .7rem}
+.path-cert-card h3{font-size:1.05rem}
+.path-cert-readiness{padding-top:.7rem;border-top:1px solid var(--line)}
+.path-provider-link{display:inline-flex;align-items:center;min-height:44px;margin-top:auto;color:var(--amber-ink);font-size:.84rem;font-weight:600;line-height:1.5}
+.path-cert-status{display:flex;flex-direction:column;gap:.5rem;padding-top:1rem;font-size:.78rem;color:var(--muted);line-height:1.5}
+.path-cert-select{width:100%;min-height:44px}
+.path-cert-card .path-cert-save{min-height:1.5em;margin:.6rem 0 0;font-size:.78rem}
+.path-guide a:focus-visible,.path-guide select:focus-visible{outline:2px solid var(--amber-ink);outline-offset:4px;border-radius:4px}
+.path-lessons-heading{font-size:1.4rem;margin:2rem 0 1rem}
+.cert-directory-filter{display:flex;align-items:center;flex-wrap:wrap;gap:.7rem;margin:1.5rem 0;color:var(--muted)}
+.cert-directory-filter select{max-width:100%;min-height:44px}
+@media(max-width:900px){
+  .path-map,.md .path-map{grid-template-columns:1fr}
+  .path-map-step,.md .path-map>.path-map-step{display:block;padding-left:58px}
+  .path-map-marker{position:absolute;left:0;top:16px}
+  .path-map-step:not(:last-child)::after{left:20px;top:58px;width:2px;height:calc(100% + 1rem - 42px)}
+  .path-map-card{margin-top:0}
+  .path-proof{grid-template-columns:1fr;gap:1rem}
+}
+@media(max-width:480px){.path-proof,.path-cert-card{padding:1rem}.path-map-card{padding:.9rem}.path-map-step,.md .path-map>.path-map-step{padding-left:52px}}

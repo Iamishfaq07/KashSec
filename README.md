@@ -2,11 +2,12 @@
 
 **A completely free cybersecurity course, from absolute zero to job-ready.**
 
-26 learning paths · 485 sub-lessons · 104 typed-answer practice tasks · 42 interactive labs · 32 browser-based tools · timed mock exams · always free
+26 learning paths · 488 sub-lessons · 104 typed-answer practice tasks · 42 interactive labs · 32 browser-based tools · timed mock exams · always free
 
 [![Live Site](https://img.shields.io/badge/live-kashsec.vercel.app-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
 ## What's new
+- **Path maps and AppSec practice** — every path now has four connected learning stages, suggested preparation, practical portfolio evidence, and relevant certification options with official provider links and eligibility notes. AppSec grows to 18 lessons with testable requirements, secure code review, and a downloadable, dependency-free Python Fix & Verify lab. Certification plans are shared between each path and the filterable certification planner.
 - **Smoother reading** — unfinished lessons offer an optional, device-local saved reading place. Progress follows the lesson text, unopened sidebar paths build their links only when expanded, mobile contents start collapsed, and section links move keyboard focus. Hovering or focusing the next-lesson control warms one Markdown file; data-saving and slow connections skip this. Clipboard failures select the code for manual copying, and notes explain when browser storage could not save them.
 - **Start-here learning routes** — choose your experience and interest to preview a short route through existing lessons, experiments, and investigations (`#/start`). Saved routes follow real completion and point to the next unfinished step. Choices are backed up and optionally synced; setting the study-planner focus is a separate action that keeps your daily goal. Return links connect the learning formats back to the route.
 - **Beginner Learning Playground** — three guided experiments teach web requests, UTF-8/Base64, and invoice access checks with immediate feedback and small goals. Use touch, mouse, or keyboard, with no timer or penalty for retrying. Open `#/playground` from Home, Course, My Progress, or search. Completed experiments sync with progress; typed messages and demo settings are never saved. Investigation cases also include optional hints, term explanations, and a quick-start guide.
@@ -104,7 +105,7 @@ To add a brand-new sub-lesson: drop a `.md` file in the right `course/<path>/` f
 - **[marked](https://marked.js.org/)** — Markdown → HTML
 - **[Mermaid](https://mermaid.js.org/)** — diagrams as code
 - **[Supabase](https://supabase.com)** *(optional)* — auth + Postgres for cross-device sync; the site never depends on it being configured
-- `npm run build` regenerates crawlable pages, search data, freshness dates, and the service worker. Commit generated files with source changes; CI checks that they match.
+- `npm run build` regenerates crawlable pages, search data, freshness dates, the service worker, and the preview course/quiz/roadmap data. Edit the root course files and `PATHS`/`PATH_GUIDES`/`CERTS` in `app.js`; generated preview copies follow them. When counts change, also run `CHROMIUM_PATH=/path/to/chromium npm run build:og` for the share images. Commit generated files with source changes; CI checks that they match.
 
 ## 👋 Contact
 

@@ -1,183 +1,130 @@
-# SAST, DAST & SCA — The Core Scanning Trio
+# SAST, DAST and SCA: Choose the Right Check
 
-Three families of tools form the backbone of most AppSec programs. They find genuinely different things, which is why mature programs run all three rather than arguing about which is best.
+Three common kinds of scanning answer different questions. Use them together with code review, security requirements, and tests of the application's own rules.
 
-:::tip
-The one-line version: **SAST reads your code, DAST attacks your running app, SCA checks everyone else's code that you shipped.**
-:::
+- **SAST** reads source code or another code representation without running the application.
+- **DAST** tests a running application through its exposed interfaces.
+- **SCA** identifies third-party components and checks them against information such as known vulnerabilities and licenses.
 
-## SAST — Static Application Security Testing
+A clean result from any of these means only that the tool reported no issue within its configuration and coverage.
 
-Analyses source code or bytecode *without running the application*. Think of it as a very pedantic reviewer who has read every line but has never seen the program actually execute.
+## SAST: follow risky code patterns
 
-**Strengths**
-- Finds issues early — in the IDE or on the pull request
-- Can reach code paths that are hard to trigger dynamically (deep error handlers, rare branches)
-- Points at an exact file and line, which makes fixes fast
-- Good for injection patterns, crypto misuse, hardcoded secrets
+Static Application Security Testing can find patterns such as untrusted input reaching a database query, file operation, or system command. Examples include CodeQL and Semgrep.
 
-**Weaknesses**
-- Higher false-positive rate than the other two
-- Needs language and framework support — a tool that doesn't understand your ORM will flag safe code as unsafe
-- Cannot see runtime configuration, environment variables, or how the app is actually deployed
-
-**Examples**: CodeQL, Semgrep, SonarQube, Checkmarx, Fortify
-
-### Why SAST produces false positives
-
-Consider this Python:
+It can run early, often on a pull request, and may identify a file and line to review. Its usefulness depends on language support, framework models, rules, and the build context. False positives and missed issues are both possible.
 
 ```python
-query = "SELECT * FROM users WHERE id = " + user_id
-db.execute(query)
+# Unsafe: input becomes SQL syntax.
+query = "SELECT id FROM users WHERE name = '" + name + "'"
+row = db.execute(query).fetchone()
+
+# SQLite example: bind values as data.
+row = db.execute("SELECT id FROM users WHERE name = ?", (name,)).fetchone()
 ```
 
-SAST correctly flags this as SQL injection. But now consider:
+The second query prevents input from changing the SQL structure in this lookup. It does not decide whether the current user may read the selected record. That needs a separate authorization rule.
 
-```python
-user_id = int(request.args["id"])          # cast to int — no longer attacker-controlled text
-query = "SELECT * FROM users WHERE id = " + str(user_id)
-db.execute(query)
-```
+A scanner that recognizes the framework may distinguish these cases. When triaging a finding, follow the input and the actual operation; do not dismiss it just because the source appears internal.
 
-This one is actually safe, because the `int()` cast makes injection impossible. A weaker tool still flags it, because it sees string concatenation feeding `execute()`. Understanding *why* a tool is wrong is what separates useful triage from rubber-stamping.
+## DAST: test reachable behavior
 
-## DAST — Dynamic Application Security Testing
+Dynamic Application Security Testing sends requests to a running application. Examples include OWASP ZAP and Burp Suite's automated testing tools.
 
-Tests the *running* application from the outside, the way an attacker would. It doesn't know or care what language you wrote it in.
+DAST can detect injection, configuration problems, and some authentication or access-control flaws. It only tests the behavior it can reach. A scanner that never signs in has not tested the signed-in area.
 
-**Strengths**
-- No source code required — works on third-party apps too
-- Finds issues that only exist at runtime: misconfiguration, missing headers, auth flaws, server-side behaviour
-- Effectively zero false positives for things like "this endpoint returned data without a session" — it either happened or it didn't
+Dynamic results can still be misleading. Caching, test data, redirects, mistaken assumptions about permissions, and scanner heuristics can produce false positives or false negatives. Confirm important findings with a reproducible request and expected behavior.
 
-**Weaknesses**
-- Needs a working, populated environment and realistic coverage
-- Slow — a full crawl of a large app can take hours
-- Completely blind to code it never manages to reach. If a feature is behind a login it can't perform, that feature is untested.
+For an access-control review, provide separate test accounts with different permissions. A generic scan does not automatically understand who should own an invoice or approve a transfer.
 
-**Examples**: OWASP ZAP, Burp Suite Enterprise, Nuclei
+## SCA: identify component risk
 
-:::warn
-The most common DAST failure is **authentication**. If the scanner can't log in, it tests only your marketing pages and reports a clean bill of health for an application it never actually touched. Always check the coverage report, not just the findings count.
-:::
+Software Composition Analysis inspects dependency information or artifacts. Tools such as Dependabot, Dependency-Check, and Trivy can report known vulnerabilities associated with detected components.
 
-## SCA — Software Composition Analysis
+An advisory match is a starting point for triage, not a complete impact assessment. Check:
 
-Looks at third-party dependencies (npm, Maven, pip, Go modules) and flags known vulnerabilities, license risk, and outdated packages.
+1. The exact package and installed version, including transitive dependencies.
+2. The advisory's affected versions and required conditions.
+3. Whether the affected functionality is reachable in this application.
+4. A supported update or other mitigation, with compatibility tests.
+5. Who owns the decision and when it will be reviewed again.
 
-This matters more than people expect. A typical modern web application is **80–90% code you did not write**. Your own logic is a thin shell around a mountain of dependencies.
+Do not claim a vulnerable dependency is harmless solely because one call was not found by a simple text search. Dynamic loading, optional features, and incomplete analysis can hide usage.
 
-**Strengths**
-- Very high signal — a CVE either affects your version or it doesn't
-- Cheap to run and fast
-- Can block builds on critical vulnerabilities with little argument
+## Compare the questions, not a fixed score
 
-**Weaknesses**
-- Finds nothing at all in *your* code
-- Reachability analysis is still maturing: is the vulnerable function actually called by your app, or is it in a code path you never touch?
-
-**Examples**: Dependabot, Snyk, OWASP Dependency-Check, Trivy
-
-### The reachability problem
-
-Say `lodash` has a vulnerability in its `template()` function. SCA reports it as critical. But:
-
-- If your code calls `lodash.template()` with user input → genuinely critical, fix now
-- If your code only uses `lodash.debounce()` → the vulnerable code is present but never executed
-
-Both look identical in a basic SCA report. Newer tools attempt reachability analysis to tell them apart; until that's reliable, a human has to make the call.
-
-## Side by side
-
-| | SAST | DAST | SCA |
+| Check | Needs a running application? | Useful evidence | Important limit |
 |---|---|---|---|
-| Needs source code | Yes | No | Yes (manifest files) |
-| Needs a running app | No | Yes | No |
-| Runs in a PR | Yes | Rarely — too slow | Yes |
-| False positives | Higher | Lower | Low |
-| Finds design flaws | No | No | No |
-| Finds your bugs | Yes | Yes | No |
-| Finds dependency bugs | No | Sometimes | Yes |
-| Typical runtime | Minutes | Hours | Seconds |
+| SAST | Usually no | Input-to-operation flow, file and line | Models may miss or misunderstand the framework |
+| DAST | Yes | Request, response, and observed behavior | Unvisited routes and roles remain untested |
+| SCA | Usually no | Component/version and advisory match | Application impact still needs context |
+| Manual design review | No | Trust boundaries and abuse cases | Depends on the scope and reviewers |
+| Authorization regression test | Depends on test level | Allowed and denied behavior | Covers only the cases and integration it exercises |
 
-Note the row every one of them fails: **none of these finds design flaws.** No scanner will tell you that your password reset flow lets anyone reset anyone's password. That's what threat modeling is for, later in this path.
+Some tools can find symptoms of a design flaw. None can establish that all business rules are correct. A password-reset design or approval workflow still needs targeted review and tests.
 
-## How they fit together
+## Put checks where the feedback is useful
 
+```text
+Small code change
+    ↓
+Unit/security regression tests + focused SAST + dependency checks
+    ↓
+Build and review the artifact
+    ↓
+Staging: authenticated DAST and role-based integration tests
+    ↓
+Release decision with owned exceptions
+    ↓
+Production feedback and dependency monitoring
 ```
-Developer commit
-      ↓
-SAST + SCA on the PR        ← fast feedback, blocks merge
-      ↓
-Build & unit tests
-      ↓
-DAST / API tests in staging ← slower, runs nightly
-      ↓
-Release
-```
 
-## Practical rollout advice
+This is an example, not a requirement to run every scanner on every commit. Measure execution time and noise. Agree which verified, high-confidence issues block a change, and how exceptions expire. Keep fast checks close to the pull request and schedule broader checks where they fit.
 
-1. **Start with SCA.** Highest return, lowest noise, and the easiest to justify — "this dependency has a known critical CVE" is not a debatable finding.
-2. **Add SAST with a small set of high-confidence rules.** Do not enable the full ruleset on day one; you'll generate the 2,000-finding backlog that kills programs. Start with secrets detection and injection, then expand.
-3. **Introduce DAST once staging is stable** and you can script authentication properly.
-4. **Always pair tools with a triage process.** Findings that nobody owns will rot, and a rotting backlog is worse than nothing because it creates the illusion of coverage.
+## Practice with a small evidence table
 
-:::tip
-On GitHub, a solid free-tier starter stack is Dependabot (SCA) + CodeQL (SAST) + secret scanning. All three are configurable from the Settings → Code security page, and for public repositories they cost nothing.
-:::
+Use the downloadable **AppSec Fix & Verify Lab** later in this path as a guaranteed local starting point. Review the SQL construction and the unused `actor` argument. Predict which issue a generic static rule might find and which needs knowledge of the ownership rule. Then use the tests to check your prediction.
 
-## 🧪 Hands-on lab — run all three against one app
+For a separate, optional dynamic-testing exercise, run a deliberately vulnerable application such as OWASP Juice Shop on your own machine. Follow its current setup guide and bind published ports to loopback. For example:
 
-Use OWASP Juice Shop, a deliberately vulnerable app built for exactly this.
-
-**SCA (5 minutes)**
 ```bash
-git clone https://github.com/juice-shop/juice-shop.git
-cd juice-shop
-npm install --package-lock-only
-npm audit
+docker run --rm -d --name kashsec-juice-shop -p 127.0.0.1:3000:3000 bkimminich/juice-shop
 ```
-Read the output. Note how many are transitive (dependencies of dependencies) rather than packages you chose.
 
-**SAST (10 minutes)** — install Semgrep and run its default ruleset:
+Only test this local instance or an explicitly authorized target. In ZAP, a baseline/passive scan reports issues in traffic it observes; it is not the same as a full active scan or a two-user authorization test. Record the routes and roles you actually exercised. A local application's dependencies and findings change over time, so there is no fixed finding count to match.
+
+Stop the container when finished:
+
 ```bash
-pip install semgrep
-semgrep --config=auto .
+docker stop kashsec-juice-shop
 ```
-Pick three findings. For each, decide: real, false positive, or "real but not reachable". Write down your reasoning.
 
-**DAST (15 minutes)** — run the app, then point OWASP ZAP at it:
-```bash
-docker run -d -p 3000:3000 bkimminich/juice-shop
-```
-Run a ZAP baseline scan against `http://localhost:3000` and compare its findings to the SAST output.
+If you choose an external scanner, follow its supported installation and licensing guidance. Those optional tools are not required for the self-contained Python lab.
 
-**The point of the exercise**: notice how little the three lists overlap. That non-overlap is the entire argument for running all three.
-
-:::challenge Test yourself
-1. Your SAST tool flags a SQL injection in code that takes input from an internal config file, not from users. Real issue or false positive? What extra information would change your answer?
-2. A DAST scan of your app returns zero findings. Name three reasons that might be bad news rather than good news.
-3. SCA reports a critical CVE in a library your app depends on, but the vulnerable function is never called. Do you fix it? Argue both sides.
-:::
+| Finding | Source | Evidence checked | Decision and owner |
+|---|---|---|---|
+| SQL construction | Review or SAST | Untrusted value reaches the query | Bind parameters; application team |
+| Missing owner rule | Review and two-user test | Another customer can read the record | Enforce authorization; application team |
+| Component advisory | SCA | Version and affected conditions | Update, mitigate, or time-bound exception |
 
 ## Key terms
 
-- **SAST** — static analysis of source code, no execution
-- **DAST** — dynamic testing of a running application from the outside
-- **SCA** — analysis of third-party components against known-vulnerability databases
-- **False positive** — a finding that is not actually a real issue
-- **Reachability** — whether vulnerable code can actually be executed by your application
-- **Transitive dependency** — a dependency of one of your dependencies, which you never chose directly
+- **SAST** — static analysis of code without running the application
+- **DAST** — dynamic testing of a running application through its interfaces
+- **SCA** — analysis of third-party components and associated risks
+- **Coverage** — the code, components, routes, roles, or behaviors a check actually examined
 
-## Recap
+## Ready to advance
 
-SAST, DAST and SCA cover genuinely different angles, and their findings overlap far less than people expect. Mature programs run all three, tuned so developers trust the results — and none of the three will find a design flaw, which is why scanning alone is never a complete AppSec program.
+- [ ] I can explain what each scan actually examined.
+- [ ] I know why zero findings is not proof of security.
+- [ ] I can name evidence needed to confirm a dependency alert.
+- [ ] I will keep authorization tests even when scanner results are clean.
 
 ???refs
-- [OWASP Source Code Analysis Tools](https://owasp.org/www-community/Source_Code_Analysis_Tools) — comparison of the SAST landscape
-- [CodeQL](https://codeql.github.com/) — GitHub's query-based static analysis
-- [Semgrep](https://semgrep.dev/) — fast, rule-based, generous free tier
-- [OWASP Juice Shop](https://owasp.org/www-project-juice-shop/) — the vulnerable app used in the lab above
+- [OWASP Source Code Analysis Tools](https://owasp.org/www-community/Source_Code_Analysis_Tools)
+- [OWASP Web Security Testing Guide](https://owasp.org/www-project-web-security-testing-guide/)
+- [OWASP Dependency-Check](https://owasp.org/www-project-dependency-check/)
+- [ZAP Baseline Scan](https://www.zaproxy.org/docs/docker/baseline-scan/)
+- [OWASP Juice Shop setup](https://help.owasp-juice.shop/part1/running.html)
 ???

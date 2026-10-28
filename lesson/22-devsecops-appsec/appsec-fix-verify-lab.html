@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
+<title>AppSec Fix &amp; Verify Lab — Path 22 · KashSec Academy</title>
+<meta name="description" content="Turn a review finding into a verified fix. This exercise runs locally with Python's standard library: no Docker, paid tools, account, or network service is…">
+<link rel="canonical" href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/appsec-fix-verify-lab.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
+<meta property="og:title" content="AppSec Fix &amp; Verify Lab — Path 22 · KashSec Academy">
+<meta property="og:description" content="Turn a review finding into a verified fix. This exercise runs locally with Python's standard library: no Docker, paid tools, account, or network service is…">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/lesson/22-devsecops-appsec/appsec-fix-verify-lab.html">
+<meta property="og:site_name" content="KashSec Academy">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kashsec.vercel.app/og/22-devsecops-appsec.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="KashSec Academy · Path 22: DevSecOps &amp; AppSec Program">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AppSec Fix &amp; Verify Lab — Path 22 · KashSec Academy">
+<meta name="twitter:description" content="Turn a review finding into a verified fix. This exercise runs locally with Python's standard library: no Docker, paid tools, account, or network service is…">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og/22-devsecops-appsec.jpg">
+<meta name="twitter:image:alt" content="KashSec Academy · Path 22: DevSecOps &amp; AppSec Program">
+<meta name="theme-color" content="#0A0E13" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F6F7FA" media="(prefers-color-scheme: light)">
+<meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Webfonts load without blocking first paint; the --font-* fallback chains in styles.css carry the page until they arrive (or if they never do). -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"></noscript>
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"AppSec Fix & Verify Lab","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/appsec-fix-verify-lab.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"AppSec Fix & Verify Lab","headline":"AppSec Fix & Verify Lab","description":"Turn a review finding into a verified fix. This exercise runs locally with Python's standard library: no Docker, paid tools, account, or network service is needed.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/appsec-fix-verify-lab.html","inLanguage":"en","dateModified":"2026-10-28","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/22-devsecops-appsec.jpg","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"A downloadable Python exercise: repair the code and pass seven security tests.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/appsec-fix-verify-lab.html"}}
+</script>
+</head>
+<body>
+<a class="skip" href="/lesson/22-devsecops-appsec/appsec-fix-verify-lab.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · AppSec Fix &amp; Verify Lab</nav>
+    <div class="md" id="content"><article><h1>AppSec Fix &amp; Verify Lab</h1>
+<p>Turn a review finding into a verified fix. This exercise runs locally with Python's standard library: no Docker, paid tools, account, or network service is needed.</p>
+<p><strong>Time:</strong> plan for 30–45 minutes. <strong>Prerequisite:</strong> basic Python functions and the Secure Code Review lesson. Use <strong>Python 3.10 or newer</strong>.</p>
+<h2>Your mission</h2>
+<p>A fictional billing service lets customers read invoices. Its lookup function has unsafe SQL construction and does not check the invoice owner. Your job is to fix the function without breaking legitimate access.</p>
+<p>The database contains only synthetic records and exists in memory for each test. The file does not start a server or make network requests.</p>
+<h2>1. Get the exercise</h2>
+<p><a href="/downloads/appsec_invoice_lab.py">Download appsec_invoice_lab.py</a></p>
+<p>Save the file in a new folder and open a terminal there. If your browser displays the source, use Save As and keep the <code>.py</code> extension. Review the file before running it.</p>
+<pre><code class="language-bash">python --version
+python appsec_invoice_lab.py
+</code></pre>
+<p>On systems that name Python 3 <code>python3</code>, use <code>python3</code> in these commands instead.</p>
+<p><strong>Expected starter result:</strong> 7 tests run; 3 pass and 4 test methods fail. Some failed methods report several subtest failures. A non-zero exit status is expected at this stage. If Python reports a syntax or import error, fix the setup before starting the security review.</p>
+<h2>2. Write the requirements first</h2>
+<p>The function contract is:</p>
+<ul>
+<li><code>actor</code> and <code>invoice_id</code> are positive integers; strings, booleans, floats, and missing values are invalid and raise <code>ValueError</code>.</li>
+<li>The server has already established <code>actor</code> from a trusted session. A client must not be allowed to choose it.</li>
+<li>A customer can read only an invoice they own.</li>
+<li>An unauthorized or missing invoice returns <code>None</code>, with no invoice contents.</li>
+<li>Legitimate access still works for both customers.</li>
+</ul>
+<p>This is a function-level exercise. It does not implement authentication, HTTP responses, or a complete billing application.</p>
+<h2>3. Fix only the starter function</h2>
+<p>Edit <code>get_invoice</code>, near the top of the file. Keep the tests and fixture data unchanged.</p>
+<p>Use the failures to guide you:</p>
+<ol>
+<li>What query condition is missing for the owner check?</li>
+<li>Where should input values be bound as parameters?</li>
+<li>How do you reject values outside the documented contract?</li>
+</ol>
+<p>Run the same command after each change. Your target is <strong>7 passing tests</strong> in starter mode. Returning <code>None</code> for everything will still fail the legitimate-access tests.</p>
+<h2>4. Compare with the reference</h2>
+<p>Try your fix before using this option:</p>
+<pre><code class="language-bash">python appsec_invoice_lab.py --reference
+</code></pre>
+<p><strong>Expected result:</strong> 7 tests pass. Reference mode checks the included worked implementation; it does not prove that your edited starter is correct. Run the command <strong>without</strong> <code>--reference</code> to verify your own change.</p>
+<p>A useful comparison explains the reason for each change. Copying the reference without understanding the owner predicate leaves the main lesson unfinished.</p>
+<h2>5. Produce a small review record</h2>
+<p>Save a short Markdown report with:</p>
+<ol>
+<li>The two findings, their local reproduction, and their impact in the fictional application.</li>
+<li>Your change and why both parameter binding and the owner condition are needed.</li>
+<li>The test command and the final result from your own implementation.</li>
+<li>One missing application-level test, such as proving that a request cannot spoof <code>actor</code>.</li>
+<li>The limits of the exercise: no real session handling, roles, deployment, or production data were tested.</li>
+</ol>
+<p>Use this report as part of the program capstone. It is evidence of a small completed review, not an external certification.</p>
+<h2>Stretch: test the integration boundary</h2>
+<p>Sketch how a real endpoint would authenticate a request, derive the user ID, parse the invoice ID, call the authorized lookup, and return a response without exposing invoice contents on denial. Write a negative test where a client tries to send someone else's <code>owner</code> value. Explain why a hidden form field is not a trusted identity.</p>
+<h2>Completion checklist</h2>
+<ul>
+<li> The unchanged suite passes against my edited starter.</li>
+<li> I can explain why a valid invoice ID can still be unauthorized.</li>
+<li> I can explain why SQL parameters alone do not solve that problem.</li>
+<li> My report includes one remaining integration risk.</li>
+</ul>
+<p>Next, combine your evidence with the rollout plan in the AppSec Program Capstone Lab.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://asvs.owasp.org/">OWASP ASVS</a></li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html">OWASP Authorization Cheat Sheet</a></li>
+</ul>
+<nav class="pager"><a href="/lesson/22-devsecops-appsec/appsec-tooling-and-orchestration.html">← AppSec Tooling &amp; Orchestration</a><a href="/lesson/22-devsecops-appsec/appsec-program-lab.html">AppSec Program Capstone Lab →</a></nav></article></div>
+  </div></div>
+</main>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+      <div class="foot-social">
+        <a class="icon-btn" href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me" aria-label="KashSec's author on LinkedIn" title="LinkedIn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="3.5"/><line x1="7.5" y1="10.5" x2="7.5" y2="16.5"/><line x1="7.5" y1="7.4" x2="7.5" y2="7.4"/><path d="M11.5 16.5v-6"/><path d="M11.5 13.2a2.6 2.6 0 0 1 5.2 0v3.3"/></svg>
+        </a>
+        <a class="icon-btn" href="/feed.xml" aria-label="RSS feed — what's new" title="RSS feed">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.2"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="foot-cols">
+      <div><h2>Learn</h2>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h2>Practice</h2>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+      </div>
+      <div><h2>Explore</h2>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h2>About</h2>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
+</body>
+</html>

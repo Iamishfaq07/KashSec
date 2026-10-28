@@ -1561,25 +1561,123 @@ const PATHS = [
      {n:"23", id:"api-security-lab",      title:"API Security Capstone Lab", desc:"Put it all together against a real vulnerable API — crAPI, vAPI, or your own."},
      {n:"24", id:"api-roadmap",           title:"Your API Security Roadmap", desc:"Where to go next, and how to keep growing this specialisation."}
    ]},
-  {n:"22", id:"22-devsecops-appsec", title:"DevSecOps & AppSec Program", level:"Advanced",
-   desc:"Move from finding individual bugs to building the program that prevents them at scale — SAST/DAST/SCA, CI/CD security, secrets & supply chain, threat modeling, and the metrics that earn leadership buy-in.",
-   subs:[
-     {n:"1", id:"what-is-devsecops",        title:"What is DevSecOps?", desc:"Security folded into every stage of delivery, not bolted on at the end."},
-     {n:"2", id:"shift-left-vs-shift-right", title:"Shift Left vs. Shift Right", desc:"The two directions security folds into delivery, and why mature programs need both."},
-     {n:"3", id:"sast-dast-sca",            title:"SAST, DAST & SCA — The Core Scanning Trio", desc:"Static analysis, dynamic testing, and dependency scanning — how they fit together."},
-     {n:"4", id:"iac-security-scanning",    title:"Infrastructure as Code (IaC) Security Scanning", desc:"Catching cloud misconfiguration in the Terraform file, before it's ever deployed."},
-     {n:"5", id:"cicd-security",            title:"Securing the CI/CD Pipeline", desc:"The pipeline itself is a target: secrets, permissions, and supply-chain trust."},
-     {n:"6", id:"container-image-and-registry-security", title:"Container Image & Registry Security", desc:"Base images, scanning, signing, and registry access control."},
-     {n:"7", id:"secrets-supply-chain",     title:"Secrets Management & Software Supply Chain", desc:"Where credentials leak, and how typosquatting and dependency confusion work."},
-     {n:"8", id:"sbom-and-software-bill-of-materials", title:"SBOM & Software Bill of Materials", desc:"Making the deep, invisible dependency tree visible and queryable."},
-     {n:"9", id:"threat-modeling-sdlc",     title:"Threat Modeling in the SDLC", desc:"Finding design flaws before you write the code that has them."},
-     {n:"10", id:"security-champions-programs", title:"Security Champions Programs", desc:"Scaling a five-person AppSec team's reach across a whole engineering org."},
-     {n:"11", id:"metrics-that-matter",     title:"Metrics That Matter", desc:"Coverage, backlog health, and the numbers that actually earn budget."},
-     {n:"12", id:"vulnerability-management-and-prioritization", title:"Vulnerability Management & Prioritization", desc:"Reachability, exploit maturity, SLAs, and formal risk acceptance."},
-     {n:"13", id:"building-appsec-program", title:"Building an AppSec Program from Scratch", desc:"The maturity ladder from ad hoc to optimising, and a concrete first 90 days."},
-     {n:"14", id:"appsec-tooling-and-orchestration", title:"AppSec Tooling & Orchestration", desc:"Taming tool sprawl once a program has outgrown manual tracking."},
-     {n:"15", id:"appsec-program-lab",      title:"AppSec Program Capstone Lab", desc:"Design a lightweight AppSec program for a real-shaped organisation."}
-   ]},
+  {
+    "n": "22",
+    "id": "22-devsecops-appsec",
+    "title": "DevSecOps & AppSec Program",
+    "level": "Advanced",
+    "desc": "Build safer software from design to release. Write clear requirements, review code, verify fixes, secure delivery pipelines, and plan a practical AppSec program.",
+    "subs": [
+      {
+        "n": "1",
+        "id": "what-is-devsecops",
+        "title": "AppSec and DevSecOps: Where to Start",
+        "desc": "The roles, evidence, and first small steps that make software safer."
+      },
+      {
+        "n": "2",
+        "id": "shift-left-vs-shift-right",
+        "title": "Shift Left vs. Shift Right",
+        "desc": "The two directions security folds into delivery, and why mature programs need both."
+      },
+      {
+        "id": "security-requirements-asvs",
+        "title": "Security Requirements with OWASP ASVS",
+        "desc": "Turn a security goal into acceptance criteria, tests, and evidence.",
+        "n": "3"
+      },
+      {
+        "n": "4",
+        "id": "threat-modeling-sdlc",
+        "title": "Threat Modeling in the SDLC",
+        "desc": "Finding design flaws before you write the code that has them."
+      },
+      {
+        "id": "secure-code-review",
+        "title": "Secure Code Review: Data and Permissions",
+        "desc": "Find and fix SQL injection and missing ownership checks.",
+        "n": "5"
+      },
+      {
+        "n": "6",
+        "id": "sast-dast-sca",
+        "title": "SAST, DAST & SCA — The Core Scanning Trio",
+        "desc": "Static analysis, dynamic testing, and dependency scanning — how they fit together."
+      },
+      {
+        "n": "7",
+        "id": "iac-security-scanning",
+        "title": "Infrastructure as Code (IaC) Security Scanning",
+        "desc": "Catching cloud misconfiguration in the Terraform file, before it's ever deployed."
+      },
+      {
+        "n": "8",
+        "id": "cicd-security",
+        "title": "Securing the CI/CD Pipeline",
+        "desc": "The pipeline itself is a target: secrets, permissions, and supply-chain trust."
+      },
+      {
+        "n": "9",
+        "id": "container-image-and-registry-security",
+        "title": "Container Image & Registry Security",
+        "desc": "Base images, scanning, signing, and registry access control."
+      },
+      {
+        "n": "10",
+        "id": "secrets-supply-chain",
+        "title": "Secrets Management & Software Supply Chain",
+        "desc": "Where credentials leak, and how typosquatting and dependency confusion work."
+      },
+      {
+        "n": "11",
+        "id": "sbom-and-software-bill-of-materials",
+        "title": "SBOM & Software Bill of Materials",
+        "desc": "Making the deep, invisible dependency tree visible and queryable."
+      },
+      {
+        "n": "12",
+        "id": "vulnerability-management-and-prioritization",
+        "title": "Vulnerability Management & Prioritization",
+        "desc": "Reachability, exploit maturity, SLAs, and formal risk acceptance."
+      },
+      {
+        "n": "13",
+        "id": "security-champions-programs",
+        "title": "Security Champions Programs",
+        "desc": "Scaling a five-person AppSec team's reach across a whole engineering org."
+      },
+      {
+        "n": "14",
+        "id": "metrics-that-matter",
+        "title": "Metrics That Matter",
+        "desc": "Coverage, backlog health, and the numbers that actually earn budget."
+      },
+      {
+        "n": "15",
+        "id": "building-appsec-program",
+        "title": "Building an AppSec Program from Scratch",
+        "desc": "The maturity ladder from ad hoc to optimising, and a concrete first 90 days."
+      },
+      {
+        "n": "16",
+        "id": "appsec-tooling-and-orchestration",
+        "title": "AppSec Tooling & Orchestration",
+        "desc": "Taming tool sprawl once a program has outgrown manual tracking."
+      },
+      {
+        "id": "appsec-fix-verify-lab",
+        "title": "AppSec Fix & Verify Lab",
+        "desc": "A downloadable Python exercise: repair the code and pass seven security tests.",
+        "n": "17"
+      },
+      {
+        "n": "18",
+        "id": "appsec-program-lab",
+        "title": "AppSec Program Capstone Lab",
+        "desc": "Design a lightweight AppSec program for a real-shaped organisation."
+      }
+    ]
+  },
   {n:"23", id:"23-grc-compliance", title:"GRC & Compliance", level:"All levels",
    desc:"Governance, Risk, and Compliance — the non-coding path into security. ISO 27001, NIST CSF, SOC 2, vendor risk, and how to actually break into a GRC career.",
    subs:[
@@ -2849,6 +2947,1204 @@ function buildZip(files){
   return new Blob(parts, {type:'application/zip'});
 }
 
+const PATH_GUIDES = [
+  {
+    "id": "00-fresher-basics",
+    "goal": "Use your computer and accounts with confidence.",
+    "artifact": "A short backup and account-recovery checklist.",
+    "stages": [
+      {
+        "title": "Get comfortable",
+        "through": "how-to-use-a-browser-safely",
+        "outcome": "Understand the device, the internet, and the browser."
+      },
+      {
+        "title": "Protect your setup",
+        "through": "understanding-updates-and-backups",
+        "outcome": "Connect safely, organize files, and make backups."
+      },
+      {
+        "title": "Protect your accounts",
+        "through": "common-tech-scams-for-beginners",
+        "outcome": "Recognize scams and use stronger account habits."
+      },
+      {
+        "title": "Build a routine",
+        "through": "how-to-learn-tech",
+        "outcome": "Practice a small weekly safety routine."
+      }
+    ],
+    "certs": [
+      {
+        "id": "isc2-cc",
+        "reason": "A later option for a security career, after the introduction and fundamentals paths."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/phishing.html",
+        "label": "Phishing Spotter",
+        "note": "Practice spotting pressure tactics in sample messages."
+      }
+    ],
+    "certNote": "No exam is needed for everyday computer safety. Start with the practical habits."
+  },
+  {
+    "id": "01-introduction",
+    "goal": "Understand security risks, roles, and the permission boundary.",
+    "artifact": "A home-lab plan and a short risk explanation.",
+    "stages": [
+      {
+        "title": "Understand the goal",
+        "through": "cia-triad-explained",
+        "outcome": "Explain what security protects."
+      },
+      {
+        "title": "Know the boundaries",
+        "through": "cybersecurity-laws-and-ethics",
+        "outcome": "Recognize attacks and when testing is permitted."
+      },
+      {
+        "title": "Set up your learning",
+        "through": "building-a-home-lab",
+        "outcome": "Choose a framework, study routine, and lab."
+      },
+      {
+        "title": "Apply the mindset",
+        "through": "security-mindset-lab",
+        "outcome": "Connect risks to practical protections."
+      }
+    ],
+    "certs": [
+      {
+        "id": "isc2-cc",
+        "reason": "An entry-level option for broad security foundations."
+      },
+      {
+        "id": "security-plus",
+        "reason": "A broader next goal after networking and security fundamentals."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/phishing.html",
+        "label": "Phishing Spotter",
+        "note": "Explain what makes a message suspicious."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "02-networking",
+    "goal": "Trace how devices communicate and troubleshoot a connection.",
+    "artifact": "A small network diagram and annotated packet capture.",
+    "stages": [
+      {
+        "title": "Address a network",
+        "through": "nat-and-port-forwarding",
+        "outcome": "Work with IP addresses, subnets, routing, and NAT."
+      },
+      {
+        "title": "Follow the traffic",
+        "through": "wireless-networking-basics",
+        "outcome": "Explain packets, transport protocols, and network boundaries."
+      },
+      {
+        "title": "Investigate a connection",
+        "through": "dns-lab",
+        "outcome": "Follow DNS and HTTP, then use troubleshooting tools."
+      },
+      {
+        "title": "Show your evidence",
+        "through": "practical-packet-lab",
+        "outcome": "Capture and explain a local network exchange."
+      }
+    ],
+    "certs": [
+      {
+        "id": "ccna",
+        "reason": "For a network engineering goal; requires much more routing, switching, and device practice."
+      },
+      {
+        "id": "security-plus",
+        "reason": "For a broader security role after the fundamentals path."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/pcap.html",
+        "label": "Packet Capture Viewer",
+        "note": "Read a small capture without sending network traffic."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "03-linux",
+    "goal": "Use and investigate a Linux system safely.",
+    "artifact": "A hardening checklist and a short investigation log.",
+    "stages": [
+      {
+        "title": "Build a safe lab",
+        "through": "snapshots-safety",
+        "outcome": "Prepare an isolated VM and a way to recover it."
+      },
+      {
+        "title": "Use the system",
+        "through": "users-permissions",
+        "outcome": "Navigate files, process text, and explain permissions."
+      },
+      {
+        "title": "Administer and automate",
+        "through": "shell-scripting-security-pitfalls",
+        "outcome": "Manage services and write careful shell scripts."
+      },
+      {
+        "title": "Harden and investigate",
+        "through": "linux-forensics-lab",
+        "outcome": "Apply controls and collect evidence."
+      }
+    ],
+    "certs": [
+      {
+        "id": "lfcs",
+        "reason": "For a Linux administration role; add hands-on system administration practice."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/terminal.html",
+        "label": "Terminal Simulator",
+        "note": "Practice commands before using your own system."
+      },
+      {
+        "href": "/labs/linuxprivesc.html",
+        "label": "Linux Privesc Playground",
+        "note": "Reason about a simulated permission mistake."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "04-python",
+    "goal": "Write small, reliable security automation scripts.",
+    "artifact": "A documented script with error handling and tests.",
+    "stages": [
+      {
+        "title": "Learn the logic",
+        "through": "error-handling-exceptions",
+        "outcome": "Use values, collections, decisions, and loops."
+      },
+      {
+        "title": "Build useful functions",
+        "through": "python-modules-packages",
+        "outcome": "Read files and split code into reusable pieces."
+      },
+      {
+        "title": "Write safer code",
+        "through": "where-next",
+        "outcome": "Check input and handle errors deliberately."
+      },
+      {
+        "title": "Automate and explain",
+        "through": "security-scripting-lab",
+        "outcome": "Use APIs and produce a script someone else can run."
+      }
+    ],
+    "certs": [
+      {
+        "id": "pcep",
+        "reason": "Optional evidence of Python basics; a tested script is the priority for this path."
+      }
+    ],
+    "practice": [],
+    "certNote": "A programming certificate is optional and is not a cybersecurity qualification."
+  },
+  {
+    "id": "05-web-basics",
+    "goal": "Explain what happens between the browser and a server.",
+    "artifact": "An annotated request/response and session diagram.",
+    "stages": [
+      {
+        "title": "Follow a page",
+        "through": "client-vs-server",
+        "outcome": "Separate browser behavior from server behavior."
+      },
+      {
+        "title": "Understand identity and origins",
+        "through": "same-origin-policy-and-cors",
+        "outcome": "Explain cookies, sessions, storage, and browser boundaries."
+      },
+      {
+        "title": "Inspect the application",
+        "through": "content-security-policy-basics",
+        "outcome": "Use developer tools to inspect requests and input handling."
+      },
+      {
+        "title": "Practice the flow",
+        "through": "devtools-lab",
+        "outcome": "Observe sessions, caching, and browser behavior."
+      }
+    ],
+    "certs": [
+      {
+        "id": "bscp",
+        "reason": "A later web-testing goal after Web Security and extensive provider lab practice."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/webapp.html",
+        "label": "Vulnerable Web App",
+        "note": "Inspect a small simulated application."
+      }
+    ],
+    "certNote": "This foundation path is not BSCP exam preparation on its own."
+  },
+  {
+    "id": "06-crypto-fundamentals",
+    "goal": "Choose and explain standard cryptographic protections.",
+    "artifact": "A comparison of encryption, hashing, signatures, and TLS.",
+    "stages": [
+      {
+        "title": "Understand the building blocks",
+        "through": "key-exchange-diffie-hellman",
+        "outcome": "Separate symmetric encryption, public keys, and key exchange."
+      },
+      {
+        "title": "Verify identity and integrity",
+        "through": "tls-handshake-explained",
+        "outcome": "Explain hashes, signatures, certificates, and TLS."
+      },
+      {
+        "title": "Avoid common mistakes",
+        "through": "applied-crypto-in-practice",
+        "outcome": "Use established protocols instead of inventing cryptography."
+      },
+      {
+        "title": "Practice and look ahead",
+        "through": "crypto-hands-on-lab",
+        "outcome": "Work through examples and discuss newer approaches."
+      }
+    ],
+    "certs": [
+      {
+        "id": "security-plus",
+        "reason": "A broad security option that includes cryptography, not a cryptography specialist credential."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/passwordcrack.html",
+        "label": "Password Cracking Lab",
+        "note": "Compare password strength and hashing in a simulation."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "07-windows-security",
+    "goal": "Secure and investigate a Windows workstation.",
+    "artifact": "A workstation baseline and event-review notes.",
+    "stages": [
+      {
+        "title": "Learn the platform",
+        "through": "windows-event-viewer",
+        "outcome": "Understand settings, remote access, and event logs."
+      },
+      {
+        "title": "Understand identity",
+        "through": "windows-group-policy-basics",
+        "outcome": "Connect user accounts, directory services, and policies."
+      },
+      {
+        "title": "Operate safely",
+        "through": "windows-backup-and-recovery",
+        "outcome": "Use administration tools, hardening, and recovery."
+      },
+      {
+        "title": "Verify the controls",
+        "through": "windows-security-lab",
+        "outcome": "Investigate permissions and apply the baseline."
+      }
+    ],
+    "certs": [
+      {
+        "id": "sc-300",
+        "reason": "A later identity-administration option if you work with Microsoft Entra; this path is only a starting point."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/winprivesc.html",
+        "label": "Windows Privesc Playground",
+        "note": "Review a simulated Windows permission issue."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "08-cloud-basics",
+    "goal": "Explain shared responsibility and build a safer cloud plan.",
+    "artifact": "A cloud architecture with identity, logging, and cost controls.",
+    "stages": [
+      {
+        "title": "Choose the services",
+        "through": "cloud-serverless-basics",
+        "outcome": "Compare compute choices and responsibilities."
+      },
+      {
+        "title": "Connect and observe",
+        "through": "cloud-logging-monitoring-basics",
+        "outcome": "Plan storage, databases, networking, and logs."
+      },
+      {
+        "title": "Control access and cost",
+        "through": "shared-responsibility-model",
+        "outcome": "Understand IAM, account boundaries, and billing risk."
+      },
+      {
+        "title": "Apply the plan",
+        "through": "cloud-basics-lab",
+        "outcome": "Review a small deployment design."
+      }
+    ],
+    "certs": [
+      {
+        "id": "ccsk",
+        "reason": "A vendor-neutral cloud security knowledge option after broader study."
+      },
+      {
+        "id": "aws-security",
+        "reason": "A later specialist goal for people with substantial hands-on AWS security experience."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/iammisconfig.html",
+        "label": "Cloud IAM Misconfig Playground",
+        "note": "Spot an over-broad permission policy."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "09-digital-privacy",
+    "goal": "Reduce unnecessary exposure of your personal information.",
+    "artifact": "A privacy audit with prioritized account and device changes.",
+    "stages": [
+      {
+        "title": "Understand exposure",
+        "through": "vpns-explained",
+        "outcome": "Map your footprint and the limits of a VPN."
+      },
+      {
+        "title": "Choose safer tools",
+        "through": "secure-communications",
+        "outcome": "Review browser and messaging choices."
+      },
+      {
+        "title": "Reduce personal risk",
+        "through": "privacy-laws-your-rights",
+        "outcome": "Review location, data brokers, and identity theft."
+      },
+      {
+        "title": "Maintain the changes",
+        "through": "personal-security-lab",
+        "outcome": "Apply settings and document a repeatable audit."
+      }
+    ],
+    "certs": [
+      {
+        "id": "isc2-cc",
+        "reason": "Only if moving toward a broader security career; not a personal-privacy requirement."
+      }
+    ],
+    "practice": [],
+    "certNote": "No paid certification is needed to apply this path to your own life."
+  },
+  {
+    "id": "10-fundamentals",
+    "goal": "Connect threats, risk, and practical security controls.",
+    "artifact": "A small risk register and an incident-response outline.",
+    "stages": [
+      {
+        "title": "Describe the risk",
+        "through": "vulnerability-management-basics",
+        "outcome": "Connect assets, threats, controls, and remediation."
+      },
+      {
+        "title": "Recognize the attacks",
+        "through": "phishing",
+        "outcome": "Explain common attack paths and account risks."
+      },
+      {
+        "title": "Plan a response",
+        "through": "physical-security-basics",
+        "outcome": "Use policies, response plans, and recovery practices."
+      },
+      {
+        "title": "Measure and practice",
+        "through": "social-engineering-lab",
+        "outcome": "Assess a scenario and explain your decisions."
+      }
+    ],
+    "certs": [
+      {
+        "id": "isc2-cc",
+        "reason": "For an entry-level foundations goal."
+      },
+      {
+        "id": "security-plus",
+        "reason": "For broader coverage, with separate exam-specific preparation."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/irtabletop.html",
+        "label": "Incident Response Tabletop",
+        "note": "Practice decisions in a fictional incident."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "11-web-security",
+    "goal": "Test web behavior with permission and explain verified findings.",
+    "artifact": "A reproducible web finding with a fix and retest.",
+    "stages": [
+      {
+        "title": "Set up and inspect",
+        "through": "path-traversal-basics",
+        "outcome": "Prepare a test workflow and map the web surface."
+      },
+      {
+        "title": "Test data and permissions",
+        "through": "race-conditions-web",
+        "outcome": "Investigate access control, injection, and business rules."
+      },
+      {
+        "title": "Follow complex flows",
+        "through": "web-application-firewalls",
+        "outcome": "Review server-side and API behaviors and their defenses."
+      },
+      {
+        "title": "Report and verify",
+        "through": "xss-practical-lab",
+        "outcome": "Practice, explain impact, and retest a fix."
+      }
+    ],
+    "certs": [
+      {
+        "id": "bscp",
+        "reason": "For practical web testing after extensive Web Security Academy labs and the provider preparation steps."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/idor.html",
+        "label": "IDOR Playground",
+        "note": "Test a missing ownership check."
+      },
+      {
+        "href": "/labs/sqli.html",
+        "label": "SQL Injection Sandbox",
+        "note": "Compare unsafe queries with a defensive explanation."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "12-network-security",
+    "goal": "Investigate traffic and design useful network defenses.",
+    "artifact": "A segmentation plan and a short traffic investigation.",
+    "stages": [
+      {
+        "title": "Find and inspect",
+        "through": "arp-spoofing-hands-on",
+        "outcome": "Learn discovery, capture analysis, and local attack patterns."
+      },
+      {
+        "title": "Design the boundaries",
+        "through": "network-segmentation-in-practice",
+        "outcome": "Compare VPNs, filtering, and segmentation."
+      },
+      {
+        "title": "Observe and respond",
+        "through": "ddos-attacks-mitigation",
+        "outcome": "Connect monitoring and access controls to attack behavior."
+      },
+      {
+        "title": "Choose a track and practice",
+        "through": "wireshark-advanced-lab",
+        "outcome": "Practice discovery and capture analysis in an authorized lab."
+      }
+    ],
+    "certs": [
+      {
+        "id": "ccna",
+        "reason": "For network operations and engineering; add device configuration practice."
+      },
+      {
+        "id": "security-plus",
+        "reason": "For a broad security foundation beyond the network topics."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/pcap.html",
+        "label": "Packet Capture Viewer",
+        "note": "Explain a capture and its limits."
+      },
+      {
+        "href": "/labs/dnsrecon.html",
+        "label": "DNS Recon Playground",
+        "note": "Practice interpreting simulated DNS records."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "13-mobile-security",
+    "goal": "Review a mobile application and the services it trusts.",
+    "artifact": "A scoped mobile assessment with storage and API findings.",
+    "stages": [
+      {
+        "title": "Prepare the assessment",
+        "through": "owasp-mobile-top-10",
+        "outcome": "Understand permissions and set up an authorized lab."
+      },
+      {
+        "title": "Inspect code and storage",
+        "through": "mobile-authentication-biometrics",
+        "outcome": "Trace app data, local storage, and identity."
+      },
+      {
+        "title": "Follow the network",
+        "through": "mobile-privesc-root-detection",
+        "outcome": "Review traffic, APIs, and platform boundaries."
+      },
+      {
+        "title": "Harden and report",
+        "through": "mobile-security-lab",
+        "outcome": "Connect findings to hardening and explain the retest."
+      }
+    ],
+    "certs": [
+      {
+        "id": "gmob",
+        "reason": "A specialist mobile-device security option; compare its outline with your mobile testing goal."
+      }
+    ],
+    "practice": [],
+    "certNote": "Practice with OWASP MASVS/MASTG and a written assessment before considering a paid exam."
+  },
+  {
+    "id": "14-ethical-hacking",
+    "goal": "Carry out a scoped assessment and write an actionable report.",
+    "artifact": "A rules-of-engagement document and a retested finding.",
+    "stages": [
+      {
+        "title": "Define scope and method",
+        "through": "osint-tools-deep-dive",
+        "outcome": "Agree permission, scope, and a repeatable methodology."
+      },
+      {
+        "title": "Enumerate and validate",
+        "through": "privilege-escalation-methodology",
+        "outcome": "Move from observations to verified findings in a lab."
+      },
+      {
+        "title": "Explain the engagement",
+        "through": "eh-roadmap",
+        "outcome": "Understand lateral movement, reporting, and collaboration."
+      },
+      {
+        "title": "Practice the full loop",
+        "through": "reporting-lab",
+        "outcome": "Collect evidence, report impact, and verify remediation."
+      }
+    ],
+    "certs": [
+      {
+        "id": "ejpt",
+        "reason": "A first practical penetration-testing goal after broader lab practice."
+      },
+      {
+        "id": "pnpt",
+        "reason": "A later engagement-and-reporting goal with network and directory-service practice."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/ad-attack.html",
+        "label": "Active Directory Attack Lab",
+        "note": "Explore a simulated directory-service attack chain."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "15-bug-bounty",
+    "goal": "Work within scope and produce a clear, reproducible report.",
+    "artifact": "A sample report with impact, evidence, and a safe reproduction.",
+    "stages": [
+      {
+        "title": "Understand the rules",
+        "through": "scope-and-legal-boundaries",
+        "outcome": "Choose programs and respect the written boundaries."
+      },
+      {
+        "title": "Build the workflow",
+        "through": "hunting-idor",
+        "outcome": "Connect recon, proxy use, and reporting."
+      },
+      {
+        "title": "Explore deeper behavior",
+        "through": "mobile-and-api-bb",
+        "outcome": "Investigate logic, timing, and API issues."
+      },
+      {
+        "title": "Practice and reflect",
+        "through": "recon-pipeline-lab",
+        "outcome": "Handle triage and explain what you actually verified."
+      }
+    ],
+    "certs": [
+      {
+        "id": "bscp",
+        "reason": "Optional evidence of web-testing skill; a certificate does not guarantee valid reports or rewards."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/racecondition.html",
+        "label": "Race Condition Lab",
+        "note": "Reason about a timing-dependent business rule."
+      }
+    ],
+    "certNote": "Bug bounty programs do not generally require a certification. Prioritize scope, evidence, and report quality."
+  },
+  {
+    "id": "16-advanced",
+    "goal": "Choose a specialization and demonstrate it in a contained lab.",
+    "artifact": "One deep assessment or investigation with a clear technical report.",
+    "stages": [
+      {
+        "title": "Review system and directory access",
+        "through": "ad-persistence-and-detection",
+        "outcome": "Connect privilege, identity, and detection."
+      },
+      {
+        "title": "Review cloud and workloads",
+        "through": "kubernetes-attack-paths",
+        "outcome": "Study IAM, containers, and cluster boundaries."
+      },
+      {
+        "title": "Investigate and choose a focus",
+        "through": "specialise",
+        "outcome": "Compare malware, forensics, and threat hunting."
+      },
+      {
+        "title": "Prove a specialization",
+        "through": "windows-privesc-lab",
+        "outcome": "Complete relevant labs rather than collecting tools."
+      }
+    ],
+    "certs": [
+      {
+        "id": "oscp",
+        "reason": "For an offensive specialization, with dedicated exam and reporting preparation."
+      },
+      {
+        "id": "cks",
+        "reason": "For a Kubernetes security specialization; you must already have passed CKA."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/dockerescape.html",
+        "label": "Docker Escape Playground",
+        "note": "Review a simulated workload-isolation scenario."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "17-malware-re",
+    "goal": "Analyze a sample safely and report supported conclusions.",
+    "artifact": "A triage report with observations and detection ideas.",
+    "stages": [
+      {
+        "title": "Prepare the context",
+        "through": "c2-frameworks-and-infrastructure",
+        "outcome": "Understand architecture, families, and command-and-control."
+      },
+      {
+        "title": "Read the program",
+        "through": "ghidra-scripting-basics",
+        "outcome": "Practice static analysis and disassembly."
+      },
+      {
+        "title": "Observe carefully",
+        "through": "control-flow-obfuscation",
+        "outcome": "Use an isolated analysis workflow and recognize obfuscation."
+      },
+      {
+        "title": "Detect and explain",
+        "through": "malware-re-capstone-lab",
+        "outcome": "Build rules and distinguish evidence from inference."
+      }
+    ],
+    "certs": [
+      {
+        "id": "grem",
+        "reason": "A specialist reverse-engineering option after substantial isolated analysis practice."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/malwarestrings.html",
+        "label": "Malware Strings Triage Lab",
+        "note": "Review synthetic indicators without executing malware."
+      },
+      {
+        "href": "/labs/yarabuilder.html",
+        "label": "YARA Rule Builder",
+        "note": "Test a small detection rule in a simulation."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "18-ai-security",
+    "goal": "Assess an AI feature as an application with data and permissions.",
+    "artifact": "An AI threat model and a small, repeatable evaluation record.",
+    "stages": [
+      {
+        "title": "Understand the system",
+        "through": "ai-threat-modeling",
+        "outcome": "Map model behavior, data flows, and trust boundaries."
+      },
+      {
+        "title": "Study failure modes",
+        "through": "multimodal-attack-vectors",
+        "outcome": "Compare prompt injection, retrieval, and data risks."
+      },
+      {
+        "title": "Evaluate the controls",
+        "through": "agentic-ai-risks",
+        "outcome": "Test boundaries and explain the limits of guardrails."
+      },
+      {
+        "title": "Document and improve",
+        "through": "securing-llm-apps",
+        "outcome": "Build evaluations and connect results to application defenses."
+      }
+    ],
+    "certs": [
+      {
+        "id": "htb-coae",
+        "reason": "An advanced AI red-teaming goal requiring much deeper Python, ML, and web-testing practice."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/indirect-injection.html",
+        "label": "Indirect Prompt Injection Challenge",
+        "note": "Separate external content from trusted instructions."
+      },
+      {
+        "href": "/labs/agentic-risk.html",
+        "label": "Agentic Risk Scenario",
+        "note": "Review permissions around an AI-driven action."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "19-ctf-challenges",
+    "goal": "Solve contained puzzles and explain your reasoning.",
+    "artifact": "A writeup that includes failed approaches and the final lesson.",
+    "stages": [
+      {
+        "title": "Learn the format",
+        "through": "misc-hidden-headers",
+        "outcome": "Practice web, crypto, and forensic puzzles."
+      },
+      {
+        "title": "Connect the techniques",
+        "through": "jwt-kid-injection",
+        "outcome": "Work through Linux, API, and token challenges."
+      },
+      {
+        "title": "Follow business and AI rules",
+        "through": "ai-jailbreak-judge",
+        "outcome": "Test a sequence and identify the broken assumption."
+      },
+      {
+        "title": "Write it up",
+        "through": "ctf-writeup-template",
+        "outcome": "Explain evidence, limitations, and the defensive takeaway."
+      }
+    ],
+    "certs": [
+      {
+        "id": "ejpt",
+        "reason": "Optional next goal if your CTF practice is leading toward penetration testing."
+      }
+    ],
+    "practice": [],
+    "certNote": "CTF completion is not an exam credential or proof of production assessment experience."
+  },
+  {
+    "id": "20-career-prep",
+    "goal": "Show your skills clearly and choose realistic next steps.",
+    "artifact": "A focused resume, portfolio, and first-90-days plan.",
+    "stages": [
+      {
+        "title": "Choose the direction",
+        "through": "entry-level-vs-experienced-paths",
+        "outcome": "Match your current skills to a realistic role."
+      },
+      {
+        "title": "Show the evidence",
+        "through": "writing-technical-blog-posts",
+        "outcome": "Publish projects with clear scope and outcomes."
+      },
+      {
+        "title": "Prepare the conversation",
+        "through": "salary-negotiation",
+        "outcome": "Practice applications, interviews, and offers."
+      },
+      {
+        "title": "Keep growing",
+        "through": "career-growth-after-year-one",
+        "outcome": "Build support and plan your first months."
+      }
+    ],
+    "certs": [
+      {
+        "id": "isc2-cc",
+        "reason": "For a first foundational credential if it fits the roles you want."
+      },
+      {
+        "id": "security-plus",
+        "reason": "Consider when relevant job descriptions ask for broad security knowledge."
+      }
+    ],
+    "practice": [],
+    "certNote": "Choose a role first. You do not need to collect every credential in the directory."
+  },
+  {
+    "id": "21-api-security",
+    "goal": "Review API identity, object access, and business behavior.",
+    "artifact": "A two-user API assessment with regression-test suggestions.",
+    "stages": [
+      {
+        "title": "Map the surface",
+        "through": "api-security-standards-and-frameworks",
+        "outcome": "Identify interfaces, versions, and applicable requirements."
+      },
+      {
+        "title": "Verify identity and authorization",
+        "through": "webhook-security",
+        "outcome": "Review tokens, object access, and signed events."
+      },
+      {
+        "title": "Review data and operations",
+        "through": "graphql-authorization-patterns",
+        "outcome": "Test input handling, limits, and different API styles."
+      },
+      {
+        "title": "Build repeatable evidence",
+        "through": "api-roadmap",
+        "outcome": "Record requests, results, and a focused next plan."
+      }
+    ],
+    "certs": [
+      {
+        "id": "bscp",
+        "reason": "For a related web-testing skill goal; it is not a complete API-security credential."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/bola-bfla.html",
+        "label": "BOLA/BFLA Playground",
+        "note": "Compare object and function authorization."
+      },
+      {
+        "href": "/labs/webhookforge.html",
+        "label": "Webhook Signature Forgery Lab",
+        "note": "Review an event-authenticity boundary."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "22-devsecops-appsec",
+    "goal": "Move from finding bugs to preventing and verifying them.",
+    "artifact": "A review-and-fix report, security evidence table, and 90-day AppSec plan.",
+    "stages": [
+      {
+        "title": "Define and design",
+        "through": "threat-modeling-sdlc",
+        "outcome": "Write testable requirements and map trust boundaries."
+      },
+      {
+        "title": "Review and secure delivery",
+        "through": "sbom-and-software-bill-of-materials",
+        "outcome": "Review code and protect builds, dependencies, secrets, and artifacts."
+      },
+      {
+        "title": "Run the program",
+        "through": "appsec-tooling-and-orchestration",
+        "outcome": "Prioritize findings, assign owners, and measure useful outcomes."
+      },
+      {
+        "title": "Fix, verify, and present",
+        "through": "appsec-program-lab",
+        "outcome": "Pass the local lab and connect its evidence to a practical rollout plan."
+      }
+    ],
+    "certs": [
+      {
+        "id": "csslp",
+        "reason": "For secure software lifecycle work; certification has experience and endorsement requirements."
+      },
+      {
+        "id": "gcsa",
+        "reason": "For a cloud/DevSecOps automation specialization after hands-on pipeline practice."
+      },
+      {
+        "id": "bscp",
+        "reason": "Optional branch for an AppSec role focused on practical web testing."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/lesson/22-devsecops-appsec/appsec-fix-verify-lab.html",
+        "label": "Fix & Verify: local Python lab",
+        "note": "No paid tools or external services. Repair the starter and pass seven tests."
+      },
+      {
+        "href": "/labs/idor.html",
+        "label": "IDOR Playground",
+        "note": "See the same missing ownership rule in a browser simulation."
+      }
+    ],
+    "certNote": "Choose the credential that fits the role. Finishing this path does not satisfy an exam syllabus or professional experience requirement."
+  },
+  {
+    "id": "23-grc-compliance",
+    "goal": "Turn risk and compliance needs into owned, reviewable work.",
+    "artifact": "A risk register, evidence request, and policy review.",
+    "stages": [
+      {
+        "title": "Set ownership and risk",
+        "through": "quantitative-risk-analysis-fair",
+        "outcome": "Connect governance, responsibility, and risk decisions."
+      },
+      {
+        "title": "Understand the frameworks",
+        "through": "other-compliance-frameworks",
+        "outcome": "Compare what standards and assurance reports actually cover."
+      },
+      {
+        "title": "Apply the processes",
+        "through": "breach-notification-and-disclosure-law",
+        "outcome": "Work through policies, vendor risk, and escalation."
+      },
+      {
+        "title": "Build a practical workflow",
+        "through": "grc-automation-platforms-deep-dive",
+        "outcome": "Plan evidence collection and review its limits."
+      }
+    ],
+    "certs": [
+      {
+        "id": "isc2-cc",
+        "reason": "For foundational security knowledge before specializing."
+      },
+      {
+        "id": "cisa",
+        "reason": "A later audit-focused goal; passing the exam and earning the credential have different requirements."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/vendortiering.html",
+        "label": "Vendor Risk Tiering Simulator",
+        "note": "Prioritize evidence by a vendor risk scenario."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "24-zero-trust",
+    "goal": "Plan access around identity, context, and resource boundaries.",
+    "artifact": "A phased access-policy design with measurable checks.",
+    "stages": [
+      {
+        "title": "Define access decisions",
+        "through": "continuous-verification",
+        "outcome": "Connect identity, device posture, and segmentation."
+      },
+      {
+        "title": "Apply the architecture",
+        "through": "zero-trust-api-security",
+        "outcome": "Review networks, workloads, data, and APIs."
+      },
+      {
+        "title": "Manage privileged and external access",
+        "through": "zero-trust-analytics-monitoring",
+        "outcome": "Add governance, maturity review, and monitoring."
+      },
+      {
+        "title": "Plan and evaluate the rollout",
+        "through": "zero-trust-case-studies-lab",
+        "outcome": "Explain tradeoffs and a realistic implementation sequence."
+      }
+    ],
+    "certs": [
+      {
+        "id": "sc-300",
+        "reason": "For a Microsoft Entra identity-administration branch."
+      },
+      {
+        "id": "ccsk",
+        "reason": "For broader cloud security context beyond identity products."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/iammisconfig.html",
+        "label": "Cloud IAM Misconfig Playground",
+        "note": "Review least privilege for a sample policy."
+      }
+    ],
+    "certNote": ""
+  },
+  {
+    "id": "25-ot-ics-security",
+    "goal": "Reason about industrial security while protecting safety and availability.",
+    "artifact": "An OT asset-and-zone diagram and response tabletop notes.",
+    "stages": [
+      {
+        "title": "Understand the environment",
+        "through": "industrial-protocols",
+        "outcome": "Identify industrial systems and their communication needs."
+      },
+      {
+        "title": "Set the boundaries",
+        "through": "practical-ot-security-controls",
+        "outcome": "Connect architecture and incidents to practical controls."
+      },
+      {
+        "title": "Manage assets and incidents",
+        "through": "ics-incident-response",
+        "outcome": "Prioritize inventory, change control, safety, and response."
+      },
+      {
+        "title": "Plan and demonstrate",
+        "through": "ot-ics-capstone-lab",
+        "outcome": "Review supply-chain and cloud links in a scoped capstone."
+      }
+    ],
+    "certs": [
+      {
+        "id": "gicsp",
+        "reason": "A specialist industrial security option after deeper OT and operational practice."
+      }
+    ],
+    "practice": [
+      {
+        "href": "/labs/irtabletop.html",
+        "label": "Incident Response Tabletop",
+        "note": "Practice decision-making; this is a general incident simulation, not a live industrial test."
+      }
+    ],
+    "certNote": "This path does not authorize scanning or changing an operational industrial system."
+  }
+];
+
+function pathGuideStages(p){
+  const guide = PATH_GUIDES.find(g=>g.id === p.id);
+  let start = 0;
+  return (guide?.stages || []).map(stage=>{
+    const end = p.subs.findIndex(s=>s.id === stage.through);
+    const lessons = p.subs.slice(start, end+1);
+    start = end+1;
+    return {...stage, lessons};
+  });
+}
+
+function pathGuideHTML(p){
+  const guide = PATH_GUIDES.find(g=>g.id === p.id);
+  if(!guide) return '';
+  const stages = pathGuideStages(p);
+  const current = stages.findIndex(stage=>stage.lessons.some(s=>!isComplete(p.id,s.id)));
+  const preparation = (PATH_PREREQS[p.id] || []).map(findPath).filter(Boolean);
+  return `<div class="path-guide">
+    <section class="path-learning-map" aria-labelledby="pathMapHeading">
+      <p class="sec-eyebrow">Your learning route</p>
+      <h2 id="pathMapHeading">${escapeHtml(guide.goal)}</h2>
+      <p class="path-guide-note">Follow the connected stages, or jump to any lesson below. Nothing is locked.</p>
+      ${preparation.length?`<div class="path-preparation"><span>Helpful preparation</span><div>${preparation.map(x=>`<a href="/lesson/${x.id}/">${escapeHtml(x.title)}</a>`).join('')}</div></div>`:''}
+      <ol class="path-map" aria-label="Learning stages">
+        ${stages.map((stage,i)=>{
+          const done = stage.lessons.filter(s=>isComplete(p.id,s.id)).length;
+          const complete = done === stage.lessons.length;
+          const next = stage.lessons.find(s=>!isComplete(p.id,s.id)) || stage.lessons[0];
+          const status = complete?'Complete':done?'In progress':'Not started';
+          return `<li class="path-map-step ${complete?'is-done':i===current?'is-current':''}">
+            <span class="path-map-marker" aria-hidden="true">${complete?'✓':i+1}</span>
+            <div class="path-map-card">
+              <span class="path-stage-status">Stage ${i+1} · ${status}</span>
+              <h3>${escapeHtml(stage.title)}</h3>
+              <p>${escapeHtml(stage.outcome)}</p>
+              <span class="path-stage-count">Lessons ${stage.lessons[0].n}–${stage.lessons.at(-1).n} · ${done}/${stage.lessons.length} complete</span>
+              <a href="/lesson/${p.id}/${next.id}.html"${i===current?' aria-current="step"':''}>${complete?'Review stage':done?'Continue stage':'Start stage'} ${i+1} →<span class="sr-only">: ${escapeHtml(next.title)}</span></a>
+            </div>
+          </li>`;
+        }).join('')}
+      </ol>
+    </section>
+    <section class="path-proof" aria-labelledby="pathProofHeading">
+      <div><p class="sec-eyebrow">Build evidence</p><h2 id="pathProofHeading">Leave with something you can explain</h2><p>${escapeHtml(guide.artifact)}</p><p class="path-guide-note">Keep the scope, your decisions, the result, and what you would check next.</p></div>
+      ${guide.practice.length?`<div class="path-practice"><h3>Practice alongside the lessons</h3><ul>${guide.practice.map(item=>`<li><a href="${escapeHtml(item.href)}">${escapeHtml(item.label)} →</a><p>${escapeHtml(item.note)}</p></li>`).join('')}</ul></div>`:''}
+    </section>
+    <section class="path-certifications" aria-labelledby="pathCertHeading">
+      <p class="sec-eyebrow">Optional next goals</p><h2 id="pathCertHeading">Certification options for this path</h2>
+      <p class="path-guide-note">Pick a credential that fits your role; you do not need all of them. These lessons cover selected foundations, not a complete exam syllabus.</p>
+      ${guide.certNote?`<p class="path-cert-note">${escapeHtml(guide.certNote)}</p>`:''}
+      <div class="path-cert-grid">${guide.certs.map(rec=>{
+        const cert = CERTS.find(c=>c.id === rec.id);
+        const status = ['not-started','studying','scheduled','passed'].includes(STATE.certTracker[cert.id])?STATE.certTracker[cert.id]:'not-started';
+        return `<article class="path-cert-card" data-path-cert="${cert.id}">
+          <span class="path-stage-status">${escapeHtml(cert.org)} · ${escapeHtml(cert.level)}</span>
+          <h3>${escapeHtml(cert.name)}</h3><p>${escapeHtml(rec.reason)}</p>
+          <p class="path-cert-readiness"><strong>Before you book:</strong> ${escapeHtml(cert.readiness)}</p>
+          <p class="path-guide-note">${escapeHtml(cert.format)}</p>
+          <a class="path-provider-link" href="${escapeHtml(cert.url)}" target="_blank" rel="noopener noreferrer">Official requirements and preparation ↗<span class="sr-only"> for ${escapeHtml(cert.name)} (opens in a new tab)</span></a>
+          <label class="path-cert-status">My plan for ${escapeHtml(cert.name)}<select class="fc-select path-cert-select" data-cert="${cert.id}">${[['not-started','Not started'],['studying','Studying'],['scheduled','Exam scheduled'],['passed','Passed (self-reported)']].map(([value,label])=>`<option value="${value}"${status===value?' selected':''}>${label}</option>`).join('')}</select></label>
+          <p class="path-cert-save" role="status" aria-live="polite"></p>
+        </article>`;
+      }).join('')}</div>
+      <p class="path-guide-note">Provider information checked ${escapeHtml(CERTS.find(c=>c.id===guide.certs[0]?.id)?.reviewed || '')}. Check the official guide for current eligibility, costs, and exam rules. <a href="#/certs">See the full certification planner →</a></p>
+    </section>
+  </div>`;
+}
+
+function wirePathCertifications(){
+  app.querySelectorAll('.path-cert-select').forEach(select=>select.addEventListener('change', ()=>{
+    STATE.certTracker[select.dataset.cert] = select.value;
+    const saved = saveState();
+    select.closest('.path-cert-card').querySelector('.path-cert-save').textContent = saved?'Plan saved on this device.':'Could not save in this browser. Your selection may be lost on refresh.';
+  }));
+}
+
 function renderPathOverview(pathId){
   const p = findPath(pathId);
   if(!p) return renderNotFound();
@@ -2885,7 +4181,9 @@ function renderPathOverview(pathId){
           </div>
           <p id="offlinePathStatus" class="tool-note" role="status" aria-live="polite"></p>
         </div>
-        <div class="sublesson-grid">
+        ${pathGuideHTML(p)}
+        <h2 class="path-lessons-heading" id="pathLessonsHeading">All ${p.subs.length} lessons</h2>
+        <div class="sublesson-grid" aria-labelledby="pathLessonsHeading">
           ${p.subs.map((s,i)=>`
             <a class="sublesson-card ${isComplete(p.id,s.id)?'is-complete':''}" href="#/lesson/${p.id}/${s.id}" data-reveal style="--i:${i}">
               <div class="sl-n">${isComplete(p.id,s.id) ? '<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg>' : p.n+'.'+s.n}</div>
@@ -2902,6 +4200,7 @@ function renderPathOverview(pathId){
     </section>
   `;
 
+  wirePathCertifications();
   document.getElementById('savePathOfflineBtn')?.addEventListener('click', async e=>{
     const btn = e.currentTarget;
     const status = document.getElementById('offlinePathStatus');
@@ -2997,12 +4296,8 @@ function renderPathOverview(pathId){
  * stale price is worse than none — someone budgets around it. Exam FORMAT is
  * the durable, decision-shaping fact, so that is what is recorded.
  *
- * The AI certifications at the bottom did not exist when this list was first
- * written; the whole category was created in 2026. If you are reading this
- * more than a year later, assume it is stale again and check. */
-/* All 13 certification cards used the same 🎓 emoji, which said nothing.
-   They now share an award glyph tinted by level, so the roadmap reads
-   entry → specialist at a glance (the level is still spelled out). */
+ * Provider links and dated review notes accompany path recommendations.
+ * Always check the current provider guide before booking an exam. */
 function certTier(level){
   const l = String(level).toLowerCase();
   if(l === 'entry') return 'start';
@@ -3011,45 +4306,318 @@ function certTier(level){
   return 'advanced';
 }
 const CERTS = [
-  {id:'sec1', name:'SEC1 (Cyber Security 101)', org:'TryHackMe', level:'Entry',
-    desc:'A foundational, fully hands-on certification rather than a multiple-choice one — unusual at this level, where almost everything else tests recall. A reasonable first certificate for someone with no background at all.',
-    format:'Practical, hands-on', prep:'Paths 00–02, 10'},
-  {id:'security-plus', name:'CompTIA Security+', org:'CompTIA', level:'Entry',
-    desc:'The most common "prove you know the fundamentals" cert for entry-level roles, and the one most often named in job adverts. Broad and vendor-neutral, but it tests recognition rather than skill.',
-    format:'Multiple choice + performance-based', prep:'Paths 01–02, 10, 12'},
-  {id:'ejpt', name:'eJPT (Junior Penetration Tester)', org:'INE', level:'Entry',
-    desc:'Hands-on, affordable, practical intro to pentesting — a good first hands-on cert before OSCP.',
-    format:'Practical lab exam', prep:'Paths 03–05, 11–12, 19'},
-  {id:'sal1', name:'SAL1 (Security Analyst Level 1)', org:'TryHackMe', level:'Entry-Intermediate',
-    desc:'A SOC analyst certification scored mostly on simulated shift work: a short multiple-choice section for the theory, then two separate SOC simulations where you triage and close real alerts. The simulations carry the large majority of the marks, which is the right way round. Valid three years.',
-    format:'80 MCQs (60 min) + two 2-hour SOC simulations', prep:'Paths 02, 07, 10, 12'},
-  {id:'cysa-plus', name:'CompTIA CySA+', org:'CompTIA', level:'Entry-Intermediate',
-    desc:'Blue-team focused: SOC analysis, threat detection, incident response fundamentals.',
-    format:'Multiple choice + performance-based', prep:'Paths 12–15, 22'},
-  {id:'ceh', name:'CEH (Certified Ethical Hacker)', org:'EC-Council', level:'Entry-Intermediate',
-    desc:'Broad, theory-heavy overview of hacking tools and methodology — widely known, though many employers weight practical certs higher.',
-    format:'Multiple choice (practical variant sold separately)', prep:'Paths 10–13, 19'},
-  {id:'pt1', name:'PT1 (Junior Penetration Tester)', org:'TryHackMe', level:'Intermediate',
-    desc:'Sat inside a pentest simulator against web, network and Active Directory targets, and finished by writing a professional report. The report is not an afterthought — being unable to write up a finding is what actually stops people getting hired.',
-    format:'Practical engagement + written report', prep:'Paths 05, 07, 11–12, 14'},
-  {id:'security-plus-adv', name:'CompTIA PenTest+', org:'CompTIA', level:'Intermediate',
-    desc:'A middle ground between Security+ and OSCP — pentesting methodology, tools, and reporting, mixed multiple-choice and performance-based questions.',
-    format:'Multiple choice + performance-based', prep:'Paths 11–13, 19'},
-  {id:'pnpt', name:'PNPT (Practical Network Penetration Tester)', org:'TCM Security', level:'Intermediate',
-    desc:'A full practical pentest engagement against a live network, including a real written report — closely mirrors real consulting work.',
-    format:'5-day practical engagement + report + debrief', prep:'Paths 05, 11–13, 19'},
-  {id:'oscp', name:'OSCP (Offensive Security Certified Professional)', org:'OffSec', level:'Intermediate',
-    desc:'The industry-recognized "can you actually hack things" cert — a 24-hour hands-on exam. Widely respected, genuinely hard.',
-    format:'24-hour practical exam + report', prep:'Paths 05, 11–13, 19'},
-  {id:'giac-ai', name:'GIAC AI certifications (GOAA, GAIPS, GASAE)', org:'GIAC / SANS', level:'Intermediate-Advanced',
-    desc:'A suite of AI security certifications introduced through 2026, split by role rather than sold as one exam — offensive AI assessment, securing GenAI and LLM pipelines, and AI-driven security automation. Sat in GIAC\'s CyberLive format, which replaces multiple choice with work done on real machines. Expensive, and usually employer-funded.',
-    format:'CyberLive hands-on, virtual machines', prep:'Paths 18, 22–23'},
-  {id:'osai', name:'OSAI / OSAI+ (Advanced AI Red Teaming, AI-300)', org:'OffSec', level:'Advanced',
-    desc:'OffSec\'s AI red teaming certification, launched March 2026 — the first from the people behind OSCP. A 24-hour practical engagement against AI-integrated systems, in the same shape as the OSCP exam but aimed at model and pipeline attacks. OSAI does not expire; the OSAI+ designation lapses after three years.',
-    format:'24-hour practical red team engagement', prep:'Paths 04, 11, 18'},
-  {id:'htb-coae', name:'HTB COAE (Certified Offensive AI Expert)', org:'Hack The Box', level:'Advanced',
-    desc:'Built with Google and aligned to their Secure AI Framework. A seven-day practical engagement against AI-driven infrastructure, finished with a commercial-grade report, covering adversarial ML, model privacy attacks, LLM output abuse and supply-chain risk. Requires completing the AI Red Teamer path first — the certification and that path are different things, and are often confused.',
-    format:'7-day practical engagement + commercial report', prep:'Paths 11, 18, 21'}
+  {
+    "id": "sec1",
+    "name": "SEC1 (Cyber Security 101)",
+    "org": "TryHackMe",
+    "level": "Entry",
+    "desc": "A foundational, fully hands-on certification rather than a multiple-choice one — unusual at this level, where almost everything else tests recall. A reasonable first certificate for someone with no background at all.",
+    "format": "Practical, hands-on",
+    "prep": "Paths 00–02, 10"
+  },
+  {
+    "id": "security-plus",
+    "name": "CompTIA Security+",
+    "org": "CompTIA",
+    "level": "Entry",
+    "desc": "A broad, vendor-neutral security credential covering concepts, operations, and governance. It includes knowledge and performance-based questions; hands-on practice still matters.",
+    "format": "Multiple choice + performance-based",
+    "prep": "Paths 01–02, 10, 12",
+    "url": "https://www.comptia.org/en-us/certifications/security/",
+    "readiness": "Build broad security knowledge and use the current exam objectives; a single KashSec path covers only part of them.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "ejpt",
+    "name": "eJPT (Junior Penetration Tester)",
+    "org": "INE",
+    "level": "Entry",
+    "desc": "Hands-on, affordable, practical intro to pentesting — a good first hands-on cert before OSCP.",
+    "format": "Practical lab exam",
+    "prep": "Paths 03–05, 11–12, 19",
+    "url": "https://ine.com/security/certifications/ejpt-certification",
+    "readiness": "Practice network enumeration, web testing, and reporting in authorized labs; review the provider preparation.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "isc2-cc",
+    "name": "ISC2 Certified in Cybersecurity (CC)",
+    "org": "ISC2",
+    "level": "Entry",
+    "desc": "A broad foundations credential for people starting a cybersecurity career.",
+    "format": "Computer-based knowledge exam",
+    "prep": "Paths 01–02, 10",
+    "url": "https://www.isc2.org/certifications/cc",
+    "readiness": "No work experience is required. Study the full current outline beyond these course foundations.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "pcep",
+    "name": "PCEP — Certified Entry-Level Python Programmer",
+    "org": "Python Institute",
+    "level": "Entry",
+    "desc": "An optional programming credential focused on Python fundamentals.",
+    "format": "Knowledge exam; see current provider guide",
+    "prep": "Path 04",
+    "url": "https://pythoninstitute.org/pcep",
+    "readiness": "Write and debug your own small programs first. This is a programming credential, not a security specialization.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "sal1",
+    "name": "SAL1 (Security Analyst Level 1)",
+    "org": "TryHackMe",
+    "level": "Entry-Intermediate",
+    "desc": "A SOC analyst certification scored mostly on simulated shift work: a short multiple-choice section for the theory, then two separate SOC simulations where you triage and close real alerts. The simulations carry the large majority of the marks, which is the right way round. Valid three years.",
+    "format": "80 MCQs (60 min) + two 2-hour SOC simulations",
+    "prep": "Paths 02, 07, 10, 12"
+  },
+  {
+    "id": "cysa-plus",
+    "name": "CompTIA CySA+",
+    "org": "CompTIA",
+    "level": "Entry-Intermediate",
+    "desc": "Blue-team focused: SOC analysis, threat detection, incident response fundamentals.",
+    "format": "Multiple choice + performance-based",
+    "prep": "Paths 12–15, 22"
+  },
+  {
+    "id": "ceh",
+    "name": "CEH (Certified Ethical Hacker)",
+    "org": "EC-Council",
+    "level": "Entry-Intermediate",
+    "desc": "Broad, theory-heavy overview of hacking tools and methodology — widely known, though many employers weight practical certs higher.",
+    "format": "Multiple choice (practical variant sold separately)",
+    "prep": "Paths 10–13, 19"
+  },
+  {
+    "id": "ccna",
+    "name": "Cisco Certified Network Associate (CCNA)",
+    "org": "Cisco",
+    "level": "Entry-Intermediate",
+    "desc": "A networking credential covering network operation, access, IP services, security fundamentals, and automation.",
+    "format": "Proctored exam; see current Cisco guide",
+    "prep": "Paths 02, 12",
+    "url": "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/enterprise/ccna/index.html",
+    "readiness": "Add routing, switching, device configuration, and troubleshooting practice beyond these paths.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "ccsk",
+    "name": "Certificate of Cloud Security Knowledge (CCSK)",
+    "org": "Cloud Security Alliance",
+    "level": "Entry-Intermediate",
+    "desc": "A vendor-neutral certificate of cloud security knowledge.",
+    "format": "Online knowledge exam; see current CSA guide",
+    "prep": "Paths 08, 24",
+    "url": "https://cloudsecurityalliance.org/education/ccsk",
+    "readiness": "Use the full CSA study material. This knowledge certificate is separate from professional experience-based credentials.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "pt1",
+    "name": "PT1 (Junior Penetration Tester)",
+    "org": "TryHackMe",
+    "level": "Intermediate",
+    "desc": "Sat inside a pentest simulator against web, network and Active Directory targets, and finished by writing a professional report. The report is not an afterthought — being unable to write up a finding is what actually stops people getting hired.",
+    "format": "Practical engagement + written report",
+    "prep": "Paths 05, 07, 11–12, 14"
+  },
+  {
+    "id": "security-plus-adv",
+    "name": "CompTIA PenTest+",
+    "org": "CompTIA",
+    "level": "Intermediate",
+    "desc": "A middle ground between Security+ and OSCP — pentesting methodology, tools, and reporting, mixed multiple-choice and performance-based questions.",
+    "format": "Multiple choice + performance-based",
+    "prep": "Paths 11–13, 19"
+  },
+  {
+    "id": "pnpt",
+    "name": "PNPT (Practical Network Penetration Tester)",
+    "org": "TCM Security",
+    "level": "Intermediate",
+    "desc": "A full practical pentest engagement against a live network, including a real written report — closely mirrors real consulting work.",
+    "format": "5-day practical engagement + report + debrief",
+    "prep": "Paths 05, 11–13, 19",
+    "url": "https://certifications.tcm-sec.com/pnpt/",
+    "readiness": "Build practical network and Active Directory assessment skills, including a report and debrief.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "oscp",
+    "name": "OSCP (Offensive Security Certified Professional)",
+    "org": "OffSec",
+    "level": "Intermediate",
+    "desc": "The industry-recognized \"can you actually hack things\" cert — a 24-hour hands-on exam. Widely respected, genuinely hard.",
+    "format": "24-hour practical exam + report",
+    "prep": "Paths 05, 11–13, 19",
+    "url": "https://www.offsec.com/courses/pen-200/",
+    "readiness": "Advanced practical preparation is needed beyond this course. Check the current OSCP/OSCP+ exam and designation policies.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "lfcs",
+    "name": "Linux Foundation Certified System Administrator (LFCS)",
+    "org": "Linux Foundation",
+    "level": "Intermediate",
+    "desc": "A practical system-administration credential for a Linux operations role.",
+    "format": "Performance-based command-line exam",
+    "prep": "Path 03",
+    "url": "https://training.linuxfoundation.org/certification/linux-foundation-certified-sysadmin-lfcs/",
+    "readiness": "Practice on real Linux systems and follow the current administration objectives, not only security commands.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "sc-300",
+    "name": "Microsoft Identity and Access Administrator Associate (SC-300)",
+    "org": "Microsoft",
+    "level": "Intermediate",
+    "desc": "An identity-administration option focused on Microsoft Entra ID.",
+    "format": "Proctored exam; see current Microsoft guide",
+    "prep": "Paths 07, 24",
+    "url": "https://learn.microsoft.com/en-us/credentials/certifications/identity-and-access-administrator/",
+    "readiness": "Requires additional hands-on Microsoft Entra administration and study of the current SC-300 objectives.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "bscp",
+    "name": "Burp Suite Certified Practitioner (BSCP)",
+    "org": "PortSwigger",
+    "level": "Intermediate",
+    "desc": "A practical credential focused on web application testing with Burp Suite.",
+    "format": "Practical web-security exam",
+    "prep": "Paths 05, 11, 15, 21–22",
+    "url": "https://portswigger.net/web-security/certification",
+    "readiness": "Work through the provider preparation steps and labs. An active Burp Suite Professional subscription is needed for the exam.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "giac-ai",
+    "name": "GIAC AI certifications (GOAA, GAIPS, GASAE)",
+    "org": "GIAC / SANS",
+    "level": "Intermediate-Advanced",
+    "desc": "Separate GIAC credentials covering offensive AI, AI security, and security automation. Compare the individual outlines and exam formats; this group is not one certification.",
+    "format": "Separate exams; check each current GIAC guide",
+    "prep": "Paths 18, 22–23"
+  },
+  {
+    "id": "gcsa",
+    "name": "GIAC Cloud Security Automation (GCSA)",
+    "org": "GIAC",
+    "level": "Intermediate-Advanced",
+    "desc": "A specialist option for cloud security automation and DevSecOps practices.",
+    "format": "Proctored exam; see current GIAC guide",
+    "prep": "Paths 08, 16, 22",
+    "url": "https://www.giac.org/certifications/cloud-security-automation-gcsa",
+    "readiness": "Build practical cloud, pipeline, and automation skills. Compare the complete outline and funding options before booking.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "gmob",
+    "name": "GIAC Mobile Device Security Analyst (GMOB)",
+    "org": "GIAC",
+    "level": "Intermediate-Advanced",
+    "desc": "A specialist mobile-device security credential; compare its scope with your intended role.",
+    "format": "Proctored exam; see current GIAC guide",
+    "prep": "Path 13",
+    "url": "https://www.giac.org/certifications/mobile-device-security-analyst-gmob",
+    "readiness": "Add platform, device, and mobile assessment practice. This path is a starting point rather than a full exam course.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "gicsp",
+    "name": "Global Industrial Cyber Security Professional (GICSP)",
+    "org": "GIAC",
+    "level": "Intermediate-Advanced",
+    "desc": "A specialist credential linking industrial operations and cybersecurity.",
+    "format": "Proctored exam; see current GIAC guide",
+    "prep": "Paths 02, 12, 25",
+    "url": "https://www.giac.org/certifications/global-industrial-cyber-security-professional-gicsp",
+    "readiness": "Study the complete industrial security outline and operational context. Course simulations do not establish competence to test live OT.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "osai",
+    "name": "OSAI / OSAI+ (Advanced AI Red Teaming, AI-300)",
+    "org": "OffSec",
+    "level": "Advanced",
+    "desc": "OffSec's AI red teaming certification, launched March 2026 — the first from the people behind OSCP. A 24-hour practical engagement against AI-integrated systems, in the same shape as the OSCP exam but aimed at model and pipeline attacks. OSAI does not expire; the OSAI+ designation lapses after three years.",
+    "format": "24-hour practical red team engagement",
+    "prep": "Paths 04, 11, 18"
+  },
+  {
+    "id": "htb-coae",
+    "name": "HTB COAE (Certified Offensive AI Expert)",
+    "org": "Hack The Box",
+    "level": "Advanced",
+    "desc": "Built with Google and aligned to their Secure AI Framework. A seven-day practical engagement against AI-driven infrastructure, finished with a commercial-grade report, covering adversarial ML, model privacy attacks, LLM output abuse and supply-chain risk. Requires completing the AI Red Teamer path first — the certification and that path are different things, and are often confused.",
+    "format": "7-day practical engagement + commercial report",
+    "prep": "Paths 11, 18, 21",
+    "url": "https://academy.hackthebox.com/preview/certifications/htb-certified-offensive-ai-expert",
+    "readiness": "Advanced goal: follow the provider prerequisites and AI Red Teamer preparation; needs substantial Python, ML, and web-testing practice.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "aws-security",
+    "name": "AWS Certified Security — Specialty",
+    "org": "AWS",
+    "level": "Advanced",
+    "desc": "A specialist option for securing AWS workloads and operations.",
+    "format": "Proctored exam; see current AWS guide",
+    "prep": "Paths 08, 16",
+    "url": "https://aws.amazon.com/certification/certified-security-specialty/",
+    "readiness": "A later goal for people with substantial practical AWS security experience; check the provider candidate profile.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "csslp",
+    "name": "Certified Secure Software Lifecycle Professional (CSSLP)",
+    "org": "ISC2",
+    "level": "Advanced",
+    "desc": "A secure software lifecycle credential covering requirements, design, implementation, testing, operations, and supply chain.",
+    "format": "Computer-based knowledge exam",
+    "prep": "Paths 04–05, 11, 21–22",
+    "url": "https://www.isc2.org/certifications/csslp",
+    "readiness": "Certification requires four years of relevant experience, subject to eligible waivers, and endorsement. The Associate of ISC2 route is available after passing without the required experience; check the current rules.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "cks",
+    "name": "Certified Kubernetes Security Specialist (CKS)",
+    "org": "Linux Foundation / CNCF",
+    "level": "Advanced",
+    "desc": "A practical credential for securing Kubernetes clusters and workloads.",
+    "format": "Performance-based command-line exam",
+    "prep": "Paths 03, 16, 22",
+    "url": "https://training.linuxfoundation.org/certification/certified-kubernetes-security-specialist/",
+    "readiness": "You must already have passed the CKA exam; it does not need to remain active. Add substantial cluster administration and hardening practice.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "grem",
+    "name": "GIAC Reverse Engineering Malware (GREM)",
+    "org": "GIAC",
+    "level": "Advanced",
+    "desc": "A specialist credential focused on reverse engineering and malware analysis.",
+    "format": "Proctored exam; see current GIAC guide",
+    "prep": "Paths 16–17",
+    "url": "https://www.giac.org/certifications/reverse-engineering-malware-grem",
+    "readiness": "Build substantial disassembly and isolated analysis experience before considering this specialist exam.",
+    "reviewed": "2026-10-28"
+  },
+  {
+    "id": "cisa",
+    "name": "Certified Information Systems Auditor (CISA)",
+    "org": "ISACA",
+    "level": "Advanced",
+    "desc": "An audit-focused credential for assessing information systems controls and assurance.",
+    "format": "Proctored exam; see current ISACA guide",
+    "prep": "Paths 10, 23",
+    "url": "https://www.isaca.org/credentialing/cisa",
+    "readiness": "Certification normally requires five years of qualifying experience, subject to allowed substitutions. The exam can be taken earlier; passing alone does not confer CISA.",
+    "reviewed": "2026-10-28"
+  }
 ];
 
 function renderCertTracker(){
@@ -3065,24 +4633,28 @@ function renderCertTracker(){
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Career</div>
         <h1>Certification roadmap</h1>
-        <p class="sec-lead">Certifications from first job to specialist, with the exam format for each and which KashSec paths prepare you. The AI security certifications at the end are new as of 2026 — that whole category did not exist before. Track your own progress; nothing here is verified or official, it's a personal planner.</p>
+        <p class="sec-lead">Optional credentials for different roles, from foundations to specialist work. Choose a goal that fits your work, then check the official requirements. KashSec paths cover selected foundations, not a complete exam syllabus. This is your personal planner; statuses are self-reported.</p>
         <div class="mini-progress" style="max-width:22rem;margin-top:1.2rem">
           <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${Math.round(passedCount/CERTS.length*100)}"></div></div>
           <div class="mini-progress-label"><span>${passedCount}/${CERTS.length} passed</span></div>
         </div>
       </div>
+      <label class="cert-directory-filter">Show options for a path<select class="fc-select" id="certPathFilter"><option value="">All credentials</option>${PATHS.map(p=>`<option value="${p.id}">Path ${p.n} · ${escapeHtml(p.title)}</option>`).join('')}</select></label>
+      <p class="path-guide-note" id="certFilterStatus" role="status" aria-live="polite"></p>
       <h2 class="sr-only">Certifications, entry level to specialist</h2>
       <div class="labs-grid" data-reveal style="--i:1">
         ${CERTS.map(c=>{
-          const status = STATE.certTracker[c.id] || 'not-started';
+          const status = Object.hasOwn(statusMeta, STATE.certTracker[c.id]) ? STATE.certTracker[c.id] : 'not-started';
           return `
-          <div class="lab-card cert-track-card ${statusMeta[status].cls}" style="cursor:default">
+          <div class="lab-card cert-track-card ${statusMeta[status].cls}" data-cert-id="${c.id}" style="cursor:default">
             <div class="lab-ico cert-ico" data-tier="${certTier(c.level)}" title="${escapeHtml(c.level)}">${cardIco('award')}</div>
             <h3>${escapeHtml(c.name)}</h3>
             <p>${escapeHtml(c.desc)}</p>
             <div class="lab-related">${escapeHtml(c.org)} · ${escapeHtml(c.level)}</div>
             ${c.format?`<div class="lab-related">Exam: <b>${escapeHtml(c.format)}</b></div>`:''}
-            <div class="lab-related">Prep with: <b>${escapeHtml(c.prep)}</b></div>
+            <div class="lab-related">Related foundations: <b>${escapeHtml(c.prep)}</b></div>
+            ${c.readiness?`<p class="path-cert-readiness"><strong>Before you book:</strong> ${escapeHtml(c.readiness)}</p>`:''}
+            ${c.url?`<a class="path-provider-link" href="${escapeHtml(c.url)}" target="_blank" rel="noopener noreferrer">Official requirements and preparation ↗<span class="sr-only"> for ${escapeHtml(c.name)} (opens in a new tab)</span></a>`:''}
             <select class="fc-select cert-status-select" data-cert="${c.id}" aria-label="Status for ${escapeHtml(c.name)}" style="margin-top:.8rem">
               ${Object.entries(statusMeta).map(([k,m])=>`<option value="${k}" ${status===k?'selected':''}>${m.label}</option>`).join('')}
             </select>
@@ -3091,13 +4663,30 @@ function renderCertTracker(){
       </div>
     </section>
   `;
+  const certFilter = document.getElementById('certPathFilter');
+  const applyCertFilter = ()=>{
+    const ids = new Set(PATH_GUIDES.find(g=>g.id===certFilter.value)?.certs.map(c=>c.id));
+    let shown = 0;
+    app.querySelectorAll('.cert-track-card').forEach(card=>{
+      card.hidden = !!certFilter.value && !ids.has(card.dataset.certId);
+      if(!card.hidden) shown++;
+    });
+    document.getElementById('certFilterStatus').textContent = `${shown} credential${shown===1?'':'s'} shown. ${certFilter.value?'Open the path overview for the reason behind each recommendation.':''}`;
+  };
+  certFilter.addEventListener('change',applyCertFilter);
+  applyCertFilter();
   document.querySelectorAll('.cert-status-select').forEach(sel=>{
     sel.addEventListener('change', (e)=>{
       e.stopPropagation();
       STATE.certTracker[sel.dataset.cert] = sel.value;
       checkAchievements();
       saveState();
+      const filterValue = certFilter.value;
       renderCertTracker();
+      const nextFilter = document.getElementById('certPathFilter');
+      nextFilter.value = filterValue;
+      nextFilter.dispatchEvent(new Event('change'));
+      app.querySelector(`.cert-status-select[data-cert="${sel.dataset.cert}"]`)?.focus({preventScroll:true});
     });
     sel.addEventListener('click', e=>e.stopPropagation());
   });
@@ -7480,6 +9069,12 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-10-28', title:'Connected path maps and an AppSec fix you can verify', items:[
+    'Every learning path now shows four connected stages, helpful preparation, a practical outcome, and relevant certification options with provider links and eligibility notes.',
+    'AppSec now has 18 lessons: requirements and design, secure code review, delivery controls, program operation, and a local fix-and-verify exercise with seven tests.',
+    'Certification plans follow you between path overviews and a planner that can filter by path. A saved status is a personal record, separate from course completion or provider verification.',
+    'Both frontends share generated course, quiz, and roadmap data. Static path pages include the roadmap and recommendations even before JavaScript loads.'
+  ]},
   {date:'2026-10-22', title:'A review queue for what you have already learned', items:[
     'The study planner now finds due flashcards and unseen key terms from lessons you have marked complete, within your saved learning focus.',
     'Switch between due, unseen, and all studied lessons. Open a short review, revisit lesson notes, or try a related experiment or investigation. Nothing is graded or marked complete by opening a recommendation.',
@@ -11301,10 +12896,18 @@ const PATH_PREREQS = {
   '18-ai-security':    ['04-python','05-web-basics'],
   '19-ctf-challenges': ['03-linux','06-crypto-fundamentals','11-web-security'],
   '21-api-security':   ['05-web-basics','11-web-security'],
-  '22-devsecops-appsec':['04-python','11-web-security'],
+  '22-devsecops-appsec':['04-python','11-web-security','08-cloud-basics'],
   '10-fundamentals':   ['01-introduction'],
   '06-crypto-fundamentals':['01-introduction'],
-  '08-cloud-basics':   ['02-networking']
+  '08-cloud-basics':   ['02-networking'],
+  '02-networking':     ['01-introduction'],
+  '03-linux':          ['00-fresher-basics'],
+  '04-python':         ['00-fresher-basics'],
+  '05-web-basics':     ['02-networking'],
+  '07-windows-security':['00-fresher-basics'],
+  '23-grc-compliance': ['10-fundamentals'],
+  '24-zero-trust':     ['02-networking','08-cloud-basics','07-windows-security'],
+  '25-ot-ics-security':['02-networking','10-fundamentals']
 };
 /* Returns only the prerequisites the learner hasn't started at all —
    partial progress counts as "under way", so we don't nag. */

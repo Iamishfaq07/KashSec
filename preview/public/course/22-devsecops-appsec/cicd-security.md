@@ -14,7 +14,7 @@ Think of CI/CD as production infrastructure, not a developer convenience. It has
 
 ## The 2021 Codecov incident, briefly
 
-A real example worth knowing: attackers modified Codecov's bash uploader script, used by thousands of CI pipelines to send test coverage data. The modified script quietly exfiltrated environment variables — which is exactly where CI secrets live — from every pipeline that ran it, for months, before anyone noticed. Nobody's *application* was vulnerable. Their *pipeline dependency* was, and that was enough.
+A real example worth knowing: attackers modified Codecov's bash uploader script, used by thousands of CI pipelines to send test coverage data. The modified script quietly exfiltrated environment variables — which is exactly where CI secrets live — from every pipeline that ran it, for months, before anyone noticed. The incident illustrates how a compromised pipeline dependency can expose credentials even without exploiting the application itself.
 
 ## Common CI/CD risks
 
@@ -26,7 +26,7 @@ A real example worth knowing: attackers modified Codecov's bash uploader script,
 6. **Artifact tampering** — no signing or verification of what gets deployed, so a build step that never ran through the real pipeline can be substituted in
 
 :::warn
-`pull_request_target` is the single most dangerous trigger in GitHub Actions. Unlike `pull_request`, it runs with access to the base repo's secrets *and* can be told to check out the fork's untrusted code. Combine those two and a stranger's pull request can exfiltrate your production secrets before a human ever reviews it.
+`pull_request_target` runs in the base-repository context and may have access to privileged tokens and secrets. Do not combine that context with checkout or execution of untrusted pull-request code. Inspect the actual permissions, environments, and code executed; the trigger name alone does not describe the entire trust boundary.
 :::
 
 ## Hardening checklist
@@ -35,7 +35,7 @@ A real example worth knowing: attackers modified Codecov's bash uploader script,
 
 - Store secrets in a proper secret manager (GitHub Secrets, Vault, cloud secret managers) — never in the YAML file itself, never in a `.env` committed "just for now"
 - Never echo secrets in logs. Most CI systems mask known secret values automatically, but a secret assembled at runtime (e.g. concatenated into a URL) often slips past the masker
-- Prefer short-lived, OIDC-based cloud credentials over long-lived access keys. A static AWS access key sitting in GitHub Secrets is a permanent target; an OIDC-issued token expires in an hour and was never stored anywhere to begin with
+- Prefer short-lived, OIDC-based cloud credentials over long-lived access keys. With OIDC federation, a trusted job can obtain temporary cloud credentials instead of storing a long-lived cloud key in GitHub. The lifetime depends on provider policy; restrict the trust policy to the intended repository, workflow, branch or environment, and audience. Grant `id-token: write` only to the jobs that need it
 
 ### Least privilege
 
@@ -45,13 +45,13 @@ A real example worth knowing: attackers modified Codecov's bash uploader script,
 ### Trust boundaries
 
 - Do not run privileged workflows on `pull_request_target` with untrusted code checked out
-- Pin third-party actions to full commit SHAs, not tags: `uses: actions/checkout@8f4b7f8` not `uses: actions/checkout@v4`
+- Pin actions to the full 40-character commit SHA from a reviewed official release, rather than a branch, version tag, or abbreviated SHA. Keep a version comment for readability and a process for reviewing updates
 - Review and vendor critical actions when possible, especially for anything that touches secrets or deploy credentials
 
 ### Integrity
 
-- Sign artifacts (Sigstore / cosign, etc.) so a build's origin can be cryptographically verified later
-- Verify signatures before deploy — signing that nothing ever checks is theater
+- Sign artifacts and, where appropriate, generate provenance. Verify the artifact digest, expected signer or workflow identity, and required provenance policy before deployment
+- A valid signature does not mean the software is free of vulnerabilities or that a compromised trusted builder behaved honestly. Decide which identity and build context you trust, and actually enforce that policy
 - Use immutable, digested image references (`image@sha256:...`) instead of mutable tags (`image:latest`)
 
 ### Visibility
@@ -84,7 +84,7 @@ Now, if this workflow is ever compromised (a malicious dependency in the build s
 ## 🧪 Hands-on lab — audit a real workflow
 
 1. Pick any GitHub repository you maintain (or fork a public one) with a `.github/workflows/` directory.
-2. Open each workflow file and answer, for every job: what permissions does it declare? If none are declared, GitHub's default (often `write` on many scopes) silently applies — that's a finding by itself.
+2. Open each workflow file and answer, for every job: what permissions does it declare? If none are declared, inspect the effective organization/repository defaults and any job-level overrides. Defaults can be restricted; do not assume missing YAML automatically grants write access. Recommend an explicit minimum permission set.
 3. Search for any `uses: owner/action@<tag>` where `<tag>` is a branch or version tag rather than a full commit SHA. List them.
 4. Check for `pull_request_target` anywhere in the file. If present, confirm the job does **not** also check out `github.event.pull_request.head.sha` or otherwise run fork code.
 5. Write a one-paragraph risk summary: if this pipeline were fully compromised today, what could an attacker do with the credentials it holds?
@@ -100,7 +100,7 @@ Now, if this workflow is ever compromised (a malicious dependency in the build s
 - **OIDC federation** — exchanging a short-lived pipeline identity for cloud credentials, without ever storing a long-lived key
 - **Pinned action** — referencing a GitHub Action by commit SHA, not a moving tag, so the code that runs can't change out from under you
 - **Artifact signing** — cryptographic proof of who built a binary/image, checkable before it's ever deployed
-- **`pull_request_target`** — a GitHub Actions trigger that runs with base-repo secrets even when the PR comes from a fork
+- **`pull_request_target`** — a GitHub Actions trigger that uses the base-repository context; combining its privileges with untrusted code can expose credentials
 - **Blast radius** — the scope of damage possible if a given credential or system is fully compromised
 
 ## Recap

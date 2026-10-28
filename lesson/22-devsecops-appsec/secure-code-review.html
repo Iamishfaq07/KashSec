@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="/">
+<title>Secure Code Review: Data and Permissions · KashSec Academy</title>
+<meta name="description" content="A scanner can point to suspicious code. A reviewer connects that code to what the application is allowed to do.">
+<link rel="canonical" href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/secure-code-review.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
+<meta property="og:title" content="Secure Code Review: Data and Permissions · KashSec Academy">
+<meta property="og:description" content="A scanner can point to suspicious code. A reviewer connects that code to what the application is allowed to do.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kashsec.vercel.app/lesson/22-devsecops-appsec/secure-code-review.html">
+<meta property="og:site_name" content="KashSec Academy">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kashsec.vercel.app/og/22-devsecops-appsec.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="KashSec Academy · Path 22: DevSecOps &amp; AppSec Program">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Secure Code Review: Data and Permissions · KashSec Academy">
+<meta name="twitter:description" content="A scanner can point to suspicious code. A reviewer connects that code to what the application is allowed to do.">
+<meta name="twitter:image" content="https://kashsec.vercel.app/og/22-devsecops-appsec.jpg">
+<meta name="twitter:image:alt" content="KashSec Academy · Path 22: DevSecOps &amp; AppSec Program">
+<meta name="theme-color" content="#0A0E13" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F6F7FA" media="(prefers-color-scheme: light)">
+<meta name="google-adsense-account" content="ca-pub-7042949574293510">
+<link rel="manifest" href="/manifest.json">
+<link rel="alternate" type="application/rss+xml" title="KashSec Academy — What's new" href="/feed.xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Webfonts load without blocking first paint; the --font-* fallback chains in styles.css carry the page until they arrive (or if they never do). -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"></noscript>
+<link rel="stylesheet" href="/styles.css">
+<script src="/ads.js" defer></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"Secure Code Review: Data and Permissions","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/secure-code-review.html"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LearningResource","name":"Secure Code Review: Data and Permissions","headline":"Secure Code Review: Data and Permissions","description":"A scanner can point to suspicious code. A reviewer connects that code to what the application is allowed to do.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/secure-code-review.html","inLanguage":"en","dateModified":"2026-10-28","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/22-devsecops-appsec.jpg","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Find and fix SQL injection and missing ownership checks.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/secure-code-review.html"}}
+</script>
+</head>
+<body>
+<a class="skip" href="/lesson/22-devsecops-appsec/secure-code-review.html#app">Skip to content</a>
+<header class="nav" id="siteNav">
+  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </span>
+    <span class="brand-txt">KashSec<span class="amber">.</span></span>
+  </a>
+  <nav class="nav-links" id="navLinks" aria-label="Primary">
+    <a href="#/">Home</a>
+    <a href="#/course">Course</a>
+    <a href="#/tracks">Tracks</a>
+    <a href="#/labs">Labs</a>
+    <a href="#/tasks">Practice</a>
+    <a href="#/tools">Tools</a>
+    <a href="#/glossary">Glossary</a>
+    <a href="#/roadmap">Roadmap</a>
+    <a href="#/careers">Careers</a>
+    <a href="#/faq">FAQ</a>
+    <a href="#/progress">My Progress</a>
+    <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
+    <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
+  </nav>
+  <div class="nav-cta">
+    <button class="icon-btn" id="searchBtn" aria-label="Search lessons (Ctrl+K)" type="button" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" aria-pressed="false" type="button">
+      <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="icon-btn" id="randomLessonBtn" aria-label="Jump to a random lesson" type="button" title="Random lesson (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg>
+    </button>
+    <span class="streak-badge" id="streakBadge" title="Learning streak — visit on consecutive days to grow it" hidden>🔥<b id="streakN">0</b></span>
+    <a class="icon-btn progress-ring-btn" id="progressRingBtn" href="#/progress" aria-label="Your progress">
+      <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.5" stroke-dasharray="97.4" stroke-dashoffset="97.4"/></svg>
+    </a>
+    <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+    </button>
+    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<main id="app" tabindex="-1">
+  <div class="reader-wrap"><div class="reader-main">
+    <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/22-devsecops-appsec/">Path 22 — DevSecOps &amp; AppSec Program</a> · Secure Code Review: Data and Permissions</nav>
+    <div class="md" id="content"><article><h1>Secure Code Review: Follow the Data and the Permission</h1>
+<p>A scanner can point to suspicious code. A reviewer connects that code to what the application is allowed to do.</p>
+<p>In this lesson, review a small invoice lookup. You will separate two bugs that often appear together: SQL injection and missing authorization.</p>
+<h2>A repeatable review loop</h2>
+<ol>
+<li>Identify the entry point: what values arrive from a request, file, message, or external service?</li>
+<li>Identify the trusted identity: where did the server establish who the user is?</li>
+<li>Follow the values to a sensitive operation: database query, file read, command, or outbound request.</li>
+<li>Check both input handling and permission at that operation.</li>
+<li>Write a test that demonstrates the failure, fix it, and keep the test.</li>
+</ol>
+<p>Do not start by memorizing every vulnerability name. Start with a small flow you can explain.</p>
+<h2>Review this function</h2>
+<pre><code class="language-python">def get_invoice(db, actor, invoice_id):
+    row = db.execute(
+        f"SELECT id, owner, amount FROM invoices WHERE id = '{invoice_id}'"
+    ).fetchone()
+    return dict(row) if row else None
+</code></pre>
+<p>Here <code>actor</code> is the user ID from a <strong>trusted server session</strong>. The client may choose <code>invoice_id</code>; it must not choose its own trusted identity. The example uses Python's SQLite interface.</p>
+<h3>Finding 1: input becomes SQL syntax</h3>
+<p>The f-string puts input directly into a query. Use query parameters so the driver treats values as data. An input allowlist is useful, but is not a substitute for parameter binding.</p>
+<h3>Finding 2: the user is never checked</h3>
+<p>The function accepts <code>actor</code> but does not use it. A valid invoice ID might belong to a different customer. Fixing the SQL injection alone leaves this authorization bug in place.</p>
+<p>Random IDs can make guessing harder. They do not replace a permission check.</p>
+<h2>A small corrected version</h2>
+<pre><code class="language-python">def get_invoice(db, actor, invoice_id):
+    if type(actor) is not int or actor &lt;= 0:
+        raise ValueError("actor must be a positive integer")
+    if type(invoice_id) is not int or invoice_id &lt;= 0:
+        raise ValueError("invoice_id must be a positive integer")
+    row = db.execute(
+        "SELECT id, owner, amount FROM invoices WHERE id = ? AND owner = ?",
+        (invoice_id, actor),
+    ).fetchone()
+    return dict(row) if row else None
+</code></pre>
+<p>This teaching example deliberately accepts positive Python integers only. The web boundary of a real application would parse the route input, validate the session, and map outcomes to an appropriate response. <code>bool</code> is a subclass of <code>int</code> in Python, which is why this narrow contract uses an exact type check.</p>
+<p>The owner condition enforces this application's simple rule at the data lookup. Real applications may also have roles, teams, tenants, delegated access, or revocation. Model those rules explicitly; do not assume every system uses a single owner column.</p>
+<h2>Test both allowed and denied behavior</h2>
+<table>
+<thead>
+<tr>
+<th>Case</th>
+<th>Expected result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Customer 7 reads their invoice 101</td>
+<td>The correct invoice</td>
+</tr>
+<tr>
+<td>Customer 7 asks for customer 8's invoice 202</td>
+<td>No invoice contents</td>
+</tr>
+<tr>
+<td>An unknown invoice is requested</td>
+<td>No invoice contents</td>
+</tr>
+<tr>
+<td>SQL syntax is passed as the invoice ID</td>
+<td>Rejected by the input contract</td>
+</tr>
+<tr>
+<td>Customer 8 reads their own invoice 202</td>
+<td>The correct invoice</td>
+</tr>
+</tbody></table>
+<p>The last row matters. A fix that blocks everyone is not a working fix.</p>
+<p>Tests against this function are useful, but limited. An application also needs integration tests to prove that its server derives <code>actor</code> from the session and cannot be tricked by a request's <code>owner</code> field.</p>
+<h2>Write a finding a developer can use</h2>
+<p>Record the affected route and function, the required starting access, the smallest reproduction using synthetic data, the impact, and a proposed change. Link the failing test. After the fix, record the reviewed commit and the passing result.</p>
+<p>Avoid claiming a breach when you demonstrated a bug in a local exercise. Keep customer data and tokens out of screenshots and reports.</p>
+<h2>More review questions</h2>
+<ul>
+<li>File upload: can uploaded bytes become executable, or be read without permission?</li>
+<li>Outbound URL: can the requester reach internal services or follow a redirect around validation?</li>
+<li>Password reset: is a token bound to the intended account, time-limited, and unusable after consumption?</li>
+<li>Dependency change: is the new package necessary, maintained, and obtained from the intended source?</li>
+</ul>
+<p>Use the relevant framework guidance for each flow. One generic input filter cannot make all these operations safe.</p>
+<h2>Key terms</h2>
+<ul>
+<li><strong>Parameter binding</strong> — passing query values separately from SQL syntax</li>
+<li><strong>Authorization</strong> — deciding whether a trusted identity may perform an action on a resource</li>
+<li><strong>Regression test</strong> — a test kept to detect the return of a previously fixed problem</li>
+</ul>
+<h2>Ready to advance</h2>
+<ul>
+<li> I can point to both bugs in the starter function.</li>
+<li> I can explain why parameterized SQL does not enforce authorization.</li>
+<li> My test plan includes two identities and a legitimate success after the fix.</li>
+</ul>
+<p>Later in this path, the Fix &amp; Verify lab lets you run this exact review as a local exercise.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">OWASP SQL Injection Prevention</a></li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html">OWASP Authorization Guidance</a></li>
+<li><a href="https://docs.python.org/3/library/sqlite3.html#how-to-use-placeholders-to-bind-values-in-sql-queries">Python sqlite3 parameter substitution</a></li>
+</ul>
+<nav class="pager"><a href="/lesson/22-devsecops-appsec/threat-modeling-sdlc.html">← Threat Modeling in the SDLC</a><a href="/lesson/22-devsecops-appsec/sast-dast-sca.html">SAST, DAST &amp; SCA — The Core Scanning Trio →</a></nav></article></div>
+  </div></div>
+</main>
+<footer class="footer">
+  <div class="foot-top">
+    <div class="foot-brand">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        </span>
+        <span class="brand-txt">KashSec<span class="amber">.</span></span>
+      </div>
+      <p>Free cybersecurity education for complete beginners. Start from zero, learn by doing, and reach a real career.</p>
+      <div class="foot-social">
+        <a class="icon-btn" href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me" aria-label="KashSec's author on LinkedIn" title="LinkedIn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="3.5"/><line x1="7.5" y1="10.5" x2="7.5" y2="16.5"/><line x1="7.5" y1="7.4" x2="7.5" y2="7.4"/><path d="M11.5 16.5v-6"/><path d="M11.5 13.2a2.6 2.6 0 0 1 5.2 0v3.3"/></svg>
+        </a>
+        <a class="icon-btn" href="/feed.xml" aria-label="RSS feed — what's new" title="RSS feed">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.2"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="foot-cols">
+      <div><h2>Learn</h2>
+        <a href="#/course">All paths</a>
+        <a href="#/tracks">Tracks</a>
+        <a href="#/labs">Labs</a>
+        <a href="#/glossary">Glossary</a>
+        <a href="#/search">Search</a>
+      </div>
+      <div><h2>Practice</h2>
+        <a href="#/review">Flashcards</a>
+        <a href="#/daily">Daily challenge</a>
+        <a href="#/weekly">Weekly challenges</a>
+        <a href="#/quiz/shuffle">Shuffle quiz</a>
+        <a href="#/tasks">Practice tasks</a>
+        <a href="#/exam">Timed mock exam</a>
+      </div>
+      <div><h2>Explore</h2>
+        <a href="#/tools">Tools</a>
+        <a href="#/careers">Careers</a>
+        <a href="#/interview">Interview bank</a>
+        <a href="#/certs">Certification roadmap</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div><h2>About</h2>
+        <a href="#/about">About KashSec</a>
+        <a href="#/contact">Contact</a>
+        <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
+        <a href="#/changelog">What's new</a>
+        <a href="/feed.xml">RSS feed</a>
+        <a href="#/privacy">Privacy policy</a>
+        <a href="#/terms">Terms of use</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="year"></span> KashSec Academy · Free forever</span>
+    <span class="made">Learn · Practise · Get hired</span>
+  </div>
+</footer>
+<script src="quizzes.js" defer></script>
+<script src="lesson-hashes.js" defer></script>
+<script src="lesson-updated.js" defer></script>
+<script src="vendor/purify.min.js" defer></script>
+<script src="sync.js" defer></script>
+<script src="app.js" defer></script>
+<script src="analytics.js" defer></script>
+<script type="module" src="speed-insights.js"></script>
+<script type="module" src="web-analytics.js"></script>
+
+</body>
+</html>
