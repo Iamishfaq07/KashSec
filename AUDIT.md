@@ -36,3 +36,11 @@ These checks establish file coverage, rendering, route availability, and the int
 The preview's existing `npm test` has 180 passing and 15 failing tooling tests, reproduced on unchanged commit `0db7a51` as well as this branch. The failures concern absent `.grok/skills` documentation, template-only PWA/server assets, and template environment defaults. They are separate from the new lesson tests, typecheck, and build. Do not interpret the preview's full tooling suite as green.
 
 The original iframe error in the lab audit came from Playwright's injected service-worker-blocking script inside the intentionally sandboxed XSS frame. The audit now blocks worker registration at the network instead. The app also guards access to unavailable service-worker APIs.
+
+## Final validation and deployment limits
+
+Local checks also passed for damaged-progress recovery (4), study planner (38), investigations (61), learning playground (50), lesson/practice return (45), flashcards (48), studied review (40), mock exam (21), search (15), and tasks (21). An exact timer-text assertion was changed to verify the initial countdown stays within five seconds of 15 minutes, since the test waits before reading it.
+
+DOMPurify and the main site's sanitizer dependencies were patched, including the vendored browser copy. The root production dependency audit reports zero vulnerabilities. Preview dependencies received compatible security updates. Better Auth 1.6 still has advisories; its fixed 1.7 API changes conflict with the existing broker's OAuth callback contract and require a separately tested authentication migration. The preview audit still reports four advisories: Better Auth, its two adapters, and Vite. Do not treat the preview as security-cleared.
+
+GitHub Actions could not start: its annotation reports failed account payments or a spending limit. The initial Vercel check also rejected the workspace's default commit author as lacking project access. These are hosting/account checks, not passing build results. The PR remains a draft; no production deployment or merge is claimed.

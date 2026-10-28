@@ -2253,7 +2253,8 @@ const TOUR_STEPS = [
 ];
 let tourIndex = 0;
 function maybeStartTour(){
-  if(STATE.tourSeen) return;
+  // Recovery controls must stay usable even if unreadable state reset the tour.
+  if(STATE.tourSeen || getRecoveryCopy() !== null) return;
   if(activeRoute() !== '#/') return;
   // A returning user with real progress shouldn't be tour-bombed.
   if(Object.keys(STATE.completed).length > 0){ STATE.tourSeen = true; saveState(); return; }

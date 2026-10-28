@@ -44,7 +44,8 @@ const paper = await p.evaluate(() => {
 t('paper has exactly 20 questions', paper.n === 20, `${paper.n}`);
 t('no duplicate questions', paper.dupes === 0, `${paper.dupes} dupes`);
 t('spread across many paths', paper.paths >= 15, `${paper.paths} paths`);
-t('clock starts at 15:00', (await p.locator('#examClock').textContent()) === '15:00');
+const clockSeconds = (await p.locator('#examClock').textContent()).split(':').reduce((total, part)=>total*60+Number(part), 0);
+t('clock starts near 15:00 and counts down', clockSeconds <= 900 && clockSeconds >= 895);
 t('navigator has one cell per question', await p.locator('.exam-cell').count() === 20);
 t('no correctness revealed before submit',
   await p.evaluate(() => document.querySelectorAll('.quiz-opt.correct,.quiz-opt.wrong,.quiz-explain').length) === 0);
