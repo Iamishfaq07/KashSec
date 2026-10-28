@@ -20,6 +20,7 @@ import { Route as LabsLabIdRouteImport } from './routes/labs.$labId'
 import { Route as PathsIndexRouteImport } from './routes/paths.index'
 import { Route as PathsPathIdRouteImport } from './routes/paths.$pathId'
 import { Route as QuizPathIdRouteImport } from './routes/quiz.$pathId'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as LessonPathIdLessonIdRouteImport } from './routes/lesson.$pathId.$lessonId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -77,6 +78,11 @@ const QuizPathIdRoute = QuizPathIdRouteImport.update({
   path: '/quiz/$pathId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LessonPathIdLessonIdRoute = LessonPathIdLessonIdRouteImport.update({
   id: '/lesson/$pathId/$lessonId',
   path: '/lesson/$pathId/$lessonId',
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/quiz/$pathId': typeof QuizPathIdRoute
   '/labs/': typeof LabsIndexRoute
   '/paths/': typeof PathsIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/lesson/$pathId/$lessonId': typeof LessonPathIdLessonIdRoute
 }
 export interface FileRoutesByTo {
@@ -107,6 +114,7 @@ export interface FileRoutesByTo {
   '/quiz/$pathId': typeof QuizPathIdRoute
   '/labs': typeof LabsIndexRoute
   '/paths': typeof PathsIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/lesson/$pathId/$lessonId': typeof LessonPathIdLessonIdRoute
 }
 export interface FileRoutesById {
@@ -122,6 +130,7 @@ export interface FileRoutesById {
   '/quiz/$pathId': typeof QuizPathIdRoute
   '/labs/': typeof LabsIndexRoute
   '/paths/': typeof PathsIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/lesson/$pathId/$lessonId': typeof LessonPathIdLessonIdRoute
 }
 export interface FileRouteTypes {
@@ -138,6 +147,7 @@ export interface FileRouteTypes {
     | '/quiz/$pathId'
     | '/labs/'
     | '/paths/'
+    | '/api/auth/$'
     | '/lesson/$pathId/$lessonId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/quiz/$pathId'
     | '/labs'
     | '/paths'
+    | '/api/auth/$'
     | '/lesson/$pathId/$lessonId'
   id:
     | '__root__'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/quiz/$pathId'
     | '/labs/'
     | '/paths/'
+    | '/api/auth/$'
     | '/lesson/$pathId/$lessonId'
   fileRoutesById: FileRoutesById
 }
@@ -175,6 +187,7 @@ export interface RootRouteChildren {
   ProgressRoute: typeof ProgressRoute
   ToolsRoute: typeof ToolsRoute
   QuizPathIdRoute: typeof QuizPathIdRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   LessonPathIdLessonIdRoute: typeof LessonPathIdLessonIdRoute
 }
 
@@ -257,6 +270,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuizPathIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lesson/$pathId/$lessonId': {
       id: '/lesson/$pathId/$lessonId'
       path: '/lesson/$pathId/$lessonId'
@@ -299,6 +319,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProgressRoute: ProgressRoute,
   ToolsRoute: ToolsRoute,
   QuizPathIdRoute: QuizPathIdRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
   LessonPathIdLessonIdRoute: LessonPathIdLessonIdRoute,
 }
 export const routeTree = rootRouteImport
