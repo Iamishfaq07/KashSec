@@ -67,6 +67,15 @@ const GLOSSARY = [
   "subTitle": "Threat Modeling in the SDLC"
  },
  {
+  "term": "Acceptance criterion",
+  "def": "a specific behavior that can be checked and can fail",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "security-requirements-asvs",
+  "subTitle": "Security Requirements with OWASP ASVS"
+ },
+ {
   "term": "Access token",
   "def": "a Windows object representing a user or service's identity and privileges, attached to every running process.",
   "pathId": "16-advanced",
@@ -301,15 +310,6 @@ const GLOSSARY = [
   "subTitle": "LLM Supply Chain Attacks"
  },
  {
-  "term": "Alert fatigue",
-  "def": "the state where so many alerts are false or unactionable that people stop reading them",
-  "pathId": "22-devsecops-appsec",
-  "pathN": "22",
-  "pathTitle": "DevSecOps & AppSec Program",
-  "subId": "what-is-devsecops",
-  "subTitle": "What is DevSecOps?"
- },
- {
   "term": "alg:none",
   "def": "the signature-bypass algorithm",
   "pathId": "21-api-security",
@@ -508,6 +508,15 @@ const GLOSSARY = [
   "subTitle": "Windows Group Policy Basics"
  },
  {
+  "term": "AppSec",
+  "def": "the practice of reducing security risk in application design, implementation, and operation",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "what-is-devsecops",
+  "subTitle": "AppSec and DevSecOps: Where to Start"
+ },
+ {
   "term": "App Transport Security (ATS)",
   "def": "iOS's default-enforced HTTPS requirement for network connections.",
   "pathId": "13-mobile-security",
@@ -623,6 +632,15 @@ const GLOSSARY = [
   "pathTitle": "How the Web Works",
   "subId": "page-load-journey",
   "subTitle": "The page-load journey"
+ },
+ {
+  "term": "ASVS",
+  "def": "OWASP security requirements for verifying web applications and services",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "security-requirements-asvs",
+  "subTitle": "Security Requirements with OWASP ASVS"
  },
  {
   "term": "ASVS / Testing Guide / Cheat Sheet Series",
@@ -794,6 +812,15 @@ const GLOSSARY = [
   "pathTitle": "API Security",
   "subId": "authn-authz-apis",
   "subTitle": "Authentication & Authorization in APIs"
+ },
+ {
+  "term": "Authorization",
+  "def": "deciding whether a trusted identity may perform an action on a resource",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "secure-code-review",
+  "subTitle": "Secure Code Review: Data and Permissions"
  },
  {
   "term": "Automation / scripting",
@@ -1624,15 +1651,6 @@ const GLOSSARY = [
   "subTitle": "Interview preparation"
  },
  {
-  "term": "CI/CD",
-  "def": "Continuous Integration / Continuous Delivery (or Deployment)",
-  "pathId": "22-devsecops-appsec",
-  "pathN": "22",
-  "pathTitle": "DevSecOps & AppSec Program",
-  "subId": "what-is-devsecops",
-  "subTitle": "What is DevSecOps?"
- },
- {
   "term": "CIDR notation",
   "def": "the `/number` suffix on an IP address indicating how many bits belong to the network portion.",
   "pathId": "02-networking",
@@ -2344,6 +2362,15 @@ const GLOSSARY = [
   "subTitle": "Same-Origin Policy & CORS"
  },
  {
+  "term": "Coverage",
+  "def": "the code, components, routes, roles, or behaviors a check actually examined",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "sast-dast-sca",
+  "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
+ },
+ {
   "term": "CPU",
   "def": "the component that executes instructions; modern CPUs have multiple independent cores.",
   "pathId": "00-fresher-basics",
@@ -2642,7 +2669,7 @@ const GLOSSARY = [
  },
  {
   "term": "DAST",
-  "def": "dynamic testing of a running application from the outside",
+  "def": "dynamic testing of a running application through its interfaces",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
@@ -2954,6 +2981,15 @@ const GLOSSARY = [
   "pathTitle": "Zero Trust Architecture",
   "subId": "device-trust-posture",
   "subTitle": "Device Trust & Posture Verification"
+ },
+ {
+  "term": "DevSecOps",
+  "def": "integrating security work into the normal software delivery process",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "what-is-devsecops",
+  "subTitle": "AppSec and DevSecOps: Where to Start"
  },
  {
   "term": "DevTools",
@@ -3686,15 +3722,6 @@ const GLOSSARY = [
  },
  {
   "term": "Escape rate",
-  "def": "the proportion of vulnerabilities that reach production rather than being caught earlier",
-  "pathId": "22-devsecops-appsec",
-  "pathN": "22",
-  "pathTitle": "DevSecOps & AppSec Program",
-  "subId": "what-is-devsecops",
-  "subTitle": "What is DevSecOps?"
- },
- {
-  "term": "Escape rate",
   "def": "defects that reach production or external discovery, rather than being caught by an earlier control",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
@@ -3953,15 +3980,6 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "web-application-firewalls",
   "subTitle": "Web Application Firewalls (WAFs)"
- },
- {
-  "term": "False positive",
-  "def": "a finding that is not actually a real issue",
-  "pathId": "22-devsecops-appsec",
-  "pathN": "22",
-  "pathTitle": "DevSecOps & AppSec Program",
-  "subId": "sast-dast-sca",
-  "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
  },
  {
   "term": "False positive (scanning context)",
@@ -7573,6 +7591,15 @@ const GLOSSARY = [
   "subTitle": "Common Cryptographic Attacks"
  },
  {
+  "term": "Parameter binding",
+  "def": "passing query values separately from SQL syntax",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "secure-code-review",
+  "subTitle": "Secure Code Review: Data and Permissions"
+ },
+ {
   "term": "Parameterised query / prepared statement",
   "def": "the definitive defence, separating query structure from data.",
   "pathId": "11-web-security",
@@ -8591,7 +8618,7 @@ const GLOSSARY = [
  },
  {
   "term": "`pull_request_target`",
-  "def": "a GitHub Actions trigger that runs with base-repo secrets even when the PR comes from a fork",
+  "def": "a GitHub Actions trigger that uses the base-repository context; combining its privileges with untrusted code can expose credentials",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
@@ -8869,15 +8896,6 @@ const GLOSSARY = [
   "subTitle": "RDP & Remote Access Security"
  },
  {
-  "term": "Reachability",
-  "def": "whether vulnerable code can actually be executed by your application",
-  "pathId": "22-devsecops-appsec",
-  "pathN": "22",
-  "pathTitle": "DevSecOps & AppSec Program",
-  "subId": "sast-dast-sca",
-  "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
- },
- {
   "term": "Reachability analysis",
   "def": "determining whether a vulnerable dependency function is actually called by an application's own code.",
   "pathId": "22-devsecops-appsec",
@@ -9056,6 +9074,15 @@ const GLOSSARY = [
   "pathTitle": "Advanced Cyber Topics",
   "subId": "malware-persistence-mechanisms",
   "subTitle": "Malware persistence mechanisms"
+ },
+ {
+  "term": "Regression test",
+  "def": "a test kept to detect the return of a previously fixed problem",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "secure-code-review",
+  "subTitle": "Secure Code Review: Data and Permissions"
  },
  {
   "term": "Regression testing",
@@ -9671,7 +9698,7 @@ const GLOSSARY = [
  },
  {
   "term": "SAST",
-  "def": "static analysis of source code, no execution",
+  "def": "static analysis of code without running the application",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
@@ -9689,7 +9716,7 @@ const GLOSSARY = [
  },
  {
   "term": "SCA",
-  "def": "analysis of third-party components against known-vulnerability databases",
+  "def": "analysis of third-party components and associated risks",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
   "pathTitle": "DevSecOps & AppSec Program",
@@ -9805,6 +9832,15 @@ const GLOSSARY = [
   "subTitle": "What is a bug bounty?"
  },
  {
+  "term": "SDLC",
+  "def": "the software development lifecycle, from planning through maintenance",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "what-is-devsecops",
+  "subTitle": "AppSec and DevSecOps: Where to Start"
+ },
+ {
   "term": "searchsploit",
   "def": "local Exploit-DB search tool for cross-referencing discovered versions against known exploits.",
   "pathId": "14-ethical-hacking",
@@ -9902,15 +9938,6 @@ const GLOSSARY = [
   "pathTitle": "Cybersecurity Fundamentals",
   "subId": "security-policies-awareness",
   "subTitle": "Security Policies & Awareness Training"
- },
- {
-  "term": "Security champion",
-  "def": "a developer who acts as the security point person for their team",
-  "pathId": "22-devsecops-appsec",
-  "pathN": "22",
-  "pathTitle": "DevSecOps & AppSec Program",
-  "subId": "what-is-devsecops",
-  "subTitle": "What is DevSecOps?"
  },
  {
   "term": "Security Champion",
@@ -10361,15 +10388,6 @@ const GLOSSARY = [
   "pathTitle": "Web Security & Hacking",
   "subId": "secure-coding-for-web-devs",
   "subTitle": "Secure Coding for Web Developers"
- },
- {
-  "term": "Shift left",
-  "def": "moving security earlier in the lifecycle, where fixes are cheaper",
-  "pathId": "22-devsecops-appsec",
-  "pathN": "22",
-  "pathTitle": "DevSecOps & AppSec Program",
-  "subId": "what-is-devsecops",
-  "subTitle": "What is DevSecOps?"
  },
  {
   "term": "Shift left",
@@ -11705,15 +11723,6 @@ const GLOSSARY = [
  },
  {
   "term": "Transitive dependency",
-  "def": "a dependency of one of your dependencies, which you never chose directly",
-  "pathId": "22-devsecops-appsec",
-  "pathN": "22",
-  "pathTitle": "DevSecOps & AppSec Program",
-  "subId": "sast-dast-sca",
-  "subTitle": "SAST, DAST & SCA — The Core Scanning Trio"
- },
- {
-  "term": "Transitive dependency",
   "def": "a dependency of a dependency, often several layers removed from what a development team directly and knowingly chose.",
   "pathId": "22-devsecops-appsec",
   "pathN": "22",
@@ -12125,6 +12134,15 @@ const GLOSSARY = [
   "pathTitle": "Programming & Python",
   "subId": "why-python",
   "subTitle": "Why Python for security"
+ },
+ {
+  "term": "Verification evidence",
+  "def": "a recorded test or review result tied to a requirement and version",
+  "pathId": "22-devsecops-appsec",
+  "pathN": "22",
+  "pathTitle": "DevSecOps & AppSec Program",
+  "subId": "security-requirements-asvs",
+  "subTitle": "Security Requirements with OWASP ASVS"
  },
  {
   "term": "Versioning",

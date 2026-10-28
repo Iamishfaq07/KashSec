@@ -67,6 +67,8 @@ function extractArray(name) {
   return new Function(match[0] + '; return ' + name + ';')();
 }
 const PATHS = extractArray('PATHS');
+const PATH_GUIDES = extractArray('PATH_GUIDES');
+const CERTS = extractArray('CERTS');
 // Tools and labs also get crawlable pages with interactive app shells.
 const TOOLS = extractArray('TOOLS');
 const LABS  = extractArray('LABS');
@@ -111,11 +113,11 @@ const gitDates = new Map();
 const dirtyPaths = new Set();
 try {
   const log = execFileSync('git',
-    ['log', '--pretty=format:@%cI', '--name-only', '--diff-filter=AMR'],
+    ['log', '--pretty=format:@%ct', '--name-only', '--diff-filter=AMR'],
     { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
   let current = null;
   for (const line of log.split('\n')) {
-    if (line.startsWith('@')) { current = line.slice(1, 11); continue; }
+    if (line.startsWith('@')) { current = new Date(Number(line.slice(1))*1000).toISOString().slice(0,10); continue; }
     if (line && current && !gitDates.has(line)) gitDates.set(line, current);
   }
   // A build before committing changed source files should stamp the same
@@ -129,8 +131,8 @@ try {
   console.warn('git history unavailable — using build date for lastmod.');
 }
 const lastmodFor = (...files) => {
-  // BUILD_DATE is UTC, while git commit dates retain the committer's local
-  // calendar date. A dirty file must never make its published date go back.
+  // Use UTC for both builds and commits. A GitHub author east of UTC can
+  // otherwise shift dates by a day and make a clean rebuild change files.
   const dates = files.map(f => {
     const committed = gitDates.get(f);
     return dirtyPaths.has(f) && (!committed || BUILD_DATE > committed) ? BUILD_DATE : committed;
@@ -379,6 +381,27 @@ for (const p of PATHS) {
 /* Path-overview stubs. These carry Course schema — the only page type here
    eligible for Google's course rich results, which is why each one gets a
    real syllabus rather than a bare link list. */
+function staticPathGuide(p){
+  const guide = PATH_GUIDES.find(g=>g.id===p.id);
+  if(!guide) throw new Error(`Missing guide for ${p.id}`);
+  let start = 0;
+  const stages = guide.stages.map((stage,i)=>{
+    const end = p.subs.findIndex(s=>s.id===stage.through);
+    const lessons = p.subs.slice(start,end+1);
+    if(!lessons.length) throw new Error(`Invalid roadmap stage for ${p.id}`);
+    start = end+1;
+    return `<li class="path-map-step"><span class="path-map-marker" aria-hidden="true">${i+1}</span><div class="path-map-card"><span class="path-stage-status">Stage ${i+1}</span><h3>${escapeAttr(stage.title)}</h3><p>${escapeAttr(stage.outcome)}</p><span class="path-stage-count">Lessons ${lessons[0].n}–${lessons.at(-1).n}</span><a href="/lesson/${p.id}/${lessons[0].id}.html">Start stage ${i+1} →</a></div></li>`;
+  });
+  if(start!==p.subs.length) throw new Error(`Roadmap does not cover ${p.id}`);
+  return `<div class="path-guide"><section aria-label="Path learning roadmap"><p class="sec-eyebrow">Your learning route</p><h2>${escapeAttr(guide.goal)}</h2><p>Follow these stages, or open any lesson below. Nothing is locked.</p><ol class="path-map" aria-label="Learning stages">${stages.join('')}</ol></section>`+
+    `<section class="path-proof"><div><h2>Build evidence</h2><p>${escapeAttr(guide.artifact)}</p></div>${guide.practice.length?`<div><h3>Practice alongside the lessons</h3><ul>${guide.practice.map(item=>`<li><a href="${escapeAttr(item.href)}">${escapeAttr(item.label)}</a> — ${escapeAttr(item.note)}</li>`).join('')}</ul></div>`:''}</section>`+
+    `<section aria-label="Certification options"><h2>Certification options for this path</h2><p>Optional goals for different roles. These lessons cover selected foundations, not a complete exam syllabus.</p>${guide.certNote?`<p>${escapeAttr(guide.certNote)}</p>`:''}<div class="path-cert-grid">${guide.certs.map(rec=>{
+      const cert = CERTS.find(c=>c.id===rec.id);
+      if(!cert?.url || !cert.readiness) throw new Error(`Missing credential guidance for ${p.id}/${rec.id}`);
+      return `<article class="path-cert-card"><span class="path-stage-status">${escapeAttr(cert.org)} · ${escapeAttr(cert.level)}</span><h3>${escapeAttr(cert.name)}</h3><p>${escapeAttr(rec.reason)}</p><p><strong>Before you book:</strong> ${escapeAttr(cert.readiness)}</p><p>${escapeAttr(cert.format)}</p><a class="path-provider-link" href="${escapeAttr(cert.url)}" target="_blank" rel="noopener noreferrer">Official requirements and preparation ↗</a><p>Provider information checked ${escapeAttr(cert.reviewed)}. Check the current rules before booking.</p></article>`;
+    }).join('')}</div></section></div>`;
+}
+
 for (const p of PATHS) {
   const canonical = `${SITE}/lesson/${p.id}/`;
   const spaPath = `/#/lesson/${p.id}`;
@@ -388,10 +411,10 @@ for (const p of PATHS) {
   // what the page offers: lesson count, level, and where it starts.
   const desc = `${p.desc || ''} ${p.subs.length} free lessons, ${(p.level || 'all levels').toLowerCase()} level, starting with "${p.subs[0].title}"`.trim();
   const lessonFiles = p.subs.map(s => `course/${p.id}/${s.id}.md`);
-  const lastmod = lastmodFor(...lessonFiles);
+  const lastmod = lastmodFor(...lessonFiles, 'app.js');
   const contentHtml = `<h1>${escapeAttr(title)}</h1><p>${escapeAttr(desc)}</p>` +
     `<p><strong>Level:</strong> ${escapeAttr(p.level || 'Beginner')} · <strong>${p.subs.length} lessons</strong> · Free, no account needed.</p>` +
-    `<h2>Lessons in this path</h2><ol>` +
+    staticPathGuide(p) + `<h2>Lessons in this path</h2><ol>` +
     p.subs.map(s => `<li><a href="/lesson/${p.id}/${s.id}.html">${escapeAttr(s.title)}</a> — ${escapeAttr(s.desc || '')}</li>`).join('') +
     `</ol>`;
   const crumbs = [

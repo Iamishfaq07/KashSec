@@ -3,6 +3,7 @@ import { Shell } from "@/components/shell";
 import { getPath, lessonKey } from "@/lib/catalog";
 import { useProgress } from "@/lib/progress";
 import { Check } from "lucide-react";
+import { PathGuide } from "@/components/path-guide";
 
 export const Route = createFileRoute("/paths/$pathId")({
   head: ({ params }) => ({
@@ -61,7 +62,9 @@ function PathPage() {
           Take the quiz
         </Link>
       </div>
-      <ol className="mt-8 grid gap-2">
+      <PathGuide path={path} done={done} hydrated={hydrated} />
+      <h2 className="mt-10 font-display text-2xl">All {path.lessons.length} lessons</h2>
+      <ol className="mt-4 grid gap-2">
         {path.lessons.map((lesson) => {
           const complete = hydrated && done[lessonKey(path.id, lesson.id)];
           return (
