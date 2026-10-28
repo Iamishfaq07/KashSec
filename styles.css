@@ -763,7 +763,7 @@ a{color:inherit}
 .md h2:hover .anchor,.md h3:hover .anchor{opacity:1}
 
 /* Progress bar in reader */
-.reader-progress{position:fixed;top:0;left:0;height:3px;background:var(--grad-brand);z-index:100;transition:width .12s var(--ease);box-shadow:0 0 10px var(--glow-amber)}
+.reader-progress{position:fixed;top:0;left:0;width:100%;height:3px;transform-origin:left;will-change:transform;background:var(--grad-brand);z-index:100;transition:transform .12s var(--ease);box-shadow:0 0 10px var(--glow-amber)}
 
 /* ---------- Footer ---------- */
 .footer{border-top:1px solid var(--border);background:var(--bg2);margin-top:3rem;position:relative}
@@ -2360,3 +2360,19 @@ label.tool-note{display:block}
 /* Keep the next learning step close to the end of the reading. */
 .lesson-finish{margin:20px 0;padding:20px;border:1px solid var(--line);border-radius:16px}
 .lesson-finish p{margin:0 0 12px;color:var(--muted);line-height:1.6}
+
+/* Resume stays optional and never scrolls the reader without an explicit action. */
+.reader-resume{margin:0 0 20px;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.reader-resume p{margin:0 0 12px;color:var(--muted);line-height:1.6}
+.reader-resume strong{color:var(--text)}
+.reader-resume>div{display:flex;flex-wrap:wrap;gap:10px}
+@media(max-width:480px){.reader-resume .btn-amber,.reader-resume .btn-ghost{min-height:44px}}
+
+.toc summary.toc-title{display:flex;align-items:center;justify-content:space-between;min-height:44px;cursor:pointer;list-style:none;margin-bottom:0}
+.toc summary::-webkit-details-marker{display:none}
+.toc summary>span{font-size:1.2rem;transform:rotate(-90deg)}
+.toc details[open] summary{margin-bottom:.55rem}
+.toc details[open] summary>span{transform:none}
+.toc summary:focus-visible{outline:2px solid var(--amber-ink);outline-offset:4px;border-radius:4px}
+
+@media(prefers-reduced-motion:reduce){.reader-progress{transition:none}}

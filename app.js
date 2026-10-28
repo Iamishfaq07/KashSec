@@ -127,6 +127,45 @@ function ensureSanitizer(){
   return sanitizerPromise;
 }
 
+// Warm only the adjacent lesson after an intentional hover/focus/touch. Never
+// download a path just because it is visible, or spend data on slow connections.
+const lessonPrefetches = new Map();
+function prefetchLesson(pathId, subId){
+  const connection = navigator.connection;
+  if(!navigator.onLine || document.visibilityState === 'hidden' || connection?.saveData || ['slow-2g','2g'].includes(connection?.effectiveType)) return;
+  const url = `course/${pathId}/${subId}.md`;
+  const previous = lessonPrefetches.get(url);
+  if(previous && previous.expires > Date.now()) return;
+  previous?.controller.abort();
+  const controller = new AbortController();
+  const timer = setTimeout(()=>controller.abort(), 8000);
+  const entry = {controller, expires:Date.now()+60000, promise:null};
+  entry.promise = fetch(url, {signal:controller.signal}).then(async response=>{
+    if(!response.ok) return null;
+    const text = await response.text();
+    return /^\s*(?:<!doctype\s+html|<html\b)/i.test(text) || !/^#\s+\S/m.test(text) ? null : text;
+  }).catch(()=>null).finally(()=>clearTimeout(timer));
+  lessonPrefetches.set(url, entry);
+  while(lessonPrefetches.size > 2){
+    const oldest = lessonPrefetches.keys().next().value;
+    lessonPrefetches.get(oldest).controller.abort();
+    lessonPrefetches.delete(oldest);
+  }
+}
+async function readLessonMarkdown(pathId, subId, signal, retrying){
+  const url = `course/${pathId}/${subId}.md`;
+  const entry = lessonPrefetches.get(url);
+  lessonPrefetches.delete(url); // consume once; later visits still revalidate
+  if(entry && !retrying && entry.expires > Date.now()){
+    const text = await entry.promise;
+    if(signal.aborted) throw signal.reason;
+    if(text) return text;
+  }else entry?.controller.abort();
+  const response = await fetch(url, {signal});
+  if(!response.ok) throw new Error('Lesson request failed');
+  return response.text();
+}
+
 /* Mermaid is large and only ~40% of lessons contain a diagram, so it must
    never gate the text. This resolves even on failure — callers check for the
    global before using it, and a lesson simply shows its diagram source as a
@@ -645,8 +684,9 @@ function getNote(pathId,subId){ return STATE.notes[lessonKey(pathId,subId)] || '
 function setNote(pathId,subId,text){
   const k = lessonKey(pathId,subId);
   if(text && text.trim()) STATE.notes[k] = text; else delete STATE.notes[k];
-  saveState();
+  const saved = saveState();
   checkAchievements();
+  return saved;
 }
 function pathProgress(pathId){
   const p = findPath(pathId);
@@ -1960,6 +2000,10 @@ function hashRouteForPath(pathname){
   return null;
 }
 
+// Navigation and the optional reading-place button own scroll position.
+// Native reload restoration otherwise jumps before the reader can choose.
+try { if('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch {}
+
 const activeRoute = ()=>location.hash.startsWith('#/') ? location.hash : (hashRouteForPath(location.pathname) || '#/');
 
 function navigateTo(hash, {replace = false} = {}){
@@ -1997,6 +2041,9 @@ let currentLessonScrollController = null;
 let currentLessonMenuController = null;
 let currentLessonLoadController = null;
 let currentLessonNotesFlush = null;
+let currentReaderFlush = null;
+let currentReaderReset = null;
+let currentReaderUpdate = null;
 let currentPlannerRefresh = null;
 let currentInvestigationFlush = null;
 let currentInvestigationRefresh = null;
@@ -2008,12 +2055,14 @@ let currentLabMessageController = null;
 let currentCvssWorker = null;
 
 // Flush the debounce before navigation, backgrounding, or a page refresh.
-window.addEventListener('pagehide', ()=>{currentLessonNotesFlush?.();currentInvestigationFlush?.();});
+window.addEventListener('pagehide', ()=>{currentLessonNotesFlush?.();currentReaderFlush?.();currentInvestigationFlush?.();});
 document.addEventListener('visibilitychange', ()=>{
-  if(document.visibilityState === 'hidden'){currentLessonNotesFlush?.();currentInvestigationFlush?.();}
+  if(document.visibilityState === 'hidden'){currentLessonNotesFlush?.();currentReaderFlush?.();currentInvestigationFlush?.();}
 });
 
 function route(){
+  currentReaderFlush?.();
+  currentReaderFlush = currentReaderReset = currentReaderUpdate = null;
   currentInvestigationFlush?.();
   currentInvestigationFlush = null;
   currentInvestigationRefresh = null;
@@ -3532,8 +3581,12 @@ async function renderSubLesson(pathId, subId){
   const updatedOn = typeof LESSON_UPDATED === 'undefined' ? null : LESSON_UPDATED[`${pathId}/${subId}`];
   // Canonical HTML already contains sanitized, readable lesson text. Keep it
   // while the richer Markdown view loads, and as a fallback if loading fails.
-  const article = hashRouteForPath(location.pathname) === `#/lesson/${pathId}/${subId}`
-    ? document.querySelector('#content > article')?.cloneNode(true) : null;
+  // The URL may already point at the next lesson while the previous
+  // fallback is still in the DOM. Keep text only for its original lesson.
+  const previousLesson = document.getElementById('content')?.dataset.lesson;
+  const belongsHere = previousLesson ? previousLesson === `${pathId}/${subId}`
+    : hashRouteForPath(location.pathname) === `#/lesson/${pathId}/${subId}`;
+  const article = belongsHere ? document.querySelector('#content > article')?.cloneNode(true) : null;
   article?.querySelector('.pager')?.remove();
   article?.querySelectorAll('table').forEach(table=>{
     if(table.closest('.table-scroll')) return;
@@ -3547,7 +3600,7 @@ async function renderSubLesson(pathId, subId){
   const fallbackHtml = lessonFallbacks.get(lessonRoute) || '';
 
   app.innerHTML = `
-    <div class="reader-progress" id="rprog" style="width:0%"></div>
+    <div class="reader-progress" id="rprog" role="progressbar" aria-label="Position in lesson" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="transform:scaleX(0)"></div>
     <div class="reader-wrap">
       <aside class="sidebar" id="sidebar" aria-label="Lesson navigation">
         <div class="sb-head"><span>All paths</span><button class="btn-ghost sm sb-close" id="closeLessonMenuBtn" type="button">Close</button></div>
@@ -3584,6 +3637,7 @@ async function renderSubLesson(pathId, subId){
           </div>
         </div>
         ${lessonTrackHTML(ctx)}
+        <div id="readerResume"></div>
         ${lessonPracticeItems(ctx).length?'<p class="lp-shortcut"><button class="btn-ghost sm" id="jumpLessonPractice" type="button">Try this idea in an activity ↓</button></p>':''}
         <div class="pomodoro-widget" id="pomodoroWidget" hidden>
           <span class="pomodoro-time" id="pomodoroTime">25:00</span>
@@ -3597,7 +3651,7 @@ async function renderSubLesson(pathId, subId){
           <div>This lesson has been <b>updated</b> since you marked it complete — worth a skim.</div>
           <button class="btn-ghost sm" id="dismissUpdated" type="button">Got it</button>
         </div>` : ''}
-        <div class="md" id="content" aria-busy="true">${fallbackHtml ? `<article>${fallbackHtml}</article>` : '<div class="loading" role="status">Loading lesson…</div>'}</div>
+        <div class="md" id="content" data-lesson="${pathId}/${subId}" aria-busy="true">${fallbackHtml ? `<article>${fallbackHtml}</article>` : '<div class="loading" role="status">Loading lesson…</div>'}</div>
         <div id="microCheck"></div>
         ${lessonPracticeHTML(ctx)}
         ${STATE.studyPlan.updatedAt ? '<p class="study-return"><a class="btn-ghost sm" href="#/planner">Back to my study plan</a></p>' : ''}
@@ -3764,6 +3818,7 @@ async function renderSubLesson(pathId, subId){
     btn.classList.toggle('done', done);
     btn.setAttribute('aria-pressed', done);
     document.getElementById('completeBtnLabel').textContent = done ? 'Completed' : 'Mark complete';
+    if(done){currentReaderReset?.();document.getElementById('readerResume')?.replaceChildren();}
     if(done && !prefersReduced()){ btn.classList.remove('just-done'); void btn.offsetWidth; btn.classList.add('just-done'); }
     refreshLessonTrack(ctx);
     refreshProgressRing();
@@ -3783,8 +3838,8 @@ async function renderSubLesson(pathId, subId){
     clearTimeout(notesTimer);
     if(!notesPending) return;
     notesPending = false;
-    setNote(pathId, subId, notesEl.value);
-    notesStatus.textContent = 'Saved';
+    const saved = setNote(pathId, subId, notesEl.value);
+    notesStatus.textContent = saved ? 'Saved' : 'Could not save in this browser. Copy your notes before refreshing.';
   };
   currentLessonNotesFlush = flushNotes;
   notesEl.addEventListener('blur', flushNotes);
@@ -3794,7 +3849,15 @@ async function renderSubLesson(pathId, subId){
     notesStatus.textContent = 'Saving…';
     notesTimer = setTimeout(flushNotes, 500);
   });
-  wireProgress();
+  wireProgress(pathId, subId);
+  if(ctx.next){
+    const warm = ()=>prefetchLesson(ctx.next.pathId, ctx.next.subId);
+    app.querySelectorAll('.pager-card.next, #finishAndContinue').forEach(control=>{
+      control.addEventListener('pointerenter', warm);
+      control.addEventListener('focus', warm);
+      control.addEventListener('pointerdown', warm, {passive:true});
+    });
+  }
 
   async function loadLesson(retrying = false){
     currentLessonLoadController?.abort();
@@ -3810,9 +3873,7 @@ async function renderSubLesson(pathId, subId){
     let stage = 'content';
     try{
       timer = setTimeout(()=>controller.abort(new DOMException('Lesson request timed out', 'TimeoutError')), 15000);
-      const res = await fetch(`course/${pathId}/${subId}.md`, {signal:controller.signal});
-      if(!res.ok) throw new Error('Lesson request failed');
-      const md = await res.text();
+      const md = await readLessonMarkdown(pathId, subId, controller.signal, retrying);
       if(/^\s*(?:<!doctype\s+html|<html\b)/i.test(md) || !/^#\s+\S/m.test(md)) throw new Error('Invalid lesson response');
       stage = 'renderer';
       await Promise.all([ensureMarked(), ensureSanitizer()]);
@@ -3863,6 +3924,8 @@ async function renderSubLesson(pathId, subId){
       clearTimeout(timer);
       if(isCurrent()){
         contentEl.setAttribute('aria-busy', 'false');
+        currentReaderUpdate?.();
+        renderReaderResume(pathId, subId);
         currentLessonLoadController = null;
       }
     }
@@ -3872,6 +3935,13 @@ async function renderSubLesson(pathId, subId){
 
 function renderSidebar(activePathId, activeSubId){
   const nav = document.getElementById('sbNav');
+  const lessonLinks = p=>`
+          <li><a href="#/lesson/${p.id}" class="${(p.id === activePathId) && !activeSubId ? 'active':''}"${(p.id === activePathId) && !activeSubId ? ' aria-current="page"':''}><em>Overview</em></a></li>
+          ${p.subs.map(s=>`
+            <li><a href="#/lesson/${p.id}/${s.id}" class="${(p.id === activePathId) && s.id===activeSubId?'active':''}"${(p.id === activePathId) && s.id===activeSubId ? ' aria-current="page"':''}>
+              ${p.n}.${s.n} · ${s.title}
+            </a></li>
+          `).join('')}`;
   nav.innerHTML = PATHS.map(p=>{
     const isActive = p.id === activePathId;
     return `
@@ -3881,13 +3951,8 @@ function renderSidebar(activePathId, activeSubId){
           <span class="name">${p.title}</span>
           <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
-        <ul class="sb-sublist" id="sb-lessons-${p.id}">
-          <li><a href="#/lesson/${p.id}" class="${isActive && !activeSubId ? 'active':''}"${isActive && !activeSubId ? ' aria-current="page"':''}><em>Overview</em></a></li>
-          ${p.subs.map(s=>`
-            <li><a href="#/lesson/${p.id}/${s.id}" class="${isActive && s.id===activeSubId?'active':''}"${isActive && s.id===activeSubId ? ' aria-current="page"':''}>
-              ${p.n}.${s.n} · ${s.title}
-            </a></li>
-          `).join('')}
+        <ul class="sb-sublist" id="sb-lessons-${p.id}" data-loaded="${isActive}">
+          ${isActive?lessonLinks(p):''}
         </ul>
       </div>
     `;
@@ -3896,30 +3961,113 @@ function renderSidebar(activePathId, activeSubId){
   nav.querySelectorAll('.sb-path-head').forEach(btn=>{
     btn.addEventListener('click', e=>{
       const parent = btn.closest('.sb-path');
+      const list = parent.querySelector('.sb-sublist');
+      if(list.dataset.loaded !== 'true'){
+        list.innerHTML = lessonLinks(findPath(parent.dataset.pid));
+        list.dataset.loaded = 'true';
+      }
       parent.classList.toggle('open');
       btn.setAttribute('aria-expanded', String(parent.classList.contains('open')));
     });
   });
 }
 
-function wireProgress(){
-  const bar = document.getElementById('rprog');
-  if(!bar) return;
-  const update = ()=>{
-    const doc = document.documentElement;
-    const scrolled = doc.scrollTop;
-    const height = doc.scrollHeight - doc.clientHeight;
-    const pct = height > 0 ? (scrolled / height * 100) : 0;
-    bar.style.width = pct + '%';
+// Reading places are small, device-local hints, separate from completion and
+// synced study data. Bad/blocked storage must never interrupt a lesson.
+const READER_POSITION_KEY = 'kashsec_reading_places_v1';
+function readerPlaces(){
+  try{
+    const value = JSON.parse(localStorage.getItem(READER_POSITION_KEY) || '{}');
+    if(!isStateRecord(value)) return {};
+    return Object.fromEntries(Object.entries(value).filter(([key,item])=>
+      /^[a-z0-9-]+\/[a-z0-9-]+$/.test(key) && isStateRecord(item) &&
+      Number.isFinite(item.position) && item.position >= .08 && item.position < .95 &&
+      Number.isFinite(item.ts) && item.ts > 0 && typeof item.hash === 'string'));
+  }catch{return {};}
+}
+function setReaderPlace(key, position){
+  try{
+    const places = readerPlaces();
+    delete places[key];
+    if(position !== null && position >= .08 && position < .95){
+      places[key] = {position:Math.round(position*1000)/1000, ts:Date.now(), hash:typeof LESSON_HASHES === 'undefined'?'':LESSON_HASHES[key] || ''};
+    }
+    localStorage.setItem(READER_POSITION_KEY, JSON.stringify(Object.fromEntries(
+      Object.entries(places).sort((a,b)=>b[1].ts-a[1].ts).slice(0,30))));
+  }catch{}
+}
+function readerRange(content){
+  const rect = content.getBoundingClientRect();
+  const start = window.scrollY + rect.top - 100;
+  return {start, distance:Math.max(1, rect.height - window.innerHeight + 200)};
+}
+function renderReaderResume(pathId, subId){
+  const host = document.getElementById('readerResume');
+  const content = document.getElementById('content');
+  if(!host || !content || window.scrollY > 120 || isComplete(pathId,subId) || content.querySelector('.loading') || !content.querySelector('h1') || (content.querySelector('.lesson-load-notice') && !content.querySelector('article'))) return;
+  const key = lessonKey(pathId, subId);
+  const place = readerPlaces()[key];
+  const hash = typeof LESSON_HASHES === 'undefined'?'':LESSON_HASHES[key] || '';
+  if(!place || place.hash !== hash) return;
+  host.innerHTML = `<section class="reader-resume" aria-label="Continue reading"><p>Your saved place is about <strong>${Math.round(place.position*100)}%</strong> through this lesson.</p><div><button class="btn-amber sm" id="resumeReading" type="button">Continue reading</button><button class="btn-ghost sm" id="restartReading" type="button">Start from the top</button></div></section>`;
+  const focusReading = ()=>{
+    const headings = [...content.querySelectorAll('h1,h2')];
+    const heading = headings.filter(h=>h.getBoundingClientRect().top <= 160).pop() || headings[0];
+    heading?.setAttribute('tabindex','-1');
+    heading?.focus({preventScroll:true});
   };
-  // A lesson rerender must not leave its old scroll handler behind.
+  document.getElementById('resumeReading').addEventListener('click', ()=>{
+    host.replaceChildren();
+    const range = readerRange(content);
+    window.scrollTo({top:range.start + place.position*range.distance, behavior:'instant'});
+    focusReading();
+  });
+  document.getElementById('restartReading').addEventListener('click', ()=>{
+    currentReaderReset?.();
+    host.replaceChildren();
+    window.scrollTo({top:0,behavior:'instant'});
+    focusReading();
+  });
+}
+function wireProgress(pathId, subId){
+  const bar = document.getElementById('rprog');
+  const content = document.getElementById('content');
+  if(!bar || !content) return;
+  const key = lessonKey(pathId, subId);
+  let candidate = null, timer = null, frame = null, remember = false;
+  const flush = ()=>{
+    clearTimeout(timer);
+    if(candidate === null) return;
+    setReaderPlace(key, candidate >= .95 ? null : candidate);
+    candidate = null;
+  };
+  currentReaderReset = ()=>{candidate=null;clearTimeout(timer);setReaderPlace(key,null);};
+  const update = (save = false)=>{
+    if(!content.isConnected || !content.querySelector('h1') || (content.querySelector('.lesson-load-notice') && !content.querySelector('article'))) return;
+    const range = readerRange(content);
+    const progress = Math.max(0,Math.min(1,(window.scrollY-range.start)/range.distance));
+    bar.style.transform = `scaleX(${progress})`;
+    bar.setAttribute('aria-valuenow', String(Math.round(progress*100)));
+    if(save && progress >= .08 && !isComplete(pathId,subId)){
+      candidate = progress;
+      clearTimeout(timer);
+      timer = setTimeout(flush,700);
+    }
+  };
+  currentReaderUpdate = ()=>update();
+  currentReaderFlush = ()=>{update(true);flush();};
   currentLessonScrollController?.abort();
   currentLessonScrollController = new AbortController();
-  let frame = null;
   const signal = currentLessonScrollController.signal;
-  const schedule = ()=>{ if(frame === null) frame = requestAnimationFrame(()=>{ frame = null; update(); }); };
-  signal.addEventListener('abort', ()=>cancelAnimationFrame(frame), {once:true});
-  window.addEventListener('scroll', schedule, {passive:true, signal});
+  const schedule = (save = false)=>{
+    remember ||= save;
+    if(frame === null) frame = requestAnimationFrame(()=>{frame=null;const save=remember;remember=false;update(save);});
+  };
+  const observer = typeof ResizeObserver === 'undefined'?null:new ResizeObserver(()=>schedule());
+  observer?.observe(content);
+  signal.addEventListener('abort', ()=>{cancelAnimationFrame(frame);clearTimeout(timer);observer?.disconnect();}, {once:true});
+  window.addEventListener('scroll', ()=>schedule(true), {passive:true,signal});
+  window.addEventListener('resize', ()=>schedule(), {passive:true,signal});
   update();
 }
 
@@ -3993,16 +4141,20 @@ function buildLessonToc(contentEl){
   const toc = document.createElement('nav');
   toc.className = 'toc';
   toc.setAttribute('aria-label','On this page');
-  toc.innerHTML = `<div class="toc-title">On this page</div><ul>${
+  toc.innerHTML = `<details ${window.matchMedia('(min-width:901px)').matches?'open':''}><summary class="toc-title">On this page<span aria-hidden="true">⌄</span></summary><ul>${
     tocable.map(h=>`<li><a href="#${h.id}" data-toc>${escapeHtml(h.textContent)}</a></li>`).join('')
-  }</ul>`;
+  }</ul></details>`;
   h1.insertAdjacentElement('afterend', toc);
   // Hash routing owns the URL fragment, so scroll manually instead of
   // letting the anchor rewrite the #/lesson/... hash.
   toc.querySelectorAll('a[data-toc]').forEach(a=>{
     a.addEventListener('click', e=>{
       e.preventDefault();
-      document.getElementById(a.getAttribute('href').slice(1))?.scrollIntoView({behavior:'smooth', block:'start'});
+      const heading = document.getElementById(a.getAttribute('href').slice(1));
+      if(window.matchMedia('(max-width:900px)').matches) a.closest('details')?.removeAttribute('open');
+      heading?.scrollIntoView({behavior:prefersReduced()?'instant':'smooth', block:'start'});
+      heading?.setAttribute('tabindex','-1');
+      heading?.focus({preventScroll:true});
     });
   });
 
@@ -4026,7 +4178,11 @@ function buildTocFloat(tocable){
   float.querySelectorAll('a[data-tocf]').forEach(a=>{
     a.addEventListener('click', e=>{
       e.preventDefault();
-      document.getElementById(a.getAttribute('href').slice(1))?.scrollIntoView({behavior:'smooth', block:'start'});
+      const heading = document.getElementById(a.getAttribute('href').slice(1));
+      if(window.matchMedia('(max-width:900px)').matches) a.closest('details')?.removeAttribute('open');
+      heading?.scrollIntoView({behavior:prefersReduced()?'instant':'smooth', block:'start'});
+      heading?.setAttribute('tabindex','-1');
+      heading?.focus({preventScroll:true});
     });
   });
 
@@ -4284,10 +4440,23 @@ function enhanceCodeBlocks(contentEl){
     btn.addEventListener('click', async ()=>{
       try{
         await navigator.clipboard.writeText(code.textContent);
+        btn.setAttribute('aria-label','Copy code');
         btn.textContent = '✓ Copied';
         btn.classList.add('copied');
         setTimeout(()=>{ btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1600);
-      }catch(err){ btn.textContent = 'Press Ctrl+C'; }
+      }catch(err){
+        const selection = window.getSelection();
+        if(selection){
+          const range = document.createRange();
+          range.selectNodeContents(code);
+          selection.removeAllRanges();
+          selection.addRange(range);
+          pre.tabIndex = -1;
+          pre.focus({preventScroll:true});
+          btn.textContent = 'Code selected';
+          btn.setAttribute('aria-label','Code selected. Use your device’s Copy command.');
+        }else btn.textContent = 'Select code to copy';
+      }
     });
     bar.appendChild(btn);
   });
@@ -12081,7 +12250,7 @@ function renderProgressHub(){
   document.getElementById('resetProgressBtn')?.addEventListener('click', ()=>{
     if(confirm('This clears all progress, bookmarks, notes, quiz scores, and achievements stored in this browser. This cannot be undone. Continue?')){
       STATE = defaultState();
-      try{ localStorage.removeItem(RECOVERY_KEY); }catch(_){}
+      try{ localStorage.removeItem(RECOVERY_KEY);localStorage.removeItem(READER_POSITION_KEY); }catch(_){}
       stateRecovery = null;
       document.querySelector('.state-recovery-notice')?.remove();
       saveState();
