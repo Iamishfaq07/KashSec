@@ -43,9 +43,9 @@ output directory `.`) → Deploy.
 
 ## Content status
 
-**Path 01 (Introduction) is fully rebuilt** as the working example. All 5 sub-lessons are written in the new format with diagrams, callouts, and references.
+All **26 learning paths and 485 lessons** have Markdown files, and every path has a quiz. Run `npm run test:data` to check file coverage and internal links. With the local server running, `npm run test:audit` renders every lesson and opens all 42 lab routes in Chromium.
 
-**Paths 02–12** — the old single-file markdowns are being rebuilt in the same style, path by path. Missing sub-lessons will show a friendly "Coming soon" message until they're filled in.
+These checks confirm content availability and rendering. They do not replace technical review of the explanations or execution of external lab environments.
 
 ## Special markdown syntax used in lessons
 

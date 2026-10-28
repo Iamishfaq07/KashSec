@@ -1,5 +1,16 @@
 # How to learn tech effectively
 
+## A simple way to use each lesson
+
+1. Read one section at a time. Use the glossary for unfamiliar words.
+2. Try the example or lab when you are ready. Check any setup instructions first.
+3. Write two sentences in **My notes**: what you learned and what is still unclear.
+4. Choose **Finish & continue** when you are ready for the next lesson. You can return at any time.
+5. Review a few ideas tomorrow. Getting an answer wrong tells you what to practice next.
+
+If a lesson will not open, choose **Retry lesson**. A loading error does not mean you have lost your progress.
+
+
 You're about to move from Path 00 into 200+ lessons covering networking, Linux, programming, and real offensive/defensive security techniques. How you approach learning from here matters just as much as what you learn — this short lesson is the difference between finishing this course and quietly abandoning it in week three, which is what happens to most people who skip habits like these.
 
 ## Learn by doing, not just reading

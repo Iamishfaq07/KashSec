@@ -4,22 +4,38 @@ import { Shell } from "@/components/shell";
 import { Button } from "@/components/ui";
 import { getPath } from "@/lib/catalog";
 import { useProgress } from "@/lib/progress";
-import bank from "../../public/data/quizzes.json";
+import bank from "@/data/quizzes.json";
 
 export const Route = createFileRoute("/quiz/$pathId")({
   head: ({ params }) => ({
-    meta: [{ title: params.pathId === "final" ? "Final exam · KashSec" : "Quiz · KashSec" }],
+    meta: [
+      {
+        title:
+          params.pathId === "final" ? "Final exam · KashSec" : "Quiz · KashSec",
+      },
+    ],
   }),
-  component: QuizPage,
+  component: QuizRoutePage,
 });
 
 type Quiz = {
   title: string;
   passPct: number;
-  questions: { q: string; options: string[]; correct: number; explain: string }[];
+  questions: {
+    q: string;
+    options: string[];
+    correct: number;
+    explain: string;
+  }[];
 };
 
 const data = bank as { quizzes: Record<string, Quiz>; final: Quiz };
+
+function QuizRoutePage() {
+  const { pathId } = Route.useParams();
+  // Reset the whole attempt before deriving a score for another question bank.
+  return <QuizPage key={pathId} />;
+}
 
 function QuizPage() {
   const { pathId } = Route.useParams();
@@ -33,9 +49,13 @@ function QuizPage() {
 
   const [missedOnly, setMissedOnly] = useState(false);
 
+
+
   const score = useMemo(() => {
     if (!quiz || picks.length !== quiz.questions.length) return null;
-    const right = picks.filter((pick, i) => pick === quiz.questions[i].correct).length;
+    const right = picks.filter(
+      (pick, i) => pick === quiz.questions[i].correct,
+    ).length;
     return Math.round((right / quiz.questions.length) * 100);
   }, [picks, quiz]);
 
@@ -50,7 +70,11 @@ function QuizPage() {
       if (chosen === null && /^[1-4]$/.test(event.key)) {
         const option = Number(event.key) - 1;
         if (option < current.options.length) commit(option);
-      } else if ((event.key === "Enter" || event.key.toLowerCase() === "n") && chosen !== null && index < quiz.questions.length - 1) {
+      } else if (
+        (event.key === "Enter" || event.key.toLowerCase() === "n") &&
+        chosen !== null &&
+        index < quiz.questions.length - 1
+      ) {
         setIndex((value) => value + 1);
         setChosen(null);
       }
@@ -76,7 +100,9 @@ function QuizPage() {
     const next = [...picks, option];
     setPicks(next);
     if (next.length === quiz.questions.length) {
-      const right = next.filter((pick, i) => pick === quiz.questions[i].correct).length;
+      const right = next.filter(
+        (pick, i) => pick === quiz.questions[i].correct,
+      ).length;
       recordQuiz(pathId, Math.round((right / quiz.questions.length) * 100));
     }
   }
@@ -84,7 +110,11 @@ function QuizPage() {
   return (
     <Shell>
       {path ? (
-        <Link to="/paths/$pathId" params={{ pathId: path.id }} className="text-sm text-amber">
+        <Link
+          to="/paths/$pathId"
+          params={{ pathId: path.id }}
+          className="text-sm text-amber"
+        >
           {path.title}
         </Link>
       ) : (
@@ -94,27 +124,48 @@ function QuizPage() {
       )}
       <h1 className="mt-2 font-display text-4xl sm:text-5xl">{quiz.title}</h1>
       <p className="mt-2 text-sm text-faint">
-        Pass mark {quiz.passPct}%{best !== undefined ? ` · best on this device ${best}%` : ""}
+        Pass mark {quiz.passPct}%
+        {best !== undefined ? ` · best on this device ${best}%` : ""}
       </p>
       {finished && score !== null ? (
         <div className="mt-8 max-w-2xl">
           <p className="font-display text-6xl text-amber">{score}%</p>
           <p className="mt-2 text-muted">
-            {score >= quiz.passPct ? "That clears the pass mark." : "Below the pass mark. The explanations are the useful part."}
+            {score >= quiz.passPct
+              ? "That clears the pass mark."
+              : "Below the pass mark. The explanations are the useful part."}
           </p>
           <ol className="mt-6 grid gap-4">
-            {quiz.questions.map((item, i) => ({ item, i })).filter(({ item, i }) => !missedOnly || picks[i] !== item.correct).map(({ item, i }) => (
-              <li key={item.q} className="rounded-card border border-line p-4">
-                <p>{item.q}</p>
-                <p className={picks[i] === item.correct ? "mt-2 text-sm text-teal" : "mt-2 text-sm text-danger"}>
-                  {picks[i] === item.correct ? "Correct." : `You picked “${item.options[picks[i]]}”.`} {item.explain}
-                </p>
-              </li>
-            ))}
+            {quiz.questions
+              .map((item, i) => ({ item, i }))
+              .filter(({ item, i }) => !missedOnly || picks[i] !== item.correct)
+              .map(({ item, i }) => (
+                <li
+                  key={item.q}
+                  className="rounded-card border border-line p-4"
+                >
+                  <p>{item.q}</p>
+                  <p
+                    className={
+                      picks[i] === item.correct
+                        ? "mt-2 text-sm text-teal"
+                        : "mt-2 text-sm text-danger"
+                    }
+                  >
+                    {picks[i] === item.correct
+                      ? "Correct."
+                      : `You picked “${item.options[picks[i]]}”.`}{" "}
+                    {item.explain}
+                  </p>
+                </li>
+              ))}
           </ol>
           <div className="mt-6 flex flex-wrap gap-2">
             {score < 100 ? (
-              <Button tone="ghost" onClick={() => setMissedOnly((value) => !value)}>
+              <Button
+                tone="ghost"
+                onClick={() => setMissedOnly((value) => !value)}
+              >
                 {missedOnly ? "Show every question" : "Missed only"}
               </Button>
             ) : null}
@@ -135,7 +186,9 @@ function QuizPage() {
           <p className="text-sm text-faint">
             {index + 1} / {quiz.questions.length} · keys 1–4, then enter
           </p>
-          <h2 className="mt-2 font-display text-3xl leading-snug">{question.q}</h2>
+          <h2 className="mt-2 font-display text-3xl leading-snug">
+            {question.q}
+          </h2>
           <ul className="mt-4 grid gap-2">
             {question.options.map((option, optionIndex) => {
               const revealed = chosen !== null;
@@ -148,7 +201,15 @@ function QuizPage() {
                     onClick={() => commit(optionIndex)}
                     className="press w-full rounded-xl border border-line bg-surface px-3 py-3 text-left disabled:opacity-100"
                   >
-                    <span className={revealed && right ? "text-teal" : revealed && optionIndex === chosen ? "text-danger" : ""}>
+                    <span
+                      className={
+                        revealed && right
+                          ? "text-teal"
+                          : revealed && optionIndex === chosen
+                            ? "text-danger"
+                            : ""
+                      }
+                    >
                       <span className="mr-2 text-faint">{optionIndex + 1}</span>
                       {option}
                     </span>
@@ -159,7 +220,9 @@ function QuizPage() {
           </ul>
           {chosen !== null ? (
             <>
-              <p className="mt-4 text-sm leading-relaxed text-muted">{question.explain}</p>
+              <p className="mt-4 text-sm leading-relaxed text-muted">
+                {question.explain}
+              </p>
               {index < quiz.questions.length - 1 ? (
                 <Button
                   className="mt-4"

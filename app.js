@@ -96,10 +96,11 @@ function loadScript(src){
   });
 }
 function withTimeout(promise, ms, label){
+  let timer;
   return Promise.race([
     promise,
-    new Promise((_,reject)=>setTimeout(()=>reject(new Error(label + ' timed out')), ms))
-  ]);
+    new Promise((_,reject)=>{ timer = setTimeout(()=>reject(new Error(label + ' timed out')), ms); })
+  ]).finally(()=>clearTimeout(timer));
 }
 /* The one library lesson text genuinely cannot render without. Served from
    our own origin first; the CDN is only a backstop for the unlikely case the
@@ -113,6 +114,17 @@ function ensureMarked(){
     12000, 'Loading the lesson renderer'
   ).catch(err=>{ markedPromise = null; throw err; }); // allow retry on next lesson visit
   return markedPromise;
+}
+
+/* The sanitizer is also required: a failed initial script must be retryable.
+   Never render unsanitized Markdown as a fallback. */
+let sanitizerPromise = null;
+function ensureSanitizer(){
+  if(typeof DOMPurify !== 'undefined') return Promise.resolve();
+  if(sanitizerPromise) return sanitizerPromise;
+  sanitizerPromise = withTimeout(loadScript('vendor/purify.min.js'), 12000, 'Loading safe lesson rendering')
+    .catch(error=>{ sanitizerPromise = null; throw error; });
+  return sanitizerPromise;
 }
 
 /* Mermaid is large and only ~40% of lessons contain a diagram, so it must
@@ -294,20 +306,23 @@ function showUpdateToast(reg){
   });
 }
 
-if('serviceWorker' in navigator){
+// Sandboxed lab frames and some privacy modes expose the property but throw
+// when it is read. Offline support must never stop the rest of the app.
+const serviceWorker = (()=>{ try { return navigator.serviceWorker; } catch { return null; } })();
+if(serviceWorker){
   let refreshingAfterUpdate = false;
-  navigator.serviceWorker.addEventListener('controllerchange', ()=>{
+  serviceWorker.addEventListener('controllerchange', ()=>{
     if(!reloadForWorkerUpdate || refreshingAfterUpdate) return;
     refreshingAfterUpdate = true;
     window.location.reload();
   });
   window.addEventListener('load', ()=>{
-    navigator.serviceWorker.register('sw.js').then(reg=>{
+    serviceWorker.register('sw.js').then(reg=>{
       reg.addEventListener('updatefound', ()=>{
         const worker = reg.installing;
         if(!worker) return;
         worker.addEventListener('statechange', ()=>{
-          if(worker.state === 'installed' && navigator.serviceWorker.controller){
+          if(worker.state === 'installed' && serviceWorker.controller){
             showUpdateToast(reg);
           }
         });
@@ -2843,9 +2858,9 @@ function renderPathOverview(pathId){
     btn.disabled = true;
     status.textContent = 'Preparing offline storage…';
     try {
-      if (!('serviceWorker' in navigator)) throw new Error('Offline saving is unavailable in this browser.');
+      if (!serviceWorker) throw new Error('Offline saving is unavailable in this browser.');
       const registration = await Promise.race([
-        navigator.serviceWorker.ready,
+        serviceWorker.ready,
         new Promise((_, reject)=>setTimeout(()=>reject(new Error('Offline storage is not ready. Reload and try again.')), 10000))
       ]);
       if (!registration.active) throw new Error('Offline storage is not ready. Reload and try again.');
@@ -3603,6 +3618,7 @@ async function renderSubLesson(pathId, subId){
           ${ctx.prev ? pagerCardHTML(ctx.prev, 'prev', ctx.path.id) : `<span></span>`}
           ${ctx.next ? pagerCardHTML(ctx.next, 'next', ctx.path.id) : `<span></span>`}
         </div>
+        <div class="lesson-finish"><p>Ready to move on? Explain the main idea in your own words, then try any practice steps.</p><button class="btn-amber" id="finishAndContinue" type="button">${ctx.next ? 'Finish & continue →' : 'Finish lesson ✓'}</button></div>
         <div class="reader-foot">
           <button class="suggest-edit report-mistake-btn" id="reportMistakeBtn" type="button">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
@@ -3666,9 +3682,12 @@ async function renderSubLesson(pathId, subId){
   }, {signal:menuSignal});
   narrowLesson.addEventListener('change', () => {
     const closeButtonFocused = document.activeElement === closeMenuBtn;
+    const wasOpen = sidebar.classList.contains('open');
     const sidebarFocused = sidebar.contains(document.activeElement);
     setLessonMenuOpen(false, narrowLesson.matches && sidebarFocused);
-    if(!narrowLesson.matches && closeButtonFocused){
+    // CSS may hide the close button and drop focus to body before this
+    // media-query event arrives. Remember the open menu as well.
+    if(!narrowLesson.matches && (closeButtonFocused || wasOpen)){
       sidebar.querySelector('.sb-path.active .sb-path-head')?.focus();
     }
   }, {signal:menuSignal});
@@ -3749,6 +3768,12 @@ async function renderSubLesson(pathId, subId){
     refreshProgressRing();
   });
 
+  document.getElementById('finishAndContinue').addEventListener('click', ()=>{
+    if(!isComplete(pathId, subId)) document.getElementById('completeBtn').click();
+    if(ctx.next) navigateTo(`#/lesson/${ctx.next.pathId}/${ctx.next.subId}`);
+    else document.getElementById('finishAndContinue').textContent = 'Lesson finished ✓';
+  });
+
   let notesTimer = null;
   let notesPending = false;
   const notesEl = document.getElementById('lessonNotes');
@@ -3781,20 +3806,25 @@ async function renderSubLesson(pathId, subId){
       : '<div class="loading" role="status">Loading lesson…</div>';
     markScrollableTables(contentEl);
     let timer = null;
-    let stage = 'renderer';
+    let stage = 'content';
     try{
-      await ensureMarked();
-      if(!isCurrent()) return;
-      stage = 'content';
       timer = setTimeout(()=>controller.abort(new DOMException('Lesson request timed out', 'TimeoutError')), 15000);
       const res = await fetch(`course/${pathId}/${subId}.md`, {signal:controller.signal});
       if(!res.ok) throw new Error('Lesson request failed');
       const md = await res.text();
+      if(/^\s*(?:<!doctype\s+html|<html\b)/i.test(md) || !/^#\s+\S/m.test(md)) throw new Error('Invalid lesson response');
+      stage = 'renderer';
+      await Promise.all([ensureMarked(), ensureSanitizer()]);
       if(!isCurrent()) return;
       // The first lesson request can precede service-worker takeover. Cache
       // that opened lesson once controlled so a practice trip can return offline.
       cacheOpenedAsset(`course/${pathId}/${subId}.md`);
       contentEl.innerHTML = enrichMarkdown(md);
+      // Keep a small reading fallback for return visits without retaining an
+      // unbounded copy of the entire course in memory.
+      lessonFallbacks.delete(lessonRoute);
+      lessonFallbacks.set(lessonRoute, contentEl.innerHTML);
+      if(lessonFallbacks.size > 12) lessonFallbacks.delete(lessonFallbacks.keys().next().value);
 
       const mins = Math.max(1, Math.round(md.split(/\s+/).length / 200));
       const crumb = document.querySelector('.reader-crumb');
@@ -3884,7 +3914,11 @@ function wireProgress(){
   // A lesson rerender must not leave its old scroll handler behind.
   currentLessonScrollController?.abort();
   currentLessonScrollController = new AbortController();
-  window.addEventListener('scroll', update, {passive:true, signal:currentLessonScrollController.signal});
+  let frame = null;
+  const signal = currentLessonScrollController.signal;
+  const schedule = ()=>{ if(frame === null) frame = requestAnimationFrame(()=>{ frame = null; update(); }); };
+  signal.addEventListener('abort', ()=>cancelAnimationFrame(frame), {once:true});
+  window.addEventListener('scroll', schedule, {passive:true, signal});
   update();
 }
 
@@ -4156,7 +4190,7 @@ function animateLessonBlocks(contentEl){
       en.target.classList.add('blk-in');
       obs.unobserve(en.target);
     });
-  }, {rootMargin:'0px 0px -6% 0px', threshold:0.04});
+  }, {rootMargin:'0px 0px 80px 0px', threshold:0});
   blocks.forEach(el=>{ el.classList.add('blk-anim'); lessonBlockObserver.observe(el); });
 }
 
@@ -11518,11 +11552,11 @@ function investigationEntryHtml(){
 let investigationsPromise = null;
 const openedAssetsScheduled = new Set();
 function cacheOpenedAsset(src){
-  if(!('serviceWorker' in navigator) || openedAssetsScheduled.has(src)) return;
+  if(!serviceWorker || openedAssetsScheduled.has(src)) return;
   openedAssetsScheduled.add(src);
-  navigator.serviceWorker.ready.then(async()=>{
-    if(!navigator.serviceWorker.controller) await new Promise(resolve=>
-      navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true}));
+  serviceWorker.ready.then(async()=>{
+    if(!serviceWorker.controller) await new Promise(resolve=>
+      serviceWorker.addEventListener('controllerchange',resolve,{once:true}));
     if(!await caches.match(new URL(src,location.href).href)) await fetch(src);
   }).catch(()=>{});
 }
