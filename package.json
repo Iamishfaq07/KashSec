@@ -12,7 +12,7 @@
     "build:search": "node generate-search-index.js",
     "build:feed": "node generate-feed.js",
     "build:prerender": "node generate-prerender.js",
-    "test": "node tests/data-integrity.test.js && npm run test:canonical && npm run test:cvss && npm run test:smoke && npm run test:cdn && npm run test:ui && npm run test:offline && npm run test:progress && npm run test:planner && npm run test:investigations && npm run test:playground && npm run test:guide && npm run test:lesson-practice && npm run test:flashcards && npm run test:study-review && npm run test:exam && npm run test:search && npm run test:tasks",
+    "test": "node tests/data-integrity.test.js && npm run test:canonical && npm run test:cvss && npm run test:smoke && npm run test:cdn && npm run test:ui && npm run test:offline && npm run test:progress && npm run test:planner && npm run test:investigations && npm run test:playground && npm run test:guide && npm run test:lesson-practice && npm run test:flashcards && npm run test:study-review && npm run test:exam && npm run test:search && npm run test:tasks && npm run test:audit",
     "test:canonical": "node tests/canonical-security.spec.js && npm run test:auth-navigation && node tests/navigation-refresh.spec.js",
     "test:auth-navigation": "node tests/auth-navigation.spec.js",
     "test:cvss": "node tests/cvss.spec.js",
@@ -34,7 +34,11 @@
     "test:search": "node tests/search.spec.js",
     "build:og": "node generate-og-image.js",
     "build:tasks": "node generate-tasks.js",
-    "test:tasks": "node tests/tasks.spec.js"
+    "test:tasks": "node tests/tasks.spec.js",
+    "test:audit": "node tests/content-audit.spec.js",
+    "test:preview-lessons": "node tests/preview-lessons.spec.js",
+    "test:preview-platform": "node tests/preview-platform.spec.js",
+    "test:preview-runtime": "node tests/preview-runtime-resilience.spec.js"
   },
   "repository": {
     "type": "git",
@@ -50,8 +54,8 @@
   "dependencies": {
     "@vercel/analytics": "^1.3.1",
     "@vercel/speed-insights": "^2.0.0",
-    "dompurify": "3.4.15",
-    "sanitize-html": "2.17.7"
+    "dompurify": "3.4.17",
+    "sanitize-html": "2.18.1"
   },
   "devDependencies": {
     "marked": "^18.0.6",

@@ -177,6 +177,55 @@ try {
     await page.locator('#retryLesson').click();
     await page.locator('#content .code-win').first().waitFor();
   });
+  await test('a failed sanitizer can be retried without showing unsafe HTML', async page => {
+    await page.route('**/vendor/purify.min.js', route => route.abort(), {times:2});
+    await page.goto(BASE + lesson);
+    await page.locator('#retryLesson').waitFor();
+    assert.ok((await page.locator('#content article').innerText()).length > 800);
+    await page.locator('#retryLesson').click();
+    await page.locator('#content .code-win').first().waitFor();
+  });
+
+  await test('an HTML error page returned with status 200 is not rendered as a lesson', async page => {
+    await page.route(markdown, route => route.fulfill({status:200,contentType:'text/html',body:'<!doctype html><html><body>Hosting error</body></html>'}), {times:1});
+    await page.goto(BASE + lesson);
+    await page.locator('#retryLesson').waitFor();
+    assert.doesNotMatch(await page.locator('#content').innerText(), /Hosting error/);
+    await page.locator('#retryLesson').click();
+    await page.locator('#content .code-win').first().waitFor();
+  });
+
+  await test('finish and continue saves completion and notes before advancing', async page => {
+    await page.goto(BASE + lesson);
+    await page.locator('#content .code-win').first().waitFor();
+    await page.evaluate(() => {
+      const notes = document.getElementById('lessonNotes');
+      notes.value = 'A pipe connects two commands.';
+      notes.dispatchEvent(new Event('input', {bubbles:true}));
+      document.getElementById('finishAndContinue').click();
+    });
+    await page.waitForURL('**/linux-filesystem-hierarchy.html');
+    const state = await page.evaluate(() => JSON.parse(localStorage.getItem('kashsec_state_v1')));
+    assert.equal(state.notes[key], 'A pipe connects two commands.');
+    assert.ok(state.completed[key]);
+  });
+
+  await test('tall code blocks become visible on small screens', async page => {
+    await page.setViewportSize({width:390,height:640});
+    await page.goto(BASE + lesson);
+    await page.locator('#content .code-win').first().waitFor();
+    await page.evaluate(() => {
+      const block = document.createElement('pre');
+      block.id = 'tallBlock';
+      block.style.height = '30000px';
+      block.textContent = 'Long sample';
+      document.getElementById('content').appendChild(block);
+      animateLessonBlocks(document.getElementById('content'));
+      block.scrollIntoView({behavior:'instant',block:'start'});
+    });
+    await page.waitForFunction(() => document.getElementById('tallBlock').classList.contains('blk-in'));
+  });
+
 } finally { await browser.close(); }
 
 for(const [name, passed, detail] of results) console.log(`${passed ? 'PASS' : 'FAIL'} ${name}${detail ? ': '+detail : ''}`);

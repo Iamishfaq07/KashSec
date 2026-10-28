@@ -26,7 +26,7 @@
 - **Path 13 — Mobile App Security**: Android & iOS from the ground up — APK analysis, insecure storage, traffic interception, certificate pinning bypass, and exported component vulnerabilities, capped with a full assessment lab
 - **Path 19 — CTF Challenges**: a standalone Capture The Flag zone with 24 self-contained puzzles across Web, API, JWT, Crypto, Forensics, AI, Misc, and Linux privilege escalation, with difficulty tiers and a solution write-up template
 - **Progress tracking, bookmarks & notes** on every lesson, plus an interactive roadmap and a personal progress dashboard
-- **21 path quizzes + a Final Exam** (API Security and DevSecOps & AppSec Program don't have quizzes yet), with a canvas-drawn **certificate of completion** (PNG download, print-to-PDF, LinkedIn share)
+- **26 path quizzes + a Final Exam**, with a canvas-drawn **certificate of completion** (PNG download, print-to-PDF, LinkedIn share)
 - **14 achievements**, a light/dark **theme toggle**, global **search** (Ctrl/Cmd+K), and "continue where you left off"
 - Optional **cloud sync** — sign in to back up progress across devices; the site works fully without it (see [`SUPABASE_SETUP.md`](./SUPABASE_SETUP.md))
 - **Path 00**: Computer Basics & Security Mindset, now fully expanded for absolute freshers with zero prior exposure

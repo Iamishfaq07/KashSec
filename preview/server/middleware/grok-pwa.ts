@@ -32,7 +32,9 @@ interface GrokPwaEvent {
 
 function requestHost(event: GrokPwaEvent): string {
   return (
-    event.req.headers.get("x-forwarded-host") ?? event.req.headers.get("host") ?? event.url.host
+    event.req.headers.get("x-forwarded-host") ??
+    event.req.headers.get("host") ??
+    event.url.host
   );
 }
 
@@ -70,13 +72,19 @@ export default async function grokPwaMiddleware(
   const path = event.url.pathname;
   const urlWithQuery = path + event.url.search;
 
-  if (path === "/__grok/manifest.webmanifest" || path === "/__grok/manifest.json") {
-    return new Response(renderWebManifest(requestHost(event)), {
-      headers: {
-        "content-type": "application/manifest+json; charset=utf-8",
-        "cache-control": "no-cache",
+  if (
+    path === "/__grok/manifest.webmanifest" ||
+    path === "/__grok/manifest.json"
+  ) {
+    return new Response(
+      renderWebManifest(requestHost(event), grokOgIdentity.site),
+      {
+        headers: {
+          "content-type": "application/manifest+json; charset=utf-8",
+          "cache-control": "no-cache",
+        },
       },
-    });
+    );
   }
 
   if (
@@ -87,6 +95,7 @@ export default async function grokPwaMiddleware(
     const html = renderInstallPageHtml(installPageTemplate, {
       host: requestHost(event),
       url: urlWithQuery,
+      site: grokOgIdentity.site,
     });
     return new Response(html, {
       headers: {

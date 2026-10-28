@@ -118,7 +118,11 @@ try{
   await offlinePage.goto(BASE+'/lesson/02-networking/dns.html');await offlinePage.locator('#content[aria-busy="false"]').waitFor();
   await offlinePage.locator('.lp-card a').click();await offlinePage.locator('#pgJourney').waitFor();
   await offlinePage.waitForFunction(async()=>!!navigator.serviceWorker.controller&&!!(await caches.match(new URL('playground.js',location.origin).href))&&!!(await caches.match(new URL('course/02-networking/dns.md',location.origin).href)));
-  await offline.setOffline(true);await offlinePage.reload();await offlinePage.locator('#pgJourney').waitFor();
+  await offline.setOffline(true);await offlinePage.reload();
+  try { await offlinePage.locator('#pgJourney').waitFor(); } catch(error) {
+    console.log('Offline diagnostics:', await offlinePage.evaluate(async()=>({url:location.href,body:document.body.innerText.slice(-1800),caches:await caches.keys(),worker:navigator.serviceWorker.controller?.scriptURL})));
+    throw error;
+  }
   await offlinePage.locator('.practice-return a').click();await offlinePage.locator('#content[aria-busy="false"]').waitFor();
   check((await offlinePage.locator('#content h1').innerText()).includes('DNS')&&await offlinePage.locator('#retryLesson').count()===0,'an opened lesson and experiment can be revisited and linked offline');
   await offline.close();

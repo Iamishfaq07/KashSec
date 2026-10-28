@@ -112,7 +112,8 @@ export function publicAppHost(hostHeader) {
  */
 export function resolvePublicHost(hostHeader) {
   return (
-    publicAppHost(process.env?.VITE_PUBLIC_HOSTNAME) || publicAppHost(hostHeader)
+    publicAppHost(process.env?.VITE_PUBLIC_HOSTNAME) ||
+    publicAppHost(hostHeader)
   );
 }
 
@@ -151,14 +152,14 @@ export function stripInstallParams(url) {
   return rest ? `${path}?${rest}` : path;
 }
 
-export function renderInstallPageHtml(template, { host, url } = {}) {
+export function renderInstallPageHtml(template, { host, url, site = {} } = {}) {
   return String(template)
-    .replaceAll("{{APP_NAME}}", escapeHtml(appNameFromHost(host)))
+    .replaceAll("{{APP_NAME}}", escapeHtml(site.title || appNameFromHost(host)))
     .replaceAll("{{APP_URL}}", escapeHtml(stripInstallParams(url)));
 }
 
-export function renderWebManifest(hostHeader) {
-  const name = appNameFromHost(hostHeader);
+export function renderWebManifest(hostHeader, site = {}) {
+  const name = site.title || appNameFromHost(hostHeader);
   return JSON.stringify(
     {
       name,
@@ -175,6 +176,24 @@ export function renderWebManifest(hostHeader) {
           sizes: "180x180",
           type: "image/png",
         },
+        {
+          src: "/__grok/icon-192.png",
+          sizes: "192x192",
+          type: "image/png",
+          purpose: "any",
+        },
+        {
+          src: "/__grok/icon-512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "any",
+        },
+        {
+          src: "/__grok/icon-maskable-512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "maskable",
+        },
       ],
     },
     null,
@@ -187,7 +206,10 @@ export function grokPwaHeadTags(appName = DEFAULT_APP_NAME) {
     // Standalone display comes from the manifest ("display": "standalone");
     // the legacy *-web-app-capable metas it replaces are deliberately absent.
     ["manifest", '<link rel="manifest" href="/__grok/manifest.webmanifest">'],
-    ["apple-touch-icon", '<link rel="apple-touch-icon" href="/__grok/icon-180.png">'],
+    [
+      "apple-touch-icon",
+      '<link rel="apple-touch-icon" href="/__grok/icon-180.png">',
+    ],
     [
       "apple-mobile-web-app-title",
       `<meta name="apple-mobile-web-app-title" content="${escapeHtml(appName)}">`,
@@ -200,29 +222,37 @@ export function grokPwaHeadTags(appName = DEFAULT_APP_NAME) {
   ];
 }
 
-export const GROK_EXTENSIONS_SCRIPT_SRC = "https://grok.com/grok-app-builder/extensions.js";
+export const GROK_EXTENSIONS_SCRIPT_SRC =
+  "https://grok.com/grok-app-builder/extensions.js";
 
 export function readGrokProjectId() {
-  const fromProcess = typeof process !== "undefined" ? process.env?.VITE_PROJECT_ID : "";
+  const fromProcess =
+    typeof process !== "undefined" ? process.env?.VITE_PROJECT_ID : "";
   return String(fromProcess ?? "").trim();
 }
 
 export function readGrokExtensionsEnabled() {
-  const fromProcess = typeof process !== "undefined" ? process.env?.VITE_GROK_EXTENSIONS : "";
+  const fromProcess =
+    typeof process !== "undefined" ? process.env?.VITE_GROK_EXTENSIONS : "";
   return String(fromProcess ?? "").trim() !== "0";
 }
 
 export function readXCreator() {
-  const fromProcess = typeof process !== "undefined" ? process.env?.X_CREATOR : "";
+  const fromProcess =
+    typeof process !== "undefined" ? process.env?.X_CREATOR : "";
   return String(fromProcess ?? "").trim();
 }
 
 export function readXCreatorId() {
-  const fromProcess = typeof process !== "undefined" ? process.env?.X_CREATOR_ID : "";
+  const fromProcess =
+    typeof process !== "undefined" ? process.env?.X_CREATOR_ID : "";
   return String(fromProcess ?? "").trim();
 }
 
-export function grokXCreatorHeadTags(creator = readXCreator(), creatorId = readXCreatorId()) {
+export function grokXCreatorHeadTags(
+  creator = readXCreator(),
+  creatorId = readXCreatorId(),
+) {
   const name = String(creator ?? "").trim();
   const id = String(creatorId ?? "").trim();
   if (!name || !id) return [];
@@ -252,7 +282,9 @@ export function readOgSite(cwd = process.cwd()) {
   try {
     const raw = readFileSync(join(cwd, OG_SITE_REL_PATH), "utf8");
     const parsed = JSON.parse(raw);
-    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed)
+      ? parsed
+      : {};
   } catch {
     return {};
   }
@@ -329,7 +361,12 @@ export function siteHasCustomCard(site = {}) {
  * Otherwise empty — caller emits the og.grok.me placeholder.
  */
 export function resolveOgCardAsset(site = {}, cwd = process.cwd()) {
-  return ogCardPublicPath(cwd) || (detectCustomOgCard(cwd, site) ? String(site.image ?? "").trim() || "/og.jpg" : "");
+  return (
+    ogCardPublicPath(cwd) ||
+    (detectCustomOgCard(cwd, site)
+      ? String(site.image ?? "").trim() || "/og.jpg"
+      : "")
+  );
 }
 
 /** Stamp `card=custom` when public/og.jpg or public/og.png is on disk. */
@@ -354,7 +391,9 @@ export function grokOgHeadTags({
   ];
   const description = String(site.description ?? "").trim();
   if (description) {
-    tags.push(`<meta property="og:description" content="${escapeHtml(description)}">`);
+    tags.push(
+      `<meta property="og:description" content="${escapeHtml(description)}">`,
+    );
   }
   if (String(site.type ?? "").toLowerCase() === "x:game") {
     tags.push(`<meta property="og:type" content="x:game">`);
@@ -373,7 +412,9 @@ export function grokOgHeadTags({
     const banner = String(site.banner ?? "").trim();
     if (banner) {
       const bannerUrl = `https://${publicHost}${banner.startsWith("/") ? banner : `/${banner}`}`;
-      tags.push(`<meta property="x:game:image" content="${escapeHtml(bannerUrl)}">`);
+      tags.push(
+        `<meta property="x:game:image" content="${escapeHtml(bannerUrl)}">`,
+      );
       tags.push(`<meta property="x:game:image:width" content="1200">`);
       tags.push(`<meta property="x:game:image:height" content="264">`);
     }
@@ -390,7 +431,9 @@ function stripGrokExtensionsScript(html) {
 
 export function stripShareMetaTags(html) {
   return String(html).replace(/<meta\b[^>]*>/gi, (tag) => {
-    const attrs = [...tag.matchAll(/\b(?:property|name)\s*=\s*["']([^"']+)["']/gi)];
+    const attrs = [
+      ...tag.matchAll(/\b(?:property|name)\s*=\s*["']([^"']+)["']/gi),
+    ];
     for (const match of attrs) {
       if (SHARE_META_KEYS.has(String(match[1]).toLowerCase())) return "";
     }
@@ -403,13 +446,17 @@ function insertAfterHeadOpen(html, snippet) {
     return html.replace(/<head\b[^>]*>/i, (open) => `${open}${snippet}`);
   }
   if (/<html\b[^>]*>/i.test(html)) {
-    return html.replace(/<html\b[^>]*>/i, (open) => `${open}<head>${snippet}</head>`);
+    return html.replace(
+      /<html\b[^>]*>/i,
+      (open) => `${open}<head>${snippet}</head>`,
+    );
   }
   return `<!doctype html><html><head>${snippet}</head>${html}`;
 }
 
 function insertBeforeHeadClose(html, snippet) {
-  if (/<\/head>/i.test(html)) return html.replace(/<\/head>/i, `${snippet}</head>`);
+  if (/<\/head>/i.test(html))
+    return html.replace(/<\/head>/i, `${snippet}</head>`);
   return insertAfterHeadOpen(html, snippet);
 }
 
@@ -423,7 +470,11 @@ export function normalizeHeadContext(ctx = {}) {
     ctx.site !== undefined ? ctx.site : snapshotOgIdentity(cwd).site,
     cwd,
   );
-  const appName = resolveOgTitle(site, ctx.appName ?? DEFAULT_APP_NAME, ctx.host ?? "");
+  const appName = resolveOgTitle(
+    site,
+    ctx.appName ?? DEFAULT_APP_NAME,
+    ctx.host ?? "",
+  );
   return {
     appName,
     projectId: ctx.projectId ?? readGrokProjectId(),
@@ -437,7 +488,8 @@ export function normalizeHeadContext(ctx = {}) {
 
 export function injectGrokPwaHead(html, ctx = {}) {
   if (typeof html !== "string") return html;
-  const { site, projectId, creator, creatorId, host, cwd } = normalizeHeadContext(ctx);
+  const { site, projectId, creator, creatorId, host, cwd } =
+    normalizeHeadContext(ctx);
   const documentTitle = titleFromDocument(html);
   const appName = resolveOgTitle(
     site,
@@ -450,8 +502,10 @@ export function injectGrokPwaHead(html, ctx = {}) {
 
   const missing = grokPwaHeadTags(appName)
     .filter(([key]) => {
-      if (key === "manifest") return !next.includes('href="/__grok/manifest.webmanifest"');
-      if (key === "apple-touch-icon") return !next.includes('href="/__grok/icon-180.png"');
+      if (key === "manifest")
+        return !next.includes('href="/__grok/manifest.webmanifest"');
+      if (key === "apple-touch-icon")
+        return !next.includes('href="/__grok/icon-180.png"');
       return !next.includes(`name="${key}"`);
     })
     .map(([, tag]) => tag);
@@ -461,17 +515,24 @@ export function injectGrokPwaHead(html, ctx = {}) {
     grokOgHeadTags({ host, appName, site, documentTitle, cwd }).join(""),
   );
 
-  if (readGrokExtensionsEnabled() && !next.includes("/grok-app-builder/extensions.js")) {
+  if (
+    readGrokExtensionsEnabled() &&
+    !next.includes("/grok-app-builder/extensions.js")
+  ) {
     missing.push(...grokExtensionsHeadTags(projectId));
   } else if (projectId && !next.includes('name="grok-project-id"')) {
-    missing.push(`<meta name="grok-project-id" content="${escapeHtml(projectId)}">`);
+    missing.push(
+      `<meta name="grok-project-id" content="${escapeHtml(projectId)}">`,
+    );
   }
   if (
     projectId &&
     !next.includes('property="grok:app_id"') &&
     !next.includes("property='grok:app_id'")
   ) {
-    missing.push(`<meta property="grok:app_id" content="${escapeHtml(projectId)}">`);
+    missing.push(
+      `<meta property="grok:app_id" content="${escapeHtml(projectId)}">`,
+    );
   }
   const creatorTags = grokXCreatorHeadTags(creator, creatorId);
   if (creatorTags.length > 0) {
@@ -525,9 +586,16 @@ export function createHeadInjector(ctx = {}) {
       if (at === -1) return [];
       done = true;
       pending = [];
-      const closeLen = joined.toString("latin1", at).match(/^<\/head>/i)[0].length;
+      const closeLen = joined
+        .toString("latin1", at)
+        .match(/^<\/head>/i)[0].length;
       const head = apply(joined.subarray(0, at + closeLen).toString("utf8"));
-      return [Buffer.concat([Buffer.from(head, "utf8"), joined.subarray(at + closeLen)])];
+      return [
+        Buffer.concat([
+          Buffer.from(head, "utf8"),
+          joined.subarray(at + closeLen),
+        ]),
+      ];
     },
     /** @returns {Buffer[]} whatever is still buffered (no `</head>` seen) */
     flush() {

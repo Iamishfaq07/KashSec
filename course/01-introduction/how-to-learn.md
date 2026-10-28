@@ -1,9 +1,9 @@
 # How to actually learn this (and not give up)
 
-Most people who start cybersecurity quit — not because it's too hard, but because they **study it the wrong way** and burn out. A few simple habits make the difference between quitting in a month and still going strong in a year.
+Cybersecurity takes practice. You do not need to understand everything on the first try. Start with one short lesson, try one example, and come back to it later.
 
-:::tip TAKE THIS SERIOUSLY
-Skimming this lesson feels tempting because it's not "technical." Don't. The habits below are what turn "just learning" into "a career." They matter more than any tool.
+:::tip START SMALL
+Set aside 15–30 minutes. Read one section, try its example in a safe lab, and write down what you learned. A small routine is easier to keep.
 :::
 
 ## Habit 1 — Build the base before the fun
@@ -43,35 +43,20 @@ flowchart TD
 
 ## Habit 2 — Learn by doing, not just reading
 
-Reading about a command teaches you almost nothing; **typing it and seeing what happens** teaches you a lot. Do every 🧪 lab. Break things in your lab on purpose and fix them. Knowledge that passes through your fingers sticks; knowledge that only passes through your eyes fades by morning.
+Reading helps you understand an idea. Practice helps you check whether you can use it. When a lesson includes a command, read what it does before typing it. Run it only in your own lab or a system you have permission to test.
 
-A useful concept from learning science is the "**learning pyramid**" — passive reading has the lowest retention; teaching or doing has the highest.
+Use this routine:
 
-~~~svg The learning retention pyramid (approximate)
-<svg viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
-  <g font-size="12">
-    <polygon points="200,30 420,30 400,60 220,60" fill="#152131" stroke="#213043"/>
-    <text x="310" y="50" text-anchor="middle" fill="#8496A6">Lecture (~5%)</text>
-    <polygon points="220,60 400,60 380,95 240,95" fill="#152131" stroke="#213043"/>
-    <text x="310" y="82" text-anchor="middle" fill="#8496A6">Reading (~10%)</text>
-    <polygon points="240,95 380,95 360,130 260,130" fill="#111927" stroke="#213043"/>
-    <text x="310" y="117" text-anchor="middle" fill="#E9EEF3">Demonstration (~30%)</text>
-    <polygon points="260,130 360,130 340,165 280,165" fill="#0f2b26" stroke="#3FB6A8"/>
-    <text x="310" y="152" text-anchor="middle" fill="#3FB6A8">Discussion (~50%)</text>
-    <polygon points="280,165 340,165 320,200 300,200" fill="#2b1f0a" stroke="#EFA43A"/>
-    <text x="310" y="187" text-anchor="middle" fill="#EFA43A">Practise doing (~75%)</text>
-    <polygon points="300,200 320,200 315,235 305,235" fill="#3a1414" stroke="#E05548"/>
-    <text x="310" y="222" text-anchor="middle" fill="#E05548">Teach others (~90%)</text>
-    <text x="80" y="120" font-size="11" fill="#8496A6" font-weight="600">Passive</text>
-    <text x="80" y="205" font-size="11" fill="#E05548" font-weight="600">Active</text>
-    <line x1="120" y1="90" x2="150" y2="90" stroke="#8496A6" stroke-width="1"/>
-    <line x1="120" y1="215" x2="150" y2="215" stroke="#E05548" stroke-width="1"/>
-  </g>
-</svg>
-~~~
+1. **Read:** choose one short section. Look up words you do not know.
+2. **Predict:** before running an example, say what you expect to happen.
+3. **Try:** run it in the lab. Compare the result with your prediction.
+4. **Recall:** close the instructions and explain the main idea in your own words.
+5. **Review:** revisit the idea on another day. Use a quiz or flashcard to find gaps.
 
-:::tip TEACH TO LEARN
-The single fastest way to solidify a concept is to try teaching it to a friend (or a rubber duck). If you can't explain something plainly, you don't truly know it yet — and that's information.
+You may see a “learning pyramid” that claims people remember fixed percentages of what they read, hear, or do. Those percentages are not a reliable measure of learning. Results depend on the task, prior knowledge, practice, and how understanding is tested. You do not need those numbers to plan useful practice.
+
+:::tip CHECK YOUR UNDERSTANDING
+Explain the idea to a friend, or write a few sentences in your lesson notes. If you get stuck, return to that section and try a smaller example. Needing another attempt is normal.
 :::
 
 ## Habit 3 — Take notes like a professional

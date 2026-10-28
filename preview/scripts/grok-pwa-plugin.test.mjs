@@ -6,9 +6,9 @@ import { fileURLToPath } from "node:url";
 import test from "node:test";
 import {
   appNameFromHost,
-  createHeadInjector,
+  createHeadInjector as realCreateHeadInjector,
   grokXCreatorHeadTags,
-  injectGrokPwaHead,
+  injectGrokPwaHead as realInjectGrokPwaHead,
   isDocumentPath,
   isInstallQuery,
   publicAppHost,
@@ -20,6 +20,11 @@ import {
 import { renderInstallPage } from "./grok-pwa-plugin.mjs";
 
 const TEMPLATE_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+
+// Generic chrome tests must not inherit this application's baked site title.
+const unitRoot = mkdtempSync(join(tmpdir(), "pwa-unit-"));
+const injectGrokPwaHead = (html, ctx = {}) => realInjectGrokPwaHead(html, { cwd: unitRoot, ...ctx });
+const createHeadInjector = (ctx = {}) => realCreateHeadInjector({ cwd: unitRoot, ...ctx });
 
 test("injects before </head>", () => {
   const out = injectGrokPwaHead("<html><head><title>x</title></head><body></body></html>");

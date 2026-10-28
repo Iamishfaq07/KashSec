@@ -23,8 +23,7 @@ function hasGlobbedMigrations(root: string): boolean {
 
 /**
  * Finish PGLite bootstrap during dev-server setup (before traffic). Vite awaits
- * async `configureServer` hooks. Production: `src/lib/db` kicks `ensureDbReady`
- * on import.
+ * async `configureServer` hooks. Production: database callers await `ensureDbReady` on first use.
  *
  * Vite awaiting the hook puts this on time-to-first-render, so an app with no
  * migrations — no schema to apply — skips it entirely rather than paying for a
@@ -157,6 +156,8 @@ export default defineConfig(({ command, isPreview }) => ({
     strictPort: true,
   },
   resolve: { tsconfigPaths: true },
+  // Embedded Postgres loads WASM/data relative to its original module URL.
+  ssr: { external: ["@electric-sql/pglite"] },
   plugins: [
     pgliteBootstrapPlugin(),
     // Before tanstackStart so /auth/popup never falls through to the SPA.
@@ -171,6 +172,7 @@ export default defineConfig(({ command, isPreview }) => ({
       ? [
           nitro({
             preset: "vercel",
+            traceDeps: ["@electric-sql/pglite*"],
             // Auto-registers server/middleware/* (the PWA install page +
             // manifest + head-tag middleware). Nitro v3 defaults serverDir to
             // false, so removing this silently unwires /?install=1 on deploys.

@@ -30,6 +30,7 @@
  * a verified id via `@/lib/auth/middleware`.
  */
 import { betterAuth } from "better-auth";
+import { AUTH_BASE_PATH } from "./paths";
 import { bearer, genericOAuth } from "better-auth/plugins";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
 import { getCookie } from "@tanstack/react-start/server";
@@ -46,9 +47,6 @@ import {
   PREVIEW_CLIENT_ID,
   PREVIEW_CLIENT_SECRET,
 } from "./preview";
-
-// Kick (and share) PGLite bootstrap as soon as the auth server module loads.
-void ensureDbReady();
 
 /**
  * Preview secret must outlive module reloads: PGLite (and its session rows) is
@@ -79,7 +77,8 @@ const authDisabled = env("VITE_AUTH_ENABLED") === "false";
 // for any `*.grok-sandbox.com` callback (see `./preview`).
 const grokIssuer = env("GROK_AUTH_ISSUER") ?? GROK_ISSUER_DEFAULT;
 const grokClientId = env("GROK_AUTH_CLIENT_ID") ?? PREVIEW_CLIENT_ID;
-const grokClientSecret = env("GROK_AUTH_CLIENT_SECRET") ?? PREVIEW_CLIENT_SECRET;
+const grokClientSecret =
+  env("GROK_AUTH_CLIENT_SECRET") ?? PREVIEW_CLIENT_SECRET;
 
 /** True when federated sign-in is active (real auth is enforced). */
 export const authConfigured =
@@ -106,7 +105,15 @@ const LOCAL_DEV_ORIGINS: string[] = [
 const baseURL = explicitBaseURL ?? {
   // Include loopback hosts so dynamic baseURL resolves for local email/password
   // (not only the preview wildcard).
-  allowedHosts: [...previewAllowedHosts, "localhost", "127.0.0.1", "[::1]"],
+  allowedHosts: [
+    ...previewAllowedHosts,
+    "localhost",
+    "127.0.0.1",
+    "[::1]",
+    "localhost:8080",
+    "127.0.0.1:8080",
+    "[::1]:8080",
+  ],
   // `auto` → trust both http:// and https:// expansions of allowedHosts
   // (preview is https; local dev is http).
   protocol: "auto" as const,
@@ -121,7 +128,10 @@ const trustedOrigins: string[] = explicitBaseURL
       // Host wildcards (matched against Origin's host)
       ...previewAllowedHosts,
       // Full-origin wildcards (matched against Origin)
-      ...previewAllowedHosts.flatMap((host) => [`https://${host}`, `http://${host}`]),
+      ...previewAllowedHosts.flatMap((host) => [
+        `https://${host}`,
+        `http://${host}`,
+      ]),
       ...LOCAL_DEV_ORIGINS,
     ];
 
@@ -172,85 +182,106 @@ const grokOAuthPlugin = authConfigured
     })
   : null;
 
-export const auth = betterAuth({
-  baseURL,
-  // Deployed apps inject BETTER_AUTH_SECRET. Preview: process-stable secret on
-  // globalThis so HMR doesn't invalidate PGLite-backed sessions (see above).
-  secret: env("BETTER_AUTH_SECRET") ?? previewAuthSecret(),
-  database,
+function createAuth() {
+  return betterAuth({
+    baseURL,
+    // Better Auth 1.7 uses /callback/:provider for generic OAuth. This base
+    // preserves the broker-registered /api/auth/oauth2/callback/:provider URL.
+    basePath: AUTH_BASE_PATH,
+    // Deployed apps inject BETTER_AUTH_SECRET. Preview: process-stable secret on
+    // globalThis so HMR doesn't invalidate PGLite-backed sessions (see above).
+    secret: env("BETTER_AUTH_SECRET") ?? previewAuthSecret(),
+    database,
 
-  // CSRF / origin check for credentialed auth POSTs (email sign-up/sign-in, …).
-  // See `trustedOrigins` construction above — must cover live preview hosts AND
-  // local loopback variants, or clients get "Invalid origin".
-  trustedOrigins,
+    // CSRF / origin check for credentialed auth POSTs (email sign-up/sign-in, …).
+    // See `trustedOrigins` construction above — must cover live preview hosts AND
+    // local loopback variants, or clients get "Invalid origin".
+    trustedOrigins,
 
-  // Encrypt broker-issued OAuth tokens at rest, and treat the broker's upstreams
-  // as trusted first-party identities. The broker owns identity and X emails are
-  // synthetic/unverified, so WITHOUT this a login can fail with
-  // `account_not_linked` (Better Auth refuses to attach an untrusted, unverified
-  // identity to an existing user). Google and X carry DISTINCT emails, so this
-  // never merges them into one user — they stay separate identities.
-  account: {
-    encryptOAuthTokens: true,
-    accountLinking: {
-      enabled: true,
-      trustedProviders: [
-        ...GROK_PROVIDERS.map((p) => p.providerId),
-        GATE_PROVIDER_ID,
-      ],
-      // X's synthetic email is never "verified", so don't gate linking on the
-      // local user's email-verified state.
-      requireLocalEmailVerified: false,
+    // Encrypt broker-issued OAuth tokens at rest, and treat the broker's upstreams
+    // as trusted first-party identities. The broker owns identity and X emails are
+    // synthetic/unverified, so WITHOUT this a login can fail with
+    // `account_not_linked` (Better Auth refuses to attach an untrusted, unverified
+    // identity to an existing user). Google and X carry DISTINCT emails, so this
+    // never merges them into one user — they stay separate identities.
+    account: {
+      encryptOAuthTokens: true,
+      accountLinking: {
+        enabled: true,
+        trustedProviders: [
+          ...GROK_PROVIDERS.map((p) => p.providerId),
+          GATE_PROVIDER_ID,
+        ],
+        // X's synthetic email is never "verified", so don't gate linking on the
+        // local user's email-verified state.
+        requireLocalEmailVerified: false,
+      },
     },
-  },
 
-  // Cache the session in the short-lived signed `session_data` cookie so reads
-  // (incl. the client's `/get-session`) skip the DB — this shrinks the "loading"
-  // window and reduces auth flicker. See the `auth` skill for the full
-  // flicker-prevention guidance (gate on `isPending`; SSR the session).
-  session: { cookieCache: { enabled: true, maxAge: 300 } },
+    // Cache the session in the short-lived signed `session_data` cookie so reads
+    // (incl. the client's `/get-session`) skip the DB — this shrinks the "loading"
+    // window and reduces auth flicker. See the `auth` skill for the full
+    // flicker-prevention guidance (gate on `isPending`; SSR the session).
+    session: { cookieCache: { enabled: true, maxAge: 300 } },
 
-  // Local email/password — toggled only via `./email-password` (not a plugin).
-  ...(emailAndPasswordEnabled ? { emailAndPassword: { enabled: true } } : {}),
+    // Local email/password — toggled only via `./email-password` (not a plugin).
+    ...(emailAndPasswordEnabled ? { emailAndPassword: { enabled: true } } : {}),
 
-  // `__Host-` prefixed cookies: the browser REFUSES any same-named cookie that
-  // carries a `Domain` attribute, so a sibling `*.grok.me` app cannot "toss" a
-  // `Domain=.grok.me` session cookie onto this app. `__Host-` requires Secure +
-  // Path=/ + no Domain; Better Auth otherwise uses `__Secure-` (which permits
-  // Domain), so we drop its auto prefix (`useSecureCookies: false`) and set
-  // Secure + the names ourselves. (Browsers allow Secure cookies on
-  // `http://localhost`, so local dev still works.)
-  advanced: {
-    useSecureCookies: false,
-    defaultCookieAttributes: { secure: true, sameSite: "lax", path: "/" },
-    cookies: {
-      session_token: { name: SESSION_TOKEN_COOKIE },
-      session_data: { name: "__Host-grok-auth.session_data" },
-      account_data: { name: "__Host-grok-auth.account_data" },
-      dont_remember: { name: "__Host-grok-auth.dont_remember" },
+    // `__Host-` prefixed cookies: the browser REFUSES any same-named cookie that
+    // carries a `Domain` attribute, so a sibling `*.grok.me` app cannot "toss" a
+    // `Domain=.grok.me` session cookie onto this app. `__Host-` requires Secure +
+    // Path=/ + no Domain; Better Auth otherwise uses `__Secure-` (which permits
+    // Domain), so we drop its auto prefix (`useSecureCookies: false`) and set
+    // Secure + the names ourselves. (Browsers allow Secure cookies on
+    // `http://localhost`, so local dev still works.)
+    advanced: {
+      useSecureCookies: false,
+      defaultCookieAttributes: { secure: true, sameSite: "lax", path: "/" },
+      cookies: {
+        session_token: { name: SESSION_TOKEN_COOKIE },
+        session_data: { name: "__Host-grok-auth.session_data" },
+        account_data: { name: "__Host-grok-auth.account_data" },
+        dont_remember: { name: "__Host-grok-auth.dont_remember" },
+      },
     },
-  },
 
-  plugins: [
-    gateIdentitySessions(),
+    plugins: [
+      gateIdentitySessions(),
 
-    // One genericOAuth provider per upstream (when auth is on), all federating
-    // to the broker with the SAME client and differing only by the `idp` hint.
-    ...(grokOAuthPlugin ? [grokOAuthPlugin] : []),
+      // One genericOAuth provider per upstream (when auth is on), all federating
+      // to the broker with the SAME client and differing only by the `idp` hint.
+      ...(grokOAuthPlugin ? [grokOAuthPlugin] : []),
 
-    // Accept `Authorization: Bearer <session-token>` as an alternative to the
-    // cookie. Needed for the LIVE PREVIEW: the app runs in an embedded iframe
-    // where cookies are partitioned, so after popup sign-in it authenticates with
-    // a bearer token instead (see `client.ts` / the `auth` skill). The hook only
-    // fires when an Authorization header is present, so the cookie path
-    // (deployed apps) is unaffected.
-    bearer(),
+      // Accept `Authorization: Bearer <session-token>` as an alternative to the
+      // cookie. Needed for the LIVE PREVIEW: the app runs in an embedded iframe
+      // where cookies are partitioned, so after popup sign-in it authenticates with
+      // a bearer token instead (see `client.ts` / the `auth` skill). The hook only
+      // fires when an Authorization header is present, so the cookie path
+      // (deployed apps) is unaffected.
+      bearer(),
 
-    // Bridges Better Auth's Set-Cookie into TanStack Start responses. MUST be
-    // last so it runs after every other plugin's hooks.
-    tanstackStartCookies(),
-  ],
-});
+      // Bridges Better Auth's Set-Cookie into TanStack Start responses. MUST be
+      // last so it runs after every other plugin's hooks.
+      tanstackStartCookies(),
+    ],
+  });
+}
+
+let authPromise: Promise<ReturnType<typeof createAuth>> | null = null;
+/** Initialize auth only after the database is ready. A failed backend request
+ * must not create an unhandled context rejection or break public lessons. */
+export function getAuth(): Promise<ReturnType<typeof createAuth>> {
+  authPromise ??= (async () => {
+    await ensureDbReady();
+    const instance = createAuth();
+    await instance.$context;
+    return instance;
+  })().catch((error) => {
+    authPromise = null;
+    throw error;
+  });
+  return authPromise;
+}
 
 export function readSessionToken(): string | null {
   return getCookie(SESSION_TOKEN_COOKIE) ?? null;

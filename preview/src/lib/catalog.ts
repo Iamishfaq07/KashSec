@@ -1,4 +1,4 @@
-import raw from "../../public/data/catalog.json";
+import raw from "@/data/catalog.json";
 
 export type Lesson = {
   n: string;

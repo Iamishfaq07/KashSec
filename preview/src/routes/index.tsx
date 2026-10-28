@@ -194,8 +194,8 @@ function Drill() {
   const [picked, setPicked] = useState<number | null>(null);
 
   useEffect(() => {
-    void fetch("/data/quizzes.json")
-      .then((response) => response.json())
+    void import("@/data/quizzes.json")
+      .then((module) => module.default)
       .then((payload: { quizzes: Record<string, { questions: DrillQ[] }> }) => {
         const all = Object.values(payload.quizzes).flatMap((quiz) => quiz.questions);
         const day = Math.floor(Date.now() / 86_400_000);

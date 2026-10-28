@@ -20,7 +20,10 @@ import {
 
 export const GROK_OG_IDENTITY_ID = "virtual:grok-og-identity";
 
-const INSTALL_PAGE_PATH = join(dirname(fileURLToPath(import.meta.url)), "install-page.html");
+const INSTALL_PAGE_PATH = join(
+  dirname(fileURLToPath(import.meta.url)),
+  "install-page.html",
+);
 
 function requestHost(req) {
   const forwarded = req.headers["x-forwarded-host"];
@@ -28,9 +31,9 @@ function requestHost(req) {
   return Array.isArray(host) ? host[0] : host;
 }
 
-export function renderInstallPage(hostHeader, url = "/") {
+export function renderInstallPage(hostHeader, url = "/", site = {}) {
   const template = readFileSync(INSTALL_PAGE_PATH, "utf8");
-  return renderInstallPageHtml(template, { host: hostHeader, url });
+  return renderInstallPageHtml(template, { host: hostHeader, url, site });
 }
 
 function sendHtml(res, html) {
@@ -42,7 +45,7 @@ function sendHtml(res, html) {
   res.end(body);
 }
 
-function serveGrokPwa(middlewares) {
+function serveGrokPwa(middlewares, site = {}) {
   middlewares.use((req, res, next) => {
     const rawUrl = req.url ?? "";
     const pathOnly = rawUrl.split("?", 1)[0] ?? "";
@@ -52,8 +55,14 @@ function serveGrokPwa(middlewares) {
       return;
     }
 
-    if (pathOnly === "/__grok/manifest.webmanifest" || pathOnly === "/__grok/manifest.json") {
-      const body = Buffer.from(renderWebManifest(requestHost(req)), "utf8");
+    if (
+      pathOnly === "/__grok/manifest.webmanifest" ||
+      pathOnly === "/__grok/manifest.json"
+    ) {
+      const body = Buffer.from(
+        renderWebManifest(requestHost(req), site),
+        "utf8",
+      );
       res.statusCode = 200;
       res.setHeader("content-type", "application/manifest+json; charset=utf-8");
       res.setHeader("cache-control", "no-cache");
@@ -62,9 +71,13 @@ function serveGrokPwa(middlewares) {
       return;
     }
 
-    if (isInstallQuery(rawUrl) && isDocumentPath(pathOnly) && acceptsHtml(req.headers.accept)) {
+    if (
+      isInstallQuery(rawUrl) &&
+      isDocumentPath(pathOnly) &&
+      acceptsHtml(req.headers.accept)
+    ) {
       try {
-        sendHtml(res, renderInstallPage(requestHost(req), rawUrl));
+        sendHtml(res, renderInstallPage(requestHost(req), rawUrl, site));
       } catch (err) {
         console.error("[app-builder] install page missing:", err);
         res.statusCode = 500;
@@ -110,28 +123,36 @@ function wrapHtmlResponses(middlewares, cwd) {
 
     const decideMode = () => {
       if (mode) return mode;
-      const isHtml = String(res.getHeader("content-type") ?? "").includes("text/html");
+      const isHtml = String(res.getHeader("content-type") ?? "").includes(
+        "text/html",
+      );
       const encoded = Boolean(res.getHeader("content-encoding"));
       mode = isHtml && !encoded ? "inject" : "passthrough";
       // Streaming SSR flushes headers before the first body chunk, so the
       // header may no longer be removable — chunked responses don't carry one.
-      if (mode === "inject" && !res.headersSent) res.removeHeader("content-length");
+      if (mode === "inject" && !res.headersSent)
+        res.removeHeader("content-length");
       return mode;
     };
 
     const toBuffer = (chunk, encoding) => {
       if (Buffer.isBuffer(chunk)) return chunk;
       if (typeof chunk === "string") {
-        return Buffer.from(chunk, typeof encoding === "string" ? encoding : "utf8");
+        return Buffer.from(
+          chunk,
+          typeof encoding === "string" ? encoding : "utf8",
+        );
       }
       return Buffer.from(chunk);
     };
 
     res.write = (chunk, encoding, cb) => {
-      if (decideMode() === "passthrough") return originalWrite(chunk, encoding, cb);
+      if (decideMode() === "passthrough")
+        return originalWrite(chunk, encoding, cb);
       const done = typeof encoding === "function" ? encoding : cb;
       if (chunk) {
-        for (const out of injector.push(toBuffer(chunk, encoding))) originalWrite(out);
+        for (const out of injector.push(toBuffer(chunk, encoding)))
+          originalWrite(out);
       }
       if (typeof done === "function") done();
       return true;
@@ -139,9 +160,11 @@ function wrapHtmlResponses(middlewares, cwd) {
 
     res.end = (chunk, encoding, cb) => {
       const done = typeof encoding === "function" ? encoding : cb;
-      if (decideMode() === "passthrough") return originalEnd(chunk, encoding, cb);
+      if (decideMode() === "passthrough")
+        return originalEnd(chunk, encoding, cb);
       if (chunk) {
-        for (const out of injector.push(toBuffer(chunk, encoding))) originalWrite(out);
+        for (const out of injector.push(toBuffer(chunk, encoding)))
+          originalWrite(out);
       }
       for (const out of injector.flush()) originalWrite(out);
       return originalEnd(undefined, undefined, done);
@@ -174,11 +197,17 @@ export function grokPwaPlugin() {
     configureServer(server) {
       // Registered directly (not in a returned post-hook) so both run BEFORE
       // TanStack Start's SSR middleware, like the auth-popup plugin.
-      serveGrokPwa(server.middlewares);
+      serveGrokPwa(
+        server.middlewares,
+        snapshotOgIdentity(server.config.root).site,
+      );
       wrapHtmlResponses(server.middlewares, root);
     },
     configurePreviewServer(server) {
-      serveGrokPwa(server.middlewares);
+      serveGrokPwa(
+        server.middlewares,
+        snapshotOgIdentity(server.config.root).site,
+      );
       // Post-hook: preview registers compression between the direct hooks and
       // the post-hooks, and the injector must wrap AFTER compression so it
       // sees plaintext HTML (compression then compresses the injected output).
