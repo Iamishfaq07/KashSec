@@ -171,10 +171,10 @@ function PathRow({ path, done }: { path: PathInfo; done: Record<string, true> })
       <Link
         to="/paths/$pathId"
         params={{ pathId: path.id }}
-        className="card grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-2xl border border-line bg-bg-raised px-3 py-3"
+        className="card grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 rounded-2xl border border-line bg-bg-raised px-3 py-3"
       >
         <span className="font-display text-2xl text-amber">{path.n}</span>
-        <span>
+        <span className="min-w-0 break-words">
           <span className="block text-fg">{path.title}</span>
           <span className="text-sm text-faint">{path.level}</span>
         </span>

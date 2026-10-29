@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { BookOpen, Compass, FlaskConical, Flame, House, Library, Search, Wrench } from "lucide-react";
 import { paths, lessonCount } from "@/lib/catalog";
@@ -16,6 +17,8 @@ const nav = [
 export function Shell({ children }: { children: React.ReactNode }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const [open, setOpen] = useState(false);
+  const [searchReady, setSearchReady] = useState(false);
+  const closeSearch = useCallback(() => setOpen(false), []);
   const hydrated = useProgress((state) => state.hydrated);
   const days = useProgress((state) => state.days);
   const done = useProgress((state) => state.done);
@@ -23,6 +26,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const doneCount = hydrated ? Object.keys(done).length : 0;
 
   useEffect(() => {
+    setSearchReady(true);
     void useProgress.persist.rehydrate();
   }, []);
 
@@ -62,6 +66,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
           <div className="ml-auto flex items-center gap-2">
             <button
               type="button"
+              disabled={!searchReady}
+              aria-label="Search the academy"
               onClick={() => setOpen(true)}
               className="press inline-flex h-11 items-center gap-2 rounded-full border border-line bg-surface px-3 text-sm text-muted"
             >
@@ -90,7 +96,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
             { to: "/tools", label: "Tools", icon: Wrench, exact: false },
             { to: "/progress", label: "You", icon: BookOpen, exact: false },
           ].map((item) => {
-            const active = item.exact ? pathname === "/" : pathname.startsWith(item.to);
+            const active = item.exact ? pathname === "/" : pathname.startsWith(item.to) || (item.to === "/labs" && pathname.startsWith("/expert-labs"));
             const Icon = item.icon;
             return (
               <li key={item.to}>
@@ -109,7 +115,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
           })}
         </ul>
       </nav>
-      {open ? <SearchDialog onClose={() => setOpen(false)} /> : null}
+      {open ? <SearchDialog onClose={closeSearch} /> : null}
     </div>
   );
 }
@@ -139,17 +145,41 @@ function loadGlossary() {
 function SearchDialog({ onClose }: { onClose: () => void }) {
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
+  const dialog = useRef<HTMLDivElement>(null);
+  const input = useRef<HTMLInputElement>(null);
   const [glossary, setGlossary] = useState<GlossaryHit[]>([]);
 
-  useEffect(() => {
-    let cancelled = false;
-    void loadGlossary().then((terms) => {
-      if (!cancelled) setGlossary(terms);
-    });
+  useLayoutEffect(() => {
+    const trigger = document.activeElement as HTMLElement | null;
+    const overlay = dialog.current!.parentElement!;
+    const siblings = [...document.body.children].filter((el): el is HTMLElement => el instanceof HTMLElement && el !== overlay);
+    const previous = siblings.map((el) => el.inert);
+    siblings.forEach((el) => { el.inert = true; });
+    input.current?.focus();
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") { event.preventDefault(); onClose(); }
+      if (event.key === "Tab") {
+        const targets = [...dialog.current!.querySelectorAll<HTMLElement>('input, button, a[href]')];
+        const index = targets.indexOf(document.activeElement as HTMLElement);
+        if (event.shiftKey && index <= 0) { event.preventDefault(); targets.at(-1)?.focus(); }
+        else if (!event.shiftKey && (index < 0 || index === targets.length - 1)) { event.preventDefault(); targets[0]?.focus(); }
+      }
+    }
+    document.addEventListener("keydown", onKey);
     return () => {
-      cancelled = true;
+      document.removeEventListener("keydown", onKey);
+      siblings.forEach((el, index) => { el.inert = previous[index]; });
+      if (trigger?.isConnected) trigger.focus();
     };
-  }, []);
+  }, [onClose]);
+
+  const wantsTerms = query.trim().length >= 2;
+  useEffect(() => {
+    if (!wantsTerms) return;
+    let cancelled = false;
+    void loadGlossary().then((terms) => { if (!cancelled) setGlossary(terms); });
+    return () => { cancelled = true; };
+  }, [wantsTerms]);
 
   const results = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -218,40 +248,39 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
   }, [query]);
 
   useEffect(() => {
-    function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") onClose();
-      if (event.key === "ArrowDown") {
-        event.preventDefault();
-        setActive((index) => Math.min(index + 1, results.length - 1));
-      }
-      if (event.key === "ArrowUp") {
-        event.preventDefault();
-        setActive((index) => Math.max(index - 1, 0));
-      }
-      if (event.key === "Enter" && results[active]) {
-        window.location.assign(results[active].href);
-      }
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [active, onClose, results]);
+    dialog.current?.querySelector(`[data-result="${active}"]`)?.scrollIntoView({ block: "nearest" });
+  }, [active]);
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-bg/70 px-4 pt-24" onClick={onClose}>
       <div
+        ref={dialog}
         role="dialog"
         aria-modal="true"
         aria-label="Search the academy"
         className="w-full max-w-xl overflow-hidden rounded-card border border-line bg-bg-raised shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
+        <div className="flex items-center">
         <input
-          autoFocus
+          ref={input}
+          aria-label="Search lessons, labs, terms and tools"
+          onKeyDown={(event) => {
+            if (event.nativeEvent.isComposing || event.ctrlKey || event.metaKey || event.altKey) return;
+            if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+              event.preventDefault();
+              if (results.length) setActive((index) => (index + (event.key === "ArrowDown" ? 1 : -1) + results.length) % results.length);
+            }
+            if (event.key === "Enter" && results[active]) { event.preventDefault(); window.location.assign(results[active].href); }
+          }}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Lessons, labs, terms, tools"
-          className="h-14 w-full bg-transparent px-4 text-fg outline-none placeholder:text-faint"
+          className="h-14 min-w-0 flex-1 bg-transparent px-4 text-fg outline-none placeholder:text-faint"
         />
+        <button type="button" onClick={onClose} className="mr-2 min-h-11 rounded border border-line px-3 text-sm">Close</button>
+        </div>
+        <p className="sr-only" role="status">{results[active] ? `${active + 1} of ${results.length}: ${results[active].title}. Use up and down arrows, then Enter to open.` : "No results."}</p>
         <ul className="max-h-80 overflow-auto border-t border-line">
           {results.length === 0 ? (
             <li className="px-4 py-6 text-sm text-muted">Nothing matches that.</li>
@@ -260,12 +289,15 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
               <li key={item.href + item.title}>
                 <a
                   href={item.href}
+                  data-result={index}
+                  onFocus={() => setActive(index)}
+                  onMouseEnter={() => setActive(index)}
                   className={cn(
                     "flex items-baseline justify-between gap-3 px-4 py-3",
                     index === active ? "bg-surface" : "",
                   )}
                 >
-                  <span>{item.title}</span>
+                  <span className="min-w-0 flex-1 break-words">{item.title}</span>
                   <span className="shrink-0 text-xs text-faint">{item.meta}</span>
                 </a>
               </li>
@@ -273,6 +305,6 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
           )}
         </ul>
       </div>
-    </div>
+    </div>, document.body
   );
 }

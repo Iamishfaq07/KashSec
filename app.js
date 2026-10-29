@@ -263,25 +263,27 @@ function ensurePdf(){
    background so deep matches fill in behind it. */
 let searchPreviewPromise = null;
 function ensureSearchPreview(){
-  if(typeof SEARCH_PREVIEW !== 'undefined') return Promise.resolve();
+  if(typeof SEARCH_PREVIEW !== 'undefined' && Array.isArray(SEARCH_PREVIEW)) return Promise.resolve();
   if(searchPreviewPromise) return searchPreviewPromise;
-  searchPreviewPromise = loadScript('search-preview.js')
+  searchPreviewPromise = withTimeout(loadScript('search-preview.js'), 12000, 'Loading search preview')
+    .then(()=>{ if(typeof SEARCH_PREVIEW === 'undefined' || !Array.isArray(SEARCH_PREVIEW)) throw new Error('Search preview unavailable'); })
     .catch(err=>{ searchPreviewPromise = null; throw err; });
   return searchPreviewPromise;
 }
 
 let searchContentPromise = null;
 function ensureSearchContent(){
-  if(typeof SEARCH_CONTENT !== 'undefined') return Promise.resolve();
+  if(typeof SEARCH_CONTENT !== 'undefined' && Array.isArray(SEARCH_CONTENT)) return Promise.resolve();
   if(searchContentPromise) return searchContentPromise;
-  searchContentPromise = loadScript('search-index.js').catch(err=>{ searchContentPromise = null; throw err; });
+  searchContentPromise = withTimeout(loadScript('search-index.js'), 12000, 'Loading lesson search')
+    .then(()=>{ if(typeof SEARCH_CONTENT === 'undefined' || !Array.isArray(SEARCH_CONTENT)) throw new Error('Lesson search unavailable'); }).catch(err=>{ searchContentPromise = null; throw err; });
   return searchContentPromise;
 }
 
 /* Whichever tier is loaded, fullest first. */
 function searchBodies(){
-  if(typeof SEARCH_CONTENT !== 'undefined') return SEARCH_CONTENT;
-  if(typeof SEARCH_PREVIEW !== 'undefined') return SEARCH_PREVIEW;
+  if(typeof SEARCH_CONTENT !== 'undefined' && Array.isArray(SEARCH_CONTENT)) return SEARCH_CONTENT;
+  if(typeof SEARCH_PREVIEW !== 'undefined' && Array.isArray(SEARCH_PREVIEW)) return SEARCH_PREVIEW;
   return null;
 }
 
@@ -14366,28 +14368,26 @@ function buildSearchOverlay(){
       <div class="search-input-row">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" id="searchInput" aria-label="Search lessons" placeholder="Search lessons or jump to a page, tool, or lab…" autocomplete="off" spellcheck="false">
-        <kbd>Esc</kbd>
+        <button type="button" class="search-close" aria-label="Close search">Close</button>
       </div>
+      <p class="search-selection sr-only" id="searchSelection" role="status" aria-live="polite"></p>
+      <div class="search-status" id="searchLoadStatus"></div>
       <div class="search-results" id="searchResults"></div>
     </div>
   `;
   document.body.appendChild(searchOverlay);
   searchOverlay.addEventListener('click', (e)=>{ if(e.target === searchOverlay) closeSearch(); });
   const input = searchOverlay.querySelector('#searchInput');
+  searchOverlay.querySelector('.search-close').addEventListener('click', closeSearch);
+  searchOverlay.querySelector('#searchLoadStatus').addEventListener('click', e=>{
+    if(e.target.closest('[data-search-retry]')){ input.focus(); loadSearchBodies(true); }
+  });
   input.addEventListener('input', ()=>{
-    const q = input.value;
-    runSearch(q);
-    // First real query is what triggers the body-text download, not opening
-    // the overlay. Two characters is where body matching starts anyway.
-    if(q.trim().length >= 2){
-      loadSearchBodies(()=>{
-        if(searchOverlay && searchOverlay.classList.contains('open') && input.value.trim()){
-          runSearch(input.value);
-        }
-      });
-    }
+    runSearch(input.value);
+    if(input.value.trim().length >= 2) loadSearchBodies();
   });
   input.addEventListener('keydown', (e)=>{
+    if(e.isComposing || e.ctrlKey || e.metaKey || e.altKey) return;
     if(e.key === 'ArrowDown'){ e.preventDefault(); moveSearchSelection(1); }
     else if(e.key === 'ArrowUp'){ e.preventDefault(); moveSearchSelection(-1); }
     else if(e.key === 'Enter'){ e.preventDefault(); const r = searchCurrentResults[searchActiveIndex] || searchCurrentResults[0]; if(r) goToSearchResult(r); }
@@ -14397,8 +14397,15 @@ function buildSearchOverlay(){
 
 function escapeRegex(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 function highlightMatch(text, q){
-  if(!q) return text;
-  return text.replace(new RegExp('(' + escapeRegex(q) + ')', 'ig'), '<mark>$1</mark>');
+  text = String(text || '');
+  if(!q) return escapeHtml(text);
+  const re = new RegExp(escapeRegex(q), 'ig');
+  let html = '', from = 0;
+  for(const match of text.matchAll(re)){
+    html += escapeHtml(text.slice(from, match.index)) + '<mark>' + escapeHtml(match[0]) + '</mark>';
+    from = match.index + match[0].length;
+  }
+  return html + escapeHtml(text.slice(from));
 }
 
 /* Command-palette actions: navigation, tools, labs, and a couple of toggles.
@@ -14422,30 +14429,9 @@ function getCommands(){
     ['Career-fit quiz','#/career-quiz','puzzle'],['Shuffle quiz','#/quiz/shuffle','dice'],
     ['Learning transcript','#/transcript','doc'],['Review missed questions','#/quiz/missed','refresh']
   ].map(([t,u,i])=>({title:t, url:u, icon:i, ctx:'Go to', keywords:t.toLowerCase()}));
-  const tools = (typeof TOOLS!=='undefined'?TOOLS:[]).map(t=>({title:'Tool: '+t.title, url:`#/tools/${t.id}`, icon:t.ico, ctx:'Tool', keywords:(t.title+' '+t.desc).toLowerCase()}));
-  const labs = [
-    {title:'Lab: Terminal Simulator', url:'#/labs/terminal', icon:'🖥', kw:'terminal linux bash'},
-    {title:'Lab: Vulnerable Web App', url:'#/labs/webapp', icon:'🕸', kw:'xss web login'},
-    {title:'Lab: SQL Injection Sandbox', url:'#/labs/sqli', icon:'💉', kw:'sql injection sqli'},
-    {title:'Lab: Phishing Spotter', url:'#/labs/phishing', icon:'🎣', kw:'phishing email'},
-    {title:'Lab: Packet Capture Viewer', url:'#/labs/pcap', icon:'📡', kw:'pcap wireshark packets'},
-    {title:'Lab: IDOR Playground', url:'#/labs/idor', icon:'🔓', kw:'idor bola access control'},
-    {title:'Lab: JWT Forgery Lab', url:'#/labs/jwt', icon:'🪪', kw:'jwt token alg none forgery'},
-    {title:'Lab: Path Traversal Playground', url:'#/labs/traversal', icon:'📂', kw:'path traversal lfi directory'},
-    {title:'Lab: SSRF Playground', url:'#/labs/ssrf', icon:'🌐', kw:'ssrf server side request forgery metadata'},
-    {title:'Lab: XXE Playground', url:'#/labs/xxe', icon:'📄', kw:'xxe xml external entity'},
-    {title:'Lab: Log Analysis / IR', url:'#/labs/loganalysis', icon:'📜', kw:'log analysis incident response soc'},
-    {title:'Lab: OSINT Sandbox', url:'#/labs/osint', icon:'🔍', kw:'osint recon reconnaissance'},
-    {title:'Lab: BOLA/BFLA Playground', url:'#/labs/bola-bfla', icon:'🗂', kw:'bola bfla api authorization idor'},
-    {title:'Lab: GraphQL Introspection Abuse', url:'#/labs/graphql-introspection', icon:'🕸', kw:'graphql introspection api schema'},
-    {title:'Lab: Mass Assignment Toy', url:'#/labs/mass-assignment', icon:'🧩', kw:'mass assignment api json allow-list'},
-    {title:'Lab: Rate-Limit Bypass Simulator', url:'#/labs/rate-limit-bypass', icon:'🚦', kw:'rate limit bypass api brute force x-forwarded-for'},
-    {title:'Lab: Prompt Injection Simulator', url:'#/labs/prompt-injection', icon:'💬', kw:'prompt injection ai llm chatbot system prompt'},
-    {title:'Lab: Jailbreak Playground', url:'#/labs/jailbreak', icon:'🔓', kw:'jailbreak ai llm roleplay dan bypass'},
-    {title:'Lab: Indirect Prompt Injection Challenge', url:'#/labs/indirect-injection', icon:'🪤', kw:'indirect prompt injection ai agent llm'},
-    {title:'Lab: Agentic Risk Scenario', url:'#/labs/agentic-risk', icon:'🤖', kw:'agentic ai agent risk tool access injection'},
-    {title:'Lab: Active Directory Attack Lab', url:'#/labs/ad-attack', icon:'🏰', kw:'active directory bloodhound kerberoast golden ticket krbtgt domain admin'}
-  ].map(l=>({title:l.title, url:l.url, icon:l.icon, ctx:'Lab', keywords:(l.title+' '+l.kw).toLowerCase()}));
+  const tools = (typeof TOOLS!=='undefined'?TOOLS:[]).map(t=>({title:'Tool: '+t.title, url:`#/tools/${t.id}`, icon:t.ico, ctx:'Tool', desc:t.desc, keywords:(t.title+' '+t.desc).toLowerCase()}));
+  const labs = LABS.map(l=>({title:'Lab: '+l.title, url:`#/labs/${l.id}`, icon:l.ico, ctx:'Lab',
+    desc:l.desc, keywords:(l.title+' '+l.desc+' '+l.id+' '+l.related).toLowerCase()}));
   const actions = [
     {title:'Random lesson', icon:'🎲', ctx:'Action', keywords:'random surprise lesson', run:()=>{ const r=pickRandomLesson(); location.hash=`#/lesson/${r.pathId}/${r.subId}`; }},
     {title:'Toggle light / dark theme', icon:'🌓', ctx:'Action', keywords:'theme dark light mode', run:()=>toggleTheme()}
@@ -14462,47 +14448,44 @@ function renderSearchPage(rawQuery){
   const q = (rawQuery || '').trim();
   document.title = q ? `${q} — search · KashSec Academy` : 'Search · KashSec Academy';
 
+  app.innerHTML = `
+    <section class="sec">
+      <div class="sec-eyebrow">Search</div>
+      <h1 class="sec-title">${q ? `Results for “${escapeHtml(q)}”` : 'Search the course'}</h1>
+      <form class="searchpage-form" id="searchPageForm" role="search">
+        <input class="searchpage-input" id="searchPageInput" type="search" name="q"
+          value="${escapeHtml(q)}" placeholder="Search ${totalSubLessons()} lessons, tools and labs…"
+          autocomplete="off" spellcheck="false" aria-label="Search the course">
+        <button class="btn-amber" type="submit">Search</button>
+      </form>
+      <div id="searchPageStatus" role="status" aria-live="polite"></div>
+      <div class="searchpage-results" id="searchPageResults"></div>
+    </section>`;
+  const status = document.getElementById('searchPageStatus');
+  const hits = document.getElementById('searchPageResults');
   function paint(){
-    const bodies = searchBodies();
-    const results = q ? searchAll(q) : [];
-    app.innerHTML = `
-      <section class="sec">
-        <div class="sec-eyebrow" data-reveal>Search</div>
-        <h1 class="sec-title" data-reveal style="--i:1">${q ? `Results for “${escapeHtml(q)}”` : 'Search the course'}</h1>
-        <form class="searchpage-form" id="searchPageForm" data-reveal style="--i:2" role="search">
-          <input class="searchpage-input" id="searchPageInput" type="search" name="q"
-            value="${escapeHtml(q)}" placeholder="Search ${totalSubLessons()} lessons, tools and labs…"
-            autocomplete="off" spellcheck="false" aria-label="Search the course">
-          <button class="btn-amber" type="submit">Search</button>
-        </form>
-        ${!q ? `<p class="sec-sub" data-reveal>Type above, or press <kbd>Ctrl</kbd>+<kbd>K</kbd> anywhere on the site.</p>` : `
-          <p class="sec-sub" data-reveal>
-            ${results.length ? `${results.length} result${results.length===1?'':'s'}` : 'No matches'}
-            ${!bodies ? ' · still loading lesson text…' : ''}
-          </p>
-          <div class="searchpage-results" data-reveal>
-            ${results.length ? results.map(r=>`
-              <a class="searchpage-hit" href="${r.url}">
-                <div class="sr-path">${escapeHtml(r.context || '')}${r._body ? ' · in lesson text' : ''}</div>
-                <div class="sr-title">${highlightMatch(r.title, q)}</div>
-                <div class="sr-desc">${highlightMatch(r.desc || '', q)}</div>
-              </a>`).join('')
-            : `<p class="search-empty">Nothing matched “${escapeHtml(q)}”. Try a shorter or more general term.</p>`}
-          </div>`}
-      </section>
-    `;
-    setupReveal();
-    const form = document.getElementById('searchPageForm');
-    form?.addEventListener('submit', e=>{
-      e.preventDefault();
-      const v = document.getElementById('searchPageInput').value.trim();
-      // Changing the hash re-enters the router, which repaints this page.
-      location.hash = v ? `#/search?q=${encodeURIComponent(v)}` : '#/search';
-    });
+    // Update only the result region owned by this route. Leave typed drafts,
+    // selection, and focus in the form intact when a body tier arrives.
+    if(!hits.isConnected) return;
+    const results = q ? searchAll(q).filter(r=>!r.run) : [];
+    status.innerHTML = !q ? '<p class="sec-sub">Search lessons, paths, tools and labs, or press Ctrl+K for quick actions.</p>' :
+      `<p class="sec-sub">${results.length ? `${results.length} result${results.length===1?'':'s'}` : 'No matches'}</p>` + searchStatus(q);
+    hits.innerHTML = results.map(r=>`
+      <a class="searchpage-hit" href="${r.url}">
+        <div class="sr-path">${escapeHtml(r.context || r.ctx || '')}${r._body ? ' · in lesson text' : ''}</div>
+        <div class="sr-title">${highlightMatch(r.title, q)}</div>
+        <div class="sr-desc">${highlightMatch(r.desc || '', q)}</div>
+      </a>`).join('') || (q ? `<p class="search-empty">Nothing matched “${escapeHtml(q)}”. Try a shorter or more general term.</p>` : '');
   }
-
+  document.getElementById('searchPageForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const value = document.getElementById('searchPageInput').value.trim();
+    location.hash = value ? `#/search?q=${encodeURIComponent(value)}` : '#/search';
+  });
+  status.addEventListener('click', e=>{if(e.target.closest('[data-search-retry]')){ document.getElementById('searchPageInput').focus(); loadSearchBodies(true); }});
+  refreshSearchPage = paint;
   paint();
-  if(q.length >= 2) loadSearchBodies(()=>{ if(location.hash.startsWith('#/search')) paint(); });
+  if(q.length >= 2) loadSearchBodies();
 }
 
 /* The matcher behind both the overlay and the page. Extracted so the two
@@ -14534,80 +14517,58 @@ function searchAll(q){
       bodyHits.push({type:'lesson', title:c.t, desc:snippet, url, context:`${c.n} · ${c.pt}`, score:15, _body:true});
     }
   }
-  return titleHits.concat(bodyHits).sort((a,b)=>b.score-a.score).slice(0,60);
+  const commands = getCommands().map(c=>{
+    const title = c.title.toLowerCase();
+    return {...c, score:title.startsWith(ql)||title.replace(/^(tool|lab): /,'').startsWith(ql)?95:c.keywords.includes(ql)?60:-1};
+  }).filter(c=>c.score>=0);
+  return commands.concat(titleHits,bodyHits).sort((a,b)=>b.score-a.score).slice(0,60);
 }
 
-function runSearch(q){
+function runSearch(q, preserveSelection = false){
+  const previous = preserveSelection ? searchCurrentResults[searchActiveIndex] : null;
+  const focused = preserveSelection && document.activeElement?.closest('#searchResults .search-result');
   const resultsEl = document.getElementById('searchResults');
   q = q.trim();
+  document.getElementById('searchLoadStatus').innerHTML = searchStatus(q);
   if(!q){
     // Empty query → command palette: show quick actions to jump anywhere.
     const cmds = getCommands();
     searchCurrentResults = cmds;
-    searchActiveIndex = -1;
+    searchActiveIndex = 0;
     resultsEl.innerHTML = `<div class="search-hint">Jump to a page, open a tool, or search all lessons — start typing.</div>` +
       cmds.map((r,i)=>renderCmdRow(r,i)).join('');
     wireSearchRows(resultsEl);
     return;
   }
-  const ql = q.toLowerCase();
-  const cmdHits = getCommands()
-    .map(c=>{ let score=-1; const t=c.title.toLowerCase(); if(t.startsWith(ql)||t.replace(/^(tool|lab): /,'').startsWith(ql)) score=95; else if(c.keywords.includes(ql)) score=60; return {...c, score}; })
-    .filter(c=>c.score>-1);
-  const titleHits = SEARCH_INDEX
-    .map(item=>{
-      const t = item.title.toLowerCase(), d = item.desc.toLowerCase();
-      let score = -1;
-      if(t.startsWith(ql)) score = 100;
-      else if(t.includes(ql)) score = 70;
-      else if(d.includes(ql)) score = 30;
-      return {...item, score};
-    })
-    .filter(item=>item.score > -1);
-
-  const matchedUrls = new Set(titleHits.map(r=>r.url));
-  let bodyHits = [];
-  // Full-text body matches, if the content index has loaded. Only add lessons
-  // not already matched by title/desc, and attach a snippet around the hit.
-  const bodies = searchBodies();
-  if(bodies && ql.length >= 2){
-    for(const c of bodies){
-      const url = `#/lesson/${c.p}/${c.s}`;
-      if(matchedUrls.has(url)) continue;
-      const idx = c.b.toLowerCase().indexOf(ql);
-      if(idx === -1) continue;
-      const from = Math.max(0, idx - 40);
-      const snippet = (from>0?'…':'') + c.b.slice(from, idx + ql.length + 60) + '…';
-      bodyHits.push({type:'lesson', title:c.t, desc:snippet, url, context:`${c.n} · ${c.pt}`, score:15, _body:true});
-    }
-  }
-
-  searchCurrentResults = cmdHits.concat(titleHits, bodyHits)
-    .sort((a,b)=>b.score-a.score)
-    .slice(0,40);
+  searchCurrentResults = searchAll(q).slice(0,40);
 
   searchActiveIndex = searchCurrentResults.length ? 0 : -1;
   if(!searchCurrentResults.length){
-    const loading = !searchBodies();
-    resultsEl.innerHTML = `<div class="search-empty">Nothing matched "${escapeHtml(q)}".${loading?' Searching lesson text…':''}</div>`;
+    resultsEl.innerHTML = `<div class="search-empty">Nothing matched “${escapeHtml(q)}”. Try a shorter or more general term.</div>`;
+    updateSearchActiveClass();
     return;
   }
   resultsEl.innerHTML = searchCurrentResults.map((r,i)=> r.type==='command'
     ? renderCmdRow(r,i,q)
     : `<a class="search-result ${i===0?'active':''}" href="${r.url}" data-idx="${i}">
-        <div class="sr-path">${r.context}${r.type==='path'?' · Path overview':r._body?' · in lesson text':''}</div>
+        <div class="sr-path">${escapeHtml(r.context || '')}${r.type==='path'?' · Path overview':r._body?' · in lesson text':''}</div>
         <div class="sr-title">${highlightMatch(r.title, q)}</div>
-        <div class="sr-desc">${r._body ? highlightMatch(escapeHtml(r.desc), q) : highlightMatch(r.desc, q)}</div>
+        <div class="sr-desc">${highlightMatch(r.desc, q)}</div>
       </a>`
   ).join('');
   wireSearchRows(resultsEl);
+  if(previous){
+    const index = searchCurrentResults.findIndex(r=>r.url===previous.url && r.title===previous.title);
+    if(index>=0){searchActiveIndex = index; updateSearchActiveClass();}
+    if(focused) resultsEl.querySelectorAll('.search-result')[searchActiveIndex]?.focus({preventScroll:true});
+  }
 }
 
 function renderCmdRow(r, i, q){
   return `<a class="search-result cmd-row ${i===0?'active':''}" href="${r.url||'#'}" data-idx="${i}">
     <span class="cmd-ico">${r.icon ? cardIco(r.icon) : '▸'}</span>
     <div style="min-width:0">
-      <div class="sr-title">${q?highlightMatch(escapeHtml(r.title),q):escapeHtml(r.title)}</div>
+      <div class="sr-title">${highlightMatch(r.title,q)}</div>
       <div class="sr-path">${r.ctx}</div>
     </div>
   </a>`;
@@ -14615,9 +14576,15 @@ function renderCmdRow(r, i, q){
 
 function wireSearchRows(resultsEl){
   resultsEl.querySelectorAll('.search-result').forEach(el=>{
-    el.addEventListener('click', (e)=>{ e.preventDefault(); goToSearchResult(searchCurrentResults[parseInt(el.getAttribute('data-idx'),10)]); });
+    el.addEventListener('click', (e)=>{
+      const result = searchCurrentResults[Number(el.dataset.idx)];
+      if(!result.run && (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button!==0)) return;
+      e.preventDefault(); goToSearchResult(result);
+    });
+    el.addEventListener('focus', ()=>{ searchActiveIndex = Number(el.dataset.idx); updateSearchActiveClass(); });
     el.addEventListener('mouseenter', ()=>{ searchActiveIndex = parseInt(el.getAttribute('data-idx'),10); updateSearchActiveClass(); });
   });
+  updateSearchActiveClass();
 }
 
 function moveSearchSelection(dir){
@@ -14627,7 +14594,9 @@ function moveSearchSelection(dir){
   document.querySelectorAll('.search-result')[searchActiveIndex]?.scrollIntoView({block:'nearest'});
 }
 function updateSearchActiveClass(){
-  document.querySelectorAll('.search-result').forEach((el,i)=> el.classList.toggle('active', i===searchActiveIndex));
+  searchOverlay.querySelectorAll('.search-result').forEach((el,i)=> el.classList.toggle('active', i===searchActiveIndex));
+  const current = searchCurrentResults[searchActiveIndex];
+  document.getElementById('searchSelection').textContent = current ? `${searchActiveIndex+1} of ${searchCurrentResults.length}: ${current.title}. Use up and down arrows, then Enter to open.` : 'No results.';
 }
 function goToSearchResult(r){
   if(!r) return;
@@ -14653,14 +14622,29 @@ function openSearch(){
 /* Called on the first keystroke of a real query. Loads the preview tier,
    re-runs the query so results appear immediately, then pulls the full
    index in behind it and re-runs once more. */
-let searchBodiesKicked = false;
-function loadSearchBodies(rerun){
-  if(searchBodiesKicked) return;
-  searchBodiesKicked = true;
-  ensureSearchPreview()
-    .then(()=>{ rerun(); return ensureSearchContent(); })
-    .then(()=>rerun())
-    .catch(()=>{ searchBodiesKicked = false; });
+let searchLoadState = 'idle', searchLoadPromise = null, refreshSearchPage = null;
+function searchStatus(q){
+  if(q.length < 2) return q ? '<p class="search-hint">Type at least two characters to search inside lessons.</p>' : '';
+  if(searchLoadState === 'ready') return '';
+  if(searchLoadState === 'error' || searchLoadState === 'partial'){
+    return `<p class="search-hint">${searchBodies() ? 'Showing titles and a preview of lesson text.' : 'Showing titles, tools and labs.'} Full lesson search is unavailable. <button type="button" data-search-retry>Retry lesson search</button></p>`;
+  }
+  return '<p class="search-hint" role="status">Searching lesson text…</p>';
+}
+function refreshSearchViews(){
+  refreshSearchPage?.();
+  if(searchOverlay?.classList.contains('open')) runSearch(document.getElementById('searchInput').value, true);
+}
+function loadSearchBodies(retry = false){
+  if(searchLoadPromise || searchLoadState === 'ready' || (!retry && searchLoadState !== 'idle')) return;
+  searchLoadState = 'loading';
+  refreshSearchViews();
+  searchLoadPromise = (async()=>{
+    // A failed preview must not prevent the full tier from being tried.
+    try{ await ensureSearchPreview(); refreshSearchViews(); }catch{}
+    try{ await ensureSearchContent(); searchLoadState = 'ready'; }
+    catch{ searchLoadState = searchBodies() ? 'partial' : 'error'; }
+  })().finally(()=>{searchLoadPromise = null; refreshSearchViews();});
 }
 function closeSearch(){
   closeDialog(searchOverlay);
