@@ -86,6 +86,17 @@ export const EXPERT_LABS = [
 const STORAGE_KEY='kashsec_expert_labs_v1';
 const VERSION=1;
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function readDrafts(){
+  const parsed=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');
+  if(!parsed||Array.isArray(parsed)||typeof parsed!=='object')throw Error('Invalid drafts');
+  return parsed;
+}
+function draftSummary(record){
+  const answers=Array.isArray(record?.answers)?record.answers:[];
+  const answered=answers.slice(0,4).filter(a=>Number.isInteger(a)&&a>=0&&a<4).length;
+  const hasNotes=typeof record?.notes==='string'&&record.notes.trim().length>0;
+  return {started:answered>0||hasNotes,text:answered||hasNotes?`Saved draft · ${answered}/4 answers · ${hasNotes?'report started':'no report notes yet'}`:'No saved draft'};
+}
 let stylePromise=null;
 export function prepareExpertStyles(){
   const existing=document.getElementById('expertLabsStyles');
@@ -119,7 +130,14 @@ export function mountExpertLabs({root,id=null,href=lab=>lab?`/expert-labs/${lab}
   };
   if(id&&!lab){root.innerHTML=`<section class="ex-page">${tabs}<h1>That expert lab is not available</h1><a href="${href(null)}" data-expert="">Browse Expert Labs</a></section>`;wireNavigation();return ()=>{};}
   if(!lab){
-    root.innerHTML=`<section class="ex-page">${tabs}<p class="ex-eyebrow">Advanced practice · four evidence-led cases</p><h1>Expert Labs</h1><p class="ex-lead">Move from spotting a bug to proving a fix. Read the evidence, repair a small implementation, and write a review another engineer can reproduce.</p><p>Each case combines browser review with a downloadable Python exercise. Python 3.10+ is required for the coding work; no packages, account, network, or cloud spend are needed. Time estimates include writing your report.</p><div class="ex-grid">${EXPERT_LABS.map(item=>`<article class="ex-card"><p class="ex-eyebrow">${item.track} · about ${item.minutes} min</p><h2><a href="${href(item.id)}" data-expert="${item.id}">${item.title}</a></h2><p>${item.summary}</p><p><strong>Deliver:</strong> a fix, passing tests, and a review with remaining risks.</p><a class="ex-button" href="${href(item.id)}" data-expert="${item.id}">Open case →</a></article>`).join('')}</div><section class="ex-card"><h2>Go further with maintained lab platforms</h2><p>Use these after the local cases. Their requirements and progress are separate from KashSec.</p><ul><li><a href="https://portswigger.net/web-security/all-labs" target="_blank" rel="noopener noreferrer">PortSwigger Web Security Academy</a> — use the Expert difficulty filter for advanced web labs. A free account and an HTTP testing tool may be needed; individual labs describe requirements.</li><li><a href="https://github.com/OWASP/crAPI" target="_blank" rel="noopener noreferrer">OWASP crAPI</a> — a full intentionally vulnerable API. Follow its current local-install instructions; it requires a container environment.</li><li><a href="https://github.com/OWASP/juice-shop" target="_blank" rel="noopener noreferrer">OWASP Juice Shop</a> — a full web application with advanced challenges. Use your own local instance and its current companion guide.</li></ul></section></section>`;
+    root.innerHTML=`<section class="ex-page">${tabs}<p class="ex-eyebrow">Advanced practice · four evidence-led cases</p><h1>Expert Labs</h1><p class="ex-lead">Move from spotting a bug to proving a fix. Read the evidence, repair a small implementation, and write a review another engineer can reproduce.</p><p>Each case combines browser review with a downloadable Python exercise. Python 3.10+ is required for the coding work; no packages, account, network, or cloud spend are needed. Time estimates include writing your report.</p><p id="exCollectionStatus" role="status"></p><p class="ex-note">Saved drafts show where you left off. Draft status does not mark coding work complete.</p><div class="ex-grid">${EXPERT_LABS.map(item=>`<article class="ex-card" data-expert-card="${item.id}"><p class="ex-eyebrow">${item.track} · about ${item.minutes} min</p><h2><a href="${href(item.id)}" data-expert="${item.id}">${item.title}</a></h2><p>${item.summary}</p><p><strong>Deliver:</strong> a fix, passing tests, and a review with remaining risks.</p><p data-draft-status="${item.id}" class="ex-note"></p><a class="ex-button" href="${href(item.id)}" data-expert="${item.id}" data-case-action="${item.id}">Open case →</a></article>`).join('')}</div><section class="ex-card"><h2>Go further with maintained lab platforms</h2><p>Use these after the local cases. Their requirements and progress are separate from KashSec.</p><ul><li><a href="https://portswigger.net/web-security/all-labs" target="_blank" rel="noopener noreferrer">PortSwigger Web Security Academy</a> — use the Expert difficulty filter for advanced web labs. A free account and an HTTP testing tool may be needed; individual labs describe requirements.</li><li><a href="https://github.com/OWASP/crAPI" target="_blank" rel="noopener noreferrer">OWASP crAPI</a> — a full intentionally vulnerable API. Follow its current local-install instructions; it requires a container environment.</li><li><a href="https://github.com/OWASP/juice-shop" target="_blank" rel="noopener noreferrer">OWASP Juice Shop</a> — a full web application with advanced challenges. Use your own local instance and its current companion guide.</li></ul></section></section>`;
+    let saved={},canReadDrafts=true;
+    try{saved=readDrafts();}catch(_){canReadDrafts=false;root.querySelector('#exCollectionStatus').textContent='Saved drafts could not be read in this browser. You can still open any case.';}
+    for(const item of EXPERT_LABS){
+      const summary=draftSummary(Object.hasOwn(saved,item.id)?saved[item.id]:null);
+      root.querySelector(`[data-draft-status="${item.id}"]`).textContent=canReadDrafts?summary.text:'Draft status unavailable';
+      root.querySelector(`[data-case-action="${item.id}"]`).textContent=summary.started?'Continue case →':'Open case →';
+    }
     wireNavigation();return ()=>{};
   }
   let drafts={},storageError=false;
@@ -131,30 +149,59 @@ export function mountExpertLabs({root,id=null,href=lab=>lab?`/expert-labs/${lab}
   let answers=lab.questions.map((q,i)=>Number.isInteger(stored.answers?.[i])&&stored.answers[i]>=0&&stored.answers[i]<q.options.length?stored.answers[i]:null);
   let notes=typeof stored.notes==='string'?stored.notes.slice(0,12000):'';
   let review=null;
-  root.innerHTML=`<section class="ex-page">${tabs}<p><a href="${href(null)}" data-expert="">← All expert cases</a></p><p class="ex-eyebrow">${lab.track} · about ${lab.minutes} min · expert case</p><h1>${lab.title}</h1><p class="ex-lead">${lab.mission}</p><p class="ex-notice">This is fictional evidence and local coding practice. A browser review is a self-check, not proof that you completed the implementation or mastered the subject.</p><h2>Before you start</h2><ul>${lab.prerequisites.map(item=>`<li><a href="${lessonHref(item.key)}">${item.label}</a></li>`).join('')}</ul><h2>1. Inspect the evidence</h2><p>Use the filenames when citing evidence in your report.</p><div class="ex-evidence">${lab.evidence.map(file=>`<details open><summary>${file.name}</summary><pre tabindex="0" aria-label="${file.name}"><code>${escape(file.body)}</code></pre></details>`).join('')}</div><button class="ex-button" type="button" id="exEvidence">Download evidence JSON</button><h2>2. Build and verify a fix</h2><ol>${lab.tasks.map(task=>`<li>${escape(task)}</li>`).join('')}</ol><p><a class="ex-button" href="/downloads/expert_security_lab.py" download>Download Python exercise</a> · Python 3.10+, standard library only</p><pre tabindex="0" aria-label="Exercise commands"><code>python expert_security_lab.py --lab ${lab.suite}
+  let baseline=JSON.stringify(Object.hasOwn(drafts,lab.id)?drafts[lab.id]:null);
+  let conflict=false;
+  root.innerHTML=`<section class="ex-page">${tabs}<p><a href="${href(null)}" data-expert="">← All expert cases</a></p><p class="ex-eyebrow">${lab.track} · about ${lab.minutes} min · expert case</p><h1>${lab.title}</h1><p class="ex-lead">${lab.mission}</p><p class="ex-notice">This is fictional evidence and local coding practice. A browser review is a self-check, not proof that you completed the implementation or mastered the subject.</p><nav class="ex-steps" aria-label="Case steps"><a data-case-step href="#exEvidenceHeading">1. Evidence</a><a data-case-step href="#exFixHeading">2. Fix & verify</a><a data-case-step href="#exReasoningHeading">3. Reasoning</a><a data-case-step href="#exReportHeading">4. Report</a></nav><h2>Before you start</h2><ul>${lab.prerequisites.map(item=>`<li><a href="${lessonHref(item.key)}">${item.label}</a></li>`).join('')}</ul><h2 id="exEvidenceHeading" tabindex="-1">1. Inspect the evidence</h2><p>Use the filenames when citing evidence in your report.</p><div class="ex-evidence">${lab.evidence.map(file=>`<details open><summary>${file.name}</summary><pre tabindex="0" aria-label="${file.name}"><code>${escape(file.body)}</code></pre></details>`).join('')}</div><button class="ex-button" type="button" id="exEvidence">Download evidence JSON</button><h2 id="exFixHeading" tabindex="-1">2. Build and verify a fix</h2><ol>${lab.tasks.map(task=>`<li>${escape(task)}</li>`).join('')}</ol><p><a class="ex-button" href="/downloads/expert_security_lab.py" download>Download Python exercise</a> · Python 3.10+, standard library only</p><pre tabindex="0" aria-label="Exercise commands"><code>python expert_security_lab.py --lab ${lab.suite}
 # Edit the matching starter function; keep tests unchanged.
 python expert_security_lab.py --lab ${lab.suite}
 # Optional comparison, which tests the supplied reference only:
-python expert_security_lab.py --lab ${lab.suite} --reference</code></pre><p><strong>Expected:</strong> starter mode initially fails. After your fix, the selected test method and its subcases pass. The full file contains four test methods, one per lab. Passing reference mode does not verify your edits.</p><details><summary>Hint 1 — find the boundary</summary><p>${lab.hints[0]}</p></details><details><summary>Hint 2 — plan the repair</summary><p>${lab.hints[1]}</p></details><p class="ex-notice"><strong>Limits:</strong> ${lab.limits}</p><h2>3. Check your reasoning</h2><p>Answer all four questions, then review the evidence-based explanations. You can revise and review again without a timer or penalty.</p><form id="exReviewForm">${lab.questions.map((q,qi)=>`<fieldset><legend>${qi+1}. ${escape(q.q)}</legend>${q.options.map((option,oi)=>`<label><input type="radio" name="ex-q-${qi}" value="${oi}" ${answers[qi]===oi?'checked':''}> <span>${escape(option)}</span></label>`).join('')}</fieldset>`).join('')}<button type="submit" class="ex-button">Review my reasoning</button><p id="exReviewStatus" role="status"></p></form><section id="exResults" hidden aria-labelledby="exResultHeading"></section><h2>4. Keep a reproducible report</h2><label for="exNotes">Your findings, fix, test results, and remaining risk</label><textarea id="exNotes" maxlength="12000" rows="10" placeholder="Evidence filenames and observations:
+python expert_security_lab.py --lab ${lab.suite} --reference</code></pre><p><strong>Expected:</strong> starter mode initially fails. After your fix, the selected test method and its subcases pass. The full file contains four test methods, one per lab. Passing reference mode does not verify your edits.</p><details><summary>Hint 1 — find the boundary</summary><p>${lab.hints[0]}</p></details><details><summary>Hint 2 — plan the repair</summary><p>${lab.hints[1]}</p></details><p class="ex-notice"><strong>Limits:</strong> ${lab.limits}</p><h2 id="exReasoningHeading" tabindex="-1">3. Check your reasoning</h2><p>Answer all four questions, then review the evidence-based explanations. You can revise and review again without a timer or penalty.</p><form id="exReviewForm">${lab.questions.map((q,qi)=>`<fieldset><legend>${qi+1}. ${escape(q.q)}</legend>${q.options.map((option,oi)=>`<label><input type="radio" name="ex-q-${qi}" value="${oi}" ${answers[qi]===oi?'checked':''}> <span>${escape(option)}</span></label>`).join('')}</fieldset>`).join('')}<button type="submit" class="ex-button">Review my reasoning</button><p id="exReviewStatus" role="status"></p></form><section id="exResults" hidden aria-labelledby="exResultHeading"></section><h2 id="exReportHeading" tabindex="-1">4. Keep a reproducible report</h2><label for="exNotes">Your findings, fix, test results, and remaining risk</label><textarea id="exNotes" maxlength="12000" rows="10" placeholder="Evidence filenames and observations:
 Allowed and denied cases:
 Fix and test command (without --reference):
 Result from my implementation:
-Remaining integration risk:"></textarea><p class="ex-note">Drafts stay on this browser, separately from course progress and account sync. Download your report to keep a copy. It contains only what you enter here and your self-check answers.</p><p id="exSaveStatus" role="status"></p><button class="ex-button" id="exReport" type="button">Download my report</button><p id="exDownloadStatus" role="status"></p></section>`;
+Remaining integration risk:"></textarea><p class="ex-note">Drafts stay on this browser, separately from course progress and account sync. Download your report to keep a copy. It contains only what you enter here and your self-check answers.</p><p id="exSaveStatus" role="status"></p><aside id="exConflict" class="ex-notice" hidden><p>The saved version is protected. Download your current report to keep both versions before loading the saved draft.</p><details><summary>View the saved report draft</summary><pre id="exOtherDraft" tabindex="0" aria-label="Saved report draft"></pre></details><button type="button" id="exUseSaved" class="ex-button">Load saved draft</button><p>This replaces the answers and notes currently shown here.</p></aside><button class="ex-button" id="exReport" type="button">Download my report</button><p id="exDownloadStatus" role="status"></p><nav class="ex-sequence" aria-label="Case sequence"><a class="ex-button" href="${href(null)}" data-expert="">All expert cases</a>${EXPERT_LABS[EXPERT_LABS.indexOf(lab)+1]?`<a class="ex-button" href="${href(EXPERT_LABS[EXPERT_LABS.indexOf(lab)+1].id)}" data-expert="${EXPERT_LABS[EXPERT_LABS.indexOf(lab)+1].id}">Next case: ${EXPERT_LABS[EXPERT_LABS.indexOf(lab)+1].title} →</a>`:""}</nav></section>`;
   const saveStatus=root.querySelector('#exSaveStatus');
-  const paintSave=()=>{saveStatus.textContent=storageError?'Could not read or save browser drafts. Your current work is available here; download a report before leaving.':'Draft saved on this browser.';};
+  const paintSave=()=>{saveStatus.textContent=storageError?'Could not read or save browser drafts. Your current work is available here; download a report before leaving.':conflict?'Another tab changed this case. Auto-save is paused to protect that saved draft. Your current work is still here and can be downloaded.':'Draft saved on this browser.';};
   const persist=()=>{
     // If reading failed, preserve the original record instead of overwriting it.
-    if(storageError){paintSave();return;}
+    if(storageError||conflict){paintSave();return;}
     try{
-      const latest=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');
-      if(!latest||Array.isArray(latest)||typeof latest!=='object')throw Error('Invalid drafts');
+      const latest=readDrafts();
+      const remote=Object.hasOwn(latest,lab.id)?latest[lab.id]:null;
+      if(JSON.stringify(remote)!==baseline){
+        conflict=true;
+        root.querySelector('#exConflict').hidden=false;
+        root.querySelector('#exOtherDraft').textContent=typeof remote?.notes==='string'?remote.notes.slice(0,12000):'(No report notes in the saved draft.)';
+        paintSave();return;
+      }
       drafts={...latest,[lab.id]:{answers,notes,version:VERSION}};
       localStorage.setItem(STORAGE_KEY,JSON.stringify(drafts));
+      baseline=JSON.stringify(drafts[lab.id]);
     }
     catch(_){storageError=true;}
     paintSave();
   };
   root.querySelector('#exNotes').value=notes;
+  root.querySelector('#exUseSaved').addEventListener('click',()=>{
+    try{
+      const latest=readDrafts();
+      const saved=Object.hasOwn(latest,lab.id)?latest[lab.id]:null;
+      if(!saved||Array.isArray(saved)||typeof saved!=='object'||typeof saved.notes!=='string'||saved.notes.length>12000||
+         !Array.isArray(saved.answers)||saved.answers.length!==lab.questions.length||
+         saved.answers.some((answer,i)=>answer!==null&&(!Number.isInteger(answer)||answer<0||answer>=lab.questions[i].options.length))){
+        saveStatus.textContent='The saved draft is no longer available. Your current work is still here and can be downloaded.';
+        return;
+      }
+    }catch(_){storageError=true;paintSave();return;}
+    mountExpertLabs({root,id,href,lessonHref,navigate});
+    root.querySelector('#exNotes').focus();
+  });
+  root.querySelectorAll('[data-case-step]').forEach(link=>link.addEventListener('click',event=>{
+    if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+    const heading=root.querySelector(link.getAttribute('href'));
+    if(!heading)return;
+    event.preventDefault();heading.scrollIntoView({behavior:'instant',block:'start'});heading.focus({preventScroll:true});
+  }));
   if(storageError)paintSave();else saveStatus.textContent=stored.notes||stored.answers?'Draft restored from this browser.':'Your draft will save on this browser as you work.';
   root.querySelector('#exNotes').addEventListener('input',event=>{notes=event.target.value;persist();});
   root.querySelector('#exReviewForm').addEventListener('change',event=>{

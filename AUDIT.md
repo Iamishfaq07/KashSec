@@ -1,5 +1,11 @@
 # Lesson reliability and course audit
 
+## Expert case workflow and changed-draft protection — 2026-10-29
+
+The Expert Labs collection now summarizes saved answers and report notes without claiming coding completion. Cases include keyboard-accessible section links and next-case navigation. Before each save, the editor compares the current saved case record with the version it loaded or last saved. A changed record pauses auto-save and preserves the current in-memory report for download. Loading the saved version reads it again and leaves current work intact if storage has become unreadable. Different cases continue to merge independently. This is changed-record detection, not a collaborative text editor or an atomic cross-process merge.
+
+`tests/expert-workflow.spec.js` exercises two real tabs, preservation of the newer saved case, local report export, loading the latest saved draft, failed reload, legacy and malformed draft summaries, keyboard focus without history changes, next-case navigation, narrow screens, and course-score isolation. The same suite runs against the main and preview readers through the existing expert test scripts.
+
 ## Expert Labs and deeper AppSec practice — 2026-10-29
 
 Production verification exposed a stylesheet-loading race: the case form could appear before its layout rules, briefly overflowing a narrow screen. Both loaders now wait for the shared stylesheet before mounting, retain a readable static brief on the main site, and offer retry if styling fails. `tests/expert-style.spec.js` delays or rejects the stylesheet and checks immediate 320px fit after recovery in each frontend.

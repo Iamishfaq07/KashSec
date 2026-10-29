@@ -9383,6 +9383,11 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-10-29', title:'Resume expert casework and protect saved drafts', items:[
+    'The Expert Labs collection now shows saved answer and report-draft status, with a Continue case link when you have started work. This status stays separate from coding completion and course scores.',
+    'Each case has keyboard-accessible links to evidence, the repair task, reasoning, and the report, plus a next-case link for moving through the collection.',
+    'Before saving a case, the editor checks whether another tab changed its saved draft. If so, auto-save pauses, keeps your current work available for download, and lets you inspect or load the latest saved draft.'
+  ]},
   {date:'2026-10-29', title:'Expert Labs and deeper AppSec practice', items:[
     'The Labs page has a new Expert Labs tab with four evidence-led cases: tenant isolation, webhook replay, release-artifact trust, and cloud permission scope. Each includes prerequisites, staged hints, a local Python repair exercise, reasoning review, and report/evidence downloads.',
     'AppSec review, pipeline, and capstone lessons now connect to the expert cases. API webhook guidance adds raw-body verification and durable processing; the cloud lab adds an account-free local option and corrects assumptions about external platform requirements.',
