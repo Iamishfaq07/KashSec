@@ -13696,10 +13696,13 @@ async function renderExpertLabsRoute(id=null){
   const fallback=app.querySelector('[data-expert-static]')?.outerHTML||'';
   app.innerHTML=`<p class="loading" role="status">Opening Expert Labs…</p>${fallback}`;
   try{
-    if(!expertLabsModule){
-      const url=expertLabsAttempt++?'./expert-labs.js?retry='+expertLabsAttempt:'./expert-labs.js';
-      expertLabsModule=await withTimeout(import(url),12000,'Opening Expert Labs');
-    }
+    await withTimeout((async()=>{
+      if(!expertLabsModule){
+        const url=expertLabsAttempt++?'./expert-labs.js?retry='+expertLabsAttempt:'./expert-labs.js';
+        expertLabsModule=await import(url);
+      }
+      if(expertLabsModule.prepareExpertStyles)await expertLabsModule.prepareExpertStyles();
+    })(),12000,'Opening Expert Labs');
     if(generation!==renderGeneration)return;
     expertLabsModule.mountExpertLabs({root:app,id,navigate:lab=>navigateTo(lab?'#/expert-labs/'+lab:'#/expert-labs')});
     cacheOpenedAsset('expert-labs.js');cacheOpenedAsset('expert-labs.css');

@@ -86,10 +86,24 @@ export const EXPERT_LABS = [
 const STORAGE_KEY='kashsec_expert_labs_v1';
 const VERSION=1;
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let stylePromise=null;
+export function prepareExpertStyles(){
+  const existing=document.getElementById('expertLabsStyles');
+  if(existing?.sheet)return Promise.resolve();
+  if(stylePromise)return stylePromise;
+  stylePromise=new Promise((resolve,reject)=>{
+    const link=existing||document.createElement('link');
+    const fail=()=>{clearTimeout(timer);link.remove();stylePromise=null;reject(new Error('Expert styles unavailable'));};
+    const timer=setTimeout(fail,8000);
+    link.onload=()=>{clearTimeout(timer);resolve();};link.onerror=fail;
+    if(!existing){link.id='expertLabsStyles';link.rel='stylesheet';link.href=new URL('./expert-labs.css',import.meta.url).href;document.head.append(link);}
+  });
+  return stylePromise;
+}
 export function mountExpertLabs({root,id=null,href=lab=>lab?`/expert-labs/${lab}.html`:'/expert-labs/',lessonHref=key=>`/lesson/${key}.html`,navigate=null}){
-  if(!document.getElementById('expertLabsStyles')){
-    const link=document.createElement('link');link.id='expertLabsStyles';link.rel='stylesheet';link.href=new URL('./expert-labs.css',import.meta.url).href;document.head.append(link);
-  }
+  // Keep compatibility with older shells while current callers await styles
+  // before mounting, so a visible case always has bounded code and inputs.
+  void prepareExpertStyles().catch(()=>{});
   const labsHref='/labs/';
   const tabs=`<nav class="ex-tabs" aria-label="Lab collections"><a href="${labsHref}">All labs</a><a href="${href(null)}" data-expert="" aria-current="page">Expert Labs</a></nav>`;
   const lab=EXPERT_LABS.find(item=>item.id===id);
@@ -169,4 +183,4 @@ Remaining integration risk:"></textarea><p class="ex-note">Drafts stay on this b
 
 // Public module scripts let the preview load this shared file without asking
 // its bundler to transform an asset from public/. Node imports stay inert.
-if(typeof window!=='undefined')window.KashExpertLabs={EXPERT_LABS,mountExpertLabs};
+if(typeof window!=='undefined')window.KashExpertLabs={EXPERT_LABS,mountExpertLabs,prepareExpertStyles};

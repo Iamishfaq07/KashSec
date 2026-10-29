@@ -3,6 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Shell } from "@/components/shell";
 
 type ExpertModule = {
+  prepareExpertStyles?: () => Promise<void>;
   EXPERT_LABS: { id: string; title: string }[];
   mountExpertLabs: (options: {
     root: HTMLDivElement;
@@ -21,11 +22,12 @@ export function ExpertLabs({ id }: { id?: string }) {
   const navigate = useNavigate();
   useEffect(() => {
     let cancelled = false;
+    let timedOut = false;
     let cleanup: (() => void) | undefined;
     setStatus("loading");
     root.current?.replaceChildren();
     const url = "/expert-labs.js" + (attempt ? `?retry=${attempt}` : "");
-    const timer = setTimeout(() => { if (!cancelled) setStatus("error"); }, 12000);
+    const timer = setTimeout(() => { timedOut = true; if (!cancelled) setStatus("error"); }, 12000);
     let script: HTMLScriptElement | undefined;
     const load = window.KashExpertLabs ? Promise.resolve(window.KashExpertLabs) : new Promise<ExpertModule>((resolve, reject) => {
       script = document.createElement("script");
@@ -35,8 +37,9 @@ export function ExpertLabs({ id }: { id?: string }) {
       script.onerror = () => reject(new Error("Expert module unavailable"));
       document.head.append(script);
     });
-    void load.then((module) => {
-      if (cancelled || !root.current) return;
+    void load.then(async (module) => {
+      if (module.prepareExpertStyles) await module.prepareExpertStyles();
+      if (cancelled || timedOut || !root.current) return;
       clearTimeout(timer);
       cleanup = module.mountExpertLabs({
         root: root.current,
