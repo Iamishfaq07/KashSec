@@ -95,6 +95,23 @@ Now, if this workflow is ever compromised (a malicious dependency in the build s
 3. Explain, in one sentence, why a build job and a deploy job should generally hold different credentials even if the same team owns both.
 :::
 
+## Practice: turn artifact trust into a release rule
+
+“The image is signed” leaves two questions unanswered: **do we trust this build context, and are these the exact bytes we approved?**
+
+Write down the trusted repository, workflow identity, source ref, event, and release environment for your system. Use claims authenticated by the actual verifier. A JSON field named `signature_verified` from an uploaded file is not verification evidence.
+
+Then bind deployment to the approved immutable digest. If verification checks one image but deployment later pulls `latest`, the tag can point to different bytes. The digest in the approval record must come from a trusted decision, not from the same untrusted candidate that asks for approval.
+
+Your regression matrix should include:
+
+1. An approved build context and matching digest: allow.
+2. A genuinely signed build from an unexpected repository or workflow: deny.
+3. An unexpected source ref, event, or release environment: deny.
+4. Missing claims or a mismatch between approved and deployed bytes: deny.
+
+Work through [The signed artifact from the wrong build](/expert-labs/release-trust.html). Its Python exercise evaluates a simplified policy on already-verified metadata. It does not perform cryptographic verification or deploy anything. For production, use your verifier's documented schema and verify that the deployment consumes the selected digest.
+
 ## Key terms
 
 - **OIDC federation** — exchanging a short-lived pipeline identity for cloud credentials, without ever storing a long-lived key

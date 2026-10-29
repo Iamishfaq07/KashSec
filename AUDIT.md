@@ -1,5 +1,13 @@
 # Lesson reliability and course audit
 
+## Expert Labs and deeper AppSec practice — 2026-10-29
+
+The Labs collection now links to four expert cases covering tenant authorization, webhook integrity/replay, release-artifact trust, and cloud permission scope. Full case briefs are generated as static HTML and included in the sitemap and `llms.txt`. The main academy and preview share the same case module, styling, and downloadable Python exercise; the bundle loads only when the expert collection is opened.
+
+`npm run test:expert` and `npm run test:preview-expert` check the prerequisite links, all four repair starters and supplied references, case reviews, missing-answer recovery, feedback focus, stale-score prevention, draft reload and storage failure, report/evidence/exercise downloads, and screen widths. Main-site coverage also checks no-JavaScript briefs, module-load recovery, and genuine offline case/exercise reopening. Drafts use `kashsec_expert_labs_v1` and are separate from course progress, account sync, and progress backups; the UI and privacy page disclose this and offer report export.
+
+Three AppSec lessons now add deeper technical review tasks and expert-case links. API webhook material distinguishes integrity, freshness, and durable idempotent processing. The cloud lab adds a local option and removes unsupported blanket account/cost and fixed-level claims. The Python exercises are small training models: they do not verify actual release signatures, model the full AWS policy engine, or establish concurrent durable webhook processing. Browser self-check scores do not mark coding work, lessons, or certification complete. External VM/cloud labs were not executed.
+
 ## Lesson-aligned AppSec checks — 2026-10-29
 
 All 18 AppSec lessons now have dedicated questions keyed by stable lesson IDs. The static and preview readers share generated question data. Broader quiz-bank practice is labeled as path practice because it may cover material from a later lesson. Answers are optional and do not modify quiz scores or reading completion.

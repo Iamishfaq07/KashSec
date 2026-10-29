@@ -56,6 +56,21 @@ Attach the report from the **AppSec Fix & Verify Lab**. Include the failing beha
 
 Add a small requirements-to-evidence table for the invoice feature: requirement, test or review, result, owner, and reviewed version. Map formal ASVS references to a named release and its exact requirement identifiers.
 
+## Add an expert technical review
+
+Open the [Expert Labs collection](/expert-labs/). Choose the tenant-isolation, webhook, or release-trust case based on your fictional company's risk. Keep your chosen scope small enough to finish.
+
+Attach four items to your program plan:
+
+1. A finding that cites the supplied evidence and separates observed behavior from assumptions.
+2. Your implementation change and results from the unchanged tests **without** `--reference`.
+3. One allowed case and at least three denied cases, with an explanation of the rule each case proves.
+4. A remaining integration risk, an owner, and a follow-up verification step.
+
+A browser self-check score is a prompt to review your reasoning. It does not prove your implementation works. Reference mode tests supplied code, so its passing result is not evidence for your edited starter either.
+
+Decide how your program would track this work: finding owner, affected version, due date, exception expiry if needed, and evidence used to close it. A ticket should not close simply because the next scanner run is green.
+
 ## 6. Plan the next learning step
 
 Choose one role to work toward: application security reviewer, product security engineer, or DevSecOps/platform security engineer. List two skills you still need and one project that would demonstrate them. Use the certification options on the path overview if a credential supports that goal. An external exam is optional and is separate from completing this course.

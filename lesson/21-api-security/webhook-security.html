@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 21 — API Security","item":"https://kashsec.vercel.app/lesson/21-api-security/"},{"@type":"ListItem","position":4,"name":"Webhook Security","item":"https://kashsec.vercel.app/lesson/21-api-security/webhook-security.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Webhook Security","headline":"Webhook Security","description":"The BOLA & BFLA lesson covered the two most common authorization failures in APIs that receive requests. This lesson covers the security of APIs on the opposite side of that relationship — webhooks, where your own application receives requests initiated by someone else's system, directly…","url":"https://kashsec.vercel.app/lesson/21-api-security/webhook-security.html","inLanguage":"en","dateModified":"2026-07-26","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/21-api-security.jpg","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Authenticating inbound requests you didn't initiate.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/webhook-security.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Webhook Security","headline":"Webhook Security","description":"The BOLA & BFLA lesson covered the two most common authorization failures in APIs that receive requests. This lesson covers the security of APIs on the opposite side of that relationship — webhooks, where your own application receives requests initiated by someone else's system, directly…","url":"https://kashsec.vercel.app/lesson/21-api-security/webhook-security.html","inLanguage":"en","dateModified":"2026-10-29","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/21-api-security.jpg","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Authenticating inbound requests you didn't initiate.","isPartOf":{"@type":"Course","name":"Path 21: API Security","url":"https://kashsec.vercel.app/lesson/21-api-security/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/21-api-security/webhook-security.html"}}
 </script>
 </head>
 <body>
@@ -120,6 +120,35 @@ Mismatch? → Reject immediately, log the attempt
 <li>Never trust webhook payload content for authorization decisions without independently verifying the referenced resource still exists and belongs to the expected account</li>
 </ul>
 <p>Why does signature verification alone fail to prevent a webhook replay attack, even though the replayed request's signature remains mathematically valid?</p>
+<h2>Practice: integrity, freshness, and one business effect</h2>
+<p>These checks solve different problems:</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Question it answers</th>
+<th>What it does not prove</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Signature over the provider's documented message</td>
+<td>Was this message authenticated under the expected key?</td>
+<td>That the event is new</td>
+</tr>
+<tr>
+<td>Signed timestamp within an accepted window</td>
+<td>Is this delivery recent enough under our contract?</td>
+<td>That it has not already been processed</td>
+</tr>
+<tr>
+<td>Durable event identity and atomic processing</td>
+<td>Can this event apply the business change again?</td>
+<td>That the sender's event is appropriate for this tenant</td>
+</tr>
+</tbody></table>
+<p>Verify the exact bytes required by the provider <strong>before</strong> reformatting or trusting the JSON. Use a constant-time MAC comparison. Follow that provider's timestamp, retry, key-rotation, and response rules; not every webhook scheme uses the same signed fields.</p>
+<p>Two workers can both observe an event as unseen. A process-local set only demonstrates serial deduplication. For a database-local update, an inbox row with a unique event key and the business update may share a transaction. For an external effect, use an outbox or an idempotent downstream operation and test crash recovery. “Exactly once” is not a property to assume from a successful demo.</p>
+<p>Try <a href="/expert-labs/webhook-replay.html">Signed once, processed twice</a>. Its fictional HMAC contract and Python fixture let you repair verification and serial replay handling without a payment account. The report asks you to explain the concurrency and durability work still needed in a real integration.</p>
 <h2>Key terms</h2>
 <ul>
 <li><strong>Webhook</strong> — a callback mechanism where a third-party service sends an event notification directly to your application's endpoint.</li>

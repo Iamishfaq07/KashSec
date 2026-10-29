@@ -16,6 +16,10 @@ function LabsPage() {
 
   return (
     <Shell>
+      <nav className="mb-6 flex flex-wrap gap-3" aria-label="Lab collections">
+        <Link to="/labs" aria-current="page" className="rounded-xl border border-amber px-4 py-3">All labs</Link>
+        <Link to="/expert-labs" className="rounded-xl border border-line px-4 py-3 text-amber">Expert Labs · New</Link>
+      </nav>
       <p className="text-sm uppercase tracking-[0.18em] text-teal">Practice</p>
       <h1 className="mt-2 font-display text-5xl">Labs</h1>
       <p className="mt-3 max-w-xl text-muted">

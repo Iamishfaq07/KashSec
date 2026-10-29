@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://kashsec.vercel.app/lesson/"},{"@type":"ListItem","position":3,"name":"Path 22 — DevSecOps & AppSec Program","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},{"@type":"ListItem","position":4,"name":"Secure Code Review: Data and Permissions","item":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/secure-code-review.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LearningResource","name":"Secure Code Review: Data and Permissions","headline":"Secure Code Review: Data and Permissions","description":"A scanner can point to suspicious code. A reviewer connects that code to what the application is allowed to do.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/secure-code-review.html","inLanguage":"en","dateModified":"2026-10-28","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/22-devsecops-appsec.jpg","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Find and fix SQL injection and missing ownership checks.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/secure-code-review.html"}}
+{"@context":"https://schema.org","@type":"LearningResource","name":"Secure Code Review: Data and Permissions","headline":"Secure Code Review: Data and Permissions","description":"A scanner can point to suspicious code. A reviewer connects that code to what the application is allowed to do.","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/secure-code-review.html","inLanguage":"en","dateModified":"2026-10-29","learningResourceType":"Lesson","author":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]},"image":"https://kashsec.vercel.app/og/22-devsecops-appsec.jpg","educationalLevel":"Advanced","timeRequired":"PT5M","isAccessibleForFree":true,"isFamilyFriendly":true,"teaches":"Find and fix SQL injection and missing ownership checks.","isPartOf":{"@type":"Course","name":"Path 22: DevSecOps & AppSec Program","url":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/"},"provider":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://kashsec.vercel.app/lesson/22-devsecops-appsec/secure-code-review.html"}}
 </script>
 </head>
 <body>
@@ -189,6 +189,45 @@
 <li> My test plan includes two identities and a legitimate success after the fix.</li>
 </ul>
 <p>Later in this path, the Fix &amp; Verify lab lets you run this exact review as a local exercise.</p>
+<h2>Go deeper: review a tenant boundary</h2>
+<p>The owner check in this lesson is one permission boundary. A multi-tenant service adds another: a customer from one organisation must not read another organisation's data, even if an object ID or role name happens to match.</p>
+<p>Write a small permission matrix before editing code:</p>
+<table>
+<thead>
+<tr>
+<th>Actor</th>
+<th>Object</th>
+<th>Expected result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Owner in tenant A</td>
+<td>Own invoice in A</td>
+<td>Allow</td>
+</tr>
+<tr>
+<td>Different customer in A</td>
+<td>Someone else's invoice in A</td>
+<td>Deny</td>
+</tr>
+<tr>
+<td>Customer in B</td>
+<td>Invoice in A</td>
+<td>Deny</td>
+</tr>
+<tr>
+<td>Server-assigned billing support in A</td>
+<td>Invoice in A</td>
+<td>Allow only if the documented support rule permits it</td>
+</tr>
+<tr>
+<td>Support in B</td>
+<td>Invoice in A</td>
+<td>Deny</td>
+</tr>
+</tbody></table>
+<p>Treat tenant, owner, and role fields from a request as untrusted claims. The endpoint must resolve the actor from authenticated server-side state. A database lookup should apply the required tenant and ownership policy; a hidden form field is not an authorization control.</p>
+<p>Try <a href="/expert-labs/tenant-boundary.html">Tenant isolation under pressure</a>. It includes request evidence, a local Python repair exercise, positive and negative cases, and a report template. Passing the function tests still leaves the endpoint's identity construction to verify.</p>
 <h3>References</h3>
 <ul>
 <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">OWASP SQL Injection Prevention</a></li>

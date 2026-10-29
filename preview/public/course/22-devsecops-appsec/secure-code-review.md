@@ -98,6 +98,24 @@ Use the relevant framework guidance for each flow. One generic input filter cann
 
 Later in this path, the Fix & Verify lab lets you run this exact review as a local exercise.
 
+## Go deeper: review a tenant boundary
+
+The owner check in this lesson is one permission boundary. A multi-tenant service adds another: a customer from one organisation must not read another organisation's data, even if an object ID or role name happens to match.
+
+Write a small permission matrix before editing code:
+
+| Actor | Object | Expected result |
+| --- | --- | --- |
+| Owner in tenant A | Own invoice in A | Allow |
+| Different customer in A | Someone else's invoice in A | Deny |
+| Customer in B | Invoice in A | Deny |
+| Server-assigned billing support in A | Invoice in A | Allow only if the documented support rule permits it |
+| Support in B | Invoice in A | Deny |
+
+Treat tenant, owner, and role fields from a request as untrusted claims. The endpoint must resolve the actor from authenticated server-side state. A database lookup should apply the required tenant and ownership policy; a hidden form field is not an authorization control.
+
+Try [Tenant isolation under pressure](/expert-labs/tenant-boundary.html). It includes request evidence, a local Python repair exercise, positive and negative cases, and a report template. Passing the function tests still leaves the endpoint's identity construction to verify.
+
 ???refs
 - [OWASP SQL Injection Prevention](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html)
 - [OWASP Authorization Guidance](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html)
