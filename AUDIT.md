@@ -2,6 +2,8 @@
 
 ## Expert Labs and deeper AppSec practice — 2026-10-29
 
+Production verification exposed a stylesheet-loading race: the case form could appear before its layout rules, briefly overflowing a narrow screen. Both loaders now wait for the shared stylesheet before mounting, retain a readable static brief on the main site, and offer retry if styling fails. `tests/expert-style.spec.js` delays or rejects the stylesheet and checks immediate 320px fit after recovery in each frontend.
+
 The Labs collection now links to four expert cases covering tenant authorization, webhook integrity/replay, release-artifact trust, and cloud permission scope. Full case briefs are generated as static HTML and included in the sitemap and `llms.txt`. The main academy and preview share the same case module, styling, and downloadable Python exercise; the bundle loads only when the expert collection is opened.
 
 `npm run test:expert` and `npm run test:preview-expert` check the prerequisite links, all four repair starters and supplied references, case reviews, missing-answer recovery, feedback focus, stale-score prevention, draft reload and storage failure, report/evidence/exercise downloads, and screen widths. Main-site coverage also checks no-JavaScript briefs, module-load recovery, and genuine offline case/exercise reopening. Drafts use `kashsec_expert_labs_v1` and are separate from course progress, account sync, and progress backups; the UI and privacy page disclose this and offer report export.
