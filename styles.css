@@ -2447,3 +2447,10 @@ label.tool-note{display:block}
   .path-proof{grid-template-columns:1fr;gap:1rem}
 }
 @media(max-width:480px){.path-proof,.path-cert-card{padding:1rem}.path-map-card{padding:.9rem}.path-map-step,.md .path-map>.path-map-step{padding-left:52px}}
+
+/* Search stays usable on narrow screens and with a keyboard. */
+.search-input-row input{min-width:0}
+.search-close{flex:none;min-height:44px;padding:.4rem .65rem;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--text);cursor:pointer}
+.search-status:empty{display:none}
+.search-status .search-hint{margin:0;padding:.6rem 1rem}
+[data-search-retry]{min-height:44px;padding:.25rem .5rem;color:var(--text);background:var(--overlay-3);border:1px solid var(--border);border-radius:6px;cursor:pointer}
