@@ -93,6 +93,9 @@ try{
   const denied=await context(()=>{
     const get=Storage.prototype.getItem;Storage.prototype.getItem=function(k){if(k==='kashsec_expert_labs_v1')throw Error('unavailable');return get.call(this,k);};
   });const dp=await denied.newPage();await dp.goto(BASE+'/expert-labs/');await dp.locator('#exCollectionStatus').waitFor();
-  assert.match(await dp.locator('#exCollectionStatus').innerText(),/could not be read/);assert.equal(await dp.locator('[data-case-action]').count(),4);await denied.close();
+  assert.match(await dp.locator('#exCollectionStatus').innerText(),/could not be read/);
+  assert.equal(await dp.locator('[data-case-action]').count(),4);
+  for(const text of await dp.locator('[data-draft-status]').allInnerTexts())assert.equal(text,'Draft status unavailable');
+  await denied.close();
   console.log('PASS: unavailable draft storage leaves the collection usable and explains the missing status.');
 }finally{await browser.close();}
