@@ -36,6 +36,14 @@ for(const p of paths){
     assert.ok(item.href.startsWith('/'));
     assert.ok(fs.existsSync(new URL('..'+item.href,import.meta.url)),`${p.id}: practice link ${item.href} resolves`);
   }
+  for(const asset of guide.downloads || []){
+    assert.match(asset.url,/^\/downloads\/[a-z0-9_.-]+$/);
+    assert.match(asset.name,/^[a-z0-9_.-]+$/);
+    assert.ok(!asset.name.includes('..'));
+    const text=read(asset.url.slice(1));
+    assert.ok(text.startsWith(asset.startsWith) && text.includes(asset.marker),`${p.id}: practice file passes its content contract`);
+    assert.equal(text,read('preview/public'+asset.url));
+  }
 }
 const catalog = JSON.parse(read('preview/src/data/catalog.json'));
 assert.deepEqual(catalog.paths,paths.map(({subs,...p})=>({...p,lessons:subs})));
