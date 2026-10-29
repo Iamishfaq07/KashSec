@@ -40,6 +40,22 @@ Directly connecting to Path 11's SSRF lesson: the reverse scenario also matters 
 Why does signature verification alone fail to prevent a webhook replay attack, even though the replayed request's signature remains mathematically valid?
 :::
 
+## Practice: integrity, freshness, and one business effect
+
+These checks solve different problems:
+
+| Check | Question it answers | What it does not prove |
+| --- | --- | --- |
+| Signature over the provider's documented message | Was this message authenticated under the expected key? | That the event is new |
+| Signed timestamp within an accepted window | Is this delivery recent enough under our contract? | That it has not already been processed |
+| Durable event identity and atomic processing | Can this event apply the business change again? | That the sender's event is appropriate for this tenant |
+
+Verify the exact bytes required by the provider **before** reformatting or trusting the JSON. Use a constant-time MAC comparison. Follow that provider's timestamp, retry, key-rotation, and response rules; not every webhook scheme uses the same signed fields.
+
+Two workers can both observe an event as unseen. A process-local set only demonstrates serial deduplication. For a database-local update, an inbox row with a unique event key and the business update may share a transaction. For an external effect, use an outbox or an idempotent downstream operation and test crash recovery. “Exactly once” is not a property to assume from a successful demo.
+
+Try [Signed once, processed twice](/expert-labs/webhook-replay.html). Its fictional HMAC contract and Python fixture let you repair verification and serial replay handling without a payment account. The report asks you to explain the concurrency and durability work still needed in a real integration.
+
 ## Key terms
 
 - **Webhook** — a callback mechanism where a third-party service sends an event notification directly to your application's endpoint.

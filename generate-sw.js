@@ -71,6 +71,9 @@ const deferredUrls = [
   'investigations.js',
   'playground.js',
   'learning-guide.js',
+  'expert-labs.js',
+  'expert-labs.css',
+  'downloads/expert_security_lab.py',
   'search-preview.js',
   'search-index.js',
 ];
@@ -113,6 +116,7 @@ const LESSON_URLS = ${JSON.stringify(lessonUrls, null, 2)};
 const PATH_ASSETS = ${JSON.stringify(pathAssets, null, 2)};
 const LESSON_PATHS = new Set(LESSON_URLS.map(url => '/' + url));
 const RESOURCE_PATHS = new Map(Object.values(PATH_ASSETS).flat().map(asset => [asset.url,asset]));
+RESOURCE_PATHS.set('/downloads/expert_security_lab.py',{startsWith:'#!/usr/bin/env python3',marker:'class ExpertSecurityTests(unittest.TestCase):'});
 
 const RUNTIME_HOSTS = ['cdn.jsdelivr.net', 'fonts.googleapis.com', 'fonts.gstatic.com'];
 const NEVER_CACHE_HOSTS = ['supabase.co'];
@@ -260,9 +264,9 @@ self.addEventListener('fetch', event => {
     const resource = RESOURCE_PATHS.get(url.pathname);
     const isCanonicalPage = request.mode === 'navigate' &&
       ((url.pathname.endsWith('.html') &&
-        (['/lesson/', '/labs/', '/tools/'].some(prefix => url.pathname.startsWith(prefix)) ||
+        (['/lesson/', '/labs/', '/tools/', '/expert-labs/'].some(prefix => url.pathname.startsWith(prefix)) ||
          ['/faq.html', '/practice.html', '/exam.html'].includes(url.pathname))) ||
-       ['/lesson/', '/labs/', '/tools/'].includes(url.pathname) ||
+       ['/lesson/', '/labs/', '/tools/', '/expert-labs/'].includes(url.pathname) ||
        (url.pathname.startsWith('/lesson/') && url.pathname.endsWith('/')));
     event.respondWith(isCanonicalPage ? canonicalNavigation(request, event) :
       staleWhileRevalidate(request, isLesson || resource ? CONTENT_CACHE : SHELL_CACHE, event, isLesson ? {lesson:true} : resource));

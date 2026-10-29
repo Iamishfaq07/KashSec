@@ -27,6 +27,7 @@ import path from 'path';
 import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { TOOL_CONTENT, LAB_CONTENT } from './prerender-content.js';
+import { EXPERT_LABS } from './expert-labs.js';
 import sanitizeHtml from 'sanitize-html';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
@@ -41,7 +42,7 @@ const CONTENT_SANITIZER = {
   allowedTags: [...sanitizeHtml.defaults.allowedTags, 'h1', 'h2', 'figure', 'figcaption', 'img', 'div', 'span', 'section', 'article', 'details', 'summary'],
   allowedAttributes: {
     ...sanitizeHtml.defaults.allowedAttributes,
-    '*': ['class', 'id', 'role', 'aria-label'],
+    '*': ['class', 'id', 'role', 'aria-label', 'data-expert-static'],
     a: ['href', 'title', 'target', 'rel', 'name'],
     img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
     code: ['class'],
@@ -588,7 +589,7 @@ function writeStubSet(items, urlPrefix, dirName, kindLabel, indexTitle, indexDes
   }
   // Index stub for the section itself.
   const contentHtml = `<h1>${escapeAttr(indexTitle)}</h1><p>${escapeAttr(indexDesc)}</p><ul>` +
-    items.map(o => `<li><a href="/${dirName}/${o.id}.html">${escapeAttr(o.title)}</a> — ${escapeAttr(o.desc || '')}</li>`).join('') + '</ul>';
+    items.map(o => `<li><a href="/${dirName}/${o.id}.html">${escapeAttr(o.title)}</a> — ${escapeAttr(o.desc || '')}</li>`).join('') + '</ul>' + (dirName==='labs'?'<h2>Expert Labs</h2><p><a href="/expert-labs/">Open the Expert Labs tab</a> for evidence-led AppSec and cloud cases with downloadable coding exercises.</p>':'');
   fs.writeFileSync(path.join(outDir, 'index.html'), template({
     title: indexTitle + ' · KashSec Academy', desc: indexDesc,
     canonical: sectionUrl, spaPath: `/#/${dirName}`, contentHtml, ogType: 'website',
@@ -626,6 +627,21 @@ const labsWritten = writeStubSet(
   // query a hands-on simulation genuinely answers better than an article.
   (it) => fitTitle(`${it.title} — free hands-on practice, no setup · KashSec Academy`,
     `${it.title} — free hands-on practice · KashSec`, `${it.title} — free lab · KashSec`, `${it.title} · KashSec`));
+
+// Complete case briefs remain readable without JavaScript. The shared browser
+// module adds draft storage, self-checks, and report/evidence exports.
+{
+  const dir=path.join(ROOT,'expert-labs');fs.mkdirSync(dir,{recursive:true});
+  for(const lab of [null,...EXPERT_LABS]){
+    const relative=lab?`expert-labs/${lab.id}.html`:'expert-labs/index.html';
+    const canonical=SITE+(lab?`/expert-labs/${lab.id}.html`:'/expert-labs/');
+    const title=lab?`${lab.title} · KashSec`:'Expert Labs · KashSec Academy';
+    const desc=lab?.summary||'Advanced AppSec and cloud cases: inspect evidence, fix a local implementation, verify tests, and write a reproducible report.';
+    const body=lab?`<h1>${escapeAttr(lab.title)}</h1><p>${escapeAttr(lab.mission)}</p><p>${lab.track} · about ${lab.minutes} minutes. Fictional evidence; Python 3.10+ for local coding.</p><h2>Prerequisites</h2><ul>${lab.prerequisites.map(p=>`<li><a href="/lesson/${p.key}.html">${escapeAttr(p.label)}</a></li>`).join('')}</ul><h2>Evidence</h2>${lab.evidence.map(file=>`<h3>${escapeAttr(file.name)}</h3><pre><code>${escapeAttr(file.body)}</code></pre>`).join('')}<h2>Tasks and expected evidence</h2><ol>${lab.tasks.map(task=>`<li>${escapeAttr(task)}</li>`).join('')}</ol><h2>Run the coding exercise</h2><p><a href="/downloads/expert_security_lab.py" download>Download the Python exercise</a>. It uses only the standard library and no network.</p><pre><code>python expert_security_lab.py --lab ${lab.suite}\npython expert_security_lab.py --lab ${lab.suite} --reference</code></pre><p>Starter mode initially fails. Edit the matching function and rerun without --reference. Reference mode tests supplied code, not your own fix.</p><h2>Limits</h2><p>${escapeAttr(lab.limits)}</p><p><a href="/expert-labs/">All expert cases</a></p>`:`<h1>Expert Labs</h1><p>${desc}</p><p>Four fictional cases with browser review and local Python exercises. Each report should include allowed and denied behavior, test results from your own implementation, and remaining risks.</p><ul>${EXPERT_LABS.map(item=>`<li><a href="/expert-labs/${item.id}.html">${escapeAttr(item.title)}</a> — ${escapeAttr(item.summary)}</li>`).join('')}</ul><p><a href="/labs/">All browser labs</a></p>`;
+    fs.writeFileSync(path.join(ROOT,relative),template({title,desc,canonical,spaPath:lab?`/#/expert-labs/${lab.id}`:'/#/expert-labs',contentHtml:`<section data-expert-static>${body}</section>`,ogType:'website',crumbs:[{name:'KashSec Academy',url:SITE+'/'},{name:'Expert Labs',url:SITE+'/expert-labs/'},...(lab?[{name:lab.title,url:canonical}]:[])],jsonLd:[{'@context':'https://schema.org','@type':lab?'LearningResource':'CollectionPage',name:lab?.title||'Expert Labs',description:desc,url:canonical,isAccessibleForFree:true}]}));
+    sitemapUrls.push({loc:canonical,lastmod:lastmodFor('expert-labs.js','downloads/expert_security_lab.py'),priority:'0.8'});
+  }
+}
 
 /* FAQ stub with FAQPage schema. The answers were already written and
    already public — they just had no URL a crawler could reach. */

@@ -33,4 +33,7 @@ for(const p of paths) for(const lesson of p.subs){
   write('public/'+relative,fs.readFileSync(path.join(root,relative),'utf8'));
 }
 write('public/downloads/appsec_invoice_lab.py',fs.readFileSync(path.join(root,'downloads/appsec_invoice_lab.py'),'utf8'));
+for(const file of ['expert-labs.js','expert-labs.css','downloads/expert_security_lab.py']){
+  write('public/'+file,fs.readFileSync(path.join(root,file),'utf8'));
+}
 console.log(`Preview content aligned: ${paths.length} paths, ${paths.reduce((n,p)=>n+p.subs.length,0)} lessons, ${guides.length} guides.`);

@@ -15,6 +15,8 @@ import { Route as LabsRouteImport } from './routes/labs'
 import { Route as PathsRouteImport } from './routes/paths'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as ToolsRouteImport } from './routes/tools'
+import { Route as ExpertLabsIndexRouteImport } from './routes/expert-labs.index'
+import { Route as ExpertLabsCaseIdRouteImport } from './routes/expert-labs.$caseId'
 import { Route as LabsIndexRouteImport } from './routes/labs.index'
 import { Route as LabsLabIdRouteImport } from './routes/labs.$labId'
 import { Route as PathsIndexRouteImport } from './routes/paths.index'
@@ -51,6 +53,16 @@ const ProgressRoute = ProgressRouteImport.update({
 const ToolsRoute = ToolsRouteImport.update({
   id: '/tools',
   path: '/tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExpertLabsIndexRoute = ExpertLabsIndexRouteImport.update({
+  id: '/expert-labs/',
+  path: '/expert-labs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExpertLabsCaseIdRoute = ExpertLabsCaseIdRouteImport.update({
+  id: '/expert-labs/$caseId',
+  path: '/expert-labs/$caseId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LabsIndexRoute = LabsIndexRouteImport.update({
@@ -96,9 +108,11 @@ export interface FileRoutesByFullPath {
   '/paths': typeof PathsRouteWithChildren
   '/progress': typeof ProgressRoute
   '/tools': typeof ToolsRoute
+  '/expert-labs/$caseId': typeof ExpertLabsCaseIdRoute
   '/labs/$labId': typeof LabsLabIdRoute
   '/paths/$pathId': typeof PathsPathIdRoute
   '/quiz/$pathId': typeof QuizPathIdRoute
+  '/expert-labs/': typeof ExpertLabsIndexRoute
   '/labs/': typeof LabsIndexRoute
   '/paths/': typeof PathsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -109,9 +123,11 @@ export interface FileRoutesByTo {
   '/glossary': typeof GlossaryRoute
   '/progress': typeof ProgressRoute
   '/tools': typeof ToolsRoute
+  '/expert-labs/$caseId': typeof ExpertLabsCaseIdRoute
   '/labs/$labId': typeof LabsLabIdRoute
   '/paths/$pathId': typeof PathsPathIdRoute
   '/quiz/$pathId': typeof QuizPathIdRoute
+  '/expert-labs': typeof ExpertLabsIndexRoute
   '/labs': typeof LabsIndexRoute
   '/paths': typeof PathsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -125,9 +141,11 @@ export interface FileRoutesById {
   '/paths': typeof PathsRouteWithChildren
   '/progress': typeof ProgressRoute
   '/tools': typeof ToolsRoute
+  '/expert-labs/$caseId': typeof ExpertLabsCaseIdRoute
   '/labs/$labId': typeof LabsLabIdRoute
   '/paths/$pathId': typeof PathsPathIdRoute
   '/quiz/$pathId': typeof QuizPathIdRoute
+  '/expert-labs/': typeof ExpertLabsIndexRoute
   '/labs/': typeof LabsIndexRoute
   '/paths/': typeof PathsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -142,9 +160,11 @@ export interface FileRouteTypes {
     | '/paths'
     | '/progress'
     | '/tools'
+    | '/expert-labs/$caseId'
     | '/labs/$labId'
     | '/paths/$pathId'
     | '/quiz/$pathId'
+    | '/expert-labs/'
     | '/labs/'
     | '/paths/'
     | '/api/auth/$'
@@ -155,9 +175,11 @@ export interface FileRouteTypes {
     | '/glossary'
     | '/progress'
     | '/tools'
+    | '/expert-labs/$caseId'
     | '/labs/$labId'
     | '/paths/$pathId'
     | '/quiz/$pathId'
+    | '/expert-labs'
     | '/labs'
     | '/paths'
     | '/api/auth/$'
@@ -170,9 +192,11 @@ export interface FileRouteTypes {
     | '/paths'
     | '/progress'
     | '/tools'
+    | '/expert-labs/$caseId'
     | '/labs/$labId'
     | '/paths/$pathId'
     | '/quiz/$pathId'
+    | '/expert-labs/'
     | '/labs/'
     | '/paths/'
     | '/api/auth/$'
@@ -186,7 +210,9 @@ export interface RootRouteChildren {
   PathsRoute: typeof PathsRouteWithChildren
   ProgressRoute: typeof ProgressRoute
   ToolsRoute: typeof ToolsRoute
+  ExpertLabsCaseIdRoute: typeof ExpertLabsCaseIdRoute
   QuizPathIdRoute: typeof QuizPathIdRoute
+  ExpertLabsIndexRoute: typeof ExpertLabsIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   LessonPathIdLessonIdRoute: typeof LessonPathIdLessonIdRoute
 }
@@ -233,6 +259,20 @@ declare module '@tanstack/react-router' {
       path: '/tools'
       fullPath: '/tools'
       preLoaderRoute: typeof ToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/expert-labs/': {
+      id: '/expert-labs/'
+      path: '/expert-labs'
+      fullPath: '/expert-labs/'
+      preLoaderRoute: typeof ExpertLabsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/expert-labs/$caseId': {
+      id: '/expert-labs/$caseId'
+      path: '/expert-labs/$caseId'
+      fullPath: '/expert-labs/$caseId'
+      preLoaderRoute: typeof ExpertLabsCaseIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/labs/': {
@@ -318,7 +358,9 @@ const rootRouteChildren: RootRouteChildren = {
   PathsRoute: PathsRouteWithChildren,
   ProgressRoute: ProgressRoute,
   ToolsRoute: ToolsRoute,
+  ExpertLabsCaseIdRoute: ExpertLabsCaseIdRoute,
   QuizPathIdRoute: QuizPathIdRoute,
+  ExpertLabsIndexRoute: ExpertLabsIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   LessonPathIdLessonIdRoute: LessonPathIdLessonIdRoute,
 }

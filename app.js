@@ -2069,6 +2069,9 @@ function canonicalPathForHash(hash){
   if(hash === '#/' || hash === '#') return '/';
   if(hash === '#/course') return '/lesson/';
   if(hash === '#/labs') return '/labs/';
+  if(hash === '#/expert-labs') return '/expert-labs/';
+  const expert = hash.match(/^#\/expert-labs\/([a-z0-9-]+)$/);
+  if(expert) return `/expert-labs/${expert[1]}.html`;
   if(hash === '#/tools') return '/tools/';
   if(hash === '#/faq') return '/faq.html';
   if(hash === '#/tasks') return '/practice.html';
@@ -2086,6 +2089,9 @@ function hashRouteForPath(pathname){
   if(pathname === '/' || pathname === '/index.html') return '#/';
   if(pathname === '/lesson/') return '#/course';
   if(pathname === '/labs/') return '#/labs';
+  if(pathname === '/expert-labs/' || pathname === '/expert-labs/index.html') return '#/expert-labs';
+  const expert = pathname.match(/^\/expert-labs\/([a-z0-9-]+)\.html$/);
+  if(expert) return `#/expert-labs/${expert[1]}`;
   if(pathname === '/tools/') return '#/tools';
   if(pathname === '/faq.html') return '#/faq';
   if(pathname === '/practice.html') return '#/tasks';
@@ -2228,6 +2234,8 @@ function route(){
   else if(hash === '#/changelog') renderChangelog();
   else if(hash === '#/interview') renderInterview();
   else if(hash === '#/labs') renderLabsIndex();
+  else if(hash === '#/expert-labs') renderExpertLabsRoute();
+  else if(hash.startsWith('#/expert-labs/')) renderExpertLabsRoute(hash.slice(14));
   else if(hash === '#/labs/terminal') renderLabTerminal();
   else if(hash === '#/labs/webapp') renderLabWebapp();
   else if(hash === '#/labs/pcap') renderLabPcap();
@@ -2353,6 +2361,7 @@ const ROUTE_TITLES = {
   '#/planner':'Study planner',
   '#/investigations':'Incident Workbench',
   '#/playground':'Learning Playground',
+  '#/expert-labs':'Expert Labs',
   '#/start':'Your starting route',
   '#/progress':'My progress', '#/glossary':'Cybersecurity glossary', '#/tracks':'Career tracks',
   '#/careers':'Cybersecurity careers', '#/certs':'Certification roadmap', '#/career-quiz':'Career-fit quiz',
@@ -2533,7 +2542,7 @@ function updateActiveNav(){
   document.querySelectorAll('#navLinks a').forEach(a=>{
     const href = a.getAttribute('href') || '';
     if(!href.startsWith('#')) return; // skip external (GitHub)
-    const active = href === hash || (href === '#/course' && hash.startsWith('#/lesson'));
+    const active = href === hash || (href === '#/course' && hash.startsWith('#/lesson')) || (href === '#/labs' && (hash.startsWith('#/labs/') || hash.startsWith('#/expert-labs')));
     a.classList.toggle('active', active);
     if(active) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
   });
@@ -3781,6 +3790,11 @@ const PATH_GUIDES = [
         "href": "/labs/dockerescape.html",
         "label": "Docker Escape Playground",
         "note": "Review a simulated workload-isolation scenario."
+      },
+      {
+        "href": "/expert-labs/cloud-scope.html",
+        "label": "Expert: cloud permission scope",
+        "note": "Review a tenant-scoped grant and verify a local permission contract."
       }
     ],
     "certNote": ""
@@ -3993,6 +4007,11 @@ const PATH_GUIDES = [
         "href": "/labs/webhookforge.html",
         "label": "Webhook Signature Forgery Lab",
         "note": "Review an event-authenticity boundary."
+      },
+      {
+        "href": "/expert-labs/webhook-replay.html",
+        "label": "Expert: signed once, processed twice",
+        "note": "Repair integrity and replay handling, then plan durable processing."
       }
     ],
     "certNote": ""
@@ -4042,6 +4061,11 @@ const PATH_GUIDES = [
         "href": "/lesson/22-devsecops-appsec/appsec-fix-verify-lab.html",
         "label": "Fix & Verify: local Python lab",
         "note": "No paid tools or external services. Repair the starter and pass seven tests."
+      },
+      {
+        "href": "/expert-labs/",
+        "label": "Expert Labs: AppSec and cloud reviews",
+        "note": "Investigate evidence, repair local code, and write a reproducible review."
       },
       {
         "href": "/labs/idor.html",
@@ -5036,6 +5060,7 @@ const LEGAL = {
         'Nothing here is sold, and nothing is shared with anyone beyond the specific services named below.'
       ]},
       {h:'What is stored on your device', p:[
+        'Expert Labs stores its self-check answers and report drafts separately in <code>kashsec_expert_labs_v1</code>. These drafts stay in that browser and are not included in course-progress backups or account sync. Each case has a report download so you can keep your work before clearing site storage.',
         'KashSec progress normally uses one browser-storage entry, <code>kashsec_state_v1</code>. It holds your lesson progress, quiz and exam results, practice-task answers, flashcard scheduling, notes you have written, lessons you have rated, your streak, study-plan settings, starting-route preferences, investigation decisions and analyst notes, playground completion, and display settings. Playground messages and experiment settings are not saved or synced. If this record becomes unreadable, KashSec tries to keep an untouched second local entry, <code>kashsec_state_recovery_v1</code>, so you can download the original data. Clearing this site\'s storage deletes both entries.',
         'This is stored by your browser, on your device. Without an account it is never transmitted anywhere, and it is not readable by this site\'s author or anyone else. Clearing browser storage for this site erases both entries permanently — export a copy first if you need one.'
       ]},
@@ -6912,6 +6937,7 @@ function renderLabsIndex(){
   const sb = labScoreboard();
   app.innerHTML = `
     <section class="sec">
+      <nav class="lab-collection-tabs" aria-label="Lab collections"><a href="#/labs" aria-current="page">All labs</a><a href="#/expert-labs">Expert Labs <span>New</span></a></nav>
       <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Interactive labs</div>
         <h1>Practise inside the browser</h1>
@@ -9357,6 +9383,11 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-10-29', title:'Expert Labs and deeper AppSec practice', items:[
+    'The Labs page has a new Expert Labs tab with four evidence-led cases: tenant isolation, webhook replay, release-artifact trust, and cloud permission scope. Each includes prerequisites, staged hints, a local Python repair exercise, reasoning review, and report/evidence downloads.',
+    'AppSec review, pipeline, and capstone lessons now connect to the expert cases. API webhook guidance adds raw-body verification and durable processing; the cloud lab adds an account-free local option and corrects assumptions about external platform requirements.',
+    'Expert drafts save on this browser separately from course progress. Both readers share the cases and exercise, and full case briefs are available without JavaScript.'
+  ]},
   {date:'2026-10-29', title:'AppSec checks that match the lesson', items:[
     'All 18 AppSec lessons now have a question about the lesson you just read, shared by both readers. Explanations link back to the relevant section, and you can try again without changing your quiz scores or reading progress.',
     'Wider quiz-bank questions are now labeled optional path practice and explain that they may cover a later lesson. You can keep moving without answering.',
@@ -13659,6 +13690,27 @@ async function renderInvestigationsRoute(id){
   }
 }
 
+let expertLabsModule=null,expertLabsAttempt=0;
+async function renderExpertLabsRoute(id=null){
+  const generation=renderGeneration;
+  const fallback=app.querySelector('[data-expert-static]')?.outerHTML||'';
+  app.innerHTML=`<p class="loading" role="status">Opening Expert Labs…</p>${fallback}`;
+  try{
+    if(!expertLabsModule){
+      const url=expertLabsAttempt++?'./expert-labs.js?retry='+expertLabsAttempt:'./expert-labs.js';
+      expertLabsModule=await withTimeout(import(url),12000,'Opening Expert Labs');
+    }
+    if(generation!==renderGeneration)return;
+    expertLabsModule.mountExpertLabs({root:app,id,navigate:lab=>navigateTo(lab?'#/expert-labs/'+lab:'#/expert-labs')});
+    cacheOpenedAsset('expert-labs.js');cacheOpenedAsset('expert-labs.css');
+    afterRender();
+  }catch(_){
+    if(generation!==renderGeneration)return;
+    app.innerHTML=`<section class="sec">${fallback?'<p><strong>Expert Labs could not open</strong></p>':'<h1>Expert Labs could not open</h1>'}<p>Check your connection and try again.${fallback?' You can still read the case brief below.':''}</p><button class="btn-amber" id="expertRetry" type="button">Retry Expert Labs</button><p><a href="#/labs">Back to labs</a></p></section>${fallback}`;
+    document.getElementById('expertRetry').addEventListener('click',()=>renderExpertLabsRoute(id));afterRender();
+  }
+}
+
 let playgroundPromise = null;
 async function renderPlaygroundRoute(id){
   const generation = renderGeneration;
@@ -14350,7 +14402,7 @@ function getCommands(){
      the same list. Finishing the migration is what makes it one set. */
   const nav = [
     ['Home','#/','house'],['Start here','#/start','compass'],['Course','#/course','doc'],['Learning Playground','#/playground','compass'],['Study planner','#/planner','calendar'],['Incident Workbench','#/investigations','microscope'],['Roadmap','#/roadmap','mapPin'],
-    ['Practice tracks','#/tracks','layers'],['Labs','#/labs','microscope'],['Tools','#/tools','toolbox'],
+    ['Practice tracks','#/tracks','layers'],['Labs','#/labs','microscope'],['Expert Labs','#/expert-labs','microscope'],['Tools','#/tools','toolbox'],
     ['Practice tasks','#/tasks','check'],['Timed mock exam','#/exam','timer'],['Search','#/search','search'],
     ['Glossary','#/glossary','scroll'],['Flashcards','#/review','folders'],['Daily challenge','#/daily','clock'],
     ['Interview bank','#/interview','idcard'],['Careers','#/careers','building'],['FAQ','#/faq','chat'],

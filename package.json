@@ -12,7 +12,7 @@
     "build:search": "node generate-search-index.js",
     "build:feed": "node generate-feed.js",
     "build:prerender": "node generate-prerender.js",
-    "test": "node tests/data-integrity.test.js && npm run test:canonical && npm run test:cvss && npm run test:smoke && npm run test:cdn && npm run test:ui && npm run test:offline && npm run test:progress && npm run test:planner && npm run test:investigations && npm run test:playground && npm run test:guide && npm run test:lesson-practice && npm run test:flashcards && npm run test:study-review && npm run test:exam && npm run test:search && npm run test:tasks && npm run test:audit && npm run test:reader && npm run test:path-guides && npm run test:discovery && npm run test:lesson-checks",
+    "test": "node tests/data-integrity.test.js && npm run test:canonical && npm run test:cvss && npm run test:smoke && npm run test:cdn && npm run test:ui && npm run test:offline && npm run test:progress && npm run test:planner && npm run test:investigations && npm run test:playground && npm run test:guide && npm run test:lesson-practice && npm run test:flashcards && npm run test:study-review && npm run test:exam && npm run test:search && npm run test:tasks && npm run test:audit && npm run test:reader && npm run test:path-guides && npm run test:discovery && npm run test:lesson-checks && npm run test:expert",
     "test:canonical": "node tests/canonical-security.spec.js && npm run test:auth-navigation && node tests/navigation-refresh.spec.js",
     "test:auth-navigation": "node tests/auth-navigation.spec.js",
     "test:cvss": "node tests/cvss.spec.js",
@@ -44,7 +44,9 @@
     "test:preview-path-guides": "node tests/preview-path-guides.spec.js",
     "test:discovery": "node tests/path-discovery.spec.js && node tests/offline-practice.spec.js",
     "test:lesson-checks": "node tests/lesson-checks.spec.js",
-    "test:preview-checks": "CHECK_FRONTEND=preview node tests/lesson-checks.spec.js"
+    "test:preview-checks": "CHECK_FRONTEND=preview node tests/lesson-checks.spec.js",
+    "test:expert": "node tests/expert-labs.spec.js",
+    "test:preview-expert": "CHECK_FRONTEND=preview node tests/expert-labs.spec.js"
   },
   "repository": {
     "type": "git",

@@ -31,6 +31,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { EXPERT_LABS } from './expert-labs.js';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const SITE = 'https://kashsec.vercel.app';
@@ -105,6 +106,10 @@ PATHS.forEach(p => {
 });
 
 out.push('## Interactive labs');
+out.push('');
+out.push('### Expert Labs');
+out.push(link('Expert Labs',`${SITE}/expert-labs/`,'Evidence-led AppSec and cloud cases, local Python exercises, and reproducible reports. Python 3.10+ for coding.'));
+EXPERT_LABS.forEach(lab=>out.push(link(lab.title,`${SITE}/expert-labs/${lab.id}.html`,lab.summary)));
 out.push('');
 out.push(`${LABS.length} hands-on exercises that run in the browser — simulated terminals,`);
 out.push('deliberately vulnerable apps, packet captures, attack chains. Each lab page');

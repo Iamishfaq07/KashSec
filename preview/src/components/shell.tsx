@@ -52,7 +52,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 to={item.to}
                 className={cn(
                   "rounded-full px-3 py-2 text-sm",
-                  pathname.startsWith(item.to) ? "bg-surface text-fg" : "text-muted",
+                  (pathname.startsWith(item.to) || (item.to === "/labs" && pathname.startsWith("/expert-labs"))) ? "bg-surface text-fg" : "text-muted",
                 )}
               >
                 {item.label}
@@ -158,6 +158,7 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
       items.push({ ...item, rank });
     };
     if (needle.length < 2) {
+      push({ href: "/expert-labs", title: "Expert Labs", meta: "AppSec and cloud" }, 0);
       push({ href: "/quiz/final", title: "Final exam", meta: "Quiz" }, 0);
       for (const tool of toolLinks.slice(0, 3)) push(tool, 1);
       for (const path of paths.slice(0, 6)) {
@@ -183,6 +184,9 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
           lesson.title.toLowerCase().includes(needle) ? 1 : 4,
         );
       }
+    }
+    if ("expert labs appsec cloud tenant webhook release".includes(needle)) {
+      push({ href: "/expert-labs", title: "Expert Labs", meta: "AppSec and cloud" }, 0);
     }
     for (const lab of labs) {
       if (`${lab.title} ${lab.summary}`.toLowerCase().includes(needle)) {

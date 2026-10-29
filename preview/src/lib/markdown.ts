@@ -39,6 +39,8 @@ function escapeHtml(value: string) {
 
 function rewriteLinks(markdown: string) {
   return markdown
+    .replace(/\]\(\/expert-labs\/([a-z0-9-]+)\.html\)/g, "](/expert-labs/$1)")
+    .replace(/\]\(\/expert-labs\/\)/g, "](/expert-labs)")
     .replace(/\]\(#\/lesson\/([a-z0-9-]+)\/([a-z0-9-]+)\)/g, "](/lesson/$1/$2)")
     .replace(/\]\(#\/lesson\/([a-z0-9-]+)\)/g, "](/paths/$1)")
     .replace(/\]\(#\/careers[^)]*\)/g, "](/paths/20-career-prep)")
