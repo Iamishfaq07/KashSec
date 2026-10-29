@@ -1,5 +1,13 @@
 # Lesson reliability and course audit
 
+## Lesson-aligned AppSec checks — 2026-10-29
+
+All 18 AppSec lessons now have dedicated questions keyed by stable lesson IDs. The static and preview readers share generated question data. Broader quiz-bank practice is labeled as path practice because it may cover material from a later lesson. Answers are optional and do not modify quiz scores or reading completion.
+
+`npm run test:lesson-checks` and `npm run test:preview-checks` validate the question data against the current lesson catalog and source headings, then exercise wrong and correct answers, feedback focus, retries, source-section review, navigation, refresh, screen widths, and finishing without answering. This checks the authored AppSec material and interaction; it does not establish factual accuracy of the entire course.
+
+The preview lesson grid also constrains article width so wide code and diagrams scroll within the lesson on phones.
+
 The root static academy and the React app under `preview/` were checked separately. The root deployment excludes the separate prototype and internal tooling, so server source is not published as static website content.
 
 ## Changes

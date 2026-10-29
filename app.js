@@ -6015,30 +6015,173 @@ function wirePomodoro(){
 /* Copy-to-clipboard buttons + best-effort syntax highlighting on all real
    code blocks (mermaid fences were already converted to .mermaid divs). */
 
-/* End-of-lesson micro-check — one quick question so a lesson ends with
-   active recall instead of passive reading. Questions come from the
-   path's existing quiz bank, picked deterministically by sub-lesson
-   index so a given lesson always shows the same one (and, across a
-   path, they spread evenly rather than repeating). Answering here does
-   NOT affect path quiz scores — it's practice, not assessment. */
+/* Lesson checks are keyed by stable lesson ID, never the lesson's position.
+   Each review target is a heading in the source lesson. The preview consumes
+   the same questions through generate-preview-content.js. */
+const LESSON_CHECKS = {
+  '22-devsecops-appsec/what-is-devsecops': {
+    q:'A team can add only one security control this week. What is a useful first step?',
+    options:['Buy a scanner before choosing a risk','Pick one risky feature, name an owner, and agree on a check','Wait until every developer has a security certification','Make the security team responsible for every code change'],
+    correct:1,
+    explain:'Start with a small control tied to a real risk. An owner and a repeatable check make the improvement easier to deliver and verify.',
+    review:'A practical first control'
+  },
+  '22-devsecops-appsec/shift-left-vs-shift-right': {
+    q:'A team adds code review before release. What should happen to its production security checks?',
+    options:['Stop them because review happens earlier','Use them only after a confirmed breach','Keep them: early review and production feedback catch different problems','Replace monitoring with developer training'],
+    correct:2,
+    explain:'Earlier checks reduce rework, but live configuration, behavior, and new threats still need attention. Use feedback before and after release.',
+    review:"Why mature programs need both, not one or the other"
+  },
+  '22-devsecops-appsec/security-requirements-asvs': {
+    q:'Which acceptance criterion can verify the invoice ownership rule?',
+    options:['The invoice page looks secure','The application uses a popular framework','A scanner reports no critical findings','Customer A can read A’s invoice, while customer B cannot read it'],
+    correct:3,
+    explain:'A testable requirement names both allowed and denied behavior. A successful login or a green scan does not prove ownership checks work.',
+    review:'Write acceptance criteria that can fail'
+  },
+  '22-devsecops-appsec/threat-modeling-sdlc': {
+    q:'Before choosing controls for a new file-upload feature, what should the team identify?',
+    options:['The data flow, trust boundaries, and ways the feature could be abused','Only the final penetration-test date','A scanner that guarantees no vulnerabilities','Every possible threat to every system in the company'],
+    correct:0,
+    explain:'A small threat model follows the feature’s data and trust boundaries, then turns plausible abuse into controls and verification tasks.',
+    review:'A lightweight process that works'
+  },
+  '22-devsecops-appsec/secure-code-review': {
+    q:'An invoice query now uses bound SQL parameters. What still needs a separate check?',
+    options:['Whether the invoice ID is printed in the URL','Whether the signed-in actor is allowed to read that invoice','Whether the database has any indexes','Whether every denied request returns an invoice anyway'],
+    correct:1,
+    explain:'Parameter binding separates data from SQL syntax. Authorization separately checks whether this actor may access this object.',
+    review:'A small corrected version'
+  },
+  '22-devsecops-appsec/sast-dast-sca': {
+    q:'You need to identify known vulnerabilities in third-party packages. Which check is the best starting point?',
+    options:['DAST against only the login page','A code formatter','SCA against the application’s dependencies','A screenshot review'],
+    correct:2,
+    explain:'Software composition analysis identifies component risk. Confirm affected versions and context; it does not prove the whole application is secure.',
+    review:'SCA: identify component risk'
+  },
+  '22-devsecops-appsec/iac-security-scanning': {
+    q:'An IaC scan finds a storage bucket configured for public access. What is the useful next step?',
+    options:['Ignore it until someone downloads data','Assume every bucket must have the same policy','Treat a green code scan as proof the cloud account is safe','Check the intended access, fix the template if needed, and verify the deployed setting'],
+    correct:3,
+    explain:'IaC checks can catch risky settings before deployment. The intended policy and the actual deployed state still need verification.',
+    review:'Why IaC scanning catches what runtime cloud scanning catches too late'
+  },
+  '22-devsecops-appsec/cicd-security': {
+    q:'What is a useful way to reduce the impact of a compromised CI job?',
+    options:['Give its token only the permissions the job needs','Give every workflow an administrator token','Put deployment secrets in pull-request logs','Trust every contribution because the repository is public'],
+    correct:0,
+    explain:'Least-privilege job tokens limit what a compromised job can do. Untrusted code, secrets, and privileged deployment steps also need clear boundaries.',
+    review:'Hardening checklist'
+  },
+  '22-devsecops-appsec/container-image-and-registry-security': {
+    q:'A container image has a valid signature. What does that establish?',
+    options:['It has no exploitable vulnerabilities','It is associated with the verified signer and has not changed since signing','Its application enforces every authorization rule','It will remain safe without updates'],
+    correct:1,
+    explain:'A signature helps verify origin and integrity under your trust policy. It does not replace vulnerability review, safe configuration, or application testing.',
+    review:'Image signing and provenance — verifying what actually gets deployed'
+  },
+  '22-devsecops-appsec/secrets-supply-chain': {
+    q:'A valid API key was committed, then removed in a later commit. What should happen next?',
+    options:['Keep using it because the latest file is clean','Rename the repository','Revoke or rotate it and investigate exposure, including repository history','Hide the commit message and close the finding'],
+    correct:2,
+    explain:'Removing a key from the current file does not revoke copies in history, logs, caches, or clones. Invalidate the exposed credential and check its use.',
+    review:'A worked example'
+  },
+  '22-devsecops-appsec/sbom-and-software-bill-of-materials': {
+    q:'A new vulnerability affects a transitive dependency. How can a current SBOM help?',
+    options:['Automatically prove that exploitation is impossible','Replace every dependency update','Prove all code is free of licensing issues','Find which built applications include the affected component for further assessment'],
+    correct:3,
+    explain:'An SBOM inventories components, including indirect dependencies. Use it to locate affected builds, then assess exposure and remediation.',
+    review:'The transitive dependency problem, specifically'
+  },
+  '22-devsecops-appsec/vulnerability-management-and-prioritization': {
+    q:'Two findings have similar severity scores. What helps decide which to fix first?',
+    options:['Exposure, reachability, exploitation evidence, and business impact','Only the alphabetical order of the package names','Only which scanner reported the most findings','Whether the finding has a longer description'],
+    correct:0,
+    explain:'A severity score is one input. Actual exposure, reachable vulnerable behavior, active exploitation, and impact make prioritization more useful.',
+    review:'CVSS alone is genuinely insufficient for prioritization'
+  },
+  '22-devsecops-appsec/security-champions-programs': {
+    q:'What makes a security champions program useful to a development team?',
+    options:['Making volunteers solely accountable for all security defects','Giving champions time, training, support, and a route to the security team','Adding responsibilities without changing workload','Replacing specialist review with a champion title'],
+    correct:1,
+    explain:'Champions help teams apply security in daily work. They need support and time; a title alone does not replace specialist help or shared responsibility.',
+    review:'What makes a Champions program succeed, versus fail'
+  },
+  '22-devsecops-appsec/metrics-that-matter': {
+    q:'A dashboard shows twice as many scanner findings this month. What can you conclude?',
+    options:['The team is definitely twice as insecure','The program has definitely become twice as effective','Investigate context: coverage, meaningful risk, remediation time, and recurring defects','Stop measuring security because counts can change'],
+    correct:2,
+    explain:'A raw finding count can change with scan coverage or noise. Pair activity with measures that explain risk and whether fixes last.',
+    review:'Bad metrics (common traps)'
+  },
+  '22-devsecops-appsec/building-appsec-program': {
+    q:'What belongs in a realistic first 90-day AppSec plan?',
+    options:['A promise to remove every vulnerability','A tool purchase with no owner or success measure','A ban on releases until the whole backlog is empty','A small risk-based scope, owners, milestones, and ways to verify improvement'],
+    correct:3,
+    explain:'Start with a scope the team can deliver. Clear ownership, a few useful controls, and evidence of outcomes support the next iteration.',
+    review:'Concrete first 90 days'
+  },
+  '22-devsecops-appsec/appsec-tooling-and-orchestration': {
+    q:'Three scanners report the same underlying issue. What should orchestration help the team do?',
+    options:['Group related evidence, assign an owner, and track one coordinated remediation','Automatically discard every repeated report','Count each report as a separate fixed vulnerability','Assume the finding is false because tools agree'],
+    correct:0,
+    explain:'Deduplication reduces repeated work while preserving evidence. Ownership and a useful workflow matter more than collecting another dashboard.',
+    review:'Why deduplication genuinely matters, not just for tidiness'
+  },
+  '22-devsecops-appsec/appsec-fix-verify-lab': {
+    q:'The Python lab passes with --reference. How do you verify your own edited starter?',
+    options:['The reference result is already enough','Run the unchanged tests without --reference and confirm both allowed and denied cases pass','Delete the failing ownership tests','Return None for every request'],
+    correct:1,
+    explain:'Reference mode runs the supplied worked implementation. The normal command tests your get_invoice function; legitimate access must work as well as denied access.',
+    review:'4. Compare with the reference'
+  },
+  '22-devsecops-appsec/appsec-program-lab': {
+    q:'Which capstone evidence best connects a program plan to a working improvement?',
+    options:['A list of tools without configuration or results','A claim that the fictional company is certified','A reproducible finding, a reviewed fix, test results, and a documented remaining risk','A screenshot showing only the number of scans'],
+    correct:2,
+    explain:'A program plan becomes more useful when it includes technical evidence. Show what changed, how you checked it, and the limits of the exercise.',
+    review:'5. Include technical evidence'
+  }
+};
+
+/* Broader quiz-bank practice remains optional and is labeled honestly when
+   no lesson-specific check is authored. Neither kind changes saved scores. */
 function renderMicroCheck(ctx){
   const host = document.getElementById('microCheck');
   if(!host) return;
   const bank = (typeof QUIZZES !== 'undefined' && QUIZZES[ctx.path.id] && QUIZZES[ctx.path.id].questions) || [];
-  if(!bank.length){ host.innerHTML = ''; return; }
+  const lessonCheck = LESSON_CHECKS[`${ctx.path.id}/${ctx.sub.id}`];
+  if(!lessonCheck && !bank.length){ host.innerHTML = ''; return; }
   const subIndex = ctx.path.subs.findIndex(s => s.id === ctx.sub.id);
-  const q = bank[(subIndex < 0 ? 0 : subIndex) % bank.length];
+  const q = lessonCheck || bank[(subIndex < 0 ? 0 : subIndex) % bank.length];
 
   host.innerHTML = `
-    <div class="micro-check">
-      <div class="mc-eyebrow">⚡ Quick check</div>
-      <div class="mc-q">${escapeHtml(q.q)}</div>
-      <div class="mc-options" id="mcOptions">
+    <section class="micro-check" aria-labelledby="mcQuestion">
+      <div class="mc-eyebrow">${lessonCheck ? 'Quick check · this lesson' : 'Optional path practice'}</div>
+      ${lessonCheck ? '' : '<p class="mc-note">This question reviews the wider path and may cover a later lesson. You can skip it and continue.</p>'}
+      <h2 class="mc-q" id="mcQuestion">${escapeHtml(q.q)}</h2>
+      <div class="mc-options" id="mcOptions" role="group" aria-labelledby="mcQuestion">
         ${q.options.map((opt,i)=>`<button class="quiz-opt" data-oi="${i}" type="button"><span class="opt-letter">${String.fromCharCode(65+i)}</span><span>${escapeHtml(opt)}</span></button>`).join('')}
       </div>
-      <div id="mcFeedback"></div>
-      <div class="mc-note">Practice only — this doesn't affect your path quiz score.</div>
-    </div>`;
+      <div id="mcFeedback" role="status" tabindex="-1"></div>
+      <div class="mc-actions" hidden><button type="button" class="btn-ghost sm" id="mcRetry">Try again</button>${lessonCheck ? '<button type="button" class="btn-ghost sm" id="mcReview">Review this idea ↑</button>' : `<a class="btn-ghost sm" href="#/lesson/${ctx.path.id}">Browse path lessons →</a>`}</div>
+      <p class="mc-note">Optional practice. Your answer does not change your quiz score or mark this lesson finished.</p>
+    </section>`;
+
+  host.querySelector('#mcRetry').addEventListener('click',()=>{
+    renderMicroCheck(ctx);
+    host.querySelector('#mcOptions button')?.focus({preventScroll:true});
+  });
+  host.querySelector('#mcReview')?.addEventListener('click',()=>{
+    const heading = [...document.querySelectorAll('#content h2, #content h3')].find(h=>h.textContent.trim()===lessonCheck.review);
+    if(!heading) return;
+    heading.setAttribute('tabindex','-1');
+    heading.scrollIntoView({behavior:prefersReduced()?'instant':'smooth',block:'start'});
+    heading.focus({preventScroll:true});
+  });
 
   let answered = false;
   host.querySelectorAll('#mcOptions .quiz-opt').forEach(btn=>{
@@ -6053,8 +6196,9 @@ function renderMicroCheck(ctx){
         b.disabled = true;
       });
       document.getElementById('mcFeedback').innerHTML =
-        `<div class="quiz-explain"><strong>${correct ? 'Correct — ' : 'Not quite — '}</strong>${escapeHtml(q.explain || '')}</div>`;
-      if(correct) fireConfetti({count:30});
+        `<div class="quiz-explain"><strong>${correct ? 'Correct. ' : 'Not quite. '}</strong>${escapeHtml(q.explain || '')}</div>`;
+      host.querySelector('.mc-actions').hidden = false;
+      host.querySelector('#mcFeedback').focus({preventScroll:true});
     });
   });
 }
@@ -9213,6 +9357,11 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-10-29', title:'AppSec checks that match the lesson', items:[
+    'All 18 AppSec lessons now have a question about the lesson you just read, shared by both readers. Explanations link back to the relevant section, and you can try again without changing your quiz scores or reading progress.',
+    'Wider quiz-bank questions are now labeled optional path practice and explain that they may cover a later lesson. You can keep moving without answering.',
+    'The preview reader keeps wide diagrams and code within the lesson on small screens instead of stretching the page.'
+  ]},
   {date:'2026-10-29', title:'Find the right path and take the complete exercise offline', items:[
     'The path finder searches topics, lesson titles and recommended certifications without downloading the full lesson index. Search and level choices survive refreshes and a return from a roadmap.',
     'Offline AppSec packs now include the Python exercise, local download links, a learning-route index and certification preparation notes. Packs validate every file, show progress, and support cancellation.',

@@ -117,10 +117,19 @@ try{
   const offline=await contextFor({serviceWorkers:'allow'});const offlinePage=await offline.newPage();
   await offlinePage.goto(BASE+'/lesson/02-networking/dns.html');await offlinePage.locator('#content[aria-busy="false"]').waitFor();
   await offlinePage.locator('.lp-card a').click();await offlinePage.locator('#pgJourney').waitFor();
-  await offlinePage.waitForFunction(async()=>!!navigator.serviceWorker.controller&&!!(await caches.match(new URL('playground.js',location.origin).href))&&!!(await caches.match(new URL('course/02-networking/dns.md',location.origin).href)));
-  await offline.setOffline(true);await offlinePage.reload();
-  try { await offlinePage.locator('#pgJourney').waitFor(); } catch(error) {
-    console.log('Offline diagnostics:', await offlinePage.evaluate(async()=>({url:location.href,body:document.body.innerText.slice(-1800),caches:await caches.keys(),worker:navigator.serviceWorker.controller?.scriptURL})));
+  // Resolve cache reads before polling their boolean result. Treating an
+  // asynchronous predicate itself as ready can take the page offline while
+  // its first worker is still installing and the shell cache is empty.
+  let offlineReady=false;
+  for(let attempt=0;attempt<100&&!offlineReady;attempt++){
+    offlineReady=await offlinePage.evaluate(async()=>!!navigator.serviceWorker.controller&&!!(await caches.match(new URL('playground.js',location.origin).href))&&!!(await caches.match(new URL('course/02-networking/dns.md',location.origin).href)));
+    if(!offlineReady)await offlinePage.waitForTimeout(100);
+  }
+  check(offlineReady,'the real offline controller and both cached resources are ready before disconnecting');
+  const offlineSnapshot=await offlinePage.evaluate(async()=>({url:location.href,caches:await caches.keys(),worker:navigator.serviceWorker.controller?.scriptURL}));
+  await offline.setOffline(true);
+  try { await offlinePage.reload();await offlinePage.locator('#pgJourney').waitFor(); } catch(error) {
+    console.log('Offline diagnostics before disconnecting:',offlineSnapshot);
     throw error;
   }
   await offlinePage.locator('.practice-return a').click();await offlinePage.locator('#content[aria-busy="false"]').waitFor();
