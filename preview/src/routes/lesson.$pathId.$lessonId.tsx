@@ -2,6 +2,7 @@ import { useEffect, useState, type MouseEvent } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Bookmark, Check } from "lucide-react";
 import { Shell } from "@/components/shell";
+import { LessonCheck } from "@/components/lesson-check";
 import { Button } from "@/components/ui";
 import { getLesson, lessonKey, readingMinutes } from "@/lib/catalog";
 import { labForPath } from "@/data/labs";
@@ -253,9 +254,9 @@ function LessonPage() {
         <span>{` · ${index + 1} of ${path.lessons.length} · ${minutes} min`}</span>
       </div>
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_220px]">
-        <article>
+        <article className="min-w-0">
           <div className="flex items-start justify-between gap-3">
-            <h1 className="font-display text-4xl leading-tight sm:text-5xl">
+            <h1 className="min-w-0 break-words font-display text-4xl leading-tight sm:text-5xl">
               {lesson.title}
             </h1>
             <button
@@ -315,6 +316,7 @@ function LessonPage() {
               dangerouslySetInnerHTML={{ __html: html }}
             />
           ) : null}
+          {status === "ready" ? <LessonCheck key={key} lessonKey={key} /> : null}
           <div className="mt-8 flex flex-wrap gap-3">
             {status === "ready" && next ? (
               <Button

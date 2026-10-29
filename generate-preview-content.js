@@ -16,6 +16,7 @@ const paths = extract('PATHS');
 const guides = extract('PATH_GUIDES');
 const certifications = extract('CERTS');
 const prerequisites = extract('PATH_PREREQS','object');
+const lessonChecks = extract('LESSON_CHECKS','object');
 const quizzes = extract('QUIZZES','object',fs.readFileSync(path.join(root,'quizzes.js'),'utf8'));
 const final = extract('FINAL_QUIZ','object',fs.readFileSync(path.join(root,'quizzes.js'),'utf8'));
 function write(relative,content){
@@ -25,6 +26,7 @@ function write(relative,content){
 }
 write('src/data/catalog.json',JSON.stringify({paths:paths.map(({subs,...p})=>({...p,lessons:subs}))}));
 write('src/data/quizzes.json',JSON.stringify({quizzes,final}));
+write('src/data/lesson-checks.json',JSON.stringify(lessonChecks));
 write('src/data/path-guides.json',JSON.stringify({guides,certifications,prerequisites}));
 for(const p of paths) for(const lesson of p.subs){
   const relative = `course/${p.id}/${lesson.id}.md`;
