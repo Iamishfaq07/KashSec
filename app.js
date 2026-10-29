@@ -2057,6 +2057,7 @@ function findSubContext(pathId, subId){
 /* --- Router --- */
 function routeFromLocation(){
   if(activeRoute() !== renderedRoute) route();
+  else currentCourseRefresh?.();
 }
 window.addEventListener('hashchange', routeFromLocation);
 window.addEventListener('DOMContentLoaded', routeFromLocation);
@@ -2148,6 +2149,8 @@ let currentInvestigationRefresh = null;
 let currentPlaygroundRefresh = null;
 let currentStartGuideRefresh = null;
 let currentReviewRefresh = null;
+let currentCourseRefresh = null;
+let currentPathPackAbort = null;
 const lessonFallbacks = new Map();
 let currentLabMessageController = null;
 let currentCvssWorker = null;
@@ -2159,6 +2162,9 @@ document.addEventListener('visibilitychange', ()=>{
 });
 
 function route(){
+  currentPathPackAbort?.();
+  currentPathPackAbort = null;
+  currentCourseRefresh = null;
   currentReaderFlush?.();
   currentReaderFlush = currentReaderReset = currentReaderUpdate = null;
   currentInvestigationFlush?.();
@@ -2831,6 +2837,11 @@ function renderCourseIndex(){
       </div>
       ${studyPlannerEntryHtml()}
       <p class="pg-course-link">Not sure where to begin? <a href="#/start">Find my starting point →</a><br>Prefer trying things first? <a href="#/playground">Try the beginner Learning Playground →</a></p>
+      <div class="path-finder">
+        <label for="pathSearch">Find a path</label>
+        <p id="pathSearchHint">Search topics, lesson titles, or recommended certifications. Try AppSec, ASVS, Linux, or CSSLP.</p>
+        <div><input id="pathSearch" type="search" maxlength="160" autocomplete="off" aria-describedby="pathSearchHint" placeholder="What would you like to learn?"><button type="button" class="btn-ghost sm" id="resetPathFilters">Reset filters</button></div>
+      </div>
       ${(()=>{
         // Level filter. The tier is already on every card (data-tier) and
         // colour-coded on its edge; this lets a newcomer narrow 26 cards to
@@ -2840,26 +2851,130 @@ function renderCourseIndex(){
         return `<div class="tier-filter" role="group" aria-label="Filter paths by level">${tiers.filter(([t])=>count(t) > 0).map(([t,label])=>
           `<button type="button" class="tier-chip" data-tier="${t}" aria-pressed="${t==='all'}">${label}<span>${count(t)}</span></button>`).join('')}</div>`;
       })()}
+      <p id="pathSearchStatus" class="path-guide-note" role="status" aria-live="polite" aria-atomic="true"></p>
       <div class="paths" id="coursePaths">
         ${PATHS.map((p,i)=>`
 ${pathCardHTML(p,i)}
         `).join('')}
       </div>
-      <p class="tier-empty sec-lead" id="tierEmpty" hidden>No paths at this level.</p>
+      <p class="tier-empty sec-lead" id="tierEmpty" hidden>No paths match these filters. Try a broader topic or reset the filters.</p>
     </section>
   `;
   const chips = [...app.querySelectorAll('.tier-chip')];
-  chips.forEach(chip => chip.addEventListener('click', ()=>{
-    const t = chip.dataset.tier;
-    chips.forEach(c => c.setAttribute('aria-pressed', String(c === chip)));
+  const input = document.getElementById('pathSearch');
+  const reset = document.getElementById('resetPathFilters');
+  const normalize = text=>String(text).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  const index = PATHS.map(p=>{
+    const guide = PATH_GUIDES.find(g=>g.id===p.id);
+    const certs = (guide?.certs || []).map(rec=>CERTS.find(c=>c.id===rec.id)).filter(Boolean);
+    const lessons = p.subs.map(s=>({title:s.title,text:normalize(s.title+' '+s.desc)}));
+    return {id:p.id,lessons,certs,text:normalize([p.n,p.title,p.desc,guide?.goal,guide?.artifact,...lessons.map(s=>s.text),...certs.map(c=>c.name+' '+c.org)].join(' '))};
+  });
+  let level = 'all';
+  const apply = (writeUrl = false)=>{
+    const query = normalize(input.value).trim().split(/\s+/).filter(Boolean);
+    chips.forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.tier===level)));
     let shown = 0;
     app.querySelectorAll('#coursePaths .path-card').forEach(card=>{
-      const match = t === 'all' || card.dataset.tier === t;
+      const record = index.find(p=>p.id===card.dataset.path);
+      const match = (level === 'all' || card.dataset.tier === level) && query.every(term=>record.text.includes(term));
       card.classList.toggle('is-filtered', !match);
+      const reason = card.querySelector('.path-search-match');
+      const lesson = query.length && record.lessons.find(s=>query.every(term=>s.text.includes(term)));
+      const cert = query.length && record.certs.find(c=>query.every(term=>normalize(c.name+' '+c.org).includes(term)));
+      reason.textContent = lesson ? `Includes: ${lesson.title}` : cert ? `Related certification: ${cert.name}` : '';
+      reason.hidden = !reason.textContent;
       if(match) shown++;
     });
     document.getElementById('tierEmpty').hidden = shown > 0;
-  }));
+    document.getElementById('pathSearchStatus').textContent = `${shown} of ${PATHS.length} paths shown.`;
+    reset.disabled = !input.value && level==='all';
+    if(writeUrl){
+      const url = new URL(location.href);
+      const q = input.value.trim();
+      if(q) url.searchParams.set('q',q); else url.searchParams.delete('q');
+      if(level!=='all') url.searchParams.set('level',level); else url.searchParams.delete('level');
+      history.replaceState(null,'',url);
+    }
+  };
+  currentCourseRefresh = ()=>{
+    const params = new URLSearchParams(location.search);
+    input.value = (params.get('q') || '').slice(0,160);
+    level = chips.some(c=>c.dataset.tier===params.get('level')) ? params.get('level') : 'all';
+    apply();
+  };
+  currentCourseRefresh();
+  input.addEventListener('input',()=>apply(true));
+  chips.forEach(chip=>chip.addEventListener('click',()=>{level=chip.dataset.tier;apply(true);}));
+  reset.addEventListener('click',()=>{input.value='';level='all';apply(true);input.focus();});
+}
+
+function pathPracticeFiles(pathId){
+  return PATH_GUIDES.find(guide=>guide.id===pathId)?.downloads || [];
+}
+async function fetchPathFile(file, signal){
+  const controller = new AbortController();
+  const abort = ()=>controller.abort(signal.reason);
+  signal.addEventListener('abort',abort,{once:true});
+  if(signal.aborted) abort();
+  const timer = setTimeout(()=>controller.abort(new DOMException('File request timed out','TimeoutError')),12000);
+  try{
+    const response = await fetch(file.url,{signal:controller.signal});
+    const text = await response.text();
+    const html = /text\/html/i.test(response.headers.get('content-type') || '') || /^\s*</.test(text);
+    const valid = file.lesson ? /^#\s+\S/m.test(text) : text.startsWith(file.startsWith) && text.includes(file.marker);
+    if(!response.ok || html || !valid) throw new Error('Invalid file response');
+    return text;
+  }catch(error){
+    if(signal.aborted) throw signal.reason;
+    throw new Error(`Could not load “${file.label}”. No pack was downloaded. Try again while online.`);
+  }finally{
+    clearTimeout(timer);
+    signal.removeEventListener('abort',abort);
+  }
+}
+function pathPackIndex(p){
+  const guide = PATH_GUIDES.find(g=>g.id===p.id);
+  const localLink = s=>`./${p.n}.${s.n}-${s.id}.md`;
+  let text = `# Path ${p.n} — ${p.title}\n\n${p.desc}\n\n## Using this pack\n\nOpen this index in a Markdown viewer or text editor. Lesson text and listed practice files are included; external websites, provider guides and VM tools are separate. Completion and certification plans are not exported.\n\n`;
+  if(guide){
+    text += `## Your learning route\n\n${guide.goal}\n\n`;
+    pathGuideStages(p).forEach((stage,i)=>{text+=`${i+1}. [${stage.title}](${localLink(stage.lessons[0])}) — ${stage.outcome}\n`;});
+    text += `\n## Build evidence\n\n${guide.artifact}\n\n`;
+    text += '## Optional certification goals\n\nThese lessons cover selected foundations, not a complete exam syllabus. Check the current provider requirements before booking.\n\n';
+    if(guide.certNote) text += guide.certNote+'\n\n';
+    for(const rec of guide.certs){
+      const cert = CERTS.find(c=>c.id===rec.id);
+      text += `- [${cert.name}](${cert.url}) — ${rec.reason}\n  Before you book: ${cert.readiness} Information checked ${cert.reviewed}.\n`;
+    }
+  }
+  const assets = pathPracticeFiles(p.id);
+  if(assets.length){
+    text+='\n## Included practice files\n\n';
+    assets.forEach(asset=>{text+=`- [${asset.label}](./${asset.name})\n`;});
+    text+='\nFor the AppSec Python exercise, use Python 3.10 or newer. Run `python appsec_invoice_lab.py` in this folder. The starter intentionally fails security tests until you fix it; `--reference` checks the separate worked solution. Read the lab lesson for the full contract and expected results.\n';
+  }
+  text+='\n## Contents\n\n';
+  p.subs.forEach(s=>{text+=`- ${p.n}.${s.n} [${s.title}](${localLink(s)})\n`;});
+  return text;
+}
+async function preparePathPack(p, signal, onProgress){
+  const assets = pathPracticeFiles(p.id);
+  const jobs = [...p.subs.map(s=>({url:`/course/${p.id}/${s.id}.md`,name:`${p.n}.${s.n}-${s.id}.md`,label:s.title,lesson:true})),...assets];
+  const files = new Array(jobs.length);
+  let cursor=0,done=0;
+  const worker = async()=>{
+    while(cursor<jobs.length){
+      if(signal.aborted) throw signal.reason;
+      const index = cursor++,file = jobs[index];
+      let content = await fetchPathFile(file,signal);
+      if(file.lesson) assets.forEach(asset=>{content=content.replaceAll(asset.url,'./'+asset.name);});
+      files[index]={name:file.name,content};
+      onProgress(++done,jobs.length);
+    }
+  };
+  await Promise.all(Array.from({length:Math.min(4,jobs.length)},worker));
+  return [{name:'00-index.md',content:pathPackIndex(p)},...files];
 }
 
 /* ---------- Minimal in-browser ZIP writer (store only, no deps) ----------
@@ -3934,7 +4049,16 @@ const PATH_GUIDES = [
         "note": "See the same missing ownership rule in a browser simulation."
       }
     ],
-    "certNote": "Choose the credential that fits the role. Finishing this path does not satisfy an exam syllabus or professional experience requirement."
+    "certNote": "Choose the credential that fits the role. Finishing this path does not satisfy an exam syllabus or professional experience requirement.",
+    "downloads": [
+      {
+        "url": "/downloads/appsec_invoice_lab.py",
+        "name": "appsec_invoice_lab.py",
+        "label": "AppSec Fix & Verify Python lab",
+        "startsWith": "#!/usr/bin/env python3",
+        "marker": "class InvoiceSecurityTests(unittest.TestCase):"
+      }
+    ]
   },
   {
     "id": "23-grc-compliance",
@@ -4178,7 +4302,9 @@ function renderPathOverview(pathId){
             ${quiz ? `<a class="btn-ghost" href="#/quiz/${p.id}">${quizResult ? (quizResult.passed?'✅ Retake quiz':'Retake quiz') : '📝 Take the path quiz'}</a>` : ''}
             <button class="btn-ghost" id="savePathOfflineBtn" type="button">Save path for offline use</button>
             <button class="btn-ghost" id="downloadPackBtn" type="button">${cardIco('download')}Download offline pack (.zip)</button>
+            <button class="btn-ghost" id="cancelPackBtn" type="button" hidden>Cancel download</button>
           </div>
+          <p class="tool-note path-pack-note">The ZIP includes lesson text${pathPracticeFiles(p.id).length?' and the runnable Python practice file':''}. External websites and VM tools are separate.</p>
           <p id="offlinePathStatus" class="tool-note" role="status" aria-live="polite"></p>
         </div>
         ${pathGuideHTML(p)}
@@ -4222,7 +4348,7 @@ function renderPathOverview(pathId){
         };
         channel.port1.onmessage = ({data})=>{
           if(data?.type === 'progress'){
-            status.textContent = `Saved ${data.saved} of ${data.total} lessons${data.failed ? `; ${data.failed} failed` : ''}…`;
+            status.textContent = `Saved ${data.saved} of ${data.total} lessons${data.assetsTotal?`; ${data.assetsSaved} of ${data.assetsTotal} practice files`:''}${data.failed || data.assetsFailed ? `; ${(data.failed || 0)+(data.assetsFailed || 0)} failed` : ''}…`;
             armTimer();
           } else if(data?.type === 'done' || data?.type === 'error'){
             clearTimeout(timer);
@@ -4234,9 +4360,16 @@ function renderPathOverview(pathId){
         armTimer();
         registration.active.postMessage({type:'CACHE_PATH', pathId:p.id}, [channel.port2]);
       });
-      status.textContent = result.failed
-        ? `${result.saved} of ${result.total} lessons saved. ${result.failed} failed; try again while online.`
-        : `All ${result.total} lessons saved for offline use on this device.`;
+      if(pathPracticeFiles(p.id).length && result.assetsTotal !== pathPracticeFiles(p.id).length){
+        throw new Error('Apply the available site update, then retry to include the practice file. You can also download the complete ZIP.');
+      }
+      status.textContent = result.assetsTotal
+        ? result.failed || result.assetsFailed
+          ? `${result.saved} of ${result.total} lessons and ${result.assetsSaved} of ${result.assetsTotal} practice files saved. ${result.failed+result.assetsFailed} files failed; try again while online.`
+          : `All ${result.total} lessons and ${result.assetsSaved} practice file${result.assetsSaved===1?'':'s'} saved for offline use on this device.`
+        : result.failed
+          ? `${result.saved} of ${result.total} lessons saved. ${result.failed} failed; try again while online.`
+          : `All ${result.total} lessons saved for offline use on this device.`;
     } catch (error) {
       status.textContent = error.message || 'Could not save this path. Try again while online.';
     } finally {
@@ -4248,22 +4381,21 @@ function renderPathOverview(pathId){
     const btn = e.currentTarget;
     const status = document.getElementById('offlinePathStatus');
     const original = btn.innerHTML;
+    const controller = new AbortController();
+    const abort = ()=>controller.abort(new DOMException('Download cancelled. No pack was downloaded.','AbortError'));
+    currentPathPackAbort = abort;
+    const cancel = document.getElementById('cancelPackBtn');
+    cancel.hidden = false;
+    cancel.onclick = abort;
+    const timer = setTimeout(()=>controller.abort(new Error('The download took too long. No pack was downloaded. Try again while online.')),60000);
     btn.textContent = 'Building…';
     btn.disabled = true;
     status.textContent = 'Loading lessons for the offline pack…';
     try{
-      const files = [];
-      let index = `# Path ${p.n} — ${p.title}\n\n${p.desc}\n\n## Contents\n\n`;
-      for(const s of p.subs){
-        let res;
-        try { res = await fetch(`course/${p.id}/${s.id}.md`); }
-        catch { throw new Error(`Could not load “${s.title}”. No pack was downloaded.`); }
-        if(!res.ok) throw new Error(`Could not load “${s.title}” (HTTP ${res.status}). No pack was downloaded.`);
-        const md = await res.text();
-        files.push({name:`${p.n}.${s.n}-${s.id}.md`, content: md});
-        index += `- ${p.n}.${s.n} [${s.title}](./${p.n}.${s.n}-${s.id}.md)\n`;
-      }
-      files.unshift({name:'00-index.md', content: index});
+      const files = await preparePathPack(p,controller.signal,(done,total)=>{
+        if(!controller.signal.aborted) status.textContent=`Preparing ${done} of ${total} files…`;
+      });
+      if(controller.signal.aborted) throw controller.signal.reason;
       const blob = buildZip(files);
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -4272,10 +4404,16 @@ function renderPathOverview(pathId){
       a.click();
       a.remove();
       setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
-      status.textContent = `Offline pack with all ${p.subs.length} lessons downloaded.`;
+      const assets = pathPracticeFiles(p.id).length;
+      status.textContent = `Offline pack with all ${p.subs.length} lessons${assets?` and ${assets} practice file${assets===1?'':'s'}`:''} downloaded.`;
     }catch(err){
+      controller.abort();
       status.textContent = err.message || 'Could not build the offline pack. No pack was downloaded.';
     }finally{
+      clearTimeout(timer);
+      if(currentPathPackAbort===abort) currentPathPackAbort=null;
+      cancel.hidden=true;
+      cancel.onclick=null;
       btn.innerHTML = original;
       btn.disabled = false;
     }
@@ -4635,8 +4773,8 @@ function renderCertTracker(){
         <h1>Certification roadmap</h1>
         <p class="sec-lead">Optional credentials for different roles, from foundations to specialist work. Choose a goal that fits your work, then check the official requirements. KashSec paths cover selected foundations, not a complete exam syllabus. This is your personal planner; statuses are self-reported.</p>
         <div class="mini-progress" style="max-width:22rem;margin-top:1.2rem">
-          <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${Math.round(passedCount/CERTS.length*100)}"></div></div>
-          <div class="mini-progress-label"><span>${passedCount}/${CERTS.length} passed</span></div>
+          <div class="mini-progress-track"><div class="mini-progress-fill" id="certOverallFill" style="width:0%" data-pct="${Math.round(passedCount/CERTS.length*100)}"></div></div>
+          <div class="mini-progress-label"><span id="certOverallStatus">${passedCount}/${CERTS.length} passed (self-reported)</span></div>
         </div>
       </div>
       <label class="cert-directory-filter">Show options for a path<select class="fc-select" id="certPathFilter"><option value="">All credentials</option>${PATHS.map(p=>`<option value="${p.id}">Path ${p.n} · ${escapeHtml(p.title)}</option>`).join('')}</select></label>
@@ -4658,6 +4796,7 @@ function renderCertTracker(){
             <select class="fc-select cert-status-select" data-cert="${c.id}" aria-label="Status for ${escapeHtml(c.name)}" style="margin-top:.8rem">
               ${Object.entries(statusMeta).map(([k,m])=>`<option value="${k}" ${status===k?'selected':''}>${m.label}</option>`).join('')}
             </select>
+            <p class="cert-plan-save path-guide-note" role="status" aria-live="polite"></p>
           </div>
         `;}).join('')}
       </div>
@@ -4680,13 +4819,17 @@ function renderCertTracker(){
       e.stopPropagation();
       STATE.certTracker[sel.dataset.cert] = sel.value;
       checkAchievements();
-      saveState();
-      const filterValue = certFilter.value;
-      renderCertTracker();
-      const nextFilter = document.getElementById('certPathFilter');
-      nextFilter.value = filterValue;
-      nextFilter.dispatchEvent(new Event('change'));
-      app.querySelector(`.cert-status-select[data-cert="${sel.dataset.cert}"]`)?.focus({preventScroll:true});
+      const saved = saveState();
+      const card = sel.closest('.cert-track-card');
+      card.classList.toggle('active',statusMeta[sel.value].cls==='active');
+      card.classList.toggle('done',sel.value==='passed');
+      card.querySelector('.cert-plan-save').textContent = saved?'Plan saved on this device.':'Could not save in this browser. Your selection may be lost on refresh.';
+      const count = CERTS.filter(c=>STATE.certTracker[c.id]==='passed').length;
+      const fill = document.getElementById('certOverallFill');
+      fill.dataset.pct = String(Math.round(count/CERTS.length*100));
+      fill.style.width = fill.dataset.pct+'%';
+      document.getElementById('certOverallStatus').textContent = `${count}/${CERTS.length} passed (self-reported)`;
+      sel.focus({preventScroll:true});
     });
     sel.addEventListener('click', e=>e.stopPropagation());
   });
@@ -5056,7 +5199,7 @@ function pathCardHTML(p, i){
   const done = prog.pct >= 100;
   const tier = levelTier(p.level);
   return `
-    <a class="path-card ${done?'is-complete':''}" data-tier="${tier}" href="#/lesson/${p.id}" data-spotlight data-reveal style="--i:${i%3}">
+    <a class="path-card ${done?'is-complete':''}" data-path="${p.id}" data-tier="${tier}" href="#/lesson/${p.id}" data-spotlight data-reveal style="--i:${i%3}">
       <div class="path-title-row">
         <span class="path-ico">${pathIco(p.id)}</span>
         <div class="path-num">PATH ${p.n}</div>
@@ -5066,6 +5209,7 @@ function pathCardHTML(p, i){
       </div>
       <div class="path-title">${p.title}</div>
       <div class="path-desc">${p.desc}</div>
+      <p class="path-search-match" hidden></p>
       <div class="path-meta">
         <span class="level-chip" data-tier="${tier}">${p.level}</span>
         <span>${p.subs.length} sub-lessons</span>
@@ -9069,6 +9213,12 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-10-29', title:'Find the right path and take the complete exercise offline', items:[
+    'The path finder searches topics, lesson titles and recommended certifications without downloading the full lesson index. Search and level choices survive refreshes and a return from a roadmap.',
+    'Offline AppSec packs now include the Python exercise, local download links, a learning-route index and certification preparation notes. Packs validate every file, show progress, and support cancellation.',
+    'Offline storage rejects HTML lesson errors and checks cached text before serving it. Saving a path includes its listed practice files and explains partial failures or an older worker that needs updating.',
+    'Certification plan changes keep their keyboard focus and path filter, with honest feedback when browser storage fails.'
+  ]},
   {date:'2026-10-28', title:'Connected path maps and an AppSec fix you can verify', items:[
     'Every learning path now shows four connected stages, helpful preparation, a practical outcome, and relevant certification options with provider links and eligibility notes.',
     'AppSec now has 18 lessons: requirements and design, secure code review, delivery controls, program operation, and a local fix-and-verify exercise with seven tests.',

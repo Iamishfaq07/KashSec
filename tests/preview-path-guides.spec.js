@@ -10,6 +10,19 @@ try{
   const context=await browser.newContext({serviceWorkers:'block',viewport:{width:390,height:844},reducedMotion:'reduce'});
   await context.route('**/*',r=>new URL(r.request().url()).origin===new URL(BASE).origin?r.continue():r.abort());
   const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(BASE+'/paths/?q=CSSLP',{waitUntil:'domcontentloaded'});
+  const finder=page.getByLabel('Find a path',{exact:true});await finder.waitFor();
+  assert.equal(await page.locator('ul.mt-4>li').count(),1);
+  await finder.fill('');await finder.pressSequentially('ASVS',{delay:30});
+  await page.waitForFunction(()=>new URL(location.href).searchParams.get('q')==='ASVS');
+  assert.ok(await page.locator('ul.mt-4>li').count()>=1);
+  await finder.fill('CSSLP');await page.getByRole('button',{name:'Programs',exact:true}).click();
+  assert.equal(await page.locator('ul.mt-4>li').count(),1);
+  await page.reload({waitUntil:'domcontentloaded'});await finder.waitFor();assert.equal(await finder.inputValue(),'CSSLP');
+  assert.equal(await page.getByRole('button',{name:'Programs',exact:true}).getAttribute('aria-pressed'),'true');
+  await page.getByRole('button',{name:'Offense & practice',exact:true}).click();assert.equal(await page.locator('ul.mt-4>li').count(),0);
+  await page.getByRole('button',{name:'Reset filters',exact:true}).click();assert.equal(await page.locator('ul.mt-4>li').count(),paths.length);
+  console.log('Preview: path finder matches topics/certificates; combined filters, typed input, refresh and reset passed.');
   for(const path of paths){
     await page.goto(`${BASE}/paths/${path.id}`,{waitUntil:'domcontentloaded'});
     await page.getByRole('heading',{name:`All ${path.lessons.length} lessons`,exact:true}).waitFor();
