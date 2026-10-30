@@ -15,7 +15,7 @@ try{
     const c=await context(),p=await c.newPage();
     let release;const gate=new Promise(r=>release=r);
     await c.route('**/search-preview.js',async r=>{await gate;await r.fulfill({contentType:'application/javascript',body:'const SEARCH_PREVIEW=[];'});});
-    await c.route('**/search-index.js',r=>r.fulfill({contentType:'application/javascript',body:'const SEARCH_CONTENT=[{p:"appsec",s:"intro",t:"Security test",n:"1",pt:"Test",b:"subnet <img src=x onerror=window.searchInjected=true> & raw text"}];'}));
+    await c.route('**/search-index.js',r=>r.fulfill({contentType:'application/javascript',body:'const SEARCH_CONTENT='+JSON.stringify([{p:"appsec",s:"intro",t:"Security test",n:"1",pt:"Test",b:"subnet <img src=x onerror=window.searchInjected=true> & raw text"}])+';'}));
     await p.goto(BASE+'/index.html#/search?q=linux',{waitUntil:'domcontentloaded'});await p.locator('#searchPageInput').waitFor();
     await p.evaluate(()=>location.hash='#/search?q=subnet');await p.waitForFunction(()=>document.title.startsWith('subnet'));
     await p.locator('#searchPageInput').fill('my next draft');

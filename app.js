@@ -261,22 +261,49 @@ function ensurePdf(){
    query is typed; then the 77KB preview lands (the opening of every lesson,
    where headings and definitions live) and the full index follows in the
    background so deep matches fill in behind it. */
+// Generated search files retain their legacy wrapper for older cached apps.
+// Current readers parse the wrapped JSON as data; they never execute it.
+function parseSearchIndex(source, expectedName){
+  if(!['SEARCH_PREVIEW','SEARCH_CONTENT'].includes(expectedName) || typeof source!=='string' || source.length>8000000) throw new Error('Invalid search index');
+  const wrapper=new RegExp('^(?:/\\*[\\s\\S]*?\\*/\\s*)?const\\s+'+expectedName+'\\s*=\\s*([\\s\\S]*);\\s*$');
+  const match=source.trim().match(wrapper);
+  if(!match) throw new Error('Invalid search wrapper');
+  const rows=JSON.parse(match[1]);
+  const fields=['p','s','n','pt','t','b'];
+  if(!Array.isArray(rows) || rows.length>10000 || !rows.every(row=>row && !Array.isArray(row) &&
+    Object.keys(row).length===fields.length && fields.every(key=>typeof row[key]==='string') &&
+    /^[a-z0-9-]{1,160}$/.test(row.p) && /^[a-z0-9-]{1,160}$/.test(row.s) &&
+    row.n.length<=40 && row.pt.length<=600 && row.t.length<=600 && row.b.length<=3000)) throw new Error('Invalid search rows');
+  return rows;
+}
+async function fetchSearchIndex(src,name){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),12000);
+  try{
+    const response=await fetch(src,{signal:controller.signal});
+    if(!response.ok || /text\/html/i.test(response.headers.get('content-type')||'')) throw new Error('Search index unavailable');
+    const rows=parseSearchIndex(await response.text(),name);
+    if(controller.signal.aborted) throw new Error('Search index timed out');
+    return rows;
+  }finally{clearTimeout(timer);}
+}
+let SEARCH_PREVIEW, SEARCH_CONTENT;
 let searchPreviewPromise = null;
 function ensureSearchPreview(){
-  if(typeof SEARCH_PREVIEW !== 'undefined' && Array.isArray(SEARCH_PREVIEW)) return Promise.resolve();
+  if(Array.isArray(SEARCH_PREVIEW)) return Promise.resolve();
   if(searchPreviewPromise) return searchPreviewPromise;
-  searchPreviewPromise = withTimeout(loadScript('search-preview.js'), 12000, 'Loading search preview')
-    .then(()=>{ if(typeof SEARCH_PREVIEW === 'undefined' || !Array.isArray(SEARCH_PREVIEW)) throw new Error('Search preview unavailable'); })
-    .catch(err=>{ searchPreviewPromise = null; throw err; });
+  searchPreviewPromise=fetchSearchIndex('search-preview.js','SEARCH_PREVIEW')
+    .then(rows=>{SEARCH_PREVIEW=rows;})
+    .catch(err=>{searchPreviewPromise=null;throw err;});
   return searchPreviewPromise;
 }
-
 let searchContentPromise = null;
 function ensureSearchContent(){
-  if(typeof SEARCH_CONTENT !== 'undefined' && Array.isArray(SEARCH_CONTENT)) return Promise.resolve();
+  if(Array.isArray(SEARCH_CONTENT)) return Promise.resolve();
   if(searchContentPromise) return searchContentPromise;
-  searchContentPromise = withTimeout(loadScript('search-index.js'), 12000, 'Loading lesson search')
-    .then(()=>{ if(typeof SEARCH_CONTENT === 'undefined' || !Array.isArray(SEARCH_CONTENT)) throw new Error('Lesson search unavailable'); }).catch(err=>{ searchContentPromise = null; throw err; });
+  searchContentPromise=fetchSearchIndex('search-index.js','SEARCH_CONTENT')
+    .then(rows=>{SEARCH_CONTENT=rows;})
+    .catch(err=>{searchContentPromise=null;throw err;});
   return searchContentPromise;
 }
 
@@ -9425,6 +9452,7 @@ function renderLabLeakedSecret(){
    ============================================================ */
 const CHANGELOG = [
   {date:'2026-10-30', title:'Practical AI security and clearer course discovery', items:[
+    'Search now cancels timed-out index requests, reads the generated index as validated data, and rejects bad offline cache entries. Preview glossary search shows loading errors and offers a retry while lesson and lab results remain available.',
     'Expert Labs now has combined topic, text and saved-draft filters, with live draft summaries from other tabs. The three new AI lessons have optional checks with links back to the relevant explanation.',
     'The AI path adds MCP and tool authorization, RAG tenant isolation, and security release-gate lessons, with three new quiz questions.',
     'Two expert AI cases add local Python policies for tool calls and document retrieval. They need no model account or API key. The AI offline pack includes all 26 lessons and the exercise.',

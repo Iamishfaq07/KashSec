@@ -14,6 +14,9 @@ const appJs = fs.readFileSync(path.join(ROOT, 'app.js'), 'utf8');
 const m = appJs.match(/const PATHS = \[[\s\S]*?\n\];/);
 if (!m) throw new Error('Could not find PATHS array in app.js');
 const PATHS = new Function(m[0] + '; return PATHS;')();
+const searchParser=appJs.match(/function parseSearchIndex\(source, expectedName\)\{[\s\S]*?\n\}/)?.[0];
+if(!searchParser)throw new Error('Search index parser unavailable');
+
 const guideMatch = appJs.match(/const PATH_GUIDES = \[[\s\S]*?\n\];/);
 if(!guideMatch) throw new Error('Could not find PATH_GUIDES array in app.js');
 const guides = new Function(guideMatch[0]+'; return PATH_GUIDES;')();
@@ -116,6 +119,8 @@ const LESSON_URLS = ${JSON.stringify(lessonUrls, null, 2)};
 const PATH_ASSETS = ${JSON.stringify(pathAssets, null, 2)};
 const LESSON_PATHS = new Set(LESSON_URLS.map(url => '/' + url));
 const RESOURCE_PATHS = new Map(Object.values(PATH_ASSETS).flat().map(asset => [asset.url,asset]));
+RESOURCE_PATHS.set('/search-preview.js',{search:'SEARCH_PREVIEW'});
+RESOURCE_PATHS.set('/search-index.js',{search:'SEARCH_CONTENT'});
 RESOURCE_PATHS.set('/downloads/expert_security_lab.py',{startsWith:'#!/usr/bin/env python3',marker:'class ExpertSecurityTests(unittest.TestCase):'});
 
 const RUNTIME_HOSTS = ['cdn.jsdelivr.net', 'fonts.googleapis.com', 'fonts.gstatic.com'];
@@ -183,11 +188,14 @@ self.addEventListener('message', event => {
   })().catch(() => port.postMessage({type:'error', message:'Offline storage is unavailable.'})));
 });
 
+${searchParser}
+
 async function validPathContent(response, file) {
   if(!response?.ok || /text\\/html/i.test(response.headers.get('content-type') || '')) return false;
   try{
     const text = await response.clone().text();
     if(/^\\s*</.test(text)) return false;
+    if(file.search){parseSearchIndex(text,file.search);return true;}
     return file.lesson ? /^#\\s+\\S/m.test(text) : text.startsWith(file.startsWith) && text.includes(file.marker);
   }catch(_){return false;}
 }
