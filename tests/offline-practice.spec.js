@@ -41,6 +41,35 @@ function entries(bytes){
 }
 async function workerReady(page){await page.evaluate(()=>navigator.serviceWorker.ready);await page.waitForFunction(()=>!!navigator.serviceWorker.controller);}
 try{
+  await test('Search indexes stay lazy, validate into the content cache, and recover during an offline reload',async (page,context)=>{
+    await page.goto(BASE+'/');await workerReady(page);
+    assert.equal(requests.get('/search-index.js')||0,0);assert.equal(requests.get('/search-preview.js')||0,0);
+    await page.evaluate(()=>location.hash='#/search?q=kerberoasting');
+    await page.waitForFunction(()=>Array.isArray(SEARCH_CONTENT));
+    assert.equal(await page.evaluate(()=>SEARCH_CONTENT.length),491);
+    assert.ok(await page.evaluate(async()=>!!await(await caches.open('kashsec-content')).match('/search-index.js')));
+    await context.setOffline(true);await page.reload();await page.waitForFunction(()=>Array.isArray(SEARCH_CONTENT));
+    assert.equal(await page.evaluate(()=>SEARCH_CONTENT.length),491);assert.ok(await page.locator('.searchpage-hit').count());
+    assert.equal(await page.getByRole('button',{name:'Retry lesson search'}).count(),0);
+  },'allow');
+  await test('Poisoned search cache entries and bad network data are rejected; a fresh retry repairs offline search',async page=>{
+    overrides.set('/search-preview.js',{type:'application/javascript',body:'<html>Hosting error</html>'});
+    overrides.set('/search-index.js',{type:'application/javascript',body:'const SEARCH_CONTENT=[];window.__searchExecuted=true;'});
+    await page.goto(BASE+'/');await workerReady(page);
+    await page.evaluate(async()=>{
+      const cache=await caches.open('kashsec-content');
+      await cache.put('/search-preview.js',new Response('const SEARCH_PREVIEW=[null];',{headers:{'Content-Type':'application/javascript'}}));
+      await cache.put('/search-index.js',new Response('const SEARCH_CONTENT=[{"b":42}];',{headers:{'Content-Type':'application/javascript'}}));
+      location.hash='#/search?q=csrf';
+    });
+    await page.getByRole('button',{name:'Retry lesson search'}).waitFor();
+    assert.equal(await page.evaluate(()=>window.__searchExecuted),undefined);
+    assert.equal(await page.evaluate(async()=>!!await(await caches.open('kashsec-content')).match('/search-index.js')),false);
+    assert.ok(await page.locator('.searchpage-hit[href="#/labs/csrf"]').isVisible());
+    overrides.delete('/search-preview.js');overrides.delete('/search-index.js');
+    await page.getByRole('button',{name:'Retry lesson search'}).click();await page.waitForFunction(()=>Array.isArray(SEARCH_CONTENT));
+    assert.equal(await page.evaluate(()=>SEARCH_CONTENT.length),491);
+  },'allow');
   await test('AppSec ZIP includes the complete exercise, local lesson links and useful roadmap guidance',async page=>{
     await open(page);const event=page.waitForEvent('download');await page.locator('#downloadPackBtn').click();const download=await event;
     const files=entries(fs.readFileSync(await download.path()));assert.equal(files.size,20);assert.equal(files.get('appsec_invoice_lab.py'),fs.readFileSync(path.join(root,asset),'utf8'));

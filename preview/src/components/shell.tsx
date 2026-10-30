@@ -136,9 +136,20 @@ type GlossaryHit = { term: string; def: string; pathId: string; subId: string };
 let glossaryCache: Promise<GlossaryHit[]> | null = null;
 
 function loadGlossary() {
-  glossaryCache ??= fetch("/data/glossary.json")
-    .then((response) => (response.ok ? response.json() : []))
-    .catch(() => []) as Promise<GlossaryHit[]>;
+  if (glossaryCache) return glossaryCache;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 10000);
+  glossaryCache = (async () => {
+    const response = await fetch("/data/glossary.json", { signal: controller.signal });
+    if (!response.ok || response.headers.get("content-type")?.includes("text/html")) throw new Error("Glossary unavailable");
+    const text = await response.text();
+    if (text.length > 4000000 || controller.signal.aborted) throw new Error("Glossary unavailable");
+    const terms: unknown = JSON.parse(text);
+    if (!Array.isArray(terms) || terms.length > 20000 || !terms.every((term) => term &&
+      ["term", "def", "pathId", "subId"].every((field) => typeof term[field] === "string") &&
+      /^[a-z0-9-]+$/.test(term.pathId) && /^[a-z0-9-]+$/.test(term.subId))) throw new Error("Invalid glossary");
+    return terms as GlossaryHit[];
+  })().catch((error) => { glossaryCache = null; throw error; }).finally(() => clearTimeout(timer));
   return glossaryCache;
 }
 
@@ -148,6 +159,8 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
   const dialog = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
   const [glossary, setGlossary] = useState<GlossaryHit[]>([]);
+  const [glossaryState, setGlossaryState] = useState<"idle" | "loading" | "ready" | "error">("idle");
+  const [glossaryAttempt, setGlossaryAttempt] = useState(0);
 
   useLayoutEffect(() => {
     const trigger = document.activeElement as HTMLElement | null;
@@ -177,9 +190,12 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     if (!wantsTerms) return;
     let cancelled = false;
-    void loadGlossary().then((terms) => { if (!cancelled) setGlossary(terms); });
+    setGlossaryState("loading");
+    void loadGlossary().then((terms) => {
+      if (!cancelled) { setGlossary(terms); setGlossaryState("ready"); }
+    }).catch(() => { if (!cancelled) setGlossaryState("error"); });
     return () => { cancelled = true; };
-  }, [wantsTerms]);
+  }, [wantsTerms, glossaryAttempt]);
 
   const results = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -281,6 +297,14 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
         <button type="button" onClick={onClose} className="mr-2 min-h-11 rounded border border-line px-3 text-sm">Close</button>
         </div>
         <p className="sr-only" role="status">{results[active] ? `${active + 1} of ${results.length}: ${results[active].title}. Use up and down arrows, then Enter to open.` : "No results."}</p>
+        {wantsTerms && (glossaryState === "loading" || glossaryState === "error") ? (
+          <div role="status" className="border-t border-line px-4 py-2 text-sm text-muted">
+            {glossaryState === "loading" ? "Loading glossary terms… Titles, tools and labs are available." : <>
+              Glossary terms could not load. Lesson, tool and lab search still works.
+              <button type="button" className="ml-2 min-h-11 rounded border border-line px-3" onClick={() => { input.current?.focus(); setGlossaryAttempt((n) => n + 1); }}>Retry glossary search</button>
+            </>}
+          </div>
+        ) : null}
         <ul className="max-h-80 overflow-auto border-t border-line">
           {results.length === 0 ? (
             <li className="px-4 py-6 text-sm text-muted">Nothing matches that.</li>
