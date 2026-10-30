@@ -310,16 +310,45 @@ export function mountExpertLabs({root,id=null,href=lab=>lab?`/expert-labs/${lab}
   };
   if(id&&!lab){root.innerHTML=`<section class="ex-page">${tabs}<h1>That expert lab is not available</h1><a href="${href(null)}" data-expert="">Browse Expert Labs</a></section>`;wireNavigation();return ()=>{};}
   if(!lab){
-    root.innerHTML=`<section class="ex-page">${tabs}<p class="ex-eyebrow">Advanced practice · ${EXPERT_LABS.length} evidence-led cases</p><h1>Expert Labs</h1><p class="ex-lead">Move from spotting a bug to proving a fix. Read the evidence, repair a small implementation, and write a review another engineer can reproduce.</p><p>Each case combines browser review with a downloadable Python exercise. Python 3.10+ is required for the coding work; no packages, account, network, or cloud spend are needed. Time estimates include writing your report.</p><p id="exCollectionStatus" role="status"></p><p class="ex-note">Saved drafts show where you left off. Draft status does not mark coding work complete.</p><div class="ex-grid">${EXPERT_LABS.map(item=>`<article class="ex-card" data-expert-card="${item.id}"><p class="ex-eyebrow">${item.track} · about ${item.minutes} min</p><h2><a href="${href(item.id)}" data-expert="${item.id}">${item.title}</a></h2><p>${item.summary}</p><p><strong>Deliver:</strong> a fix, passing tests, and a review with remaining risks.</p><p data-draft-status="${item.id}" class="ex-note"></p><a class="ex-button" href="${href(item.id)}" data-expert="${item.id}" data-case-action="${item.id}">Open case →</a></article>`).join('')}</div><section class="ex-card"><h2>Go further with maintained lab platforms</h2><p>Use these after the local cases. Their requirements and progress are separate from KashSec.</p><ul><li><a href="https://portswigger.net/web-security/all-labs" target="_blank" rel="noopener noreferrer">PortSwigger Web Security Academy</a> — use the Expert difficulty filter for advanced web labs. A free account and an HTTP testing tool may be needed; individual labs describe requirements.</li><li><a href="https://github.com/OWASP/crAPI" target="_blank" rel="noopener noreferrer">OWASP crAPI</a> — a full intentionally vulnerable API. Follow its current local-install instructions; it requires a container environment.</li><li><a href="https://github.com/OWASP/juice-shop" target="_blank" rel="noopener noreferrer">OWASP Juice Shop</a> — a full web application with advanced challenges. Use your own local instance and its current companion guide.</li></ul></section></section>`;
-    let saved={},canReadDrafts=true;
-    try{saved=readDrafts();}catch(_){canReadDrafts=false;root.querySelector('#exCollectionStatus').textContent='Saved drafts could not be read in this browser. You can still open any case.';}
-    for(const item of EXPERT_LABS){
-      const summary=draftSummary(Object.hasOwn(saved,item.id)?saved[item.id]:null);
-      root.querySelector(`[data-draft-status="${item.id}"]`).textContent=canReadDrafts?summary.text:'Draft status unavailable';
-      root.querySelector(`[data-case-action="${item.id}"]`).textContent=summary.started?'Continue case →':'Open case →';
-    }
-    wireNavigation();return ()=>{};
+    root.innerHTML=`<section class="ex-page">${tabs}<p class="ex-eyebrow">Advanced practice · ${EXPERT_LABS.length} evidence-led cases</p><h1>Expert Labs</h1><p class="ex-lead">Move from spotting a bug to proving a fix. Read the evidence, repair a small implementation, and write a review another engineer can reproduce.</p><p>Each case combines browser review with a downloadable Python exercise. Python 3.10+ is required for the coding work; no packages, account, network, or cloud spend are needed. Time estimates include writing your report.</p><p id="exCollectionStatus" role="status"></p><p class="ex-note">Saved drafts show where you left off. Draft status does not mark coding work complete.</p><form class="ex-finder" role="search" aria-label="Find an expert case"><label for="exQuery">Search cases<input id="exQuery" type="search" maxlength="100" placeholder="Try AI, invoice, replay or permissions" autocomplete="off"></label><label for="exTrack">Topic<select id="exTrack"><option value="">All topics</option>${[...new Set(EXPERT_LABS.map(item=>item.track))].map(track=>`<option value="${escape(track)}">${escape(track)}</option>`).join('')}</select></label><label class="ex-draft-filter"><input id="exDraftOnly" type="checkbox"> With a saved draft</label><button type="button" class="ex-button" id="exResetFilters">Clear filters</button></form><p id="exFilterStatus" role="status" aria-live="polite"></p><p id="exFilterEmpty" hidden>No cases match these filters. Try another topic or clear the filters.</p><div class="ex-grid">${EXPERT_LABS.map(item=>`<article class="ex-card" data-expert-card="${item.id}"><p class="ex-eyebrow">${item.track} · about ${item.minutes} min</p><h2><a href="${href(item.id)}" data-expert="${item.id}">${item.title}</a></h2><p>${item.summary}</p><p><strong>Deliver:</strong> a fix, passing tests, and a review with remaining risks.</p><p data-draft-status="${item.id}" class="ex-note"></p><a class="ex-button" href="${href(item.id)}" data-expert="${item.id}" data-case-action="${item.id}">Open case →</a></article>`).join('')}</div><section class="ex-card"><h2>Go further with maintained lab platforms</h2><p>Use these after the local cases. Their requirements and progress are separate from KashSec.</p><ul><li><a href="https://portswigger.net/web-security/all-labs" target="_blank" rel="noopener noreferrer">PortSwigger Web Security Academy</a> — use the Expert difficulty filter for advanced web labs. A free account and an HTTP testing tool may be needed; individual labs describe requirements.</li><li><a href="https://github.com/OWASP/crAPI" target="_blank" rel="noopener noreferrer">OWASP crAPI</a> — a full intentionally vulnerable API. Follow its current local-install instructions; it requires a container environment.</li><li><a href="https://github.com/OWASP/juice-shop" target="_blank" rel="noopener noreferrer">OWASP Juice Shop</a> — a full web application with advanced challenges. Use your own local instance and its current companion guide.</li></ul></section></section>`;
+    const query=root.querySelector('#exQuery'),track=root.querySelector('#exTrack'),draftOnly=root.querySelector('#exDraftOnly');
+    const normal=text=>String(text).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    const index=EXPERT_LABS.map(item=>({item,text:normal([item.title,item.track,item.summary,item.mission,...item.prerequisites.map(p=>p.label)].join(' '))}));
+    let summaries=new Map();
+    const apply=()=>{
+      const words=normal(query.value).trim().split(/\s+/).filter(Boolean);
+      let count=0;
+      for(const {item,text} of index){
+        const matches=(!track.value||item.track===track.value)&&words.every(word=>text.includes(word))&&(!draftOnly.checked||summaries.get(item.id)?.started);
+        root.querySelector(`[data-expert-card="${item.id}"]`).hidden=!matches;
+        if(matches)count++;
+      }
+      root.querySelector('#exFilterStatus').textContent=`${count} of ${EXPERT_LABS.length} cases shown.`;
+      root.querySelector('#exFilterEmpty').hidden=count!==0;
+    };
+    const refreshDrafts=()=>{
+      let saved={},canReadDrafts=true;
+      try{saved=readDrafts();}catch{canReadDrafts=false;}
+      root.querySelector('#exCollectionStatus').textContent=canReadDrafts?'':'Saved drafts could not be read in this browser. You can still open any case.';
+      summaries=new Map();
+      for(const item of EXPERT_LABS){
+        const summary=draftSummary(Object.hasOwn(saved,item.id)?saved[item.id]:null);
+        summaries.set(item.id,summary);
+        root.querySelector(`[data-draft-status="${item.id}"]`).textContent=canReadDrafts?summary.text:'Draft status unavailable';
+        root.querySelector(`[data-case-action="${item.id}"]`).textContent=canReadDrafts&&summary.started?'Continue case →':'Open case →';
+      }
+      draftOnly.disabled=!canReadDrafts;
+      if(!canReadDrafts)draftOnly.checked=false;
+      apply();
+    };
+    root.querySelector('.ex-finder').addEventListener('submit',event=>event.preventDefault());
+    query.addEventListener('input',apply);track.addEventListener('change',apply);draftOnly.addEventListener('change',apply);
+    root.querySelector('#exResetFilters').addEventListener('click',()=>{query.value='';track.value='';draftOnly.checked=false;apply();query.focus();});
+    const onStorage=event=>{if(event.storageArea===localStorage&&(event.key===STORAGE_KEY||event.key===null))refreshDrafts();};
+    window.addEventListener('storage',onStorage);
+    refreshDrafts();wireNavigation();return ()=>window.removeEventListener('storage',onStorage);
   }
+
   let drafts={},storageError=false;
   try{
     const raw=localStorage.getItem(STORAGE_KEY);

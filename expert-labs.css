@@ -12,3 +12,11 @@
 .ex-page details{border:1px solid var(--ex-border);border-radius:12px;padding:1rem;margin:1rem 0;min-width:0}.ex-page summary{cursor:pointer;font-weight:600;min-height:32px}.ex-page pre{display:block;white-space:pre;overflow:auto;max-width:100%;padding:1rem;border:1px solid var(--ex-border);border-radius:10px;background:var(--ex-surface);font-size:.85rem;line-height:1.6}.ex-page pre code{font-family:ui-monospace,monospace}.ex-notice{padding:.9rem 1rem;border-left:3px solid var(--ex-accent);background:var(--ex-surface)}
 .ex-page fieldset{border:1px solid var(--ex-border);border-radius:12px;padding:1rem;margin:1.25rem 0;min-width:0}.ex-page legend{font-weight:600;padding:0 .4rem;max-width:100%}.ex-page fieldset label{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem;border-radius:8px;min-height:44px;cursor:pointer}.ex-page input[type=radio]{margin-top:.4rem;flex-shrink:0;accent-color:var(--ex-accent)}.ex-page textarea{display:block;width:100%;box-sizing:border-box;margin:1rem 0;padding:1rem;border:1px solid var(--ex-border);border-radius:12px;background:var(--ex-surface);color:inherit;font:inherit;resize:vertical;min-height:200px}.ex-note{font-size:.85rem}.ex-page [hidden]{display:none!important}.ex-page :focus-visible{outline:2px solid var(--ex-accent);outline-offset:4px}
 @media(max-width:650px){.ex-grid{grid-template-columns:1fr}.ex-page{padding:1.5rem .75rem}.ex-page fieldset{padding:.7rem}.ex-page .ex-card{padding:1rem}}
+
+.ex-finder{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:1rem;align-items:end;margin-top:1.5rem}
+.ex-finder label{display:flex;flex-direction:column;gap:.4rem;min-width:0}
+.ex-finder input[type=search],.ex-finder select{width:100%;box-sizing:border-box;min-width:0;min-height:44px;border:1px solid var(--ex-border);border-radius:10px;padding:.6rem;background:var(--ex-surface);color:inherit;font:inherit}
+.ex-finder .ex-draft-filter{flex-direction:row;align-items:center;min-height:44px}
+.ex-finder input[type=checkbox]{width:20px;height:20px;accent-color:var(--ex-accent)}
+.ex-finder input:disabled{opacity:.5}
+@media(max-width:650px){.ex-finder{grid-template-columns:minmax(0,1fr)}}

@@ -2164,6 +2164,7 @@ let currentCourseRefresh = null;
 let currentPathPackAbort = null;
 const lessonFallbacks = new Map();
 let currentLabMessageController = null;
+let currentExpertCleanup = null;
 let currentCvssWorker = null;
 
 // Flush the debounce before navigation, backgrounding, or a page refresh.
@@ -2173,6 +2174,8 @@ document.addEventListener('visibilitychange', ()=>{
 });
 
 function route(){
+  currentExpertCleanup?.();
+  currentExpertCleanup = null;
   currentPathPackAbort?.();
   currentPathPackAbort = null;
   currentCourseRefresh = null;
@@ -6061,6 +6064,27 @@ function wirePomodoro(){
    Each review target is a heading in the source lesson. The preview consumes
    the same questions through generate-preview-content.js. */
 const LESSON_CHECKS = {
+  '18-ai-security/mcp-tool-authorization': {
+    q:'A document tells a read-only invoice assistant to send the invoice outside the company. What should enforce the boundary?',
+    options:['The document author','The model approving its own call','A trusted tool gateway checking the authenticated actor and task','An approved field supplied in the tool arguments'],
+    correct:2,
+    explain:'Document text and proposed tool arguments are untrusted. The gateway must reject actions beyond the actual task even if the model proposes them.',
+    review:"Start with the user's task"
+  },
+  '18-ai-security/rag-tenant-isolation': {
+    q:'A private document from another tenant is the closest search match. What should the retrieval system do?',
+    options:['Exclude it before model context is built','Send it to the model but hide its citation','Let the model decide whether the user should see it','Use it if the question names that tenant'],
+    correct:0,
+    explain:'Similarity does not grant access. Filter using trusted identity and document permissions before building context; hiding a citation later cannot undo exposure.',
+    review:'Filter before ranking and context construction'
+  },
+  '18-ai-security/ai-security-release-gates': {
+    q:'Why should an AI security evaluation include legitimate tasks as well as attacks?',
+    options:['To guarantee that no future attack can succeed','To remove the need for authorization tests','To make every refusal count as a successful defense','To catch a system that blocks useful work instead of preserving safe use'],
+    correct:3,
+    explain:'Measure legitimate-task success separately from unauthorized actions. A deny-everything policy is not a useful fix, and a small evaluation cannot prove future safety.',
+    review:'Report denominators and uncertainty'
+  },
   '22-devsecops-appsec/what-is-devsecops': {
     q:'A team can add only one security control this week. What is a useful first step?',
     options:['Buy a scanner before choosing a risk','Pick one risky feature, name an owner, and agree on a check','Wait until every developer has a security certification','Make the security team responsible for every code change'],
@@ -9401,6 +9425,7 @@ function renderLabLeakedSecret(){
    ============================================================ */
 const CHANGELOG = [
   {date:'2026-10-30', title:'Practical AI security and clearer course discovery', items:[
+    'Expert Labs now has combined topic, text and saved-draft filters, with live draft summaries from other tabs. The three new AI lessons have optional checks with links back to the relevant explanation.',
     'The AI path adds MCP and tool authorization, RAG tenant isolation, and security release-gate lessons, with three new quiz questions.',
     'Two expert AI cases add local Python policies for tool calls and document retrieval. They need no model account or API key. The AI offline pack includes all 26 lessons and the exercise.',
     'The homepage now has readable content before JavaScript and highlights the new practice. Canonical navigation links, mobile static-reader layouts, updated share cards and 609-page SEO checks improve discovery and access.'
@@ -13731,7 +13756,7 @@ async function renderExpertLabsRoute(id=null){
       if(expertLabsModule.prepareExpertStyles)await expertLabsModule.prepareExpertStyles();
     })(),12000,'Opening Expert Labs');
     if(generation!==renderGeneration)return;
-    expertLabsModule.mountExpertLabs({root:app,id,navigate:lab=>navigateTo(lab?'#/expert-labs/'+lab:'#/expert-labs')});
+    currentExpertCleanup = expertLabsModule.mountExpertLabs({root:app,id,navigate:lab=>navigateTo(lab?'#/expert-labs/'+lab:'#/expert-labs')});
     cacheOpenedAsset('expert-labs.js');cacheOpenedAsset('expert-labs.css');
     afterRender();
   }catch(_){
