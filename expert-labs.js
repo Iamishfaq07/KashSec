@@ -277,6 +277,32 @@ function draftSummary(record){
   const hasNotes=typeof record?.notes==='string'&&record.notes.trim().length>0;
   return {started:answered>0||hasNotes,text:answered||hasNotes?`Saved draft · ${answered}/4 answers · ${hasNotes?'report started':'no report notes yet'}`:'No saved draft'};
 }
+// Backups carry only the case editor's data, never review results or course scores.
+function cleanDraft(record,lab,strict=false){
+  if(!record || Array.isArray(record) || typeof record!=='object' ||
+     typeof record.notes!=='string' || record.notes.length>12000 ||
+     !Array.isArray(record.answers) || record.answers.length!==lab.questions.length ||
+     record.answers.some((answer,i)=>answer!==null&&(!Number.isInteger(answer)||answer<0||answer>=lab.questions[i].options.length)) ||
+     (record.version!==VERSION && (strict || record.version!==undefined)) ||
+     (strict && Object.keys(record).some(key=>!['notes','answers','version'].includes(key)))) throw Error('Invalid case draft');
+  return {notes:record.notes,answers:record.answers.slice(),version:VERSION};
+}
+export function parseExpertBackup(text){
+  if(typeof text!=='string' || text.length>524288)throw Error('Backup is too large');
+  const data=JSON.parse(text.replace(/^\uFEFF/,''));
+  if(!data || Array.isArray(data) || data.format!=='kashsec-expert-drafts' || data.version!==VERSION ||
+     !data.drafts || Array.isArray(data.drafts) || typeof data.drafts!=='object' ||
+     typeof data.exportedAt!=='string' || data.exportedAt.length>40 || !Number.isFinite(Date.parse(data.exportedAt)) ||
+     Object.keys(data).some(key=>!['format','version','exportedAt','drafts'].includes(key)))throw Error('Unsupported backup format');
+  const result={};
+  for(const [id,record] of Object.entries(data.drafts)){
+    const lab=EXPERT_LABS.find(item=>item.id===id);
+    if(!lab)throw Error('Unknown case in backup');
+    result[id]=cleanDraft(record,lab,true);
+  }
+  if(!Object.keys(result).length)throw Error('Backup has no case drafts');
+  return result;
+}
 let stylePromise=null;
 export function prepareExpertStyles(){
   const existing=document.getElementById('expertLabsStyles');
@@ -310,7 +336,7 @@ export function mountExpertLabs({root,id=null,href=lab=>lab?`/expert-labs/${lab}
   };
   if(id&&!lab){root.innerHTML=`<section class="ex-page">${tabs}<h1>That expert lab is not available</h1><a href="${href(null)}" data-expert="">Browse Expert Labs</a></section>`;wireNavigation();return ()=>{};}
   if(!lab){
-    root.innerHTML=`<section class="ex-page">${tabs}<p class="ex-eyebrow">Advanced practice · ${EXPERT_LABS.length} evidence-led cases</p><h1>Expert Labs</h1><p class="ex-lead">Move from spotting a bug to proving a fix. Read the evidence, repair a small implementation, and write a review another engineer can reproduce.</p><p>Each case combines browser review with a downloadable Python exercise. Python 3.10+ is required for the coding work; no packages, account, network, or cloud spend are needed. Time estimates include writing your report.</p><p id="exCollectionStatus" role="status"></p><p class="ex-note">Saved drafts show where you left off. Draft status does not mark coding work complete.</p><form class="ex-finder" role="search" aria-label="Find an expert case"><label for="exQuery">Search cases<input id="exQuery" type="search" maxlength="100" placeholder="Try AI, invoice, replay or permissions" autocomplete="off"></label><label for="exTrack">Topic<select id="exTrack"><option value="">All topics</option>${[...new Set(EXPERT_LABS.map(item=>item.track))].map(track=>`<option value="${escape(track)}">${escape(track)}</option>`).join('')}</select></label><label class="ex-draft-filter"><input id="exDraftOnly" type="checkbox"> With a saved draft</label><button type="button" class="ex-button" id="exResetFilters">Clear filters</button></form><p id="exFilterStatus" role="status" aria-live="polite"></p><p id="exFilterEmpty" hidden>No cases match these filters. Try another topic or clear the filters.</p><div class="ex-grid">${EXPERT_LABS.map(item=>`<article class="ex-card" data-expert-card="${item.id}"><p class="ex-eyebrow">${item.track} · about ${item.minutes} min</p><h2><a href="${href(item.id)}" data-expert="${item.id}">${item.title}</a></h2><p>${item.summary}</p><p><strong>Deliver:</strong> a fix, passing tests, and a review with remaining risks.</p><p data-draft-status="${item.id}" class="ex-note"></p><a class="ex-button" href="${href(item.id)}" data-expert="${item.id}" data-case-action="${item.id}">Open case →</a></article>`).join('')}</div><section class="ex-card"><h2>Go further with maintained lab platforms</h2><p>Use these after the local cases. Their requirements and progress are separate from KashSec.</p><ul><li><a href="https://portswigger.net/web-security/all-labs" target="_blank" rel="noopener noreferrer">PortSwigger Web Security Academy</a> — use the Expert difficulty filter for advanced web labs. A free account and an HTTP testing tool may be needed; individual labs describe requirements.</li><li><a href="https://github.com/OWASP/crAPI" target="_blank" rel="noopener noreferrer">OWASP crAPI</a> — a full intentionally vulnerable API. Follow its current local-install instructions; it requires a container environment.</li><li><a href="https://github.com/OWASP/juice-shop" target="_blank" rel="noopener noreferrer">OWASP Juice Shop</a> — a full web application with advanced challenges. Use your own local instance and its current companion guide.</li></ul></section></section>`;
+    root.innerHTML=`<section class="ex-page">${tabs}<p class="ex-eyebrow">Advanced practice · ${EXPERT_LABS.length} evidence-led cases</p><h1>Expert Labs</h1><p class="ex-lead">Move from spotting a bug to proving a fix. Read the evidence, repair a small implementation, and write a review another engineer can reproduce.</p><p>Each case combines browser review with a downloadable Python exercise. Python 3.10+ is required for the coding work; no packages, account, network, or cloud spend are needed. Time estimates include writing your report.</p><p id="exCollectionStatus" role="status"></p><p class="ex-note">Saved drafts show where you left off. Draft status does not mark coding work complete.</p><form class="ex-finder" role="search" aria-label="Find an expert case"><label for="exQuery">Search cases<input id="exQuery" type="search" maxlength="100" placeholder="Try AI, invoice, replay or permissions" autocomplete="off"></label><label for="exTrack">Topic<select id="exTrack"><option value="">All topics</option>${[...new Set(EXPERT_LABS.map(item=>item.track))].map(track=>`<option value="${escape(track)}">${escape(track)}</option>`).join('')}</select></label><label class="ex-draft-filter"><input id="exDraftOnly" type="checkbox"> With a saved draft</label><button type="button" class="ex-button" id="exResetFilters">Clear filters</button></form><p id="exFilterStatus" role="status" aria-live="polite"></p><p id="exFilterEmpty" hidden>No cases match these filters. Try another topic or clear the filters.</p><div class="ex-grid">${EXPERT_LABS.map(item=>`<article class="ex-card" data-expert-card="${item.id}"><p class="ex-eyebrow">${item.track} · about ${item.minutes} min</p><h2><a href="${href(item.id)}" data-expert="${item.id}">${item.title}</a></h2><p>${item.summary}</p><p><strong>Deliver:</strong> a fix, passing tests, and a review with remaining risks.</p><p data-draft-status="${item.id}" class="ex-note"></p><a class="ex-button" href="${href(item.id)}" data-expert="${item.id}" data-case-action="${item.id}">Open case →</a></article>`).join('')}</div><section class="ex-card ex-backup" aria-labelledby="exBackupHeading"><h2 id="exBackupHeading">Keep your casework</h2><p>Download a JSON backup to move saved answers and report notes to another browser. Backups are not encrypted; keep them private. They do not contain account data, course progress or review scores.</p><button type="button" class="ex-button" id="exBackupDownload">Download draft backup</button><label for="exBackupFile">Restore from a draft backup</label><input type="file" id="exBackupFile" accept=".json,application/json"><p class="ex-note">Choose a KashSec Expert Labs JSON backup, up to 512 KB. The file stays in this browser. Review the cases below before restoring; existing drafts are kept unless you choose to replace them.</p><p id="exBackupStatus" role="status" aria-live="polite"></p><div id="exBackupPreview" hidden><h3 id="exBackupPreviewHeading" tabindex="-1">Review the restore</h3><ul id="exBackupCases"></ul><p id="exBackupSummary"></p><div class="ex-backup-actions"><button type="button" class="ex-button" id="exRestoreNew"></button><button type="button" class="ex-button" id="exRestoreReplace"></button><button type="button" class="ex-button" id="exRestoreCancel">Cancel restore</button></div></div></section><section class="ex-card"><h2>Go further with maintained lab platforms</h2><p>Use these after the local cases. Their requirements and progress are separate from KashSec.</p><ul><li><a href="https://portswigger.net/web-security/all-labs" target="_blank" rel="noopener noreferrer">PortSwigger Web Security Academy</a> — use the Expert difficulty filter for advanced web labs. A free account and an HTTP testing tool may be needed; individual labs describe requirements.</li><li><a href="https://github.com/OWASP/crAPI" target="_blank" rel="noopener noreferrer">OWASP crAPI</a> — a full intentionally vulnerable API. Follow its current local-install instructions; it requires a container environment.</li><li><a href="https://github.com/OWASP/juice-shop" target="_blank" rel="noopener noreferrer">OWASP Juice Shop</a> — a full web application with advanced challenges. Use your own local instance and its current companion guide.</li></ul></section></section>`;
     const query=root.querySelector('#exQuery'),track=root.querySelector('#exTrack'),draftOnly=root.querySelector('#exDraftOnly');
     const normal=text=>String(text).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
     const index=EXPERT_LABS.map(item=>({item,text:normal([item.title,item.track,item.summary,item.mission,...item.prerequisites.map(p=>p.label)].join(' '))}));
@@ -344,9 +370,76 @@ export function mountExpertLabs({root,id=null,href=lab=>lab?`/expert-labs/${lab}
     root.querySelector('.ex-finder').addEventListener('submit',event=>event.preventDefault());
     query.addEventListener('input',apply);track.addEventListener('change',apply);draftOnly.addEventListener('change',apply);
     root.querySelector('#exResetFilters').addEventListener('click',()=>{query.value='';track.value='';draftOnly.checked=false;apply();query.focus();});
+    const backupStatus=root.querySelector('#exBackupStatus'),preview=root.querySelector('#exBackupPreview');
+    let restorePlan=null,readAttempt=0;
+    const clearPlan=()=>{restorePlan=null;preview.hidden=true;root.querySelector('#exBackupCases').replaceChildren();};
+    const showPlan=incoming=>{
+      const latest=readDrafts();
+      const existing=Object.keys(incoming).filter(id=>Object.hasOwn(latest,id));
+      const fresh=Object.keys(incoming).filter(id=>!Object.hasOwn(latest,id));
+      restorePlan={incoming,baseline:JSON.stringify(latest),existing,fresh};
+      const list=root.querySelector('#exBackupCases');list.replaceChildren();
+      for(const [id,record] of Object.entries(incoming)){
+        const li=document.createElement('li');
+        const title=EXPERT_LABS.find(item=>item.id===id).title;
+        li.textContent=`${title} — ${record.answers.filter(answer=>answer!==null).length}/4 answers, ${record.notes.length} note characters. ${existing.includes(id)?'Already saved here.':'New to this browser.'}`;
+        list.append(li);
+      }
+      root.querySelector('#exBackupSummary').textContent=`${fresh.length} new drafts and ${existing.length} matching saved drafts. Restoring new drafts keeps every saved draft. Replacing matching drafts overwrites their answers and notes; download your current backup first if you want to keep both.`;
+      const add=root.querySelector('#exRestoreNew'),replace=root.querySelector('#exRestoreReplace');
+      add.textContent=`Restore ${fresh.length} new draft${fresh.length===1?'':'s'}`;add.disabled=fresh.length===0;
+      replace.textContent=`Replace ${existing.length} saved draft${existing.length===1?'':'s'} and restore ${fresh.length} new`;
+      replace.hidden=existing.length===0;
+      preview.hidden=false;
+      root.querySelector('#exBackupPreviewHeading').focus();
+    };
+    root.querySelector('#exBackupDownload').addEventListener('click',()=>{
+      try{
+        const saved=readDrafts(),drafts={};
+        if(Object.keys(saved).some(id=>!EXPERT_LABS.some(lab=>lab.id===id)))throw Error('Unknown saved case');
+        for(const lab of EXPERT_LABS)if(Object.hasOwn(saved,lab.id))drafts[lab.id]=cleanDraft(saved[lab.id],lab);
+        if(!Object.keys(drafts).length){backupStatus.textContent='There are no saved case drafts to back up yet.';return;}
+        const now=new Date().toISOString();
+        download(`kashsec-expert-drafts-${now.slice(0,10)}.json`,JSON.stringify({format:'kashsec-expert-drafts',version:VERSION,exportedAt:now,drafts},null,2),'application/json');
+        backupStatus.textContent=`Backup prepared with ${Object.keys(drafts).length} case drafts. Check your browser downloads.`;
+      }catch{backupStatus.textContent='Some saved case data could not be backed up. Saved drafts are unchanged; you can still open cases and download individual reports.';}
+    });
+    root.querySelector('#exBackupFile').addEventListener('change',async event=>{
+      const attempt=++readAttempt,file=event.target.files?.[0];clearPlan();
+      if(!file){backupStatus.textContent='No backup selected.';return;}
+      if(file.size>524288){backupStatus.textContent='Choose a draft backup no larger than 512 KB.';event.target.value='';return;}
+      backupStatus.textContent='Reading backup…';
+      try{
+        const incoming=parseExpertBackup(await file.text());
+        if(attempt!==readAttempt || !preview.isConnected)return;
+        showPlan(incoming);backupStatus.textContent='Backup validated. Review the restore options; nothing has been changed.';
+      }catch{if(attempt===readAttempt && preview.isConnected)backupStatus.textContent='Could not prepare a restore. Check that this is a supported backup and browser storage is available. No saved drafts were changed.';}
+      finally{if(attempt===readAttempt)event.target.value='';}
+    });
+    const restore=replace=>{
+      if(!restorePlan)return;
+      try{
+        const latest=readDrafts();
+        if(JSON.stringify(latest)!==restorePlan.baseline){
+          const incoming=restorePlan.incoming;showPlan(incoming);
+          backupStatus.textContent='Saved drafts changed since this preview. Review the updated cases and choose a restore option again.';return;
+        }
+        const ids=replace?Object.keys(restorePlan.incoming):restorePlan.fresh;
+        if(!ids.length)return;
+        const merged={...latest};
+        for(const id of ids)merged[id]=restorePlan.incoming[id];
+        localStorage.setItem(STORAGE_KEY,JSON.stringify(merged));
+        clearPlan();refreshDrafts();
+        backupStatus.textContent=`Restored ${ids.length} case draft${ids.length===1?'':'s'}. Other saved cases were kept. Open a case to review its answers.`;
+        root.querySelector('#exBackupDownload').focus();
+      }catch{backupStatus.textContent='Could not restore drafts. Keep your backup and try again when browser storage is available.';}
+    };
+    root.querySelector('#exRestoreNew').addEventListener('click',()=>restore(false));
+    root.querySelector('#exRestoreReplace').addEventListener('click',()=>restore(true));
+    root.querySelector('#exRestoreCancel').addEventListener('click',()=>{++readAttempt;clearPlan();backupStatus.textContent='Restore cancelled. Saved drafts are unchanged.';root.querySelector('#exBackupFile').focus();});
     const onStorage=event=>{if(event.storageArea===localStorage&&(event.key===STORAGE_KEY||event.key===null))refreshDrafts();};
     window.addEventListener('storage',onStorage);
-    refreshDrafts();wireNavigation();return ()=>window.removeEventListener('storage',onStorage);
+    refreshDrafts();wireNavigation();return ()=>{++readAttempt;window.removeEventListener('storage',onStorage);};
   }
 
   let drafts={},storageError=false;

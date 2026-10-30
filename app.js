@@ -5064,7 +5064,7 @@ const LEGAL = {
       ]},
       {h:'How it is written', p:[
         'Plain English, and long. Most free security material is either a listicle or a video; both are easy to consume and hard to learn from. The lessons here are closer to a textbook chapter: they explain why something works, not just the command that does it.',
-        'Everything practical runs in your browser. The labs simulate rather than provision — no virtual machine to install, nothing to configure, nothing that stops working when a cloud credit runs out. That is a real limitation as well as a feature, and the labs say so where it matters.'
+        'Browser labs use simulations, so you can start without provisioning a virtual machine. Expert cases also include local Python coding exercises, with requirements and limits listed before you start. These training exercises do not replace testing a complete deployed system.'
       ]},
       {h:'How it is paid for', p:[
         'It is not, particularly. The site is static and hosting it costs almost nothing. Advertising may appear on lessons to cover that; if it does, it will be modest and it will never sit between you and the content. Nothing on this site has ever been behind a payment, and that is not going to change.'
@@ -5107,7 +5107,7 @@ const LEGAL = {
         'Nothing here is sold, and nothing is shared with anyone beyond the specific services named below.'
       ]},
       {h:'What is stored on your device', p:[
-        'Expert Labs stores its self-check answers and report drafts separately in <code>kashsec_expert_labs_v1</code>. These drafts stay in that browser and are not included in course-progress backups or account sync. Each case has a report download so you can keep your work before clearing site storage.',
+        'Expert Labs stores its self-check answers and report drafts separately in <code>kashsec_expert_labs_v1</code>. These drafts stay in that browser and are not included in course-progress backups or account sync. Each case has a report download. The Expert Labs collection also offers a JSON backup of supported saved case drafts, containing report notes and self-check answers. These files are not encrypted. The restore tool reads the chosen file in your browser and does not send it to KashSec; it previews affected cases before saving. Draft backups do not include course completion, account data or review scores.',
         'KashSec progress normally uses one browser-storage entry, <code>kashsec_state_v1</code>. It holds your lesson progress, quiz and exam results, practice-task answers, flashcard scheduling, notes you have written, lessons you have rated, your streak, study-plan settings, starting-route preferences, investigation decisions and analyst notes, playground completion, and display settings. Playground messages and experiment settings are not saved or synced. If this record becomes unreadable, KashSec tries to keep an untouched second local entry, <code>kashsec_state_recovery_v1</code>, so you can download the original data. Clearing this site\'s storage deletes both entries.',
         'This is stored by your browser, on your device. Without an account it is never transmitted anywhere, and it is not readable by this site\'s author or anyone else. Clearing browser storage for this site erases both entries permanently — export a copy first if you need one.'
       ]},
@@ -9452,6 +9452,7 @@ function renderLabLeakedSecret(){
    ============================================================ */
 const CHANGELOG = [
   {date:'2026-10-30', title:'Practical AI security and clearer course discovery', items:[
+    'Expert Labs now supports private local draft backups and previewed restore, with a keep-existing option and changed-draft checks before replacement. Backups contain report notes and answers, not course progress or review scores.',
     'Search now cancels timed-out index requests, reads the generated index as validated data, and rejects bad offline cache entries. Preview glossary search shows loading errors and offers a retry while lesson and lab results remain available.',
     'Expert Labs now has combined topic, text and saved-draft filters, with live draft summaries from other tabs. The three new AI lessons have optional checks with links back to the relevant explanation.',
     'The AI path adds MCP and tool authorization, RAG tenant isolation, and security release-gate lessons, with three new quiz questions.',
