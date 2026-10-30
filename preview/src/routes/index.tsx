@@ -81,6 +81,16 @@ function Home() {
         ))}
       </section>
 
+      <section className="mt-12" aria-labelledby="aiPracticeHeading">
+        <p className="text-xs uppercase tracking-wider text-teal">New AI security practice</p>
+        <h2 id="aiPracticeHeading" className="mt-2 font-display text-3xl">Test the boundary. Keep the evidence.</h2>
+        <p className="mt-2 text-muted">Learn MCP authorization, RAG isolation and release tests. These local Python labs need no model account or API key.</p>
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
+          <Link to="/expert-labs/$caseId" params={{ caseId: "agent-tool-boundary" }} className="card rounded-card border border-line p-5"><h3>AI tool authorization</h3><p className="mt-2 text-sm text-muted">Keep the tool inside the trusted task and prove allowed and denied calls.</p></Link>
+          <Link to="/expert-labs/$caseId" params={{ caseId: "rag-document-scope" }} className="card rounded-card border border-line p-5"><h3>RAG document isolation</h3><p className="mt-2 text-sm text-muted">Keep unauthorized documents outside model context, then write a reproducible report.</p></Link>
+        </div>
+      </section>
+
       <figure className="mt-12">
         <img
           src="/art/aisle.jpg"

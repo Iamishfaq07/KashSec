@@ -92,7 +92,7 @@
 
   <form class="nf-search" action="/" method="get" id="nfSearch" role="search">
     <label class="sr-only" for="nfQ" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Search lessons</label>
-    <input id="nfQ" name="q" type="search" placeholder="Search 485 lessons…" autocomplete="off">
+    <input id="nfQ" name="q" type="search" placeholder="Search lessons and labs…" autocomplete="off">
     <button class="btn-amber" type="submit">Search</button>
   </form>
 
@@ -109,16 +109,19 @@
     <a href="/lesson/03-linux/">Linux</a>
     <a href="/lesson/11-web-security/">Web Security</a>
     <a href="/labs/">Interactive labs</a>
+    <a href="/expert-labs/">Expert Labs</a>
+    <a href="/lesson/18-ai-security/">AI Security</a>
     <a href="/tools/">Security tools</a>
     <a href="/faq.html">FAQ</a>
   </nav>
 </main>
 <script>
   /* Show the path that was asked for, and turn its words into a ready-made
-     search: /lesson/03-linux/permisions.html → "linux permisions". The
-     search page does fuzzy matching, so a typo'd slug still lands close. */
+     search: /lesson/03-linux/permisions.html → "linux permisions". Readers
+     can edit that query or follow a canonical learning-path link. */
   (function(){
-    var path = decodeURIComponent(location.pathname || '/');
+    var path = location.pathname || '/';
+    try { path = decodeURIComponent(path); } catch (e) { /* Keep malformed paths as plain text. */ }
     var shown = path.length > 42 ? '…' + path.slice(-41) : path;
     document.getElementById('nfPath').textContent = shown;
     document.getElementById('nfPath2').textContent = shown;

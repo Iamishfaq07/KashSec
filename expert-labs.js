@@ -80,7 +80,187 @@ export const EXPERT_LABS = [
       {q:'Which claim is supported by the supplied evidence?',options:['The role could read the tested Birch object; historical bulk extraction is not established','Every customer invoice was stolen','The KMS key is public','All organization policies permit this role'],correct:0,explain:'Observed cross-tenant access is enough to report the issue. The fixture does not establish historical use or unseen policy configuration.'},
       {q:'What should follow the Python contract tests?',options:['Declare the real AWS role secure','Delete all cloud logs','Assume resource policies cannot change the result','Review applicable policy layers and verify the allow/deny matrix with an authorized isolated identity'],correct:3,explain:'The model intentionally omits AWS policy composition and actual service behavior. Integration evidence is still needed.'}
     ]
-  }
+  },
+  {
+  "id": "agent-tool-boundary",
+  "suite": "agent",
+  "title": "AI tools inside the task boundary",
+  "track": "AI Security",
+  "minutes": 60,
+  "summary": "Repair a tool gateway where retrieved instructions try to turn an authorized invoice read into a different action.",
+  "mission": "Keep an authorized invoice read working while rejecting a different tenant, object, tool, or model-supplied approval.",
+  "prerequisites": [
+    {
+      "key": "18-ai-security/mcp-tool-authorization",
+      "label": "MCP and AI tool authorization"
+    },
+    {
+      "key": "21-api-security/bola-and-bfla",
+      "label": "Object and function authorization"
+    }
+  ],
+  "evidence": [
+    {
+      "name": "trusted-context.json",
+      "body": "{\n  \"actor\": {\n    \"id\": \"alice\",\n    \"tenant\": \"acme\",\n    \"authenticated\": true,\n    \"scopes\": [\n      \"invoice:read\"\n    ]\n  },\n  \"task\": {\n    \"actor_id\": \"alice\",\n    \"tenant\": \"acme\",\n    \"tool\": \"invoice.read\",\n    \"invoice_id\": \"42\"\n  }\n}"
+    },
+    {
+      "name": "proposed-calls.json",
+      "body": "[\n  {\n    \"tool\": \"invoice.read\",\n    \"tenant\": \"acme\",\n    \"invoice_id\": \"42\"\n  },\n  {\n    \"tool\": \"invoice.read\",\n    \"tenant\": \"birch\",\n    \"invoice_id\": \"42\"\n  },\n  {\n    \"tool\": \"invoice.send\",\n    \"tenant\": \"acme\",\n    \"invoice_id\": \"42\",\n    \"approved\": true\n  }\n]"
+    },
+    {
+      "name": "gateway-contract.txt",
+      "body": "The actor and task are resolved by trusted server code. Calls are untrusted model output.\nOnly invoice.read with invoice:read scope is allowed, for the exact task actor, tenant and invoice ID.\nReject unknown arguments, other tools, another invoice, another tenant, and inactive authentication.\nA call field named approved cannot grant permission. Tokens are already validated upstream."
+    }
+  ],
+  "tasks": [
+    "Identify the trusted actor and task, then explain why a retrieved instruction cannot expand their authority.",
+    "Repair agent_tool_allowed in the Python download; keep the exact allowed read working.",
+    "Run --lab agent without --reference. Include the allowed call and denied tenant, object, tool and spoofed-approval cases.",
+    "Write a review with evidence references, your command/results, and one real MCP integration test still needed."
+  ],
+  "hints": [
+    "Do not ask the model to decide whether its own proposed action is authorized.",
+    "Match actor, tenant, scope, tool, exact invoice and allowed argument names; fail closed."
+  ],
+  "limits": "This deterministic policy fixture does not run a model, MCP transport, token validator or approval service. Trusted authentication and task resolution are assumptions to test in a real integration.",
+  "questions": [
+    {
+      "q": "Which input may grant task authority?",
+      "options": [
+        "A retrieved document",
+        "The trusted server-resolved task and actor",
+        "A model-generated approved field",
+        "Any tool with a familiar name"
+      ],
+      "correct": 1,
+      "explain": "trusted-context.json defines the authority. Proposed calls are untrusted."
+    },
+    {
+      "q": "What happens to an invoice.send proposal for this read-only task?",
+      "options": [
+        "Allow after a prompt warning",
+        "Allow if approved is true in the call",
+        "Deny at the gateway",
+        "Ask the model whether it is safe"
+      ],
+      "correct": 2,
+      "explain": "gateway-contract.txt permits only invoice.read. Untrusted approval fields cannot grant a send."
+    },
+    {
+      "q": "Which legitimate behavior must the repair preserve?",
+      "options": [
+        "Read any invoice",
+        "Read the exact authorized invoice in the task tenant",
+        "Read a matching ID across tenants",
+        "Send the invoice to a new address"
+      ],
+      "correct": 1,
+      "explain": "The positive case prevents a deny-everything repair from passing."
+    },
+    {
+      "q": "What does passing this fixture establish?",
+      "options": [
+        "Production MCP conformance",
+        "Perfect prompt-injection defense",
+        "The complete token-validation implementation",
+        "The tested local policy matches these fixtures"
+      ],
+      "correct": 3,
+      "explain": "The fixture omits the model, protocol, authentication and real side effects. Document those integration limits."
+    }
+  ]
+},
+  {
+  "id": "rag-document-scope",
+  "suite": "rag",
+  "title": "RAG documents before model context",
+  "track": "AI Security",
+  "minutes": 60,
+  "summary": "Repair retrieval eligibility so another tenant, a revoked document, or a caller-supplied tenant cannot enter model context.",
+  "mission": "Return only active documents authorized for the trusted actor, preserving valid access and leaving the original records unchanged.",
+  "prerequisites": [
+    {
+      "key": "18-ai-security/rag-tenant-isolation",
+      "label": "RAG tenant isolation"
+    },
+    {
+      "key": "18-ai-security/rag-security-risks",
+      "label": "RAG security risks"
+    }
+  ],
+  "evidence": [
+    {
+      "name": "retrieval-actor.json",
+      "body": "{\n  \"authenticated\": true,\n  \"tenant\": \"acme\",\n  \"allowed_ids\": [\n    \"a-1\",\n    \"a-old\"\n  ]\n}"
+    },
+    {
+      "name": "candidates.json",
+      "body": "[\n  {\n    \"id\": \"a-1\",\n    \"tenant\": \"acme\",\n    \"active\": true,\n    \"text\": \"Allowed invoice guide\"\n  },\n  {\n    \"id\": \"b-1\",\n    \"tenant\": \"birch\",\n    \"active\": true,\n    \"text\": \"Private Birch invoice\"\n  },\n  {\n    \"id\": \"a-old\",\n    \"tenant\": \"acme\",\n    \"active\": false,\n    \"text\": \"Revoked draft\"\n  },\n  {\n    \"id\": \"a-2\",\n    \"tenant\": \"acme\",\n    \"active\": true,\n    \"text\": \"Another Acme restricted document\"\n  }\n]"
+    },
+    {
+      "name": "retrieval-contract.txt",
+      "body": "Eligibility is decided before documents are sent to the model.\nOnly authenticated actors may retrieve active documents in their trusted tenant and allowed_ids.\nIgnore request-supplied tenant and allowed_ids claims. Missing authorization metadata does not mean public.\nPreserve record order and do not mutate the input records. This fixture does not perform vector ranking."
+    }
+  ],
+  "tasks": [
+    "List which candidates may reach the model and cite the actor and document metadata that decide each outcome.",
+    "Repair rag_documents in the Python download. Do not use request_claims to broaden access.",
+    "Run --lab rag against your edited function. Include legitimate access, cross-tenant denial, revoked access, missing metadata and spoofed claims.",
+    "Write a report proposing one integration test for cache isolation or permission revocation at the actual context-building boundary."
+  ],
+  "hints": [
+    "A relevant document can still be unauthorized. Redacting its citation after generation is too late.",
+    "Filter by trusted tenant, exact allowed IDs, and active status before context construction; preserve legitimate records."
+  ],
+  "limits": "The exercise models eligibility over dictionaries, not embeddings, approximate-nearest-neighbor filtering, caches or real identity services. Passing it does not prove the complete retrieval system is isolated.",
+  "questions": [
+    {
+      "q": "When should document access be checked?",
+      "options": [
+        "After the model answers",
+        "Only when a citation is clicked",
+        "Before building model context, with an authoritative fetch check in production",
+        "Only when indexing begins"
+      ],
+      "correct": 2,
+      "explain": "The retrieval contract requires eligibility before context. Index metadata alone may become stale."
+    },
+    {
+      "q": "What authorizes a tenant in this fixture?",
+      "options": [
+        "The tenant in request_claims",
+        "The tenant of the most similar document",
+        "The trusted authenticated actor",
+        "A sentence inside the retrieved document"
+      ],
+      "correct": 2,
+      "explain": "retrieval-actor.json is trusted; request-supplied claims cannot change it."
+    },
+    {
+      "q": "Which document is eligible for the provided actor?",
+      "options": [
+        "a-1",
+        "b-1",
+        "a-old",
+        "a-2"
+      ],
+      "correct": 0,
+      "explain": "Only a-1 is active, in acme, and present in allowed_ids."
+    },
+    {
+      "q": "What risk is outside this local fixture?",
+      "options": [
+        "Whether a-1 has a tenant",
+        "Cross-tenant retrieval in the supplied list",
+        "Whether inactive records are filtered",
+        "A stale cached answer after permissions change"
+      ],
+      "correct": 3,
+      "explain": "The fixture has no cache. A real system needs revocation and cache-context integration tests."
+    }
+  ]
+}
 ];
 
 const STORAGE_KEY='kashsec_expert_labs_v1';
@@ -130,7 +310,7 @@ export function mountExpertLabs({root,id=null,href=lab=>lab?`/expert-labs/${lab}
   };
   if(id&&!lab){root.innerHTML=`<section class="ex-page">${tabs}<h1>That expert lab is not available</h1><a href="${href(null)}" data-expert="">Browse Expert Labs</a></section>`;wireNavigation();return ()=>{};}
   if(!lab){
-    root.innerHTML=`<section class="ex-page">${tabs}<p class="ex-eyebrow">Advanced practice · four evidence-led cases</p><h1>Expert Labs</h1><p class="ex-lead">Move from spotting a bug to proving a fix. Read the evidence, repair a small implementation, and write a review another engineer can reproduce.</p><p>Each case combines browser review with a downloadable Python exercise. Python 3.10+ is required for the coding work; no packages, account, network, or cloud spend are needed. Time estimates include writing your report.</p><p id="exCollectionStatus" role="status"></p><p class="ex-note">Saved drafts show where you left off. Draft status does not mark coding work complete.</p><div class="ex-grid">${EXPERT_LABS.map(item=>`<article class="ex-card" data-expert-card="${item.id}"><p class="ex-eyebrow">${item.track} · about ${item.minutes} min</p><h2><a href="${href(item.id)}" data-expert="${item.id}">${item.title}</a></h2><p>${item.summary}</p><p><strong>Deliver:</strong> a fix, passing tests, and a review with remaining risks.</p><p data-draft-status="${item.id}" class="ex-note"></p><a class="ex-button" href="${href(item.id)}" data-expert="${item.id}" data-case-action="${item.id}">Open case →</a></article>`).join('')}</div><section class="ex-card"><h2>Go further with maintained lab platforms</h2><p>Use these after the local cases. Their requirements and progress are separate from KashSec.</p><ul><li><a href="https://portswigger.net/web-security/all-labs" target="_blank" rel="noopener noreferrer">PortSwigger Web Security Academy</a> — use the Expert difficulty filter for advanced web labs. A free account and an HTTP testing tool may be needed; individual labs describe requirements.</li><li><a href="https://github.com/OWASP/crAPI" target="_blank" rel="noopener noreferrer">OWASP crAPI</a> — a full intentionally vulnerable API. Follow its current local-install instructions; it requires a container environment.</li><li><a href="https://github.com/OWASP/juice-shop" target="_blank" rel="noopener noreferrer">OWASP Juice Shop</a> — a full web application with advanced challenges. Use your own local instance and its current companion guide.</li></ul></section></section>`;
+    root.innerHTML=`<section class="ex-page">${tabs}<p class="ex-eyebrow">Advanced practice · ${EXPERT_LABS.length} evidence-led cases</p><h1>Expert Labs</h1><p class="ex-lead">Move from spotting a bug to proving a fix. Read the evidence, repair a small implementation, and write a review another engineer can reproduce.</p><p>Each case combines browser review with a downloadable Python exercise. Python 3.10+ is required for the coding work; no packages, account, network, or cloud spend are needed. Time estimates include writing your report.</p><p id="exCollectionStatus" role="status"></p><p class="ex-note">Saved drafts show where you left off. Draft status does not mark coding work complete.</p><div class="ex-grid">${EXPERT_LABS.map(item=>`<article class="ex-card" data-expert-card="${item.id}"><p class="ex-eyebrow">${item.track} · about ${item.minutes} min</p><h2><a href="${href(item.id)}" data-expert="${item.id}">${item.title}</a></h2><p>${item.summary}</p><p><strong>Deliver:</strong> a fix, passing tests, and a review with remaining risks.</p><p data-draft-status="${item.id}" class="ex-note"></p><a class="ex-button" href="${href(item.id)}" data-expert="${item.id}" data-case-action="${item.id}">Open case →</a></article>`).join('')}</div><section class="ex-card"><h2>Go further with maintained lab platforms</h2><p>Use these after the local cases. Their requirements and progress are separate from KashSec.</p><ul><li><a href="https://portswigger.net/web-security/all-labs" target="_blank" rel="noopener noreferrer">PortSwigger Web Security Academy</a> — use the Expert difficulty filter for advanced web labs. A free account and an HTTP testing tool may be needed; individual labs describe requirements.</li><li><a href="https://github.com/OWASP/crAPI" target="_blank" rel="noopener noreferrer">OWASP crAPI</a> — a full intentionally vulnerable API. Follow its current local-install instructions; it requires a container environment.</li><li><a href="https://github.com/OWASP/juice-shop" target="_blank" rel="noopener noreferrer">OWASP Juice Shop</a> — a full web application with advanced challenges. Use your own local instance and its current companion guide.</li></ul></section></section>`;
     let saved={},canReadDrafts=true;
     try{saved=readDrafts();}catch(_){canReadDrafts=false;root.querySelector('#exCollectionStatus').textContent='Saved drafts could not be read in this browser. You can still open any case.';}
     for(const item of EXPERT_LABS){
@@ -155,7 +335,7 @@ export function mountExpertLabs({root,id=null,href=lab=>lab?`/expert-labs/${lab}
 # Edit the matching starter function; keep tests unchanged.
 python expert_security_lab.py --lab ${lab.suite}
 # Optional comparison, which tests the supplied reference only:
-python expert_security_lab.py --lab ${lab.suite} --reference</code></pre><p><strong>Expected:</strong> starter mode initially fails. After your fix, the selected test method and its subcases pass. The full file contains four test methods, one per lab. Passing reference mode does not verify your edits.</p><details><summary>Hint 1 — find the boundary</summary><p>${lab.hints[0]}</p></details><details><summary>Hint 2 — plan the repair</summary><p>${lab.hints[1]}</p></details><p class="ex-notice"><strong>Limits:</strong> ${lab.limits}</p><h2 id="exReasoningHeading" tabindex="-1">3. Check your reasoning</h2><p>Answer all four questions, then review the evidence-based explanations. You can revise and review again without a timer or penalty.</p><form id="exReviewForm">${lab.questions.map((q,qi)=>`<fieldset><legend>${qi+1}. ${escape(q.q)}</legend>${q.options.map((option,oi)=>`<label><input type="radio" name="ex-q-${qi}" value="${oi}" ${answers[qi]===oi?'checked':''}> <span>${escape(option)}</span></label>`).join('')}</fieldset>`).join('')}<button type="submit" class="ex-button">Review my reasoning</button><p id="exReviewStatus" role="status"></p></form><section id="exResults" hidden aria-labelledby="exResultHeading"></section><h2 id="exReportHeading" tabindex="-1">4. Keep a reproducible report</h2><label for="exNotes">Your findings, fix, test results, and remaining risk</label><textarea id="exNotes" maxlength="12000" rows="10" placeholder="Evidence filenames and observations:
+python expert_security_lab.py --lab ${lab.suite} --reference</code></pre><p><strong>Expected:</strong> starter mode initially fails. After your fix, the selected test method and its subcases pass. The full file contains ${EXPERT_LABS.length} test methods, one per lab. Passing reference mode does not verify your edits.</p><details><summary>Hint 1 — find the boundary</summary><p>${lab.hints[0]}</p></details><details><summary>Hint 2 — plan the repair</summary><p>${lab.hints[1]}</p></details><p class="ex-notice"><strong>Limits:</strong> ${lab.limits}</p><h2 id="exReasoningHeading" tabindex="-1">3. Check your reasoning</h2><p>Answer all four questions, then review the evidence-based explanations. You can revise and review again without a timer or penalty.</p><form id="exReviewForm">${lab.questions.map((q,qi)=>`<fieldset><legend>${qi+1}. ${escape(q.q)}</legend>${q.options.map((option,oi)=>`<label><input type="radio" name="ex-q-${qi}" value="${oi}" ${answers[qi]===oi?'checked':''}> <span>${escape(option)}</span></label>`).join('')}</fieldset>`).join('')}<button type="submit" class="ex-button">Review my reasoning</button><p id="exReviewStatus" role="status"></p></form><section id="exResults" hidden aria-labelledby="exResultHeading"></section><h2 id="exReportHeading" tabindex="-1">4. Keep a reproducible report</h2><label for="exNotes">Your findings, fix, test results, and remaining risk</label><textarea id="exNotes" maxlength="12000" rows="10" placeholder="Evidence filenames and observations:
 Allowed and denied cases:
 Fix and test command (without --reference):
 Result from my implementation:

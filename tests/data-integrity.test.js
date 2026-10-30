@@ -451,8 +451,9 @@ check('the legal pages are in the sitemap',
 
 // Ad networks and most privacy regimes expect these reachable from every
 // page, not buried. The footer is on every page; the router is not enough.
-const footerLegal = ['#/privacy', '#/terms', '#/about', '#/contact']
-  .filter(h => !indexHtml.includes(`href="${h}"`));
+const footerHtml = indexHtml.match(/<footer[\s\S]*?<\/footer>/)?.[0] || '';
+const footerLegal = ['/privacy.html', '/terms.html', '/about.html', '/contact.html']
+  .filter(h => !footerHtml.includes(`href="${h}"`));
 check('privacy, terms, about and contact are linked from the site footer',
   footerLegal.length === 0, footerLegal.join(', '));
 

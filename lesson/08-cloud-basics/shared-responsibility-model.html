@@ -47,23 +47,23 @@
 <body>
 <a class="skip" href="/lesson/08-cloud-basics/shared-responsibility-model.html#app">Skip to content</a>
 <header class="nav" id="siteNav">
-  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+  <a class="brand" href="/" aria-label="KashSec Academy — home">
     <span class="brand-mark">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
     </span>
     <span class="brand-txt">KashSec<span class="amber">.</span></span>
   </a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">
-    <a href="#/">Home</a>
-    <a href="#/course">Course</a>
+    <a href="/">Home</a>
+    <a href="/lesson/">Course</a>
     <a href="#/tracks">Tracks</a>
-    <a href="#/labs">Labs</a>
-    <a href="#/tasks">Practice</a>
-    <a href="#/tools">Tools</a>
+    <a href="/labs/">Labs</a>
+    <a href="/practice.html">Practice</a>
+    <a href="/tools/">Tools</a>
     <a href="#/glossary">Glossary</a>
     <a href="#/roadmap">Roadmap</a>
     <a href="#/careers">Careers</a>
-    <a href="#/faq">FAQ</a>
+    <a href="/faq.html">FAQ</a>
     <a href="#/progress">My Progress</a>
     <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
     <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
@@ -86,14 +86,14 @@
     <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
     </button>
-    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <a class="btn-amber sm" id="startBtn" href="/lesson/01-introduction/">Start</a>
     <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>
 <main id="app" tabindex="-1">
-  <div class="reader-wrap"><div class="reader-main">
+  <div class="reader-wrap static-reader"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/08-cloud-basics/">Path 08 — Cloud Computing Basics</a> · The Shared Responsibility Model</nav>
     <div class="md" id="content"><article><h1>The Shared Responsibility Model</h1>
 <p>This lesson ties together every concept from this path — service models, storage, networking, IAM — into the single framework cloud providers use to explain exactly where their security responsibility ends and yours begins. Misunderstanding this boundary is, itself, a leading real-world cause of cloud breaches.</p>
@@ -101,7 +101,7 @@
 <p>Every major cloud provider frames their shared responsibility model with roughly this split: the provider is responsible for the security <strong>of</strong> the cloud (physical data centers, the underlying hardware, the virtualization layer, network infrastructure at the provider level) — while the customer is responsible for security <strong>in</strong> the cloud (how they configure the services they use, their data, their IAM policies, their operating systems on IaaS).</p>
 <h2>The line shifts depending on the service model</h2>
 <p>Path 08's first lesson introduced IaaS/PaaS/SaaS — this is exactly where that distinction matters most concretely:</p>
-<table>
+<div class="table-scroll" role="region" tabindex="0" aria-label="Scrollable table"><table>
 <thead>
 <tr>
 <th></th>
@@ -122,7 +122,7 @@
 <td>App code, IAM, data</td>
 <td>Just your data and user-level settings</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>With IaaS (like a raw EC2 virtual machine), you're responsible for patching the guest operating system yourself — exactly the Windows Update and Linux patching discipline from Path 03 and Path 07. With SaaS, the provider handles patching entirely; your remaining responsibility narrows almost entirely to configuration (who has access, what permissions they have) and your own data.</p>
 <h2>Real breaches that stem from misunderstanding this boundary</h2>
 <p>The overwhelming majority of well-documented, real-world cloud breaches trace back specifically to <strong>customer-side misconfiguration</strong>, not a failure on the provider's side of the line — exactly the categories covered throughout this path:</p>
@@ -156,7 +156,7 @@
 <li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/">AWS Shared Responsibility Model</a> — the official framework this lesson is built around.</li>
 <li><a href="https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility">Microsoft: Shared responsibility in the cloud</a> — Azure's equivalent framing, confirming this model is industry-standard, not AWS-specific.</li>
 </ul>
-<p><strong>Next up →</strong> <a href="#/lesson/08-cloud-basics/cloud-certifications-careers">Cloud Security Careers &amp; Certifications</a></p>
+<p><strong>Next up →</strong> <a href="/lesson/08-cloud-basics/cloud-certifications-careers.html">Cloud Security Careers &amp; Certifications</a></p>
 <nav class="pager"><a href="/lesson/08-cloud-basics/cloud-multi-account-governance.html">← Cloud Multi-Account Governance</a><a href="/lesson/08-cloud-basics/cloud-certifications-careers.html">Cloud Security Careers &amp; Certifications →</a></nav></article></div>
   </div></div>
 </main>
@@ -181,9 +181,9 @@
     </div>
     <div class="foot-cols">
       <div><h2>Learn</h2>
-        <a href="#/course">All paths</a>
+        <a href="/lesson/">All paths</a>
         <a href="#/tracks">Tracks</a>
-        <a href="#/labs">Labs</a>
+        <a href="/labs/">Labs</a>
         <a href="#/glossary">Glossary</a>
         <a href="#/search">Search</a>
       </div>
@@ -192,24 +192,24 @@
         <a href="#/daily">Daily challenge</a>
         <a href="#/weekly">Weekly challenges</a>
         <a href="#/quiz/shuffle">Shuffle quiz</a>
-        <a href="#/tasks">Practice tasks</a>
-        <a href="#/exam">Timed mock exam</a>
+        <a href="/practice.html">Practice tasks</a>
+        <a href="/exam.html">Timed mock exam</a>
       </div>
       <div><h2>Explore</h2>
-        <a href="#/tools">Tools</a>
+        <a href="/tools/">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
-        <a href="#/faq">FAQ</a>
+        <a href="/faq.html">FAQ</a>
       </div>
       <div><h2>About</h2>
-        <a href="#/about">About KashSec</a>
-        <a href="#/contact">Contact</a>
+        <a href="/about.html">About KashSec</a>
+        <a href="/contact.html">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
-        <a href="#/privacy">Privacy policy</a>
-        <a href="#/terms">Terms of use</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
       </div>
     </div>
   </div>

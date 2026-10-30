@@ -2,7 +2,7 @@
 
 **A completely free cybersecurity course, from absolute zero to job-ready.**
 
-26 learning paths · 488 sub-lessons · 104 typed-answer practice tasks · 42 interactive labs · 32 browser-based tools · timed mock exams · always free
+26 learning paths · 491 sub-lessons · 104 typed-answer practice tasks · 42 interactive labs · 32 browser-based tools · timed mock exams · always free
 
 [![Live Site](https://img.shields.io/badge/live-kashsec.vercel.app-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
@@ -166,3 +166,7 @@ Found a typo, a broken link, or want to write a missing sub-lesson? PRs are welc
 Free forever, for everyone starting from zero.
 
 </div>
+
+### Search visibility and current AI practice
+
+The homepage and all lesson/lab pages contain useful HTML before JavaScript runs. Shared links use the same canonical paths as the app router. The AI path includes MCP authorization, RAG isolation and release-gate lessons, with two local Python expert cases. Rebuild generated pages after content changes and run `npm run build:og` when lesson counts change. See the [dated research and SEO follow-up](docs/research-2026-10-ai-seo.md) for sources, limitations and the owner's Search Console steps.

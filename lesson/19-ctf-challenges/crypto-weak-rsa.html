@@ -47,23 +47,23 @@
 <body>
 <a class="skip" href="/lesson/19-ctf-challenges/crypto-weak-rsa.html#app">Skip to content</a>
 <header class="nav" id="siteNav">
-  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+  <a class="brand" href="/" aria-label="KashSec Academy — home">
     <span class="brand-mark">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
     </span>
     <span class="brand-txt">KashSec<span class="amber">.</span></span>
   </a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">
-    <a href="#/">Home</a>
-    <a href="#/course">Course</a>
+    <a href="/">Home</a>
+    <a href="/lesson/">Course</a>
     <a href="#/tracks">Tracks</a>
-    <a href="#/labs">Labs</a>
-    <a href="#/tasks">Practice</a>
-    <a href="#/tools">Tools</a>
+    <a href="/labs/">Labs</a>
+    <a href="/practice.html">Practice</a>
+    <a href="/tools/">Tools</a>
     <a href="#/glossary">Glossary</a>
     <a href="#/roadmap">Roadmap</a>
     <a href="#/careers">Careers</a>
-    <a href="#/faq">FAQ</a>
+    <a href="/faq.html">FAQ</a>
     <a href="#/progress">My Progress</a>
     <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
     <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
@@ -86,14 +86,14 @@
     <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
     </button>
-    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <a class="btn-amber sm" id="startBtn" href="/lesson/01-introduction/">Start</a>
     <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>
 <main id="app" tabindex="-1">
-  <div class="reader-wrap"><div class="reader-main">
+  <div class="reader-wrap static-reader"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/19-ctf-challenges/">Path 19 — CTF Challenges</a> · Crypto — Small Primes, Big Problem</nav>
     <div class="md" id="content"><article><h1>Crypto — Small Primes, Big Problem</h1>
 <p><strong>Category:</strong> Crypto · <strong>Difficulty:</strong> Hard</p>
@@ -121,7 +121,7 @@ e = 3
 <p>This challenge used <code>e = 3</code>, a small public exponent chosen for "efficiency" — a decision independent of the key size itself.</p>
 <details><summary>Hint</summary>Think about what happens if the same short message is encrypted with the same small exponent under three or more <em>different</em> public keys (a real scenario — e.g., the same short message broadcast to multiple recipients, each with their own RSA key but all using <code>e=3</code>).</details>
 <details><summary>Show answer</summary>This describes <strong>Håstad's broadcast attack</strong>: if the same message is encrypted with a small public exponent (commonly <code>e=3</code>) under enough different, sufficiently large moduli — mathematically, at least <code>e</code> of them — an attacker can use the Chinese Remainder Theorem to reconstruct the original message without ever factoring any of the moduli at all, even if every individual key is otherwise perfectly secure at full 2048-bit size. This is a genuinely elegant, real cryptographic attack, and it's exactly why modern RSA implementations favor a larger public exponent like <code>65537</code> combined with proper padding schemes (OAEP) — both of which independently close off this specific attack, on top of everything a sufficiently large modulus already provides.</details><p>Real RSA keys are never this small — this challenge exists purely to make the underlying mathematics tractable to work through by hand or with a basic script, so the "why key size matters" lesson is something you can actually verify yourself rather than just being told. Path 06's cryptography fundamentals lesson covers the real-world key size guidance this challenge is illustrating.</p>
-<p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/forensics-exif-trail">Forensics — The EXIF Trail</a></p>
+<p><strong>Next up →</strong> <a href="/lesson/19-ctf-challenges/forensics-exif-trail.html">Forensics — The EXIF Trail</a></p>
 <nav class="pager"><a href="/lesson/19-ctf-challenges/ai-jailbreak-judge.html">← AI — Jailbreak the Judge</a><a href="/lesson/19-ctf-challenges/forensics-exif-trail.html">Forensics — The EXIF Trail →</a></nav></article></div>
   </div></div>
 </main>
@@ -146,9 +146,9 @@ e = 3
     </div>
     <div class="foot-cols">
       <div><h2>Learn</h2>
-        <a href="#/course">All paths</a>
+        <a href="/lesson/">All paths</a>
         <a href="#/tracks">Tracks</a>
-        <a href="#/labs">Labs</a>
+        <a href="/labs/">Labs</a>
         <a href="#/glossary">Glossary</a>
         <a href="#/search">Search</a>
       </div>
@@ -157,24 +157,24 @@ e = 3
         <a href="#/daily">Daily challenge</a>
         <a href="#/weekly">Weekly challenges</a>
         <a href="#/quiz/shuffle">Shuffle quiz</a>
-        <a href="#/tasks">Practice tasks</a>
-        <a href="#/exam">Timed mock exam</a>
+        <a href="/practice.html">Practice tasks</a>
+        <a href="/exam.html">Timed mock exam</a>
       </div>
       <div><h2>Explore</h2>
-        <a href="#/tools">Tools</a>
+        <a href="/tools/">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
-        <a href="#/faq">FAQ</a>
+        <a href="/faq.html">FAQ</a>
       </div>
       <div><h2>About</h2>
-        <a href="#/about">About KashSec</a>
-        <a href="#/contact">Contact</a>
+        <a href="/about.html">About KashSec</a>
+        <a href="/contact.html">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
-        <a href="#/privacy">Privacy policy</a>
-        <a href="#/terms">Terms of use</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
       </div>
     </div>
   </div>

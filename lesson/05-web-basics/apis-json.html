@@ -47,23 +47,23 @@
 <body>
 <a class="skip" href="/lesson/05-web-basics/apis-json.html#app">Skip to content</a>
 <header class="nav" id="siteNav">
-  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+  <a class="brand" href="/" aria-label="KashSec Academy — home">
     <span class="brand-mark">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
     </span>
     <span class="brand-txt">KashSec<span class="amber">.</span></span>
   </a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">
-    <a href="#/">Home</a>
-    <a href="#/course">Course</a>
+    <a href="/">Home</a>
+    <a href="/lesson/">Course</a>
     <a href="#/tracks">Tracks</a>
-    <a href="#/labs">Labs</a>
-    <a href="#/tasks">Practice</a>
-    <a href="#/tools">Tools</a>
+    <a href="/labs/">Labs</a>
+    <a href="/practice.html">Practice</a>
+    <a href="/tools/">Tools</a>
     <a href="#/glossary">Glossary</a>
     <a href="#/roadmap">Roadmap</a>
     <a href="#/careers">Careers</a>
-    <a href="#/faq">FAQ</a>
+    <a href="/faq.html">FAQ</a>
     <a href="#/progress">My Progress</a>
     <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
     <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
@@ -86,14 +86,14 @@
     <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
     </button>
-    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <a class="btn-amber sm" id="startBtn" href="/lesson/01-introduction/">Start</a>
     <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>
 <main id="app" tabindex="-1">
-  <div class="reader-wrap"><div class="reader-main">
+  <div class="reader-wrap static-reader"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/05-web-basics/">Path 05 — How the Web Works</a> · APIs &amp; JSON</nav>
     <div class="md" id="content"><article><h1>APIs &amp; JSON</h1>
 <p>Modern web apps are basically two things stitched together: a JavaScript UI in your browser, and a set of <strong>APIs</strong> on a server. Learn to see the APIs and you see the real attack surface.</p>
@@ -124,7 +124,7 @@
 <p>Six data types: <strong>object</strong> <code>{}</code>, <strong>array</strong> <code>[]</code>, <strong>string</strong> <code>"..."</code>, <strong>number</strong>, <strong>boolean</strong> <code>true/false</code>, <strong>null</strong>. That's all of JSON. Learn to read this and you can read 99% of modern web APIs.</p>
 <h2>REST — the common style</h2>
 <p>Most public APIs follow a style called <strong>REST</strong>. It uses HTTP methods to mean specific things:</p>
-<table>
+<div class="table-scroll" role="region" tabindex="0" aria-label="Scrollable table"><table>
 <thead>
 <tr>
 <th>Method</th>
@@ -152,7 +152,7 @@
 <td>Delete</td>
 <td><code>DELETE /api/users/42</code></td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>Resource identifiers appear in the path (<code>/users/42</code>), and data flows in the body as JSON. Learn to read a URL as <em>"which noun, which action?"</em> and you can read most REST APIs at a glance.</p>
 <h2>Anatomy of an API call</h2>
 <pre><code class="language-http">POST /api/orders HTTP/1.1
@@ -202,7 +202,7 @@ print(r.status_code, r.json())
 <p>This is how nearly every automation tool, integration, and security tool works under the hood.</p>
 <h2>Where API security bugs live</h2>
 <p>APIs deserve their own OWASP top-10 because they have <em>specific</em> recurring bug classes:</p>
-<table>
+<div class="table-scroll" role="region" tabindex="0" aria-label="Scrollable table"><table>
 <thead>
 <tr>
 <th>Bug class</th>
@@ -237,7 +237,7 @@ print(r.status_code, r.json())
 <td><strong>Server-side request forgery (SSRF)</strong></td>
 <td>An API endpoint fetches a URL you supply, unfiltered.</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>You'll meet each in Path 11. The point today: <strong>APIs are where modern web bugs live, at least as much as the HTML UI.</strong></p>
 <h2>API versioning and forgotten endpoints</h2>
 <p>APIs rarely stay static — as apps evolve, developers introduce <code>/api/v2/...</code> while <code>/api/v1/...</code> often keeps running quietly in the background for older mobile app versions still in the wild. Those old, unmaintained versions are a genuinely rich attack surface: a <code>v1</code> endpoint might lack a security fix that was only ever applied to <code>v2</code>, or might expose a field that <code>v2</code> deliberately hid after a privacy review. This is exactly the kind of thing Path 15's recon material teaches you to hunt for — trying <code>/api/v1/</code>, <code>/api/v0/</code>, <code>/api/beta/</code>, and similar guesses against any API you find, since forgotten versions are consistently one of the highest-value things to check in bug bounty recon.</p>
@@ -313,7 +313,7 @@ print(f\"{d['name']}: {d['stargazers_count']} stars, {d['forks_count']} forks\")
 <li><a href="https://learning.postman.com/">Postman Learning Center</a> — a friendly UI for exploring APIs.</li>
 <li><a href="https://portswigger.net/web-security/api-testing">PortSwigger — API testing</a></li>
 </ul>
-<p><strong>Next up →</strong> <a href="#/lesson/05-web-basics/websockets-realtime-web">WebSockets &amp; the real-time web</a></p>
+<p><strong>Next up →</strong> <a href="/lesson/05-web-basics/websockets-realtime-web.html">WebSockets &amp; the real-time web</a></p>
 <nav class="pager"><a href="/lesson/05-web-basics/same-origin-policy-and-cors.html">← Same-Origin Policy &amp; CORS</a><a href="/lesson/05-web-basics/websockets-realtime-web.html">WebSockets &amp; the real-time web →</a></nav></article></div>
   </div></div>
 </main>
@@ -338,9 +338,9 @@ print(f\"{d['name']}: {d['stargazers_count']} stars, {d['forks_count']} forks\")
     </div>
     <div class="foot-cols">
       <div><h2>Learn</h2>
-        <a href="#/course">All paths</a>
+        <a href="/lesson/">All paths</a>
         <a href="#/tracks">Tracks</a>
-        <a href="#/labs">Labs</a>
+        <a href="/labs/">Labs</a>
         <a href="#/glossary">Glossary</a>
         <a href="#/search">Search</a>
       </div>
@@ -349,24 +349,24 @@ print(f\"{d['name']}: {d['stargazers_count']} stars, {d['forks_count']} forks\")
         <a href="#/daily">Daily challenge</a>
         <a href="#/weekly">Weekly challenges</a>
         <a href="#/quiz/shuffle">Shuffle quiz</a>
-        <a href="#/tasks">Practice tasks</a>
-        <a href="#/exam">Timed mock exam</a>
+        <a href="/practice.html">Practice tasks</a>
+        <a href="/exam.html">Timed mock exam</a>
       </div>
       <div><h2>Explore</h2>
-        <a href="#/tools">Tools</a>
+        <a href="/tools/">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
-        <a href="#/faq">FAQ</a>
+        <a href="/faq.html">FAQ</a>
       </div>
       <div><h2>About</h2>
-        <a href="#/about">About KashSec</a>
-        <a href="#/contact">Contact</a>
+        <a href="/about.html">About KashSec</a>
+        <a href="/contact.html">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
-        <a href="#/privacy">Privacy policy</a>
-        <a href="#/terms">Terms of use</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
       </div>
     </div>
   </div>

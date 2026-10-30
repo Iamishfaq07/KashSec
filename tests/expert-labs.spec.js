@@ -6,7 +6,7 @@ import {chromium} from 'playwright';
 import {EXPERT_LABS} from '../expert-labs.js';
 const root=new URL('..',import.meta.url);
 const read=file=>fs.readFile(new URL(file,root),'utf8');
-assert.equal(EXPERT_LABS.length,4);assert.equal(new Set(EXPERT_LABS.map(l=>l.id)).size,4);
+assert.equal(EXPERT_LABS.length,6);assert.equal(new Set(EXPERT_LABS.map(l=>l.id)).size,6);
 for(const lab of EXPERT_LABS){
   assert.equal(lab.questions.length,4);assert.ok(lab.tasks.length>=4&&lab.evidence.length>=3&&lab.hints.length===2&&lab.limits);
   for(const q of lab.questions){assert.equal(new Set(q.options).size,4);assert.ok(q.correct>=0&&q.correct<4&&q.explain);}
@@ -22,7 +22,7 @@ for(const lab of EXPERT_LABS){
   assert.match(starter.stderr,/FAILED/);
 }
 for(const file of ['expert-labs.js','expert-labs.css','downloads/expert_security_lab.py'])assert.equal(await read(file),await read('preview/public/'+file));
-console.log('PASS: four complete cases, real prerequisite links, no-JS briefs, shared frontend files, failing starters and passing references.');
+console.log('PASS: six complete cases, real prerequisite links, no-JS briefs, shared frontend files, failing starters and passing references.');
 const preview=process.env.CHECK_FRONTEND==='preview';
 const BASE=preview?(process.env.PREVIEW_BASE||'http://127.0.0.1:8080'):(process.env.BASE||'http://127.0.0.1:8000');
 const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefined});
@@ -41,7 +41,7 @@ try{
   const context=await contextFor();const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
   let bundles=0;page.on('request',r=>{if(new URL(r.url()).pathname==='/expert-labs.js')bundles++;});
   await page.goto(BASE+'/labs/');await page.getByRole('link',{name:/Expert Labs/}).waitFor();assert.equal(bundles,0,'lab listing does not fetch the expert bundle');
-  await page.getByRole('link',{name:/Expert Labs/}).click();await page.locator('.ex-grid .ex-card').first().waitFor();assert.equal(await page.locator('.ex-grid .ex-card').count(),4);
+  await page.getByRole('link',{name:/Expert Labs/}).click();await page.locator('.ex-grid .ex-card').first().waitFor();assert.equal(await page.locator('.ex-grid .ex-card').count(),6);
   assert.match(await page.locator('.ex-tabs [aria-current]').innerText(),/Expert Labs/);
   for(const lab of EXPERT_LABS){
     await page.goto(labURL(lab.id));await ready(page);assert.match(await page.locator('h1').innerText(),new RegExp(lab.title));
@@ -69,7 +69,7 @@ try{
   await page.locator('#exNotes').fill('Cloud scope current tab');
   assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('kashsec_expert_labs_v1'))['tenant-boundary'].notes),'Other tab retained');
   assert.deepEqual(errors,[]);await context.close();
-  console.log(`PASS: ${preview?'preview':'main'} collection tab, all four cases, review completeness/focus, stale-score prevention, drafts, safe report/evidence/Python downloads, cross-tab preservation and mobile widths.`);
+  console.log(`PASS: ${preview?'preview':'main'} collection tab, all six cases, review completeness/focus, stale-score prevention, drafts, safe report/evidence/Python downloads, cross-tab preservation and mobile widths.`);
   for(const failure of ['corrupt','unavailable']){
     const context=await contextFor(failure==='corrupt'?()=>localStorage.setItem('kashsec_expert_labs_v1','{broken'):()=>{
       const original=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(k==='kashsec_expert_labs_v1')throw Error('storage blocked');return original.call(this,k,v);};
@@ -96,7 +96,7 @@ try{
     await dp.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
     assert.equal(await dp.locator('.ex-page').count(),0);await delayed.close();
     console.log('PASS: a late expert module cannot replace a different route.');
-    const noJS=await contextFor(null,{javaScriptEnabled:false});const page=await noJS.newPage();await page.goto(BASE+'/expert-labs/');assert.equal(await page.locator('[data-expert-static] li a').count(),4);
+    const noJS=await contextFor(null,{javaScriptEnabled:false});const page=await noJS.newPage();await page.goto(BASE+'/expert-labs/');assert.equal(await page.locator('[data-expert-static] li a').count(),6);
     for(const lab of EXPERT_LABS){await page.goto(labURL(lab.id));assert.ok((await page.locator('[data-expert-static]').innerText()).includes(lab.tasks[0]));}await noJS.close();
     const offline=await contextFor(null,{serviceWorkers:'allow'});const op=await offline.newPage();await op.goto(labURL('webhook-replay'));await ready(op);
     await poll(op,()=>!!navigator.serviceWorker.controller);

@@ -47,23 +47,23 @@
 <body>
 <a class="skip" href="/lesson/18-ai-security/llm-attack-taxonomy.html#app">Skip to content</a>
 <header class="nav" id="siteNav">
-  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+  <a class="brand" href="/" aria-label="KashSec Academy — home">
     <span class="brand-mark">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
     </span>
     <span class="brand-txt">KashSec<span class="amber">.</span></span>
   </a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">
-    <a href="#/">Home</a>
-    <a href="#/course">Course</a>
+    <a href="/">Home</a>
+    <a href="/lesson/">Course</a>
     <a href="#/tracks">Tracks</a>
-    <a href="#/labs">Labs</a>
-    <a href="#/tasks">Practice</a>
-    <a href="#/tools">Tools</a>
+    <a href="/labs/">Labs</a>
+    <a href="/practice.html">Practice</a>
+    <a href="/tools/">Tools</a>
     <a href="#/glossary">Glossary</a>
     <a href="#/roadmap">Roadmap</a>
     <a href="#/careers">Careers</a>
-    <a href="#/faq">FAQ</a>
+    <a href="/faq.html">FAQ</a>
     <a href="#/progress">My Progress</a>
     <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
     <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
@@ -86,14 +86,14 @@
     <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
     </button>
-    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <a class="btn-amber sm" id="startBtn" href="/lesson/01-introduction/">Start</a>
     <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>
 <main id="app" tabindex="-1">
-  <div class="reader-wrap"><div class="reader-main">
+  <div class="reader-wrap static-reader"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/18-ai-security/">Path 18 — AI &amp; AI Security</a> · LLM Attack Taxonomy</nav>
     <div class="md" id="content"><article><h1>LLM Attack Taxonomy</h1>
 <p>This path has covered prompt injection, jailbreaks, and poisoning as individual lessons. This lesson steps back and maps the full landscape — how these categories relate to each other, where they overlap, and how to think about which one you're actually looking at when a real-world attack doesn't fit neatly into a single box.</p>
@@ -107,7 +107,7 @@
 </ol>
 <h2>Where the boundaries blur</h2>
 <p>Real attacks frequently don't respect these clean category boundaries — a jailbreak <em>is</em> often delivered via a prompt injection vector (indirect content containing jailbreak-style instructions); a "poisoned" fine-tuning dataset can be planted specifically to make a later prompt injection succeed more reliably; and Path 18's agentic AI lesson showed how prompt injection escalates in severity once tool access is involved. Thinking of this as a genuine taxonomy — a way to organize and communicate about attacks — rather than a strict, mutually exclusive checklist is the more useful mental model.</p>
-<table>
+<div class="table-scroll" role="region" tabindex="0" aria-label="Scrollable table"><table>
 <thead>
 <tr>
 <th>Category</th>
@@ -135,7 +135,7 @@
 <td>Runtime, per-input</td>
 <td>The specific system relying on that classification</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h2>A sixth category worth naming: resource exhaustion</h2>
 <p>Beyond the five core categories above, it's worth explicitly naming a distinct sixth pattern that doesn't fit neatly into "manipulating output" at all: <strong>resource exhaustion attacks</strong>, where the goal isn't to extract harmful content or steal a model but simply to make the system expensive or slow to the point of denial-of-service. Crafting inputs that trigger unusually long generations, deeply nested reasoning chains in agentic systems, or repeated tool calls that each cost real compute time and money directly targets the <strong>availability</strong> leg of the CIA triad from Path 10.1 — a genuinely different objective than every other category in this taxonomy, which mostly target confidentiality or integrity of the model's behavior. This maps onto OWASP's LLM06:2026 (Unbounded Consumption; called LLM04 Model Denial of Service in 2023–24) from Path 18.5. Defenders testing only for jailbreaks and injection can overlook a system that's expensive to overload.</p>
 <h2>Mapping the taxonomy to MITRE ATLAS</h2>
@@ -161,7 +161,7 @@
 <li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">OWASP Top 10 for LLM Applications</a> — maps closely onto this taxonomy, referenced throughout this path.</li>
 <li><a href="https://atlas.mitre.org/">MITRE ATLAS</a> — a MITRE ATT&amp;CK-style knowledge base specifically for adversarial AI threats, genuinely useful for going deeper than this lesson's scope.</li>
 </ul>
-<p><strong>Next up →</strong> <a href="#/lesson/18-ai-security/llm-governance">LLM Governance &amp; Compliance</a></p>
+<p><strong>Next up →</strong> <a href="/lesson/18-ai-security/llm-governance.html">LLM Governance &amp; Compliance</a></p>
 <nav class="pager"><a href="/lesson/18-ai-security/agentic-ai-risks.html">← Agentic AI Risks</a><a href="/lesson/18-ai-security/llm-governance.html">LLM Governance &amp; Compliance →</a></nav></article></div>
   </div></div>
 </main>
@@ -186,9 +186,9 @@
     </div>
     <div class="foot-cols">
       <div><h2>Learn</h2>
-        <a href="#/course">All paths</a>
+        <a href="/lesson/">All paths</a>
         <a href="#/tracks">Tracks</a>
-        <a href="#/labs">Labs</a>
+        <a href="/labs/">Labs</a>
         <a href="#/glossary">Glossary</a>
         <a href="#/search">Search</a>
       </div>
@@ -197,24 +197,24 @@
         <a href="#/daily">Daily challenge</a>
         <a href="#/weekly">Weekly challenges</a>
         <a href="#/quiz/shuffle">Shuffle quiz</a>
-        <a href="#/tasks">Practice tasks</a>
-        <a href="#/exam">Timed mock exam</a>
+        <a href="/practice.html">Practice tasks</a>
+        <a href="/exam.html">Timed mock exam</a>
       </div>
       <div><h2>Explore</h2>
-        <a href="#/tools">Tools</a>
+        <a href="/tools/">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
-        <a href="#/faq">FAQ</a>
+        <a href="/faq.html">FAQ</a>
       </div>
       <div><h2>About</h2>
-        <a href="#/about">About KashSec</a>
-        <a href="#/contact">Contact</a>
+        <a href="/about.html">About KashSec</a>
+        <a href="/contact.html">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
-        <a href="#/privacy">Privacy policy</a>
-        <a href="#/terms">Terms of use</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
       </div>
     </div>
   </div>

@@ -1487,7 +1487,10 @@ const PATHS = [
      {n:"20", id:"llm-red-teaming-playbooks", title:"LLM Red Teaming Playbooks", desc:"Structured approaches to systematically test LLM applications."},
      {n:"21", id:"llm-supply-chain-attacks", title:"LLM Supply Chain Attacks", desc:"Attacks that target the components and data used to build and run LLMs."},
      {n:"22", id:"practical-ai-labs",  title:"Practical AI Red Teaming Labs", desc:"Hands-on challenges you can do safely with free or low-cost LLMs."},
-     {n:"23", id:"securing-llm-apps",  title:"Securing LLM Applications", desc:"How to build and deploy LLMs more securely."}
+     {n:"23", id:"securing-llm-apps",  title:"Securing LLM Applications", desc:"How to build and deploy LLMs more securely."},
+     {n:"24", id:"mcp-tool-authorization", title:"MCP & AI Tool Authorization", desc:"Keep tool calls inside the authenticated user's actual task."},
+     {n:"25", id:"rag-tenant-isolation", title:"RAG Tenant Isolation", desc:"Filter private documents before they enter model context."},
+     {n:"26", id:"ai-security-release-gates", title:"AI Security Release Gates", desc:"Build repeatable tests and a reproducible candidate portfolio report."}
    ]},
   {n:"19", id:"19-ctf-challenges", title:"CTF Challenges", level:"All levels",
    desc:"A standalone Capture The Flag zone — self-contained hands-on puzzles across Web, API, Crypto, Forensics, AI, Misc, and Linux privesc. No new material, just applying what you've learned under pressure.",
@@ -2412,7 +2415,7 @@ function afterRender(){
 const TOUR_STEPS = [
   {sel:'#searchBtn',        title:'Search everything',      body:()=>`Press Ctrl/Cmd + K anywhere to search all ${totalSubLessons()} lessons — or jump straight to any tool, lab, or page.`},
   {sel:'a[href="#/tracks"]',title:'Follow a career track',  body:'Not sure where to start? Tracks give you an ordered path for a specific job — SOC analyst, pentester, GRC, and more.'},
-  {sel:'a[href="#/labs"]',  title:'Practise in the browser', body:()=>`${LABS.length} hands-on labs — SQL injection, XSS, IDOR, JWT forgery and more. All simulated, all safe, nothing to install.`},
+  {sel:'a[href="/labs/"],a[href="#/labs"]',  title:'Practise in the browser', body:()=>`${LABS.length} hands-on labs — SQL injection, XSS, IDOR, JWT forgery and more. All simulated, all safe, nothing to install.`},
   {sel:'#progressRingBtn',  title:'Your progress lives here', body:'Everything you complete is saved automatically in this browser. No account needed — but you can sign in to sync across devices.'}
 ];
 let tourIndex = 0;
@@ -2542,8 +2545,9 @@ function fireConfetti(opts){
 function updateActiveNav(){
   const hash = activeRoute();
   document.querySelectorAll('#navLinks a').forEach(a=>{
-    const href = a.getAttribute('href') || '';
-    if(!href.startsWith('#')) return; // skip external (GitHub)
+    const raw = a.getAttribute('href') || '';
+    const href = raw.startsWith('#') ? raw : raw.startsWith('/') ? hashRouteForPath(new URL(raw,location.origin).pathname) : null;
+    if(!href) return;
     const active = href === hash || (href === '#/course' && hash.startsWith('#/lesson')) || (href === '#/labs' && (hash.startsWith('#/labs/') || hash.startsWith('#/expert-labs')));
     a.classList.toggle('active', active);
     if(active) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
@@ -2784,6 +2788,14 @@ ${pathCardHTML(p,i)}
       <div class="sec-cta" data-reveal>
         <a class="btn-amber" href="#/labs">All ${LABS.length} labs →</a>
         <a class="btn-ghost" href="#/tools">Browse ${TOOLS.length} tools →</a>
+      </div>
+    </section>
+    <section class="sec" aria-labelledby="homeAIPractice">
+      <div class="sec-head" data-reveal><div class="sec-eyebrow">New AI security practice</div><h2 id="homeAIPractice">Prove what your AI controls allow and deny</h2><p class="sec-lead">Three new lessons connect MCP authorization, RAG data isolation and release tests. Two expert labs use fictional evidence and local Python. No model subscription or API key is needed.</p></div>
+      <div class="labs-grid" data-reveal>
+        <a class="lab-card" href="/expert-labs/agent-tool-boundary.html"><h3>AI tool authorization</h3><p>Keep an invoice assistant inside its trusted task. Reject another tenant, object or tool while preserving legitimate access.</p><span class="lab-related">Expert lab · about 60 min</span></a>
+        <a class="lab-card" href="/expert-labs/rag-document-scope.html"><h3>RAG document isolation</h3><p>Decide which documents may reach model context. Test unauthorized, revoked and missing-metadata cases.</p><span class="lab-related">Expert lab · about 60 min</span></a>
+        <a class="lab-card" href="/lesson/18-ai-security/mcp-tool-authorization.html"><h3>Start with the lessons</h3><p>Learn the boundaries in plain language, then keep a report of your own fix, test results and remaining risks.</p><span class="lab-related">Read → repair → verify → explain</span></a>
       </div>
     </section>
     <section class="sec">
@@ -3869,7 +3881,7 @@ const PATH_GUIDES = [
       },
       {
         "title": "Document and improve",
-        "through": "securing-llm-apps",
+        "through": "ai-security-release-gates",
         "outcome": "Build evaluations and connect results to application defenses."
       }
     ],
@@ -3880,6 +3892,8 @@ const PATH_GUIDES = [
       }
     ],
     "practice": [
+      {"href":"/expert-labs/agent-tool-boundary.html","label":"AI tool authorization review","note":"Repair a gateway and prove allowed and denied calls."},
+      {"href":"/expert-labs/rag-document-scope.html","label":"RAG document isolation review","note":"Keep unauthorized documents outside model context."},
       {
         "href": "/labs/indirect-injection.html",
         "label": "Indirect Prompt Injection Challenge",
@@ -3891,7 +3905,8 @@ const PATH_GUIDES = [
         "note": "Review permissions around an AI-driven action."
       }
     ],
-    "certNote": ""
+    "downloads": [{"url":"/downloads/expert_security_lab.py","name":"expert_security_lab.py","label":"Local expert security exercises","startsWith":"#!/usr/bin/env python3","marker":"class ExpertSecurityTests(unittest.TestCase):"}],
+    "certNote": "The local AI cases are practice evidence, not a certification or a guarantee of job readiness."
   },
   {
     "id": "19-ctf-challenges",
@@ -9385,6 +9400,11 @@ function renderLabLeakedSecret(){
    RSS feed (generate-feed.js reads this array).
    ============================================================ */
 const CHANGELOG = [
+  {date:'2026-10-30', title:'Practical AI security and clearer course discovery', items:[
+    'The AI path adds MCP and tool authorization, RAG tenant isolation, and security release-gate lessons, with three new quiz questions.',
+    'Two expert AI cases add local Python policies for tool calls and document retrieval. They need no model account or API key. The AI offline pack includes all 26 lessons and the exercise.',
+    'The homepage now has readable content before JavaScript and highlights the new practice. Canonical navigation links, mobile static-reader layouts, updated share cards and 609-page SEO checks improve discovery and access.'
+  ]},
   {date:'2026-10-29', title:'Resume expert casework and protect saved drafts', items:[
     'The Expert Labs collection now shows saved answer and report-draft status, with a Continue case link when you have started work. This status stays separate from coding completion and course scores.',
     'Each case has keyboard-accessible links to evidence, the repair task, reasoning, and the report, plus a next-case link for moving through the collection.',

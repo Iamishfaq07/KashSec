@@ -47,23 +47,23 @@
 <body>
 <a class="skip" href="/lesson/19-ctf-challenges/crypto-layered-cipher.html#app">Skip to content</a>
 <header class="nav" id="siteNav">
-  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+  <a class="brand" href="/" aria-label="KashSec Academy — home">
     <span class="brand-mark">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
     </span>
     <span class="brand-txt">KashSec<span class="amber">.</span></span>
   </a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">
-    <a href="#/">Home</a>
-    <a href="#/course">Course</a>
+    <a href="/">Home</a>
+    <a href="/lesson/">Course</a>
     <a href="#/tracks">Tracks</a>
-    <a href="#/labs">Labs</a>
-    <a href="#/tasks">Practice</a>
-    <a href="#/tools">Tools</a>
+    <a href="/labs/">Labs</a>
+    <a href="/practice.html">Practice</a>
+    <a href="/tools/">Tools</a>
     <a href="#/glossary">Glossary</a>
     <a href="#/roadmap">Roadmap</a>
     <a href="#/careers">Careers</a>
-    <a href="#/faq">FAQ</a>
+    <a href="/faq.html">FAQ</a>
     <a href="#/progress">My Progress</a>
     <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
     <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
@@ -86,14 +86,14 @@
     <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
     </button>
-    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <a class="btn-amber sm" id="startBtn" href="/lesson/01-introduction/">Start</a>
     <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>
 <main id="app" tabindex="-1">
-  <div class="reader-wrap"><div class="reader-main">
+  <div class="reader-wrap static-reader"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/19-ctf-challenges/">Path 19 — CTF Challenges</a> · Crypto — The Layered Cipher</nav>
     <div class="md" id="content"><article><h1>Crypto — The Layered Cipher</h1>
 <p><strong>Category:</strong> Crypto · <strong>Difficulty:</strong> Easy</p>
@@ -123,7 +123,7 @@ C) S0FTSFNFQ3tsYXllcmVkX2VuY29kaW5nfQ==
 </code></pre>
 <details><summary>Hint</summary>Look at the alphabet each one uses: does it only contain <code>0-9a-f</code>? Does it contain <code>%</code> followed by two characters? Does it end in <code>=</code> padding with a mixed-case alphanumeric body?</details>
 <details><summary>Show answer</summary><strong>A</strong> is <strong>hex</strong> — only characters 0-9 and a-f appear, always in pairs (each pair represents one byte). <strong>B</strong> is <strong>URL encoding</strong> — the <code>%7B</code>/<code>%7D</code>/<code>%5F</code> sequences are percent-encoded special characters (<code>{</code>, <code>}</code>, <code>_</code>), exactly the format from Path 05's HTTP lessons for safely transmitting special characters in a URL. <strong>C</strong> is <strong>Base64</strong> — mixed-case letters and digits with trailing <code>=</code> padding. All three decode to a real <code>KASHSEC{...}</code> flag if you want to confirm it yourself — but the actual point of this drill is recognizing the format <em>instantly, without needing to decode first</em>, since in real forensic or bug bounty work you'll often triage dozens of encoded strings and need to know at a glance which decoder to reach for.</details><p>Base64 has no secret key and no security property at all — anyone can decode it instantly. Confusing "encoded" with "encrypted" is a genuinely common and dangerous mistake: teams sometimes base64-encode sensitive data and mistakenly believe it's now "protected." It isn't. Real confidentiality requires actual encryption (AES, etc.) with a properly managed secret key — a distinction worth internalizing permanently.</p>
-<p><strong>Next up →</strong> <a href="#/lesson/19-ctf-challenges/forensics-log-hunt">Forensics — The Log Hunt</a></p>
+<p><strong>Next up →</strong> <a href="/lesson/19-ctf-challenges/forensics-log-hunt.html">Forensics — The Log Hunt</a></p>
 <nav class="pager"><a href="/lesson/19-ctf-challenges/web-idor-hunt.html">← Web — The IDOR Hunt</a><a href="/lesson/19-ctf-challenges/forensics-log-hunt.html">Forensics — The Log Hunt →</a></nav></article></div>
   </div></div>
 </main>
@@ -148,9 +148,9 @@ C) S0FTSFNFQ3tsYXllcmVkX2VuY29kaW5nfQ==
     </div>
     <div class="foot-cols">
       <div><h2>Learn</h2>
-        <a href="#/course">All paths</a>
+        <a href="/lesson/">All paths</a>
         <a href="#/tracks">Tracks</a>
-        <a href="#/labs">Labs</a>
+        <a href="/labs/">Labs</a>
         <a href="#/glossary">Glossary</a>
         <a href="#/search">Search</a>
       </div>
@@ -159,24 +159,24 @@ C) S0FTSFNFQ3tsYXllcmVkX2VuY29kaW5nfQ==
         <a href="#/daily">Daily challenge</a>
         <a href="#/weekly">Weekly challenges</a>
         <a href="#/quiz/shuffle">Shuffle quiz</a>
-        <a href="#/tasks">Practice tasks</a>
-        <a href="#/exam">Timed mock exam</a>
+        <a href="/practice.html">Practice tasks</a>
+        <a href="/exam.html">Timed mock exam</a>
       </div>
       <div><h2>Explore</h2>
-        <a href="#/tools">Tools</a>
+        <a href="/tools/">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
-        <a href="#/faq">FAQ</a>
+        <a href="/faq.html">FAQ</a>
       </div>
       <div><h2>About</h2>
-        <a href="#/about">About KashSec</a>
-        <a href="#/contact">Contact</a>
+        <a href="/about.html">About KashSec</a>
+        <a href="/contact.html">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
-        <a href="#/privacy">Privacy policy</a>
-        <a href="#/terms">Terms of use</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
       </div>
     </div>
   </div>

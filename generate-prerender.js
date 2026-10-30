@@ -73,9 +73,19 @@ const CERTS = extractArray('CERTS');
 // Tools and labs also get crawlable pages with interactive app shells.
 const TOOLS = extractArray('TOOLS');
 const LABS  = extractArray('LABS');
-// The FAQ is the site's best shot at a rich result, but it only existed as
-// an SPA route with no crawlable URL, so it could never earn one.
+// Keep useful FAQ content crawlable. Google discontinued FAQ rich results
+// in May 2026; semantic FAQPage markup is not a promise of a search feature.
 const FAQS  = extractArray('FAQS');
+
+// Use the router's pure mapping so static links and interactive URLs agree.
+const canonicalMapping = appJs.match(/function canonicalPathForHash\(hash\)\{[\s\S]*?\n\}/)?.[0];
+if(!canonicalMapping) throw new Error('Canonical route mapping unavailable');
+const staticPathForHash = new Function(canonicalMapping+';return canonicalPathForHash;')();
+const crawlableLinks = html => html.replace(/href="(#[/]\S*?)"/g, (attribute, hash) => {
+  const target = staticPathForHash(hash);
+  return target ? `href="${target}"` : attribute;
+});
+
 
 /* Practice tasks, for the crawlable practice page. Read from the generated
    tasks.js (questions only — answers there are hashes, and explanations are
@@ -242,6 +252,9 @@ const ORG = {
 const sectionOgImage = dir => fs.existsSync(path.join(ROOT, 'og', dir + '.jpg')) ? `${SITE}/og/${dir}.jpg` : null;
 const pathOgImage = id => fs.existsSync(path.join(ROOT, 'og', id + '.jpg')) ? `${SITE}/og/${id}.jpg` : null;
 
+const staticArticle = html => crawlableLinks(sanitizeHtml(html,CONTENT_SANITIZER))
+  .replace(/<table\b[^>]*>[\s\S]*?<\/table>/g, table=>`<div class="table-scroll" role="region" tabindex="0" aria-label="Scrollable table">${table}</div>`);
+
 const template = ({title, desc, canonical, spaPath, contentHtml, crumbs, jsonLd = [], ogType = 'article', ogImage = null, ogAlt = null}) => `<!doctype html>
 <html lang="en">
 <head>
@@ -285,18 +298,38 @@ ${[breadcrumbLd(crumbs), ...jsonLd]
 </head>
 <body>
 <a class="skip" href="${escapeAttr(new URL(canonical).pathname)}#app">Skip to content</a>
-${shellHeader}
+${crawlableLinks(shellHeader)}
 <main id="app" tabindex="-1">
-  <div class="reader-wrap"><div class="reader-main">
+  <div class="reader-wrap static-reader"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb">${crumbHtml(crumbs)}</nav>
-    <div class="md" id="content"><article>${sanitizeHtml(contentHtml, CONTENT_SANITIZER)}</article></div>
+    <div class="md" id="content"><article>${staticArticle(contentHtml)}</article></div>
   </div></div>
 </main>
-${shellFooter}
+${crawlableLinks(shellFooter)}
 ${shellScripts}
 </body>
 </html>
 `;
+
+/* The homepage must contain useful text and real links before scripts run.
+   This is a reader fallback, not hidden crawler-only content. */
+{
+  const total = PATHS.reduce((n,p)=>n+p.subs.length,0);
+  const desc = `Free cybersecurity course: ${PATHS.length} paths, ${total} lessons, browser labs and expert AI security practice. Start from basics and build evidence of your skills.`;
+  const picks = ['00-fresher-basics','22-devsecops-appsec','18-ai-security'];
+  const selected = picks.map(id=>PATHS.find(p=>p.id===id)).filter(Boolean);
+  if(selected.length!==3) throw new Error('Homepage entry path missing');
+  const home = `<section class="sec" data-home-static><p class="sec-eyebrow">Free cybersecurity learning</p><h1 class="sec-title">Learn cybersecurity. Build skills you can explain.</h1><p class="sec-sub">Start with computer and network basics, then practise AppSec, cloud, defensive security and AI security. All ${total} lessons across ${PATHS.length} paths are free to read. No account is needed for local study.</p><p><a class="btn-amber" href="/lesson/">Explore the course →</a> <a class="btn-ghost" href="/labs/">Try a browser lab</a></p><h2>Choose a starting point</h2><ul>${selected.map(p=>`<li><a href="/lesson/${p.id}/">${escapeAttr(p.title)}</a> — ${escapeAttr(p.desc)}</li>`).join('')}</ul><h2>Turn reading into practical evidence</h2><p>Use ${LABS.length} browser simulations for guided practice. Then try ${EXPERT_LABS.length} evidence-led expert cases: inspect fictional records, repair a local Python implementation, run tests, and keep a reproducible report. These exercises are training, not professional certification.</p><p><a href="/expert-labs/">Browse expert labs</a> · <a href="/expert-labs/agent-tool-boundary.html">AI tool authorization lab</a> · <a href="/expert-labs/rag-document-scope.html">RAG isolation lab</a></p><h2>All learning paths</h2><ul>${PATHS.map(p=>`<li><a href="/lesson/${p.id}/">${escapeAttr(p.title)}</a> — ${escapeAttr(p.level)} · ${p.subs.length} lessons</li>`).join('')}</ul><h2>What do I need?</h2><p>Read lessons in any order. Browser labs are simulations; local coding exercises need Python 3.10 or later and explain their requirements. Each path has a graphical learning route, practice suggestions, and optional credential guidance. Certification exams have separate provider requirements and may cost money.</p><p>Study progress stays in this browser unless you choose account sync. Use the course's offline tools to save lessons; interactive features require JavaScript.</p><p><a href="/about.html">About KashSec and its author</a> · <a href="/faq.html">Learning questions</a> · <a href="/contact.html">Report a problem</a></p></section>`;
+  let html = indexShell.replace(/<main id="app"[^>]*>[\s\S]*?<\/main>/,`<main id="app" tabindex="-1">${home}</main>`);
+  html = html.replace(/(<meta (?:name="description"|property="og:description"|name="twitter:description") content=")[^"]*(">)/g,(_,a,b)=>a+escapeAttr(desc)+b);
+  html = html.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g,(block,json)=>{
+    const data = JSON.parse(json);
+    if(data['@type']==='WebSite') data.description=desc;
+    return `<script type="application/ld+json">\n${JSON.stringify(data).replace(/</g,'\\u003c')}\n</script>`;
+  });
+  html = crawlableLinks(html);
+  if(fs.readFileSync(path.join(ROOT,'index.html'),'utf8')!==html) fs.writeFileSync(path.join(ROOT,'index.html'),html);
+}
 
 /* Every sitemap entry carries a real <lastmod>. */
 const sitemapUrls = [{ loc: SITE + '/', lastmod: lastmodFor('index.html', 'app.js'), priority: '1.0' }];
@@ -636,8 +669,8 @@ const labsWritten = writeStubSet(
     const relative=lab?`expert-labs/${lab.id}.html`:'expert-labs/index.html';
     const canonical=SITE+(lab?`/expert-labs/${lab.id}.html`:'/expert-labs/');
     const title=lab?`${lab.title} · KashSec`:'Expert Labs · KashSec Academy';
-    const desc=lab?.summary||'Advanced AppSec and cloud cases: inspect evidence, fix a local implementation, verify tests, and write a reproducible report.';
-    const body=lab?`<h1>${escapeAttr(lab.title)}</h1><p>${escapeAttr(lab.mission)}</p><p>${lab.track} · about ${lab.minutes} minutes. Fictional evidence; Python 3.10+ for local coding.</p><h2>Prerequisites</h2><ul>${lab.prerequisites.map(p=>`<li><a href="/lesson/${p.key}.html">${escapeAttr(p.label)}</a></li>`).join('')}</ul><h2>Evidence</h2>${lab.evidence.map(file=>`<h3>${escapeAttr(file.name)}</h3><pre><code>${escapeAttr(file.body)}</code></pre>`).join('')}<h2>Tasks and expected evidence</h2><ol>${lab.tasks.map(task=>`<li>${escapeAttr(task)}</li>`).join('')}</ol><h2>Run the coding exercise</h2><p><a href="/downloads/expert_security_lab.py" download>Download the Python exercise</a>. It uses only the standard library and no network.</p><pre><code>python expert_security_lab.py --lab ${lab.suite}\npython expert_security_lab.py --lab ${lab.suite} --reference</code></pre><p>Starter mode initially fails. Edit the matching function and rerun without --reference. Reference mode tests supplied code, not your own fix.</p><h2>Limits</h2><p>${escapeAttr(lab.limits)}</p><p><a href="/expert-labs/">All expert cases</a></p>`:`<h1>Expert Labs</h1><p>${desc}</p><p>Four fictional cases with browser review and local Python exercises. Each report should include allowed and denied behavior, test results from your own implementation, and remaining risks.</p><ul>${EXPERT_LABS.map(item=>`<li><a href="/expert-labs/${item.id}.html">${escapeAttr(item.title)}</a> — ${escapeAttr(item.summary)}</li>`).join('')}</ul><p><a href="/labs/">All browser labs</a></p>`;
+    const desc=lab?.summary||'Advanced AppSec, cloud and AI security cases: inspect evidence, fix a local implementation, verify tests, and write a reproducible report.';
+    const body=lab?`<h1>${escapeAttr(lab.title)}</h1><p>${escapeAttr(lab.mission)}</p><p>${lab.track} · about ${lab.minutes} minutes. Fictional evidence; Python 3.10+ for local coding.</p><h2>Prerequisites</h2><ul>${lab.prerequisites.map(p=>`<li><a href="/lesson/${p.key}.html">${escapeAttr(p.label)}</a></li>`).join('')}</ul><h2>Evidence</h2>${lab.evidence.map(file=>`<h3>${escapeAttr(file.name)}</h3><pre><code>${escapeAttr(file.body)}</code></pre>`).join('')}<h2>Tasks and expected evidence</h2><ol>${lab.tasks.map(task=>`<li>${escapeAttr(task)}</li>`).join('')}</ol><h2>Run the coding exercise</h2><p><a href="/downloads/expert_security_lab.py" download>Download the Python exercise</a>. It uses only the standard library and no network.</p><pre><code>python expert_security_lab.py --lab ${lab.suite}\npython expert_security_lab.py --lab ${lab.suite} --reference</code></pre><p>Starter mode initially fails. Edit the matching function and rerun without --reference. Reference mode tests supplied code, not your own fix.</p><h2>Limits</h2><p>${escapeAttr(lab.limits)}</p><p><a href="/expert-labs/">All expert cases</a></p>`:`<h1>Expert Labs</h1><p>${desc}</p><p>${EXPERT_LABS.length} fictional cases with browser review and local Python exercises. Each report should include allowed and denied behavior, test results from your own implementation, and remaining risks.</p><ul>${EXPERT_LABS.map(item=>`<li><a href="/expert-labs/${item.id}.html">${escapeAttr(item.title)}</a> — ${escapeAttr(item.summary)}</li>`).join('')}</ul><p><a href="/labs/">All browser labs</a></p>`;
     fs.writeFileSync(path.join(ROOT,relative),template({title,desc,canonical,spaPath:lab?`/#/expert-labs/${lab.id}`:'/#/expert-labs',contentHtml:`<section data-expert-static>${body}</section>`,ogType:'website',crumbs:[{name:'KashSec Academy',url:SITE+'/'},{name:'Expert Labs',url:SITE+'/expert-labs/'},...(lab?[{name:lab.title,url:canonical}]:[])],jsonLd:[{'@context':'https://schema.org','@type':lab?'LearningResource':'CollectionPage',name:lab?.title||'Expert Labs',description:desc,url:canonical,isAccessibleForFree:true}]}));
     sitemapUrls.push({loc:canonical,lastmod:lastmodFor('expert-labs.js','downloads/expert_security_lab.py'),priority:'0.8'});
   }

@@ -3,14 +3,16 @@
 
 Run: python expert_security_lab.py --lab tenant
 Compare: python expert_security_lab.py --lab tenant --reference
-Choices: tenant, webhook, release, iam, all (default).
+Choices: tenant, webhook, release, iam, agent, rag, all (default).
 
-Edit only the four starter functions. Keep tests, fixtures, and reference
+Edit only the six starter functions. Keep tests, fixtures, and reference
 functions unchanged. Reference mode tests supplied answers, not your edits.
 All data is synthetic; no server, network, credentials, or cloud account is used.
 The webhook contract is fictional, not a vendor integration. The release
 exercise consumes already-verified metadata; it does not verify signatures.
 The IAM exercise models one permission contract, not the AWS policy engine.
+The AI exercises use trusted synthetic actor/task metadata, not a model,
+MCP server, token validator, approval service, vector index, or cache.
 """
 import argparse
 import hashlib
@@ -36,6 +38,14 @@ def release_allowed(metadata):
 
 def object_download_allowed(principal, action, resource):
     return action in ("s3:GetObject", "s3:ListBucket") and resource.startswith("arn:aws:s3:::billing")
+
+
+def agent_tool_allowed(actor, task, call):
+    return actor.get("authenticated") is True
+
+
+def rag_documents(actor, documents, request_claims):
+    return list(documents)
 
 
 # WORKED REFERENCES. Do not call these from a starter to claim a fix.
@@ -98,6 +108,33 @@ def reference_object_download_allowed(principal, action, resource):
     prefix = "arn:aws:s3:::billing-prod/tenants/acme/"
     return (principal == "billing-api" and action == "s3:GetObject"
             and resource.startswith(prefix) and len(resource) > len(prefix))
+
+
+def reference_agent_tool_allowed(actor, task, call):
+    # Actor/task are trusted records; call is untrusted model output.
+    return (actor.get("authenticated") is True
+            and isinstance(actor.get("id"), str) and bool(actor["id"])
+            and isinstance(actor.get("tenant"), str) and bool(actor["tenant"])
+            and isinstance(actor.get("scopes"), list) and "invoice:read" in actor["scopes"]
+            and task.get("actor_id") == actor["id"]
+            and task.get("tenant") == actor["tenant"]
+            and task.get("tool") == "invoice.read"
+            and isinstance(task.get("invoice_id"), str) and bool(task["invoice_id"])
+            and set(call) == {"tool", "tenant", "invoice_id"}
+            and call.get("tool") == task["tool"]
+            and call.get("tenant") == task["tenant"]
+            and call.get("invoice_id") == task["invoice_id"])
+
+
+def reference_rag_documents(actor, documents, request_claims):
+    if (actor.get("authenticated") is not True
+            or not isinstance(actor.get("tenant"), str) or not actor["tenant"]
+            or not isinstance(actor.get("allowed_ids"), list)):
+        return []
+    allowed_ids = {key for key in actor["allowed_ids"] if isinstance(key, str) and key}
+    return [doc for doc in documents
+            if isinstance(doc.get("id"), str) and doc["id"] in allowed_ids
+            and doc.get("tenant") == actor["tenant"] and doc.get("active") is True]
 
 
 class ExpertSecurityTests(unittest.TestCase):
@@ -187,14 +224,67 @@ class ExpertSecurityTests(unittest.TestCase):
                 self.assertIs(fn(principal, action, resource), expected)
 
 
+    def test_agent(self):
+        fn = self.function("agent_tool_allowed")
+        actor = {"id": "alice", "tenant": "acme", "authenticated": True, "scopes": ["invoice:read"]}
+        task = {"actor_id": "alice", "tenant": "acme", "tool": "invoice.read", "invoice_id": "42"}
+        call = {"tool": "invoice.read", "tenant": "acme", "invoice_id": "42"}
+        cases = [
+            ("exact read allowed", actor, task, call, True),
+            ("anonymous", {**actor, "authenticated": False}, task, call, False),
+            ("missing scope", {**actor, "scopes": []}, task, call, False),
+            ("wrong task actor", actor, {**task, "actor_id": "bob"}, call, False),
+            ("wrong task tenant", actor, {**task, "tenant": "birch"}, call, False),
+            ("unsupported task", actor, {**task, "tool": "invoice.send"}, call, False),
+            ("wrong call tenant", actor, task, {**call, "tenant": "birch"}, False),
+            ("wrong invoice", actor, task, {**call, "invoice_id": "43"}, False),
+            ("write tool", actor, task, {**call, "tool": "invoice.send"}, False),
+            ("spoofed approval", actor, task, {**call, "approved": True}, False),
+            ("unknown argument", actor, task, {**call, "recipient": "outside@example.invalid"}, False),
+            ("empty trusted records", {}, {}, call, False),
+        ]
+        for name, identity, contract, proposal, expected in cases:
+            with self.subTest(case=name):
+                before = json.dumps([identity, contract, proposal], sort_keys=True)
+                self.assertIs(fn(identity, contract, proposal), expected)
+                self.assertEqual(json.dumps([identity, contract, proposal], sort_keys=True), before)
+
+    def test_rag(self):
+        fn = self.function("rag_documents")
+        actor = {"authenticated": True, "tenant": "acme", "allowed_ids": ["a-1", "a-old"]}
+        docs = [
+            {"id": "a-1", "tenant": "acme", "active": True, "text": "Allowed guide"},
+            {"id": "b-1", "tenant": "birch", "active": True, "text": "Private Birch"},
+            {"id": "a-old", "tenant": "acme", "active": False, "text": "Revoked"},
+            {"id": "a-2", "tenant": "acme", "active": True, "text": "Restricted"},
+        ]
+        cases = [
+            ("allowed record only", actor, docs, {}, docs[:1]),
+            ("request cannot broaden access", actor, docs, {"tenant": "birch", "allowed_ids": ["b-1", "a-2"]}, docs[:1]),
+            ("unauthenticated", {**actor, "authenticated": False}, docs, {}, []),
+            ("no authorized IDs", {**actor, "allowed_ids": []}, docs, {}, []),
+            ("missing actor metadata", {}, docs, {}, []),
+            ("missing document tenant", actor, [{"id": "a-1", "active": True}], {}, []),
+            ("missing active flag", actor, [{"id": "a-1", "tenant": "acme"}], {}, []),
+            ("revoked-only candidate", actor, docs[2:3], {}, []),
+            ("empty candidates", actor, [], {}, []),
+            ("record order preserved", {**actor, "allowed_ids": ["a-2", "a-1"]}, [docs[3], docs[0]], {}, [docs[3], docs[0]]),
+        ]
+        for name, identity, candidates, claims, expected in cases:
+            with self.subTest(case=name):
+                before = json.dumps([identity, candidates, claims], sort_keys=True)
+                self.assertEqual(fn(identity, candidates, claims), expected)
+                self.assertEqual(json.dumps([identity, candidates, claims], sort_keys=True), before)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--lab", choices=["tenant", "webhook", "release", "iam", "all"], default="all")
+    parser.add_argument("--lab", choices=["tenant", "webhook", "release", "iam", "agent", "rag", "all"], default="all")
     parser.add_argument("--reference", action="store_true")
     args = parser.parse_args()
     ExpertSecurityTests.reference = args.reference
     suite = unittest.TestSuite(ExpertSecurityTests("test_" + name) for name in
-                               (["tenant", "webhook", "release", "iam"] if args.lab == "all" else [args.lab]))
+                               (["tenant", "webhook", "release", "iam", "agent", "rag"] if args.lab == "all" else [args.lab]))
     print("REFERENCE implementation" if args.reference else "YOUR STARTER implementation", flush=True)
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     raise SystemExit(0 if result.wasSuccessful() else 1)
