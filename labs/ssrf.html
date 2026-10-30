@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Security labs","item":"https://kashsec.vercel.app/labs/"},{"@type":"ListItem","position":3,"name":"SSRF Playground","item":"https://kashsec.vercel.app/labs/ssrf.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"SSRF Playground","description":"A \"fetch this URL for me\" feature with no allowlist. Point it at internal-looking addresses and see what it leaks.","url":"https://kashsec.vercel.app/labs/ssrf.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security lab","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-29","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"SSRF Playground","description":"A \"fetch this URL for me\" feature with no allowlist. Point it at internal-looking addresses and see what it leaks.","url":"https://kashsec.vercel.app/labs/ssrf.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security lab","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-30","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What makes SSRF dangerous when it returns nothing?","acceptedAnswer":{"@type":"Answer","text":"Blind SSRF still reaches internal services and can trigger state changes. Timing and error differences leak whether a host or port exists, which is enough to map an internal network."}},{"@type":"Question","name":"How is SSRF prevented?","acceptedAnswer":{"@type":"Answer","text":"Allowlist the destinations the feature legitimately needs, resolve and validate the address after DNS, block redirects to private ranges, and require authentication on internal services regardless."}}]}
@@ -50,23 +50,23 @@
 <body>
 <a class="skip" href="/labs/ssrf.html#app">Skip to content</a>
 <header class="nav" id="siteNav">
-  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+  <a class="brand" href="/" aria-label="KashSec Academy — home">
     <span class="brand-mark">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
     </span>
     <span class="brand-txt">KashSec<span class="amber">.</span></span>
   </a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">
-    <a href="#/">Home</a>
-    <a href="#/course">Course</a>
+    <a href="/">Home</a>
+    <a href="/lesson/">Course</a>
     <a href="#/tracks">Tracks</a>
-    <a href="#/labs">Labs</a>
-    <a href="#/tasks">Practice</a>
-    <a href="#/tools">Tools</a>
+    <a href="/labs/">Labs</a>
+    <a href="/practice.html">Practice</a>
+    <a href="/tools/">Tools</a>
     <a href="#/glossary">Glossary</a>
     <a href="#/roadmap">Roadmap</a>
     <a href="#/careers">Careers</a>
-    <a href="#/faq">FAQ</a>
+    <a href="/faq.html">FAQ</a>
     <a href="#/progress">My Progress</a>
     <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
     <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
@@ -89,14 +89,14 @@
     <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
     </button>
-    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <a class="btn-amber sm" id="startBtn" href="/lesson/01-introduction/">Start</a>
     <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>
 <main id="app" tabindex="-1">
-  <div class="reader-wrap"><div class="reader-main">
+  <div class="reader-wrap static-reader"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/labs/">Security labs</a> · SSRF Playground</nav>
     <div class="md" id="content"><article><h1>SSRF Playground</h1><p><strong>A "fetch this URL for me" feature with no allowlist. Point it at internal-looking addresses and see what it leaks.</strong></p><p>Server-Side Request Forgery turns a "fetch this URL for me" feature into a way to reach things the server can see and you cannot — internal services, admin panels, and in cloud environments the metadata endpoint holding credentials.</p><h2>How to use it</h2><ol><li>Point the fetcher at an ordinary external URL.</li><li>Redirect it at internal-looking addresses.</li><li>Reach a service that assumed only the internal network could talk to it.</li></ol><h2>What to take away</h2><h3>The server's network position is the prize</h3><p>You are borrowing its access. Internal services that skipped authentication because "only our network can reach them" are the usual casualties.</p><h3>Cloud metadata is the classic escalation</h3><p>The link-local metadata address hands out temporary credentials to whatever asks from the instance. SSRF plus metadata has caused major real-world breaches.</p><h3>Blocklists lose</h3><p>Redirects, DNS records pointing at private addresses, alternative IP encodings and IPv6 all bypass "block 127.0.0.1" thinking. Allowlist destinations instead.</p><h2>Frequently asked questions</h2><h3>What makes SSRF dangerous when it returns nothing?</h3><p>Blind SSRF still reaches internal services and can trigger state changes. Timing and error differences leak whether a host or port exists, which is enough to map an internal network.</p><h3>How is SSRF prevented?</h3><p>Allowlist the destinations the feature legitimately needs, resolve and validate the address after DNS, block redirects to private ranges, and require authentication on internal services regardless.</p><h2>Where this fits in the course</h2><p>This security lab pairs with <strong>Path 11 — Web Security</strong> — see <a href="/lesson/">all 26 learning paths</a>.</p><p>It runs entirely in your browser: nothing is uploaded, no account is needed, and it is free.</p><h2>Related</h2><ul><li><a href="/labs/xxe.html">XXE Playground</a> — An XML upload feature that expands external entities. Smuggle a local file read through a "harmless" XML document.</li><li><a href="/labs/traversal.html">Path Traversal Playground</a> — A fake "view file" feature that trusts the filename you give it. Climb out of the intended folder with ../ and read files you shouldn't.</li><li><a href="/labs/iammisconfig.html">Cloud IAM Misconfig Playground</a> — A role holds one deceptively small permission. Chain it into full account takeover through iam:PassRole.</li><li><a href="/tools/subnet.html">Subnet Calculator</a> — IPv4 CIDR → network, broadcast, host range, mask, and host count.</li></ul><p><a href="/labs/">Browse all 42 security labs →</a></p></article></div>
   </div></div>
@@ -122,9 +122,9 @@
     </div>
     <div class="foot-cols">
       <div><h2>Learn</h2>
-        <a href="#/course">All paths</a>
+        <a href="/lesson/">All paths</a>
         <a href="#/tracks">Tracks</a>
-        <a href="#/labs">Labs</a>
+        <a href="/labs/">Labs</a>
         <a href="#/glossary">Glossary</a>
         <a href="#/search">Search</a>
       </div>
@@ -133,24 +133,24 @@
         <a href="#/daily">Daily challenge</a>
         <a href="#/weekly">Weekly challenges</a>
         <a href="#/quiz/shuffle">Shuffle quiz</a>
-        <a href="#/tasks">Practice tasks</a>
-        <a href="#/exam">Timed mock exam</a>
+        <a href="/practice.html">Practice tasks</a>
+        <a href="/exam.html">Timed mock exam</a>
       </div>
       <div><h2>Explore</h2>
-        <a href="#/tools">Tools</a>
+        <a href="/tools/">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
-        <a href="#/faq">FAQ</a>
+        <a href="/faq.html">FAQ</a>
       </div>
       <div><h2>About</h2>
-        <a href="#/about">About KashSec</a>
-        <a href="#/contact">Contact</a>
+        <a href="/about.html">About KashSec</a>
+        <a href="/contact.html">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
-        <a href="#/privacy">Privacy policy</a>
-        <a href="#/terms">Terms of use</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
       </div>
     </div>
   </div>

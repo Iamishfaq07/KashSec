@@ -78,7 +78,8 @@ try {
     ['#/lesson/03-linux', '/lesson/03-linux/'],
     ['#/lesson/03-linux/terminal-basics', '/lesson/03-linux/terminal-basics.html'],
     ['#/labs', '/labs/'], ['#/tools', '/tools/'], ['#/glossary', '/#/glossary']]) {
-    const link = page.locator(`a[href="${href}"]`).first();
+    const canonical = await page.evaluate(h=>canonicalPathForHash(h),href);
+    const link = page.locator(`a[href="${href}"]${canonical ? `,a[href="${canonical}"]` : ''}`).first();
     if(!await link.isVisible()) await page.locator('#hamb').click();
     await link.click();
     await page.waitForURL(BASE + target);

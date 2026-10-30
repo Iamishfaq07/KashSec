@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Security tools","item":"https://kashsec.vercel.app/tools/"},{"@type":"ListItem","position":3,"name":"CIDR Overlap Checker","item":"https://kashsec.vercel.app/tools/cidroverlap.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"CIDR Overlap Checker","description":"Check whether two CIDR ranges overlap — catches conflicting firewall/routing rules before they cause an outage.","url":"https://kashsec.vercel.app/tools/cidroverlap.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security tool","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-29","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"CIDR Overlap Checker","description":"Check whether two CIDR ranges overlap — catches conflicting firewall/routing rules before they cause an outage.","url":"https://kashsec.vercel.app/tools/cidroverlap.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security tool","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-30","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does overlapping address space break VPN and peering?","acceptedAnswer":{"@type":"Answer","text":"Routing needs one unambiguous destination for a prefix. When both sides claim the same range, there is no correct answer, so the connection is refused rather than silently misrouted."}},{"@type":"Question","name":"How should I plan ranges to avoid this?","acceptedAnswer":{"@type":"Answer","text":"Allocate non-overlapping blocks per environment and region from the start, and keep the allocation written down somewhere authoritative. Retrofitting a renumbering is painful."}},{"@type":"Question","name":"Is a /32 a valid CIDR?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is a single host, and it is extremely common in firewall rules where you want to permit exactly one address."}}]}
@@ -50,23 +50,23 @@
 <body>
 <a class="skip" href="/tools/cidroverlap.html#app">Skip to content</a>
 <header class="nav" id="siteNav">
-  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+  <a class="brand" href="/" aria-label="KashSec Academy — home">
     <span class="brand-mark">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
     </span>
     <span class="brand-txt">KashSec<span class="amber">.</span></span>
   </a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">
-    <a href="#/">Home</a>
-    <a href="#/course">Course</a>
+    <a href="/">Home</a>
+    <a href="/lesson/">Course</a>
     <a href="#/tracks">Tracks</a>
-    <a href="#/labs">Labs</a>
-    <a href="#/tasks">Practice</a>
-    <a href="#/tools">Tools</a>
+    <a href="/labs/">Labs</a>
+    <a href="/practice.html">Practice</a>
+    <a href="/tools/">Tools</a>
     <a href="#/glossary">Glossary</a>
     <a href="#/roadmap">Roadmap</a>
     <a href="#/careers">Careers</a>
-    <a href="#/faq">FAQ</a>
+    <a href="/faq.html">FAQ</a>
     <a href="#/progress">My Progress</a>
     <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
     <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
@@ -89,14 +89,14 @@
     <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
     </button>
-    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <a class="btn-amber sm" id="startBtn" href="/lesson/01-introduction/">Start</a>
     <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>
 <main id="app" tabindex="-1">
-  <div class="reader-wrap"><div class="reader-main">
+  <div class="reader-wrap static-reader"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/tools/">Security tools</a> · CIDR Overlap Checker</nav>
     <div class="md" id="content"><article><h1>CIDR Overlap Checker</h1><p><strong>Check whether two CIDR ranges overlap — catches conflicting firewall/routing rules before they cause an outage.</strong></p><p>Overlapping CIDR ranges cause outages and, worse, silent security failures — a firewall rule that unintentionally covers more than intended, or a VPC peering that cannot be established. Checking overlap by eye is error-prone in a way that checking it arithmetically is not.</p><h2>How to use it</h2><ol><li>Enter CIDR A.</li><li>Enter CIDR B.</li><li>Read whether they overlap, and how.</li></ol><h2>What to take away</h2><h3>Containment is a kind of overlap</h3><p>10.0.0.0/8 fully contains 10.1.2.0/24. Any rule written against the larger block silently applies to the smaller one.</p><h3>Cloud networks fail loudly on this</h3><p>VPC peering and VPN tunnels refuse overlapping address space outright, which is the most common reason a peering request is rejected.</p><h3>Allow rules are where it bites</h3><p>A deny rule that overlaps too much causes an outage you notice immediately. An allow rule that overlaps too much causes exposure you do not notice at all.</p><h2>Frequently asked questions</h2><h3>Why does overlapping address space break VPN and peering?</h3><p>Routing needs one unambiguous destination for a prefix. When both sides claim the same range, there is no correct answer, so the connection is refused rather than silently misrouted.</p><h3>How should I plan ranges to avoid this?</h3><p>Allocate non-overlapping blocks per environment and region from the start, and keep the allocation written down somewhere authoritative. Retrofitting a renumbering is painful.</p><h3>Is a /32 a valid CIDR?</h3><p>Yes — it is a single host, and it is extremely common in firewall rules where you want to permit exactly one address.</p><h2>Where this fits in the course</h2><p>This security tool pairs with <strong>Path 02 — Networking</strong> — see <a href="/lesson/">all 26 learning paths</a>.</p><p>It runs entirely in your browser: nothing is uploaded, no account is needed, and it is free.</p><h2>Related</h2><ul><li><a href="/tools/subnet.html">Subnet Calculator</a> — IPv4 CIDR → network, broadcast, host range, mask, and host count.</li><li><a href="/tools/vlsm.html">VLSM Subnet Planner</a> — Plan variable-length subnets across several different host-count requirements from one base network.</li><li><a href="/tools/headers.html">Security Header Analyzer</a> — Paste HTTP response headers and get a graded report on the security headers present and missing.</li><li><a href="/labs/ssrf.html">SSRF Playground</a> — A "fetch this URL for me" feature with no allowlist. Point it at internal-looking addresses and see what it leaks.</li></ul><p><a href="/tools/">Browse all 32 security tools →</a></p></article></div>
   </div></div>
@@ -122,9 +122,9 @@
     </div>
     <div class="foot-cols">
       <div><h2>Learn</h2>
-        <a href="#/course">All paths</a>
+        <a href="/lesson/">All paths</a>
         <a href="#/tracks">Tracks</a>
-        <a href="#/labs">Labs</a>
+        <a href="/labs/">Labs</a>
         <a href="#/glossary">Glossary</a>
         <a href="#/search">Search</a>
       </div>
@@ -133,24 +133,24 @@
         <a href="#/daily">Daily challenge</a>
         <a href="#/weekly">Weekly challenges</a>
         <a href="#/quiz/shuffle">Shuffle quiz</a>
-        <a href="#/tasks">Practice tasks</a>
-        <a href="#/exam">Timed mock exam</a>
+        <a href="/practice.html">Practice tasks</a>
+        <a href="/exam.html">Timed mock exam</a>
       </div>
       <div><h2>Explore</h2>
-        <a href="#/tools">Tools</a>
+        <a href="/tools/">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
-        <a href="#/faq">FAQ</a>
+        <a href="/faq.html">FAQ</a>
       </div>
       <div><h2>About</h2>
-        <a href="#/about">About KashSec</a>
-        <a href="#/contact">Contact</a>
+        <a href="/about.html">About KashSec</a>
+        <a href="/contact.html">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
-        <a href="#/privacy">Privacy policy</a>
-        <a href="#/terms">Terms of use</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
       </div>
     </div>
   </div>

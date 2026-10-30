@@ -47,23 +47,23 @@
 <body>
 <a class="skip" href="/lesson/00-fresher-basics/how-internet-works.html#app">Skip to content</a>
 <header class="nav" id="siteNav">
-  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+  <a class="brand" href="/" aria-label="KashSec Academy — home">
     <span class="brand-mark">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
     </span>
     <span class="brand-txt">KashSec<span class="amber">.</span></span>
   </a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">
-    <a href="#/">Home</a>
-    <a href="#/course">Course</a>
+    <a href="/">Home</a>
+    <a href="/lesson/">Course</a>
     <a href="#/tracks">Tracks</a>
-    <a href="#/labs">Labs</a>
-    <a href="#/tasks">Practice</a>
-    <a href="#/tools">Tools</a>
+    <a href="/labs/">Labs</a>
+    <a href="/practice.html">Practice</a>
+    <a href="/tools/">Tools</a>
     <a href="#/glossary">Glossary</a>
     <a href="#/roadmap">Roadmap</a>
     <a href="#/careers">Careers</a>
-    <a href="#/faq">FAQ</a>
+    <a href="/faq.html">FAQ</a>
     <a href="#/progress">My Progress</a>
     <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
     <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
@@ -86,14 +86,14 @@
     <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
     </button>
-    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <a class="btn-amber sm" id="startBtn" href="/lesson/01-introduction/">Start</a>
     <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>
 <main id="app" tabindex="-1">
-  <div class="reader-wrap"><div class="reader-main">
+  <div class="reader-wrap static-reader"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/00-fresher-basics/">Path 00 — Computer Basics &amp; Security Mindset</a> · How the internet works</nav>
     <div class="md" id="content"><article><h1>How the internet works</h1>
 <p>The internet feels like magic — you type a few words and a page appears half a world away in under a second. It isn't magic. It's an enormous, extremely well-organized relay race between computers, and once you understand the stages of that race, a huge chunk of "hacker stuff" you'll see later (man-in-the-middle attacks, DNS spoofing, HTTPS, VPNs) stops being mysterious and starts being obvious.</p>
@@ -119,7 +119,7 @@
 <p>A single IP address can run many different services at once, distinguished by <strong>port numbers</strong> — think of the IP address as a building's street address, and the port number as which specific apartment or office within it. Web traffic conventionally uses port 80 (unencrypted HTTP) or 443 (encrypted HTTPS); email, file transfer, and countless other services each have their own conventional ports. This is only a brief preview here — Path 02 dedicates an entire lesson to ports, since they matter enormously once you start scanning networks and understanding what services are actually exposed on a given machine.</p>
 <h2>Why security matters at every step</h2>
 <p>Every stage of that journey is a potential attack point:</p>
-<table>
+<div class="table-scroll" role="region" tabindex="0" aria-label="Scrollable table"><table>
 <thead>
 <tr>
 <th>Stage</th>
@@ -142,7 +142,7 @@
 <td><strong>Your own device</strong></td>
 <td>Malware already on your machine can intercept requests before they even leave, or after they arrive.</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>This is exactly why <strong>HTTPS</strong> (the padlock icon in your browser) exists — it encrypts traffic between you and the server so that even if someone is watching the network in between, they can't read or tamper with it. A <strong>VPN (Virtual Private Network)</strong> adds another layer, encrypting <em>all</em> your traffic and routing it through a trusted server, hiding your activity from your ISP and from anyone else on your local network (like on public Wi-Fi). Path 09 of this course covers VPNs in much more depth, including exactly what they do and don't actually protect against.</p>
 <p>:::</p>
 <p>:::warn Public Wi-Fi is a shared room, not a private line
@@ -193,7 +193,7 @@ traceroute google.com
 <li><a href="https://www.cloudflare.com/learning/dns/what-is-dns/">Cloudflare: What happens when you type a URL into your browser?</a> — a solid, free deep dive.</li>
 <li><a href="https://www.icann.org/resources/pages/what-2012-02-25-en">ICANN: What does ICANN do?</a> — a free, official overview of how internet-wide coordination actually works.</li>
 </ul>
-<p><strong>Next up →</strong> <a href="#/lesson/00-fresher-basics/how-to-use-a-browser-safely">Using your web browser safely</a></p>
+<p><strong>Next up →</strong> <a href="/lesson/00-fresher-basics/how-to-use-a-browser-safely.html">Using your web browser safely</a></p>
 <nav class="pager"><a href="/lesson/00-fresher-basics/what-is-a-computer.html">← What is a computer really?</a><a href="/lesson/00-fresher-basics/how-to-use-a-browser-safely.html">Using your web browser safely →</a></nav></article></div>
   </div></div>
 </main>
@@ -218,9 +218,9 @@ traceroute google.com
     </div>
     <div class="foot-cols">
       <div><h2>Learn</h2>
-        <a href="#/course">All paths</a>
+        <a href="/lesson/">All paths</a>
         <a href="#/tracks">Tracks</a>
-        <a href="#/labs">Labs</a>
+        <a href="/labs/">Labs</a>
         <a href="#/glossary">Glossary</a>
         <a href="#/search">Search</a>
       </div>
@@ -229,24 +229,24 @@ traceroute google.com
         <a href="#/daily">Daily challenge</a>
         <a href="#/weekly">Weekly challenges</a>
         <a href="#/quiz/shuffle">Shuffle quiz</a>
-        <a href="#/tasks">Practice tasks</a>
-        <a href="#/exam">Timed mock exam</a>
+        <a href="/practice.html">Practice tasks</a>
+        <a href="/exam.html">Timed mock exam</a>
       </div>
       <div><h2>Explore</h2>
-        <a href="#/tools">Tools</a>
+        <a href="/tools/">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
-        <a href="#/faq">FAQ</a>
+        <a href="/faq.html">FAQ</a>
       </div>
       <div><h2>About</h2>
-        <a href="#/about">About KashSec</a>
-        <a href="#/contact">Contact</a>
+        <a href="/about.html">About KashSec</a>
+        <a href="/contact.html">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
-        <a href="#/privacy">Privacy policy</a>
-        <a href="#/terms">Terms of use</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
       </div>
     </div>
   </div>

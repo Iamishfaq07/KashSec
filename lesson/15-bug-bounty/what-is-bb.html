@@ -47,23 +47,23 @@
 <body>
 <a class="skip" href="/lesson/15-bug-bounty/what-is-bb.html#app">Skip to content</a>
 <header class="nav" id="siteNav">
-  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+  <a class="brand" href="/" aria-label="KashSec Academy — home">
     <span class="brand-mark">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
     </span>
     <span class="brand-txt">KashSec<span class="amber">.</span></span>
   </a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">
-    <a href="#/">Home</a>
-    <a href="#/course">Course</a>
+    <a href="/">Home</a>
+    <a href="/lesson/">Course</a>
     <a href="#/tracks">Tracks</a>
-    <a href="#/labs">Labs</a>
-    <a href="#/tasks">Practice</a>
-    <a href="#/tools">Tools</a>
+    <a href="/labs/">Labs</a>
+    <a href="/practice.html">Practice</a>
+    <a href="/tools/">Tools</a>
     <a href="#/glossary">Glossary</a>
     <a href="#/roadmap">Roadmap</a>
     <a href="#/careers">Careers</a>
-    <a href="#/faq">FAQ</a>
+    <a href="/faq.html">FAQ</a>
     <a href="#/progress">My Progress</a>
     <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
     <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
@@ -86,21 +86,21 @@
     <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
     </button>
-    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <a class="btn-amber sm" id="startBtn" href="/lesson/01-introduction/">Start</a>
     <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>
 <main id="app" tabindex="-1">
-  <div class="reader-wrap"><div class="reader-main">
+  <div class="reader-wrap static-reader"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/15-bug-bounty/">Path 15 — Bug Bounty</a> · What is a bug bounty?</nav>
     <div class="md" id="content"><article><h1>What is bug bounty hunting?</h1>
 <p>Path 14 gave you the formal, contracted penetration testing model. Bug bounty is a different, increasingly dominant model for the same underlying goal — and it's where much of the individual, self-directed side of this entire field now lives.</p>
 <h2>The core model</h2>
 <p>A <strong>bug bounty program</strong> is an ongoing, standing invitation from an organisation for <strong>any</strong> researcher (not just contracted testers) to find and responsibly report vulnerabilities in their defined scope, in exchange for a <strong>reward</strong> — typically money, but sometimes recognition/swag for lower-severity findings.</p>
 <h2>Bug bounty vs. traditional penetration testing</h2>
-<table>
+<div class="table-scroll" role="region" tabindex="0" aria-label="Scrollable table"><table>
 <thead>
 <tr>
 <th>Aspect</th>
@@ -133,7 +133,7 @@
 <td>Formal contract, NDA, defined engagement</td>
 <td>Program terms/policy, often more informal</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>Neither model replaces the other — most mature security programs run <strong>both</strong>: periodic formal pentests for systematic, deep coverage, plus an ongoing bug bounty program for continuous, crowdsourced coverage between those formal engagements.</p>
 <h2>Why organisations run bug bounty programs</h2>
 <ul>
@@ -159,7 +159,7 @@
 </ul>
 <h2>Severity and reward structures</h2>
 <p>Most programs use a scale directly related to Path 10.2/09.7's CVSS concepts:</p>
-<table>
+<div class="table-scroll" role="region" tabindex="0" aria-label="Scrollable table"><table>
 <thead>
 <tr>
 <th>Severity</th>
@@ -187,7 +187,7 @@
 <td>$50–$300 (or swag/recognition)</td>
 <td>Minor information disclosure, missing security headers</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>Ranges vary <strong>enormously</strong> by program — a Fortune 500 tech company's critical-severity reward might dwarf a smaller startup's entire program budget. Always check the specific program's published reward table rather than assuming these figures apply universally.</p>
 <h2>A realistic picture — managing expectations</h2>
 <p>Bug bounty hunting has genuine earning potential, but the field is also <strong>highly competitive</strong> and the popular narrative of "quit your job and make six figures hunting bugs" represents a small minority of participants, not the median experience. Realistic expectations for someone starting out:</p>
@@ -232,7 +232,7 @@
 <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Vulnerability_Disclosure_Cheat_Sheet.html">OWASP — Vulnerability Disclosure Cheat Sheet</a></li>
 <li><a href="https://bugcrowd.com/vulnerability-rating-taxonomy">Bugcrowd — Vulnerability Rating Taxonomy</a> — a widely-referenced severity classification standard.</li>
 </ul>
-<p><strong>Next up →</strong> <a href="#/lesson/15-bug-bounty/bb-platforms-deep-dive">Bug bounty platforms, deep dive</a></p>
+<p><strong>Next up →</strong> <a href="/lesson/15-bug-bounty/bb-platforms-deep-dive.html">Bug bounty platforms, deep dive</a></p>
 <nav class="pager"><span></span><a href="/lesson/15-bug-bounty/bb-platforms-deep-dive.html">Bug bounty platforms, deep dive →</a></nav></article></div>
   </div></div>
 </main>
@@ -257,9 +257,9 @@
     </div>
     <div class="foot-cols">
       <div><h2>Learn</h2>
-        <a href="#/course">All paths</a>
+        <a href="/lesson/">All paths</a>
         <a href="#/tracks">Tracks</a>
-        <a href="#/labs">Labs</a>
+        <a href="/labs/">Labs</a>
         <a href="#/glossary">Glossary</a>
         <a href="#/search">Search</a>
       </div>
@@ -268,24 +268,24 @@
         <a href="#/daily">Daily challenge</a>
         <a href="#/weekly">Weekly challenges</a>
         <a href="#/quiz/shuffle">Shuffle quiz</a>
-        <a href="#/tasks">Practice tasks</a>
-        <a href="#/exam">Timed mock exam</a>
+        <a href="/practice.html">Practice tasks</a>
+        <a href="/exam.html">Timed mock exam</a>
       </div>
       <div><h2>Explore</h2>
-        <a href="#/tools">Tools</a>
+        <a href="/tools/">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
-        <a href="#/faq">FAQ</a>
+        <a href="/faq.html">FAQ</a>
       </div>
       <div><h2>About</h2>
-        <a href="#/about">About KashSec</a>
-        <a href="#/contact">Contact</a>
+        <a href="/about.html">About KashSec</a>
+        <a href="/contact.html">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
-        <a href="#/privacy">Privacy policy</a>
-        <a href="#/terms">Terms of use</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
       </div>
     </div>
   </div>

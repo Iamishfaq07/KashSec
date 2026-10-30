@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Security tools","item":"https://kashsec.vercel.app/tools/"},{"@type":"ListItem","position":3,"name":"Diffie-Hellman Key Exchange Visualizer","item":"https://kashsec.vercel.app/tools/dhvisualizer.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Diffie-Hellman Key Exchange Visualizer","description":"Watch two sides land on the same shared secret without ever transmitting it, with small real numbers.","url":"https://kashsec.vercel.app/tools/dhvisualizer.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security tool","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-29","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Diffie-Hellman Key Exchange Visualizer","description":"Watch two sides land on the same shared secret without ever transmitting it, with small real numbers.","url":"https://kashsec.vercel.app/tools/dhvisualizer.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security tool","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-30","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why can an eavesdropper not compute the shared secret?","acceptedAnswer":{"@type":"Answer","text":"They see g, p, g^a mod p and g^b mod p, but computing g^ab mod p from those requires solving the discrete logarithm, which has no known efficient classical algorithm at real key sizes."}},{"@type":"Question","name":"What is forward secrecy?","acceptedAnswer":{"@type":"Answer","text":"Using a fresh ephemeral Diffie–Hellman exchange per session, so that compromising the server's long-term key later does not decrypt traffic captured earlier. It is why modern TLS prefers ECDHE."}},{"@type":"Question","name":"Does quantum computing break this?","acceptedAnswer":{"@type":"Answer","text":"Shor's algorithm would break both Diffie–Hellman and RSA on a sufficiently large quantum computer, which is why post-quantum key exchange is being standardised and deployed now."}}]}
@@ -50,23 +50,23 @@
 <body>
 <a class="skip" href="/tools/dhvisualizer.html#app">Skip to content</a>
 <header class="nav" id="siteNav">
-  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+  <a class="brand" href="/" aria-label="KashSec Academy — home">
     <span class="brand-mark">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
     </span>
     <span class="brand-txt">KashSec<span class="amber">.</span></span>
   </a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">
-    <a href="#/">Home</a>
-    <a href="#/course">Course</a>
+    <a href="/">Home</a>
+    <a href="/lesson/">Course</a>
     <a href="#/tracks">Tracks</a>
-    <a href="#/labs">Labs</a>
-    <a href="#/tasks">Practice</a>
-    <a href="#/tools">Tools</a>
+    <a href="/labs/">Labs</a>
+    <a href="/practice.html">Practice</a>
+    <a href="/tools/">Tools</a>
     <a href="#/glossary">Glossary</a>
     <a href="#/roadmap">Roadmap</a>
     <a href="#/careers">Careers</a>
-    <a href="#/faq">FAQ</a>
+    <a href="/faq.html">FAQ</a>
     <a href="#/progress">My Progress</a>
     <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
     <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
@@ -89,14 +89,14 @@
     <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
     </button>
-    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <a class="btn-amber sm" id="startBtn" href="/lesson/01-introduction/">Start</a>
     <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>
 <main id="app" tabindex="-1">
-  <div class="reader-wrap"><div class="reader-main">
+  <div class="reader-wrap static-reader"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/tools/">Security tools</a> · Diffie-Hellman Key Exchange Visualizer</nav>
     <div class="md" id="content"><article><h1>Diffie-Hellman Key Exchange Visualizer</h1><p><strong>Watch two sides land on the same shared secret without ever transmitting it, with small real numbers.</strong></p><p>Diffie–Hellman answers a question that sounds impossible: how do two people agree on a shared secret while everyone is listening? Step through it with small numbers and the trick becomes clear — both sides do the same operations in a different order and land on the same value, while an eavesdropper who saw everything sent cannot.</p><h2>How to use it</h2><ol><li>Set the shared prime p and generator g — these are public.</li><li>Choose Alice's private secret a and Bob's private secret b.</li><li>Follow what each sends, then what each computes, and confirm both arrive at the same shared secret.</li></ol><h2>What to take away</h2><h3>Only the private secrets stay hidden</h3><p>p, g, and both transmitted values are public. Security rests on the discrete logarithm problem: recovering a from g^a mod p is infeasible at real key sizes.</p><h3>Real parameters are enormous</h3><p>The numbers here are small so the arithmetic is visible. Production uses 2048-bit or larger groups, or elliptic curves, where the same idea holds with far shorter keys.</p><h3>It has no authentication of its own</h3><p>Plain Diffie–Hellman is wide open to a machine in the middle running two exchanges at once. That is why TLS pairs it with certificates — the exchange gives secrecy, the certificate gives identity.</p><h2>Frequently asked questions</h2><h3>Why can an eavesdropper not compute the shared secret?</h3><p>They see g, p, g^a mod p and g^b mod p, but computing g^ab mod p from those requires solving the discrete logarithm, which has no known efficient classical algorithm at real key sizes.</p><h3>What is forward secrecy?</h3><p>Using a fresh ephemeral Diffie–Hellman exchange per session, so that compromising the server's long-term key later does not decrypt traffic captured earlier. It is why modern TLS prefers ECDHE.</p><h3>Does quantum computing break this?</h3><p>Shor's algorithm would break both Diffie–Hellman and RSA on a sufficiently large quantum computer, which is why post-quantum key exchange is being standardised and deployed now.</p><h2>Where this fits in the course</h2><p>This security tool pairs with <strong>Path 06 — Cryptography</strong> — see <a href="/lesson/">all 26 learning paths</a>.</p><p>It runs entirely in your browser: nothing is uploaded, no account is needed, and it is free.</p><h2>Related</h2><ul><li><a href="/tools/cipher.html">Cipher Playground</a> — Caesar/ROT, XOR, and Vigenère — the classic ciphers from the CTF zone.</li><li><a href="/tools/entropy.html">Entropy Calculator</a> — Shannon entropy of any text — a genuine static-analysis signal for spotting packed or encrypted data.</li><li><a href="/tools/timingviz.html">Timing Attack Visualizer</a> — See exactly why a naive string comparison leaks how many leading characters were correct — and why constant-time comparison fixes it.</li><li><a href="/tools/hash.html">Hash Generator</a> — SHA-1, SHA-256, SHA-384, SHA-512 of any text, via the browser's crypto engine.</li></ul><p><a href="/tools/">Browse all 32 security tools →</a></p></article></div>
   </div></div>
@@ -122,9 +122,9 @@
     </div>
     <div class="foot-cols">
       <div><h2>Learn</h2>
-        <a href="#/course">All paths</a>
+        <a href="/lesson/">All paths</a>
         <a href="#/tracks">Tracks</a>
-        <a href="#/labs">Labs</a>
+        <a href="/labs/">Labs</a>
         <a href="#/glossary">Glossary</a>
         <a href="#/search">Search</a>
       </div>
@@ -133,24 +133,24 @@
         <a href="#/daily">Daily challenge</a>
         <a href="#/weekly">Weekly challenges</a>
         <a href="#/quiz/shuffle">Shuffle quiz</a>
-        <a href="#/tasks">Practice tasks</a>
-        <a href="#/exam">Timed mock exam</a>
+        <a href="/practice.html">Practice tasks</a>
+        <a href="/exam.html">Timed mock exam</a>
       </div>
       <div><h2>Explore</h2>
-        <a href="#/tools">Tools</a>
+        <a href="/tools/">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
-        <a href="#/faq">FAQ</a>
+        <a href="/faq.html">FAQ</a>
       </div>
       <div><h2>About</h2>
-        <a href="#/about">About KashSec</a>
-        <a href="#/contact">Contact</a>
+        <a href="/about.html">About KashSec</a>
+        <a href="/contact.html">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
-        <a href="#/privacy">Privacy policy</a>
-        <a href="#/terms">Terms of use</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
       </div>
     </div>
   </div>

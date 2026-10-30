@@ -48,6 +48,14 @@ try{
     assert.match(files.get('00-index.md'),/Your learning route/);assert.match(files.get('00-index.md'),/CSSLP/);assert.match(files.get('00-index.md'),/Python 3.10/);
     assert.ok([...files.keys()].every(name=>!name.includes('..')&&!name.startsWith('/')));
   });
+  await test('AI path ZIP includes all new lessons and the exact expert policy exercise',async page=>{
+    await page.goto(BASE+'/lesson/18-ai-security/',{waitUntil:'domcontentloaded'});await page.locator('#downloadPackBtn').waitFor();
+    const pending=page.waitForEvent('download');await page.locator('#downloadPackBtn').click();const download=await pending;
+    const files=entries(fs.readFileSync(await download.path()));assert.equal(files.size,28);
+    assert.equal(files.get('expert_security_lab.py'),fs.readFileSync(path.join(root,'downloads/expert_security_lab.py'),'utf8'));
+    for(const id of ['mcp-tool-authorization','rag-tenant-isolation','ai-security-release-gates'])assert.ok([...files.keys()].some(name=>name.endsWith('-'+id+'.md')));
+    assert.match(files.get('00-index.md'),/expert_security_lab.py/);
+  });
   await test('HTML practice-file errors block the ZIP, and a fresh retry produces a complete pack',async page=>{
     overrides.set(asset,{body:'<!doctype html><html>Hosting error</html>'});await open(page);let downloads=0;page.on('download',()=>downloads++);
     await page.locator('#downloadPackBtn').click();await page.waitForFunction(()=>document.getElementById('offlinePathStatus').textContent.includes('No pack was downloaded.'));assert.equal(downloads,0);

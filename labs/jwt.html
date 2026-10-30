@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Security labs","item":"https://kashsec.vercel.app/labs/"},{"@type":"ListItem","position":3,"name":"JWT Forgery Lab","item":"https://kashsec.vercel.app/labs/jwt.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"JWT Forgery Lab","description":"Tamper with a JSON Web Token — strip the signature, flip a claim, and watch a vulnerable \"verify\" endpoint accept it anyway.","url":"https://kashsec.vercel.app/labs/jwt.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security lab","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-29","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"JWT Forgery Lab","description":"Tamper with a JSON Web Token — strip the signature, flip a claim, and watch a vulnerable \"verify\" endpoint accept it anyway.","url":"https://kashsec.vercel.app/labs/jwt.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security lab","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-30","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the alg none attack?","acceptedAnswer":{"@type":"Answer","text":"Setting the header algorithm to \"none\" and removing the signature. Libraries that honoured that value would treat the unsigned token as valid — which is why every current library rejects it by default."}},{"@type":"Question","name":"How should JWTs be verified properly?","acceptedAnswer":{"@type":"Answer","text":"Pin the algorithm server-side, verify the signature with a key you control, then check exp, iss and aud. Skipping any of those is a finding."}},{"@type":"Question","name":"Are JWTs a bad idea?","acceptedAnswer":{"@type":"Answer","text":"They are a reasonable tool that is frequently misused — especially as sessions, where their inability to be revoked before expiry is a genuine drawback."}}]}
@@ -50,23 +50,23 @@
 <body>
 <a class="skip" href="/labs/jwt.html#app">Skip to content</a>
 <header class="nav" id="siteNav">
-  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+  <a class="brand" href="/" aria-label="KashSec Academy — home">
     <span class="brand-mark">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
     </span>
     <span class="brand-txt">KashSec<span class="amber">.</span></span>
   </a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">
-    <a href="#/">Home</a>
-    <a href="#/course">Course</a>
+    <a href="/">Home</a>
+    <a href="/lesson/">Course</a>
     <a href="#/tracks">Tracks</a>
-    <a href="#/labs">Labs</a>
-    <a href="#/tasks">Practice</a>
-    <a href="#/tools">Tools</a>
+    <a href="/labs/">Labs</a>
+    <a href="/practice.html">Practice</a>
+    <a href="/tools/">Tools</a>
     <a href="#/glossary">Glossary</a>
     <a href="#/roadmap">Roadmap</a>
     <a href="#/careers">Careers</a>
-    <a href="#/faq">FAQ</a>
+    <a href="/faq.html">FAQ</a>
     <a href="#/progress">My Progress</a>
     <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
     <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
@@ -89,14 +89,14 @@
     <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
     </button>
-    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <a class="btn-amber sm" id="startBtn" href="/lesson/01-introduction/">Start</a>
     <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>
 <main id="app" tabindex="-1">
-  <div class="reader-wrap"><div class="reader-main">
+  <div class="reader-wrap static-reader"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/labs/">Security labs</a> · JWT Forgery Lab</nav>
     <div class="md" id="content"><article><h1>JWT Forgery Lab</h1><p><strong>Tamper with a JSON Web Token — strip the signature, flip a claim, and watch a vulnerable "verify" endpoint accept it anyway.</strong></p><p>A JWT is only as trustworthy as the verification behind it. Strip the signature, flip a claim from user to admin, and hand it to an endpoint that decodes without verifying — this lab lets you watch that succeed, then see what stops it.</p><h2>How to use it</h2><ol><li>Decode the token and read its claims.</li><li>Change a claim — role, or user ID.</li><li>Try the alg: none trick and see the vulnerable endpoint accept it.</li></ol><h2>What to take away</h2><h3>The alg header is attacker input</h3><p>Any library that reads alg from the token to decide how to verify it has handed the attacker the decision. Pin the expected algorithm server-side.</p><h3>RS256 to HS256 confusion</h3><p>If a library accepts either, an attacker can sign with the public key as an HMAC secret — and the public key is, by definition, public.</p><h3>Payloads are readable by design</h3><p>Signing proves integrity, not confidentiality. Anything private in a JWT payload is already disclosed.</p><h2>Frequently asked questions</h2><h3>What is the alg none attack?</h3><p>Setting the header algorithm to "none" and removing the signature. Libraries that honoured that value would treat the unsigned token as valid — which is why every current library rejects it by default.</p><h3>How should JWTs be verified properly?</h3><p>Pin the algorithm server-side, verify the signature with a key you control, then check exp, iss and aud. Skipping any of those is a finding.</p><h3>Are JWTs a bad idea?</h3><p>They are a reasonable tool that is frequently misused — especially as sessions, where their inability to be revoked before expiry is a genuine drawback.</p><h2>Where this fits in the course</h2><p>This security lab pairs with <strong>Path 11 — Web Security</strong> — see <a href="/lesson/">all 26 learning paths</a>.</p><p>It runs entirely in your browser: nothing is uploaded, no account is needed, and it is free.</p><h2>Related</h2><ul><li><a href="/tools/jwt.html">JWT Decoder</a> — Decode a JSON Web Token's header and payload and read its claims. No signature verification.</li><li><a href="/labs/oauthredirect.html">OAuth Redirect URI Hijack Lab</a> — An authorization server validates redirect_uri loosely. Steal an authorization code by redirecting it to your own endpoint.</li><li><a href="/labs/webhookforge.html">Webhook Signature Forgery Lab</a> — Forge an HMAC-signed webhook without the secret, then flip on signature verification and watch it get rejected.</li><li><a href="/labs/bola-bfla.html">BOLA/BFLA Playground</a> — A fake employee-directory API. Read a record that isn't yours, then call an admin-only action with no admin role at all.</li></ul><p><a href="/labs/">Browse all 42 security labs →</a></p></article></div>
   </div></div>
@@ -122,9 +122,9 @@
     </div>
     <div class="foot-cols">
       <div><h2>Learn</h2>
-        <a href="#/course">All paths</a>
+        <a href="/lesson/">All paths</a>
         <a href="#/tracks">Tracks</a>
-        <a href="#/labs">Labs</a>
+        <a href="/labs/">Labs</a>
         <a href="#/glossary">Glossary</a>
         <a href="#/search">Search</a>
       </div>
@@ -133,24 +133,24 @@
         <a href="#/daily">Daily challenge</a>
         <a href="#/weekly">Weekly challenges</a>
         <a href="#/quiz/shuffle">Shuffle quiz</a>
-        <a href="#/tasks">Practice tasks</a>
-        <a href="#/exam">Timed mock exam</a>
+        <a href="/practice.html">Practice tasks</a>
+        <a href="/exam.html">Timed mock exam</a>
       </div>
       <div><h2>Explore</h2>
-        <a href="#/tools">Tools</a>
+        <a href="/tools/">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
-        <a href="#/faq">FAQ</a>
+        <a href="/faq.html">FAQ</a>
       </div>
       <div><h2>About</h2>
-        <a href="#/about">About KashSec</a>
-        <a href="#/contact">Contact</a>
+        <a href="/about.html">About KashSec</a>
+        <a href="/contact.html">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
-        <a href="#/privacy">Privacy policy</a>
-        <a href="#/terms">Terms of use</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
       </div>
     </div>
   </div>

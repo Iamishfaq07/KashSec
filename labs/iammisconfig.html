@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Security labs","item":"https://kashsec.vercel.app/labs/"},{"@type":"ListItem","position":3,"name":"Cloud IAM Misconfig Playground","item":"https://kashsec.vercel.app/labs/iammisconfig.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Cloud IAM Misconfig Playground","description":"A role holds one deceptively small permission. Chain it into full account takeover through iam:PassRole.","url":"https://kashsec.vercel.app/labs/iammisconfig.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security lab","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-29","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Cloud IAM Misconfig Playground","description":"A role holds one deceptively small permission. Chain it into full account takeover through iam:PassRole.","url":"https://kashsec.vercel.app/labs/iammisconfig.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security lab","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-30","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is iam:PassRole?","acceptedAnswer":{"@type":"Answer","text":"The permission to give a role to an AWS service when you create a resource. Without a resource constraint it is effectively \"become any role this account has\"."}},{"@type":"Question","name":"How do I find these paths in my own account?","acceptedAnswer":{"@type":"Answer","text":"Automated policy analysis — IAM Access Analyzer, or open-source tools that build the permission graph — because manual review reliably misses multi-step chains."}}]}
@@ -50,23 +50,23 @@
 <body>
 <a class="skip" href="/labs/iammisconfig.html#app">Skip to content</a>
 <header class="nav" id="siteNav">
-  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+  <a class="brand" href="/" aria-label="KashSec Academy — home">
     <span class="brand-mark">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
     </span>
     <span class="brand-txt">KashSec<span class="amber">.</span></span>
   </a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">
-    <a href="#/">Home</a>
-    <a href="#/course">Course</a>
+    <a href="/">Home</a>
+    <a href="/lesson/">Course</a>
     <a href="#/tracks">Tracks</a>
-    <a href="#/labs">Labs</a>
-    <a href="#/tasks">Practice</a>
-    <a href="#/tools">Tools</a>
+    <a href="/labs/">Labs</a>
+    <a href="/practice.html">Practice</a>
+    <a href="/tools/">Tools</a>
     <a href="#/glossary">Glossary</a>
     <a href="#/roadmap">Roadmap</a>
     <a href="#/careers">Careers</a>
-    <a href="#/faq">FAQ</a>
+    <a href="/faq.html">FAQ</a>
     <a href="#/progress">My Progress</a>
     <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
     <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
@@ -89,14 +89,14 @@
     <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
     </button>
-    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <a class="btn-amber sm" id="startBtn" href="/lesson/01-introduction/">Start</a>
     <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>
 <main id="app" tabindex="-1">
-  <div class="reader-wrap"><div class="reader-main">
+  <div class="reader-wrap static-reader"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/labs/">Security labs</a> · Cloud IAM Misconfig Playground</nav>
     <div class="md" id="content"><article><h1>Cloud IAM Misconfig Playground</h1><p><strong>A role holds one deceptively small permission. Chain it into full account takeover through iam:PassRole.</strong></p><p>One permission that looks minor on a policy review — and chains into full account takeover. iam:PassRole is the classic: the ability to hand a role to a service you can start is the ability to become that role.</p><h2>How to use it</h2><ol><li>Review the role's permissions.</li><li>Find the one that permits passing a role.</li><li>Chain it into privileges you were never granted.</li></ol><h2>What to take away</h2><h3>Permissions compose in ways policies do not show</h3><p>Each grant looks reasonable alone. Escalation lives in the combination, which is why policy review by inspection misses it.</p><h3>PassRole needs a resource constraint</h3><p>Granting iam:PassRole on * lets the holder pass any role, including administrative ones. Constrain it to specific roles, always.</p><h3>Cloud is an identity problem</h3><p>There is no network perimeter to hide behind. Identity and its permissions are the perimeter.</p><h2>Frequently asked questions</h2><h3>What is iam:PassRole?</h3><p>The permission to give a role to an AWS service when you create a resource. Without a resource constraint it is effectively "become any role this account has".</p><h3>How do I find these paths in my own account?</h3><p>Automated policy analysis — IAM Access Analyzer, or open-source tools that build the permission graph — because manual review reliably misses multi-step chains.</p><h2>Where this fits in the course</h2><p>This security lab pairs with <strong>Path 16 — Advanced</strong> — see <a href="/lesson/">all 26 learning paths</a>.</p><p>It runs entirely in your browser: nothing is uploaded, no account is needed, and it is free.</p><h2>Related</h2><ul><li><a href="/labs/dockerescape.html">Docker Escape Playground</a> — A container mounts the host's Docker socket. Use it to spin up a privileged container and step onto the host itself.</li><li><a href="/labs/ssrf.html">SSRF Playground</a> — A "fetch this URL for me" feature with no allowlist. Point it at internal-looking addresses and see what it leaks.</li><li><a href="/labs/clouddockersecrets.html">Leaked Secret Hunt</a> — A public GitHub repo dump. Find the hardcoded API key an automated scanner would catch in minutes — before an attacker does.</li><li><a href="/tools/controlmapper.html">Compliance Control Mapper</a> — Look up how one control area maps across SOC 2, ISO 27001, NIST 800-53, and PCI-DSS.</li></ul><p><a href="/labs/">Browse all 42 security labs →</a></p></article></div>
   </div></div>
@@ -122,9 +122,9 @@
     </div>
     <div class="foot-cols">
       <div><h2>Learn</h2>
-        <a href="#/course">All paths</a>
+        <a href="/lesson/">All paths</a>
         <a href="#/tracks">Tracks</a>
-        <a href="#/labs">Labs</a>
+        <a href="/labs/">Labs</a>
         <a href="#/glossary">Glossary</a>
         <a href="#/search">Search</a>
       </div>
@@ -133,24 +133,24 @@
         <a href="#/daily">Daily challenge</a>
         <a href="#/weekly">Weekly challenges</a>
         <a href="#/quiz/shuffle">Shuffle quiz</a>
-        <a href="#/tasks">Practice tasks</a>
-        <a href="#/exam">Timed mock exam</a>
+        <a href="/practice.html">Practice tasks</a>
+        <a href="/exam.html">Timed mock exam</a>
       </div>
       <div><h2>Explore</h2>
-        <a href="#/tools">Tools</a>
+        <a href="/tools/">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
-        <a href="#/faq">FAQ</a>
+        <a href="/faq.html">FAQ</a>
       </div>
       <div><h2>About</h2>
-        <a href="#/about">About KashSec</a>
-        <a href="#/contact">Contact</a>
+        <a href="/about.html">About KashSec</a>
+        <a href="/contact.html">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
-        <a href="#/privacy">Privacy policy</a>
-        <a href="#/terms">Terms of use</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
       </div>
     </div>
   </div>

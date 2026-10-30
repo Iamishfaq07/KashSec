@@ -37,7 +37,8 @@ try {
       `${target} retains the document without reloading`);
   }
   async function click(href) {
-    const link = page.locator(`a[href="${href}"]`).first();
+    const canonical = await page.evaluate(h=>canonicalPathForHash(h),href);
+    const link = page.locator(`a[href="${href}"]${canonical ? `,a[href="${canonical}"]` : ''}`).first();
     if(!await link.isVisible()) await page.locator('#hamb').click();
     await link.click();
   }
@@ -72,7 +73,7 @@ try {
     page.url() === BASE + '/#/glossary' && documents === 1, 'skip link focuses content without navigating home');
 
   const popupEvent = context.waitForEvent('page');
-  await page.locator('a[href="#/labs"]').first().click({modifiers:['Control']});
+  await page.locator('a[href="/labs/"],a[href="#/labs"]').first().click({modifiers:['Control']});
   const popup = await popupEvent;
   await popup.waitForLoadState();
   check(page.url() === BASE + '/#/glossary' && await page.evaluate(()=>window.__documentToken) === token,

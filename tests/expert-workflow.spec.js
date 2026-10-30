@@ -85,7 +85,7 @@ try{
   await p.locator('[data-draft-status="webhook-replay"]').waitFor();
   assert.match(await p.locator('[data-case-action="webhook-replay"]').innerText(),/Continue case/);
   assert.match(await p.locator('[data-draft-status="webhook-replay"]').innerText(),/0\/4 answers.*report started/);
-  await p.locator('[data-case-action="cloud-scope"]').click();await p.locator('#exNotes').waitFor();
+  await p.locator('[data-case-action="rag-document-scope"]').click();await p.locator('#exNotes').waitFor();
   assert.equal(await p.getByRole('navigation',{name:'Case sequence'}).getByRole('link',{name:/Next case/}).count(),0);
   if(!preview)assert.equal(await p.evaluate(()=>Object.keys(STATE.labsCompleted).length+Object.keys(STATE.quizScores).length),0);
   await flow.close();
@@ -94,7 +94,7 @@ try{
     const get=Storage.prototype.getItem;Storage.prototype.getItem=function(k){if(k==='kashsec_expert_labs_v1')throw Error('unavailable');return get.call(this,k);};
   });const dp=await denied.newPage();await dp.goto(BASE+'/expert-labs/');await dp.locator('#exCollectionStatus').waitFor();
   assert.match(await dp.locator('#exCollectionStatus').innerText(),/could not be read/);
-  assert.equal(await dp.locator('[data-case-action]').count(),4);
+  assert.equal(await dp.locator('[data-case-action]').count(),6);
   for(const text of await dp.locator('[data-draft-status]').allInnerTexts())assert.equal(text,'Draft status unavailable');
   await denied.close();
   console.log('PASS: unavailable draft storage leaves the collection usable and explains the missing status.');

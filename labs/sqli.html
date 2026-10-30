@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"KashSec Academy","item":"https://kashsec.vercel.app/"},{"@type":"ListItem","position":2,"name":"Security labs","item":"https://kashsec.vercel.app/labs/"},{"@type":"ListItem","position":3,"name":"SQL Injection Sandbox","item":"https://kashsec.vercel.app/labs/sqli.html"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"SQL Injection Sandbox","description":"A fake login backed by a simulated database. Watch your input become SQL, then bypass the login with a classic injection.","url":"https://kashsec.vercel.app/labs/sqli.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security lab","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-29","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"SQL Injection Sandbox","description":"A fake login backed by a simulated database. Watch your input become SQL, then bypass the login with a classic injection.","url":"https://kashsec.vercel.app/labs/sqli.html","applicationCategory":"SecurityApplication","applicationSubCategory":"security lab","operatingSystem":"Any (runs in a web browser)","browserRequirements":"Requires JavaScript","inLanguage":"en","dateModified":"2026-10-30","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"EducationalOrganization","name":"KashSec Academy","url":"https://kashsec.vercel.app/","logo":"https://kashsec.vercel.app/icons/icon-512.png","description":"Free cybersecurity education for complete beginners.","founder":{"@type":"Person","name":"Ishfaq","url":"https://www.linkedin.com/in/iamishfaq07/","sameAs":["https://www.linkedin.com/in/iamishfaq07/"]}}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is SQL injection still a real problem?","acceptedAnswer":{"@type":"Answer","text":"Yes. It remains in the OWASP Top 10 as part of Injection, and it still appears in breach reports — mostly in older code and hand-built queries that predate the team's current standards."}},{"@type":"Question","name":"Do ORMs make you safe?","acceptedAnswer":{"@type":"Answer","text":"Mostly, because they parameterise by default. They stop protecting you the moment someone drops to raw SQL with string concatenation, which every ORM allows."}},{"@type":"Question","name":"What is the difference between SQLi and NoSQL injection?","acceptedAnswer":{"@type":"Answer","text":"The same class of flaw in a different query language. MongoDB operators injected through JSON produce the same effect as ' OR 1=1 does in SQL."}}]}
@@ -50,23 +50,23 @@
 <body>
 <a class="skip" href="/labs/sqli.html#app">Skip to content</a>
 <header class="nav" id="siteNav">
-  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+  <a class="brand" href="/" aria-label="KashSec Academy — home">
     <span class="brand-mark">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
     </span>
     <span class="brand-txt">KashSec<span class="amber">.</span></span>
   </a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">
-    <a href="#/">Home</a>
-    <a href="#/course">Course</a>
+    <a href="/">Home</a>
+    <a href="/lesson/">Course</a>
     <a href="#/tracks">Tracks</a>
-    <a href="#/labs">Labs</a>
-    <a href="#/tasks">Practice</a>
-    <a href="#/tools">Tools</a>
+    <a href="/labs/">Labs</a>
+    <a href="/practice.html">Practice</a>
+    <a href="/tools/">Tools</a>
     <a href="#/glossary">Glossary</a>
     <a href="#/roadmap">Roadmap</a>
     <a href="#/careers">Careers</a>
-    <a href="#/faq">FAQ</a>
+    <a href="/faq.html">FAQ</a>
     <a href="#/progress">My Progress</a>
     <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
     <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
@@ -89,14 +89,14 @@
     <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
     </button>
-    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <a class="btn-amber sm" id="startBtn" href="/lesson/01-introduction/">Start</a>
     <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>
 <main id="app" tabindex="-1">
-  <div class="reader-wrap"><div class="reader-main">
+  <div class="reader-wrap static-reader"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/labs/">Security labs</a> · SQL Injection Sandbox</nav>
     <div class="md" id="content"><article><h1>SQL Injection Sandbox</h1><p><strong>A fake login backed by a simulated database. Watch your input become SQL, then bypass the login with a classic injection.</strong></p><p>SQL injection happens when input is glued into a query as text instead of passed as data. This lab shows you the query being built as you type, so you can watch your input stop being a username and start being SQL.</p><h2>How to use it</h2><ol><li>Enter a normal username and watch the query that gets built.</li><li>Break out of the string context with a quote.</li><li>Make the WHERE clause always true and log in as the first user.</li></ol><h2>What to take away</h2><h3>Watch the quotes</h3><p>The classic ' OR '1'='1 works by closing the string the developer opened and appending a condition that is always true.</p><h3>Parameterised queries are the fix</h3><p>They send the query structure and the data on separate channels, so input cannot change the meaning of the statement. Escaping input is a workaround; this is a fix.</p><h3>Blind SQLi has no error messages</h3><p>Real targets often show nothing. Attackers infer answers from behaviour differences or response timing instead — slower, equally effective.</p><h2>Frequently asked questions</h2><h3>Is SQL injection still a real problem?</h3><p>Yes. It remains in the OWASP Top 10 as part of Injection, and it still appears in breach reports — mostly in older code and hand-built queries that predate the team's current standards.</p><h3>Do ORMs make you safe?</h3><p>Mostly, because they parameterise by default. They stop protecting you the moment someone drops to raw SQL with string concatenation, which every ORM allows.</p><h3>What is the difference between SQLi and NoSQL injection?</h3><p>The same class of flaw in a different query language. MongoDB operators injected through JSON produce the same effect as ' OR 1=1 does in SQL.</p><h2>Where this fits in the course</h2><p>This security lab pairs with <strong>Path 11 — Web Security</strong> — see <a href="/lesson/">all 26 learning paths</a>.</p><p>It runs entirely in your browser: nothing is uploaded, no account is needed, and it is free.</p><h2>Related</h2><ul><li><a href="/labs/webapp.html">Vulnerable Web App</a> — A tiny deliberately-broken app for practicing XSS and login-bypass. Runs entirely in-browser; no server to attack, nothing to install.</li><li><a href="/labs/cmdinjection.html">Command Injection Sandbox</a> — A "ping this host" tool glues your input into a real shell command. Chain a second command onto the intended one.</li><li><a href="/tools/codereview.html">Secure Code Review Toy</a> — Paste a code snippet and get flagged patterns — eval, string-built SQL, hardcoded secrets. Not a real SAST tool, but trains the eye.</li><li><a href="/labs/racecondition.html">Race Condition Lab</a> — A one-time coupon, redeemed with a check-then-act flaw. Fire requests fast enough and redeem it far more than once.</li></ul><p><a href="/labs/">Browse all 42 security labs →</a></p></article></div>
   </div></div>
@@ -122,9 +122,9 @@
     </div>
     <div class="foot-cols">
       <div><h2>Learn</h2>
-        <a href="#/course">All paths</a>
+        <a href="/lesson/">All paths</a>
         <a href="#/tracks">Tracks</a>
-        <a href="#/labs">Labs</a>
+        <a href="/labs/">Labs</a>
         <a href="#/glossary">Glossary</a>
         <a href="#/search">Search</a>
       </div>
@@ -133,24 +133,24 @@
         <a href="#/daily">Daily challenge</a>
         <a href="#/weekly">Weekly challenges</a>
         <a href="#/quiz/shuffle">Shuffle quiz</a>
-        <a href="#/tasks">Practice tasks</a>
-        <a href="#/exam">Timed mock exam</a>
+        <a href="/practice.html">Practice tasks</a>
+        <a href="/exam.html">Timed mock exam</a>
       </div>
       <div><h2>Explore</h2>
-        <a href="#/tools">Tools</a>
+        <a href="/tools/">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
-        <a href="#/faq">FAQ</a>
+        <a href="/faq.html">FAQ</a>
       </div>
       <div><h2>About</h2>
-        <a href="#/about">About KashSec</a>
-        <a href="#/contact">Contact</a>
+        <a href="/about.html">About KashSec</a>
+        <a href="/contact.html">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
-        <a href="#/privacy">Privacy policy</a>
-        <a href="#/terms">Terms of use</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
       </div>
     </div>
   </div>

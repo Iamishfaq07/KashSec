@@ -47,23 +47,23 @@
 <body>
 <a class="skip" href="/lesson/02-networking/ports.html#app">Skip to content</a>
 <header class="nav" id="siteNav">
-  <a class="brand" href="#/" aria-label="KashSec Academy — home">
+  <a class="brand" href="/" aria-label="KashSec Academy — home">
     <span class="brand-mark">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
     </span>
     <span class="brand-txt">KashSec<span class="amber">.</span></span>
   </a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">
-    <a href="#/">Home</a>
-    <a href="#/course">Course</a>
+    <a href="/">Home</a>
+    <a href="/lesson/">Course</a>
     <a href="#/tracks">Tracks</a>
-    <a href="#/labs">Labs</a>
-    <a href="#/tasks">Practice</a>
-    <a href="#/tools">Tools</a>
+    <a href="/labs/">Labs</a>
+    <a href="/practice.html">Practice</a>
+    <a href="/tools/">Tools</a>
     <a href="#/glossary">Glossary</a>
     <a href="#/roadmap">Roadmap</a>
     <a href="#/careers">Careers</a>
-    <a href="#/faq">FAQ</a>
+    <a href="/faq.html">FAQ</a>
     <a href="#/progress">My Progress</a>
     <button class="mobile-random" id="randomMobileBtn" type="button">Random lesson</button>
     <a href="#" id="accountNavLink" class="account-nav-link" style="display:none">Sign in</a>
@@ -86,14 +86,14 @@
     <button class="icon-btn" id="installBtn" aria-label="Install KashSec app for offline use" type="button" title="Install app" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
     </button>
-    <a class="btn-amber sm" id="startBtn" href="#/lesson/01-introduction">Start</a>
+    <a class="btn-amber sm" id="startBtn" href="/lesson/01-introduction/">Start</a>
     <button class="hamb" id="hamb" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </div>
 </header>
 <main id="app" tabindex="-1">
-  <div class="reader-wrap"><div class="reader-main">
+  <div class="reader-wrap static-reader"><div class="reader-main">
     <nav class="reader-crumb" aria-label="Breadcrumb"><a href="https://kashsec.vercel.app/">KashSec Academy</a> · <a href="https://kashsec.vercel.app/lesson/">Learning paths</a> · <a href="https://kashsec.vercel.app/lesson/02-networking/">Path 02 — Networking Fundamentals</a> · Ports: the doors</nav>
     <div class="md" id="content"><article><h1>Ports: the doors of a computer</h1>
 <p>An IP address gets you to the right <em>building</em>. But a computer runs many services at once — a website, an email server, a database, a remote-login service — so once your letter arrives, how does it reach the right <em>department</em>? <strong>Ports.</strong></p>
@@ -104,7 +104,7 @@
 <p>Ports let one machine offer many services without messages getting mixed up. There are <strong>65,535</strong> possible ports on every machine.</p>
 <h2>The well-known ports</h2>
 <p>A small set of "well-known" ports are used again and again for the same jobs, everywhere in the world:</p>
-<table>
+<div class="table-scroll" role="region" tabindex="0" aria-label="Scrollable table"><table>
 <thead>
 <tr>
 <th>Port</th>
@@ -182,7 +182,7 @@
 <td>HTTP-alt</td>
 <td>Alternate HTTP (often admin panels)</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p>You don't need to memorise the whole table — but <strong><code>22</code>, <code>80</code>, <code>443</code>, and <code>53</code></strong> should become second nature.</p>
 <p>Ports 0–1023 are <strong>well-known ports</strong> (assigned by IANA). 1024–49151 are <strong>registered ports</strong>. 49152–65535 are <strong>dynamic/private</strong> ports used for short-lived client-side connections. The service you're scanning nearly always lives in the first range.</p>
 <h2>Open, closed, filtered</h2>
@@ -238,7 +238,7 @@ You'll see every port currently <em>listening</em> on your own computer. Notice 
 <li><a href="https://www.sans.org/security-resources/tcpip.pdf">SANS common ports cheat sheet</a> — printable pocket reference.</li>
 <li><a href="https://nmap.org/book/man-port-scanning-basics.html">Nmap Port States explained</a> — the definitive doc.</li>
 </ul>
-<p><strong>Next up →</strong> <a href="#/lesson/02-networking/packets">Packets &amp; the OSI layers</a></p>
+<p><strong>Next up →</strong> <a href="/lesson/02-networking/packets.html">Packets &amp; the OSI layers</a></p>
 <nav class="pager"><a href="/lesson/02-networking/nat-and-port-forwarding.html">← NAT &amp; Port Forwarding</a><a href="/lesson/02-networking/packets.html">Packets &amp; the OSI layers →</a></nav></article></div>
   </div></div>
 </main>
@@ -263,9 +263,9 @@ You'll see every port currently <em>listening</em> on your own computer. Notice 
     </div>
     <div class="foot-cols">
       <div><h2>Learn</h2>
-        <a href="#/course">All paths</a>
+        <a href="/lesson/">All paths</a>
         <a href="#/tracks">Tracks</a>
-        <a href="#/labs">Labs</a>
+        <a href="/labs/">Labs</a>
         <a href="#/glossary">Glossary</a>
         <a href="#/search">Search</a>
       </div>
@@ -274,24 +274,24 @@ You'll see every port currently <em>listening</em> on your own computer. Notice 
         <a href="#/daily">Daily challenge</a>
         <a href="#/weekly">Weekly challenges</a>
         <a href="#/quiz/shuffle">Shuffle quiz</a>
-        <a href="#/tasks">Practice tasks</a>
-        <a href="#/exam">Timed mock exam</a>
+        <a href="/practice.html">Practice tasks</a>
+        <a href="/exam.html">Timed mock exam</a>
       </div>
       <div><h2>Explore</h2>
-        <a href="#/tools">Tools</a>
+        <a href="/tools/">Tools</a>
         <a href="#/careers">Careers</a>
         <a href="#/interview">Interview bank</a>
         <a href="#/certs">Certification roadmap</a>
-        <a href="#/faq">FAQ</a>
+        <a href="/faq.html">FAQ</a>
       </div>
       <div><h2>About</h2>
-        <a href="#/about">About KashSec</a>
-        <a href="#/contact">Contact</a>
+        <a href="/about.html">About KashSec</a>
+        <a href="/contact.html">Contact</a>
         <a href="https://www.linkedin.com/in/iamishfaq07/" target="_blank" rel="noopener noreferrer me">LinkedIn</a>
         <a href="#/changelog">What's new</a>
         <a href="/feed.xml">RSS feed</a>
-        <a href="#/privacy">Privacy policy</a>
-        <a href="#/terms">Terms of use</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
       </div>
     </div>
   </div>
