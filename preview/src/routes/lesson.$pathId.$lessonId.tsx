@@ -9,6 +9,7 @@ import { labForPath } from "@/data/labs";
 import { loadLessonSource } from "@/lib/lesson-source";
 import { renderLesson } from "@/lib/markdown";
 import { useProgress } from "@/lib/progress";
+import { useProgressStorage } from "@/lib/progress-storage";
 
 export const Route = createFileRoute("/lesson/$pathId/$lessonId")({
   head: ({ params }) => {
@@ -34,6 +35,7 @@ function LessonPage() {
   const complete = useProgress((state) => state.complete);
   const uncomplete = useProgress((state) => state.uncomplete);
   const setNote = useProgress((state) => state.setNote);
+  const storageStatus = useProgressStorage((state) => state.status);
   const toggleBookmark = useProgress((state) => state.toggleBookmark);
   const [html, setHtml] = useState("");
   const [minutes, setMinutes] = useState(1);
@@ -350,11 +352,25 @@ function LessonPage() {
             </span>
             <textarea
               value={note}
+              maxLength={4000}
+              aria-describedby="lessonNoteHelp"
               onChange={(event) => setNote(key, event.target.value)}
               className="mt-2 h-32 w-full rounded-card border border-line bg-surface p-3 text-fg outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber"
               placeholder="Rewrite the idea in your own words."
             />
           </label>
+          <p id="lessonNoteHelp" className="mt-2 text-sm text-muted">{note.length.toLocaleString()} / 4,000 characters. Downloads are plain text; keep personal notes private.</p>
+          <p role="status" className="mt-2 text-sm text-muted">{storageStatus === "error" ? "Could not save in this browser. Download your notes before leaving." : storageStatus === "saved" ? "Saved in this browser." : "Notes save automatically in this browser."}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Button tone="ghost" disabled={!note.length} onClick={() => {
+              const text = `Lesson: ${lesson.title}\nSource: https://kashsec.vercel.app/lesson/${pathId}/${lessonId}.html\n\n${note}`;
+              const url = URL.createObjectURL(new Blob([text], { type: "text/plain;charset=utf-8" }));
+              const link = document.createElement("a");
+              link.href = url; link.download = `kashsec-${pathId}--${lessonId}-notes.txt`;
+              link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+            }}>Download lesson notes</Button>
+            {storageStatus === "error" ? <Button tone="ghost" onClick={() => setNote(key, note)}>Retry saving notes</Button> : null}
+          </div>
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
             {prev ? (
               <Link

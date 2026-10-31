@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
+import { progressStorage, useProgressStorage } from "./progress-storage";
 
 type ProgressState = {
   hydrated: boolean;
@@ -85,6 +86,7 @@ export const useProgress = create<ProgressState>()(
     }),
     {
       name: "kashsec-desk-v1",
+      storage: createJSONStorage(() => progressStorage),
       skipHydration: true,
       partialize: (state) => ({
         done: state.done,
@@ -96,7 +98,8 @@ export const useProgress = create<ProgressState>()(
         days: state.days,
         last: state.last,
       }),
-      onRehydrateStorage: () => (state) => {
+      onRehydrateStorage: () => (state, error) => {
+        if (error) useProgressStorage.setState({ status: "error" });
         state?.setHydrated();
       },
     },
