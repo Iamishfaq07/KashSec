@@ -5,6 +5,7 @@ import { BookOpen, Compass, FlaskConical, Flame, House, Library, Search, Wrench 
 import { paths, lessonCount } from "@/lib/catalog";
 import { labs } from "@/data/labs";
 import { streakFrom, useProgress } from "@/lib/progress";
+import { useProgressStorage } from "@/lib/progress-storage";
 import { cn } from "@/lib/cn";
 
 const nav = [
@@ -20,6 +21,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const [searchReady, setSearchReady] = useState(false);
   const closeSearch = useCallback(() => setOpen(false), []);
   const hydrated = useProgress((state) => state.hydrated);
+  const storageStatus = useProgressStorage((state) => state.status);
   const days = useProgress((state) => state.days);
   const done = useProgress((state) => state.done);
   const streak = hydrated ? streakFrom(days) : 0;
@@ -86,7 +88,12 @@ export function Shell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-6xl px-4 pb-28 pt-6 md:pb-16">{children}</main>
+      <main className="mx-auto w-full max-w-6xl px-4 pb-28 pt-6 md:pb-16">
+        {storageStatus === "error" ? <p role="status" className="mb-4 rounded-card border border-amber p-3 text-sm">
+          Browser storage is unavailable. Changes stay in this tab and may be lost after a refresh. Download your lesson notes to keep a copy.
+        </p> : null}
+        {children}
+      </main>
       <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface md:hidden">
         <ul className="grid grid-cols-5">
           {[

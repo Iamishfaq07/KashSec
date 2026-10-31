@@ -5464,8 +5464,13 @@ async function renderSubLesson(pathId, subId){
         <details class="notes-panel">
           <summary><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> My notes on this lesson</summary>
           <div class="notes-panel-body">
-            <textarea id="lessonNotes" aria-label="Your private notes for this lesson" placeholder="Jot down anything you want to remember — only visible to you, saved automatically.">${escapeHtml(getNote(pathId,subId))}</textarea>
+            <textarea id="lessonNotes" aria-label="Your private notes for this lesson" aria-describedby="lessonNotesHelp" placeholder="Jot down anything you want to remember — saved automatically in this browser.">${escapeHtml(getNote(pathId,subId))}</textarea>
             <div class="notes-status" id="notesStatus" role="status"></div>
+            <p id="lessonNotesHelp" class="notes-help">Download a plain-text copy at any time. Keep personal notes private.</p>
+            <div class="notes-actions">
+              <button type="button" class="btn-ghost sm" id="downloadLessonNotes" ${getNote(pathId,subId).length?'':'disabled'}>Download lesson notes</button>
+              <button type="button" class="btn-ghost sm" id="retryLessonNotes" hidden>Retry saving notes</button>
+            </div>
           </div>
         </details>
         <div class="lesson-rating" id="lessonRating">
@@ -5639,18 +5644,31 @@ async function renderSubLesson(pathId, subId){
   let notesPending = false;
   const notesEl = document.getElementById('lessonNotes');
   const notesStatus = document.getElementById('notesStatus');
+  const notesDownload = document.getElementById('downloadLessonNotes');
+  const notesRetry = document.getElementById('retryLessonNotes');
   const flushNotes = ()=>{
     clearTimeout(notesTimer);
     if(!notesPending) return;
     notesPending = false;
     const saved = setNote(pathId, subId, notesEl.value);
-    notesStatus.textContent = saved ? 'Saved' : 'Could not save in this browser. Copy your notes before refreshing.';
+    notesStatus.textContent = saved ? 'Saved' : 'Could not save in this browser. Download your notes before leaving.';
+    notesRetry.hidden = saved;
   };
   currentLessonNotesFlush = flushNotes;
   notesEl.addEventListener('blur', flushNotes);
+  notesRetry.addEventListener('click', ()=>{ notesPending = true; flushNotes(); });
+  notesDownload.addEventListener('click', ()=>{
+    flushNotes();
+    const text = `Lesson: ${ctx.sub.title}\nSource: https://kashsec.vercel.app/lesson/${pathId}/${subId}.html\n\n${notesEl.value}`;
+    const url = URL.createObjectURL(new Blob([text], {type:'text/plain;charset=utf-8'}));
+    const link = document.createElement('a');
+    link.href = url; link.download = `kashsec-${pathId}--${subId}-notes.txt`;
+    link.click(); setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  });
   notesEl.addEventListener('input', ()=>{
     clearTimeout(notesTimer);
     notesPending = true;
+    notesDownload.disabled = !notesEl.value.length;
     notesStatus.textContent = 'Saving…';
     notesTimer = setTimeout(flushNotes, 500);
   });
@@ -9452,7 +9470,8 @@ function renderLabLeakedSecret(){
    when editing or reordering a release; use a new unique id for a new release.
    ============================================================ */
 const CHANGELOG = [
-  {id:'2026-10-31', date:'2026-10-31', title:'Follow every course update', items:[
+  {id:'2026-10-31', date:'2026-10-31', title:'Safer lesson notes and reliable course updates', items:[
+    'Download a plain-text copy of your current lesson notes, even if browser storage fails. Retry saving when storage is available again. The preview reader now explains its note limit and reports failed saves.',
     'The update feed now gives each release a fixed, unique ID, so posts published on the same day do not hide one another in feed readers.',
     'Open What’s new and choose Follow updates with RSS to add the feed to your reader. No account is needed.'
   ]},
