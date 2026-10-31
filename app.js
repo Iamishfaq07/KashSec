@@ -9448,10 +9448,15 @@ function renderLabLeakedSecret(){
 
 /* ============================================================
    Changelog — hand-maintained release notes. Also the source for the
-   RSS feed (generate-feed.js reads this array).
+   RSS feed (generate-feed.js reads this array). Keep each id unchanged
+   when editing or reordering a release; use a new unique id for a new release.
    ============================================================ */
 const CHANGELOG = [
-  {date:'2026-10-30', title:'Practical AI security and clearer course discovery', items:[
+  {id:'2026-10-31', date:'2026-10-31', title:'Follow every course update', items:[
+    'The update feed now gives each release a fixed, unique ID, so posts published on the same day do not hide one another in feed readers.',
+    'Open What’s new and choose Follow updates with RSS to add the feed to your reader. No account is needed.'
+  ]},
+  {id:'2026-10-30', date:'2026-10-30', title:'Practical AI security and clearer course discovery', items:[
     'Expert Labs now supports private local draft backups and previewed restore, with a keep-existing option and changed-draft checks before replacement. Backups contain report notes and answers, not course progress or review scores.',
     'Search now cancels timed-out index requests, reads the generated index as validated data, and rejects bad offline cache entries. Preview glossary search shows loading errors and offers a retry while lesson and lab results remain available.',
     'Expert Labs now has combined topic, text and saved-draft filters, with live draft summaries from other tabs. The three new AI lessons have optional checks with links back to the relevant explanation.',
@@ -9459,84 +9464,84 @@ const CHANGELOG = [
     'Two expert AI cases add local Python policies for tool calls and document retrieval. They need no model account or API key. The AI offline pack includes all 26 lessons and the exercise.',
     'The homepage now has readable content before JavaScript and highlights the new practice. Canonical navigation links, mobile static-reader layouts, updated share cards and 609-page SEO checks improve discovery and access.'
   ]},
-  {date:'2026-10-29', title:'Resume expert casework and protect saved drafts', items:[
+  {id:'2026-10-29', date:'2026-10-29', title:'Resume expert casework and protect saved drafts', items:[
     'The Expert Labs collection now shows saved answer and report-draft status, with a Continue case link when you have started work. This status stays separate from coding completion and course scores.',
     'Each case has keyboard-accessible links to evidence, the repair task, reasoning, and the report, plus a next-case link for moving through the collection.',
     'Before saving a case, the editor checks whether another tab changed its saved draft. If so, auto-save pauses, keeps your current work available for download, and lets you inspect or load the latest saved draft.'
   ]},
-  {date:'2026-10-29', title:'Expert Labs and deeper AppSec practice', items:[
+  {id:'2026-10-29-ead2e9367ef0', date:'2026-10-29', title:'Expert Labs and deeper AppSec practice', items:[
     'The Labs page has a new Expert Labs tab with four evidence-led cases: tenant isolation, webhook replay, release-artifact trust, and cloud permission scope. Each includes prerequisites, staged hints, a local Python repair exercise, reasoning review, and report/evidence downloads.',
     'AppSec review, pipeline, and capstone lessons now connect to the expert cases. API webhook guidance adds raw-body verification and durable processing; the cloud lab adds an account-free local option and corrects assumptions about external platform requirements.',
     'Expert drafts save on this browser separately from course progress. Both readers share the cases and exercise, and full case briefs are available without JavaScript.'
   ]},
-  {date:'2026-10-29', title:'AppSec checks that match the lesson', items:[
+  {id:'2026-10-29-ea35d54e8f55', date:'2026-10-29', title:'AppSec checks that match the lesson', items:[
     'All 18 AppSec lessons now have a question about the lesson you just read, shared by both readers. Explanations link back to the relevant section, and you can try again without changing your quiz scores or reading progress.',
     'Wider quiz-bank questions are now labeled optional path practice and explain that they may cover a later lesson. You can keep moving without answering.',
     'The preview reader keeps wide diagrams and code within the lesson on small screens instead of stretching the page.'
   ]},
-  {date:'2026-10-29', title:'Find the right path and take the complete exercise offline', items:[
+  {id:'2026-10-29-a1e18d7bea4c', date:'2026-10-29', title:'Find the right path and take the complete exercise offline', items:[
     'The path finder searches topics, lesson titles and recommended certifications without downloading the full lesson index. Search and level choices survive refreshes and a return from a roadmap.',
     'Offline AppSec packs now include the Python exercise, local download links, a learning-route index and certification preparation notes. Packs validate every file, show progress, and support cancellation.',
     'Offline storage rejects HTML lesson errors and checks cached text before serving it. Saving a path includes its listed practice files and explains partial failures or an older worker that needs updating.',
     'Certification plan changes keep their keyboard focus and path filter, with honest feedback when browser storage fails.'
   ]},
-  {date:'2026-10-28', title:'Connected path maps and an AppSec fix you can verify', items:[
+  {id:'2026-10-28', date:'2026-10-28', title:'Connected path maps and an AppSec fix you can verify', items:[
     'Every learning path now shows four connected stages, helpful preparation, a practical outcome, and relevant certification options with provider links and eligibility notes.',
     'AppSec now has 18 lessons: requirements and design, secure code review, delivery controls, program operation, and a local fix-and-verify exercise with seven tests.',
     'Certification plans follow you between path overviews and a planner that can filter by path. A saved status is a personal record, separate from course completion or provider verification.',
     'Both frontends share generated course, quiz, and roadmap data. Static path pages include the roadmap and recommendations even before JavaScript loads.'
   ]},
-  {date:'2026-10-22', title:'A review queue for what you have already learned', items:[
+  {id:'2026-10-22', date:'2026-10-22', title:'A review queue for what you have already learned', items:[
     'The study planner now finds due flashcards and unseen key terms from lessons you have marked complete, within your saved learning focus.',
     'Switch between due, unseen, and all studied lessons. Open a short review, revisit lesson notes, or try a related experiment or investigation. Nothing is graded or marked complete by opening a recommendation.',
     'A completed-lessons filter in Flashcards keeps review sessions and deck exports within studied material. Its selection is shareable and survives a refresh.',
     'Review terms load only when requested. The queue uses local calendar dates, preserves planner drafts during sync, and works offline once the terms have been opened.'
   ]},
-  {date:'2026-10-22', title:'Flashcards that follow your lesson and finish with you', items:[
+  {id:'2026-10-22-69e7de63da89', date:'2026-10-22', title:'Flashcards that follow your lesson and finish with you', items:[
     'Open the actual terms from a lesson, or choose a course path and lesson in Flashcards. Deck selections can be shared and survive a refresh.',
     'Choose 5, 10, or 20 terms for a short session. Due terms come first, Again offers one extra try, and a clear finish screen replaces automatic restarts.',
     'Reveal and rating controls work with a keyboard, hidden definitions stay out of the tab order, and ratings keep focus in the practice area. Review dates use your local calendar day.',
     'Export only the selected deck to Anki, revisit the source lesson, and keep using saved review schedules through backups and offline practice. Account sync now imports schedules from another device and keeps the newest rating for each term.'
   ]},
-  {date:'2026-10-22', title:'Take an idea from the lesson into practice', items:[
+  {id:'2026-10-22-1b498e2f642e', date:'2026-10-22', title:'Take an idea from the lesson into practice', items:[
     'Relevant lessons now connect directly to beginner experiments and evidence-based investigations, with a prediction prompt and honest activity completion labels.',
     'Jump to hands-on work from the reader, then return to the same lesson and reflect in your existing notes. Return links survive a refresh and can be shared with the activity URL.',
     'Reading progress remains separate from activity completion. No new account, tracking, or saved preferences are required.'
   ]},
-  {date:'2026-10-22', title:'A clear starting route for every learner', items:[
+  {id:'2026-10-22-d8ed6f07884d', date:'2026-10-22', title:'A clear starting route for every learner', items:[
     'Choose your experience and interest to preview a short route combining lessons, playground experiments, and investigations. Open any step and save your choices when ready.',
     'The route follows your real progress and points to the next unfinished step. Saved choices are included in progress backups and optional account sync.',
     'Use the suggested course path in your study planner with one explicit action, keeping your existing daily lesson goal. Return to your route from lessons, experiments, and casework.'
   ]},
-  {date:'2026-10-21', title:'Learn by doing, one small experiment at a time', items:[
+  {id:'2026-10-21', date:'2026-10-21', title:'Learn by doing, one small experiment at a time', items:[
     'A new beginner Learning Playground explains web requests, UTF-8 and Base64, and invoice access checks through short interactive experiments with immediate feedback.',
     'Follow small goals at your own pace, restart freely, and continue into related lessons or an investigation. Completed experiments are saved with your progress; typed messages and demo settings are not stored.',
     'Investigation cases now include a quick-start guide, plain-language term explanations, and pointers to the evidence for each decision.'
   ]},
-  {date:'2026-10-21', title:'Incident Workbench: build a case from the evidence', items:[
+  {id:'2026-10-21-d76f21929a8f', date:'2026-10-21', title:'Incident Workbench: build a case from the evidence', items:[
     'Investigate three fictional incidents: mailbox compromise, cross-tenant API access, and an exposed cloud key. Each case includes three evidence files and three decisions to review.',
     'Search the evidence, keep an analyst notebook, resume saved decisions, and download evidence packs or a completed case report.',
     'Review explanations tied to specific evidence, follow response references, and retry while keeping your notes and best score. Saved casework is included in progress backups and optional account sync.'
   ]},
-  {date:'2026-10-21', title:'A personal study planner', items:[
+  {id:'2026-10-21-a3c98baf9e75', date:'2026-10-21', title:'A personal study planner', items:[
     'Choose a learning path and a daily lesson goal, then open your next unfinished lessons directly from your plan.',
     'See today\'s completions and a Monday-to-Sunday overview in your local time. Your saved plan is included in progress backups and optional cloud sync.',
     'Open the planner from the course page, My Progress, or the command palette. Planning and saved progress continue to work offline.'
   ]},
-  {date:'2026-09-24', title:'Mobile layout and keyboard accessibility improvements', items:[
+  {id:'2026-09-24', date:'2026-09-24', title:'Mobile layout and keyboard accessibility improvements', items:[
     'The header no longer extends past the screen at 320px or 430px. Narrow layouts hide duplicate header controls and offer Random lesson from the mobile menu.',
     'The career-fit quiz action wraps within a phone screen. Browser checks now cover page width and the mobile random-lesson action across representative small widths.',
     'The mobile menu moves focus to its first link, closes with Escape, and returns focus to the menu button.',
     'Search, account, and keyboard-shortcut dialogs keep Tab inside the open panel and restore focus to the opening control when closed.',
     'The keyboard-shortcut panel has a visible Close button. Search and account inputs have accessible names. Background controls are inert while a dialog is open, and browser checks cover focus entry, containment, and return.'
   ]},
-  {date:'2026-09-23', title:'AI security lessons updated for the 2026 OWASP editions', items:[
+  {id:'2026-09-23', date:'2026-09-23', title:'AI security lessons updated for the 2026 OWASP editions', items:[
     'The LLM Top 10 lesson now uses the 2026 categories and shows how older risk numbers changed, so a learner does not mistake an old identifier for a current one.',
     'The agentic AI lesson adds OWASP\'s separate 2026 agentic risk map and a tool-authorization exercise. Related lessons and the Path 18 quiz now cite the right edition.',
     'The API standards lesson names ASVS 5.0.0 and encourages versioned requirement IDs. Glossary and flashcard retry controls now use normal event listeners.',
     'Installing the site now saves its shell without silently downloading every lesson. Opened lessons cache on use; each path page has an explicit Save path for offline use button with progress and partial-failure feedback.'
   ]},
-  {date:'2026-08-04', title:'The Start button was invisible on most laptops, and had been for a long time', items:[
+  {id:'2026-08-04', date:'2026-08-04', title:'The Start button was invisible on most laptops, and had been for a long time', items:[
     'The header lays out at about 1366px minimum, but the mobile menu only took over below 900px. Everything between those two widths overflowed — by 392px at the narrow end — and because the page sets overflow-x:hidden it was clipped rather than scrollable. The Start button, the single most important control on the site, was simply not on screen at 1024px, 1280px, or any other common laptop width, and there was no way to scroll to it. "My Progress" was also wrapping onto a second line, which is why the header was 91px tall instead of 67px.',
     'Fixed by letting the link row shrink (a flex item will not go below its content width unless told to), pinning the call to action so it can never be the thing that falls off the end, and tightening the row between 901px and 1365px. All eleven links stay visible at every width from 901px to 1920px.',
     'Twenty-five pages had no <h1> anywhere in the document. That is the heading a screen reader user jumps to first to answer "what is this page", and the strongest single on-page signal a search engine has. Every page now has exactly one, and it is the visible page title rather than something hidden. Lessons and path overviews already had theirs, so nothing changed there.',
@@ -9544,7 +9549,7 @@ const CHANGELOG = [
     'Three checks added, and they measure at seven viewport widths rather than one, which is the reason none of this was caught before — every existing check ran at a single window size. Verified by putting each of the three bugs back and watching the right check fail.',
     'Two of the findings in the original audit turned out to be faults in the audit rather than the site: a wrapping <label> is a perfectly good accessible name, and the flashcard rating buttons only look nameless because they are visibility:hidden until you flip the card. Both corrections are baked into the check so it does not cry wolf.'
   ]},
-  {date:'2026-08-03', title:'About, Contact, Privacy and Terms — pages this site should have had from the start', items:[
+  {id:'2026-08-03', date:'2026-08-03', title:'About, Contact, Privacy and Terms — pages this site should have had from the start', items:[
     'There was no privacy policy. That is a problem on its own terms, not just an advertising one: this site can create an account, holds an email address, and syncs your progress to a database, and it was telling you none of that. A reader is owed a plain account of what happens to their data, and there was not one to read.',
     'The privacy policy describes what the code actually does, and was written by reading the code rather than from a template. It says which single browser storage key holds your progress; that without an account nothing leaves your device at all; that accounts are handled by Supabase and store your email, your progress record, your lesson ratings, and — only if you opt in — a leaderboard name and lesson count; that Vercel analytics and speed measurement run on every visit; and that Google serves the advertising. It also says plainly what does not happen: no tracking pixels, no session recording, no fingerprinting, nothing sold, and every security tool on the site processing your input in the browser and never uploading it.',
     'Terms of use, with the section that matters for a site like this one: everything taught here is for systems you own or have written permission to test. Unauthorised access is a criminal offence in most countries, curiosity is not a defence, and neither is having learned the technique here. The certificate section is equally blunt — it is a personal record, not an accredited qualification, and no employer is obliged to recognise it.',
@@ -9552,33 +9557,33 @@ const CHANGELOG = [
     'All four are crawlable pages with proper schema — AboutPage and ContactPage are the types that say "a reachable person runs this" — and all four are linked from the footer of every page.',
     'The check worth having reads the config files, works out which third-party services are genuinely switched on right now, and fails the build if the privacy policy does not name each one. The realistic way a policy goes wrong is not dishonesty, it is adding a service two years later and forgetting this page exists. Verified by enabling an undisclosed analytics provider and by quietly deleting the word "Supabase" — both were caught.'
   ]},
-  {date:'2026-08-02', title:'The certification roadmap was a year out of date, and silent about it', items:[
+  {id:'2026-08-02', date:'2026-08-02', title:'The certification roadmap was a year out of date, and silent about it', items:[
     'It listed seven certifications — Security+, eJPT, PNPT, OSCP, CySA+, CEH, PenTest+ — and not one of them was newer than 2025. An entire category of certification was created during 2026 and the page did not mention it, which is a worse failure than being incomplete: a reader planning their next two years would have come away thinking nothing had changed.',
     'Six additions, now thirteen in all. TryHackMe now issue their own certifications (SEC1, SAL1, PT1), which matters because SAL1 is scored mostly on simulated SOC shift work rather than recall, and PT1 ends in a written report. Three AI security certifications did not exist a year ago: OffSec\'s OSAI, a 24-hour practical engagement in the same shape as the OSCP exam; Hack The Box\'s COAE, seven days against AI-driven infrastructure finished with a commercial-grade report, built with Google; and GIAC\'s AI suite, split by role and sat on real machines.',
     'The list is now ordered as a ladder from first job to specialist, because the question this page answers is "what next" and any other ordering makes the reader do that sorting themselves.',
     'Every entry now states its exam format, which is the fact that actually changes a decision — a 24-hour practical and a multiple-choice paper ask completely different things of you. Prices are deliberately absent: they drift faster than anything else here, and a stale price is worse than none because someone budgets around it.',
     'Three checks. The one worth having verifies that every "prep with Paths 11–13" reference points at a path that exists — those numbers are hand-typed against a list that has been renumbered before, and a wrong one still renders perfectly because it is only a string.'
   ]},
-  {date:'2026-08-02', title:'AI crawlers are welcome here, and now there is a map for them', items:[
+  {id:'2026-08-02-d5066282a151', date:'2026-08-02', title:'AI crawlers are welcome here, and now there is a map for them', items:[
     'Nothing was ever blocking AI crawlers — the wildcard rule in robots.txt already allowed every one of them. But "we never got round to denying it" and "we deliberately allow it" look identical in a file that only has a wildcard, so the major AI crawlers and answer engines are now named explicitly: GPTBot, ClaudeBot, PerplexityBot, CCBot, Google-Extended, Applebot-Extended and the rest. Two of those are not crawlers at all but permission tokens that only ever mean "may this train a model?", and the answer here is yes.',
     'That is a deliberate choice, not an oversight. This site exists so that someone who cannot afford a course can still learn security properly. An answer engine quoting a lesson to a person who was never going to find this site is the mission working, not a leak from it.',
     'New llms.txt: a plain-text index of the entire site written for language models, in the llmstxt.org format. robots.txt answers "may I read this?" and says nothing about what is here — and sitemap.xml is 592 bare URLs with no titles. This is the map: every path, lesson, lab and tool with its real title and a one-line description, in teaching order. 593 links, generated from the same arrays the site renders from so it cannot drift.',
     'Six new checks, and one of them exists because of a genuine robots.txt trap: a crawler obeys only the most specific group matching its user-agent and ignores every other group, so a named AI group with no rule of its own would NOT inherit the wildcard\'s permission — it would leave behaviour undefined for exactly the crawlers it was added to welcome. Every group is now checked to carry its own rule, nothing may be disallowed, and every one of the 593 links in llms.txt is resolved against disk on each run. A map pointing at pages that do not exist is worse than no map.'
   ]},
-  {date:'2026-07-30', title:'The three newest sections were invisible — to Google, to the palette, and to the nav', items:[
+  {id:'2026-07-30', date:'2026-07-30', title:'The three newest sections were invisible — to Google, to the palette, and to the nav', items:[
     'Practice tasks, mock exams and search all shipped as hash routes and nothing else. A hash route is not a page as far as a crawler is concerned — everything after the # is discarded — so three of the site\'s most substantial sections existed only for people who already knew they were there. Practice and exam now have crawlable stubs with their own schema and sitemap entries, and the practice stub lists all 104 task questions, which is safe precisely because the answers are hashed and the explanations encrypted.',
     'Search deliberately has no stub. Google\'s own guidance is to keep internal search result pages out of the index, and following it here costs nothing.',
     'The command palette was missing all three routes, so the fastest way to reach anything on the site could not reach them at all. Added — and while in there, the last 27 palette icons were converted from emoji to the stroke-drawn set the rest of the interface uses, which was the remainder of a migration that had been left half-finished.',
     'Practice now appears in the top navigation, and the README no longer describes a smaller site than the one that exists.',
     'Three new checks lock this down: every content section must have a crawlable stub in the sitemap, every major section must be reachable from the palette, and no palette icon may be an emoji. The first two would have caught this batch\'s bugs on the day they were introduced.'
   ]},
-  {date:'2026-07-28', title:'Practice tasks tripled — 104 tasks, every path at least four', items:[
+  {id:'2026-07-28', date:'2026-07-28', title:'Practice tasks tripled — 104 tasks, every path at least four', items:[
     'The task engine shipped with 36 tasks, which worked out at one or two per path where the platforms this is measured against run five to fifteen per unit. Now 104, and no path has fewer than four.',
     'The new batch leans harder on work than recall: read this code and say what it prints, convert this subnet mask to CIDR, name the flaw in this endpoint, identify a file from its first four bytes, decide whether an unguessable ID actually fixes an authorisation bug. Several deliberately have an uncomfortable answer — no, a UUID is not a fix; no, you should not keep testing an out-of-scope host.',
     'Every one of the 261 accepted answer variants is now round-tripped in a real browser on each test run: hashed, matched against the shipped hash, and used to decrypt its own explanation. Hand-written content fails through typos and normalisation mismatches, and checking a sample would miss precisely the broken one.',
     'The build refuses to ship a hint that gives its own answer away, and caught three of mine while this batch was being written.'
   ]},
-  {date:'2026-07-28', title:'Practice tasks — type the answer, not pick it', items:[
+  {id:'2026-07-28-0787b5905d60', date:'2026-07-28', title:'Practice tasks — type the answer, not pick it', items:[
     'Every serious security platform is built on the same loop: read, go and do something, type the answer you found, have it checked. TryHackMe rooms, Hack The Box skill assessments and PentesterLab exercises all work this way. This site had quizzes, where you recognise the right option, and labs, where you press buttons in a simulation — but nothing that made you produce an answer. Recognition is a much weaker signal than recall, and it is the difference between "I have seen this" and "I can do this". Practice tasks (#/tasks) close that gap.',
     'Tasks are typed-answer, not multiple choice, and they favour doing over defining: compute the usable hosts in a /26, write the find command that lists SUID binaries, read a phishing URL and say where it really goes, build a CVSS vector from a described flaw, decode a Base64 flag.',
     'The answers are not in the page. Only SHA-256 hashes ship, and — this is the part that actually matters — each explanation is encrypted with AES-GCM under a key derived from its own answer. Hashing the answer field alone would have been theatre, because a good explanation usually restates the answer and has to ship too. As it stands the explanation cannot be read out of the file without already knowing the answer, which also means explanations can be written properly instead of contorted to avoid naming the answer.',
@@ -9586,19 +9591,19 @@ const CHANGELOG = [
     'New rank ladder from Newcomer to Elite, drawn from everything you do: lessons read, labs solved, tasks answered, quizzes and mock exams passed. It shows on the tasks page and in your progress hub.',
     'Nineteen new automated checks, most of them negative: that a wrong answer is refused, that it reveals nothing, and that no answer is recoverable from anything the browser downloads.'
   ]},
-  {date:'2026-07-28', title:'The share image was three expansions out of date', items:[
+  {id:'2026-07-28-cfc76b2726f8', date:'2026-07-28', title:'The share image was three expansions out of date', items:[
     'og-image.png — the card shown on every Reddit post, LinkedIn share, Twitter card, Discord embed and Slack unfurl — still advertised "23 paths · 226+ lessons" while the course had grown to 26 paths and 485 lessons. It is the first thing anyone ever sees of this site, and it was understating it by more than half, silently, because a PNG is invisible to every other check in the repo.',
     'It is now generated at build time from the same arrays the site renders from, so it cannot drift again, and the numbers baked into it are written alongside it so a test fails the moment they disagree with reality. Verified by reintroducing the exact stale counts and watching the check fire.',
     'The card also now leads with what actually sets this apart: free forever, no account, works offline, plain English — plus the labs and tools counts, which had never appeared on it at all.'
   ]},
-  {date:'2026-07-27', title:'Timed mock exams, real PDF certificates, and a search page you can link to', items:[
+  {id:'2026-07-27', date:'2026-07-27', title:'Timed mock exams, real PDF certificates, and a search page you can link to', items:[
     'New timed mock exam (#/exam). Three papers — 90 questions in 90 minutes, 40 in 40, or a 20-question drill — drawn across all 26 paths in proportion to each path\'s size. Unlike the path quizzes, nothing is graded or revealed until you submit: you get a clock, free navigation, flag-for-review, and an unanswered count, which is the part that actually rehearses sitting a certification. The paper survives a refresh, an expired clock submits rather than resumes, and the score report breaks results down by path, lists every question you missed with its explanation, and feeds those questions into the existing spaced-repetition queue.',
     'Certificates and transcripts are now real generated PDFs instead of browser print dialogs. Printing produced whatever each browser felt like — different margins, headers and scaling per browser — and the certificate was a screenshot of a bitmap. These are vector text at any zoom, with a multi-page transcript covering lessons, quiz results, mock exams and labs. Written as an 8KB generator using the standard PDF fonts rather than pulling in a 350KB library, because the site was deliberately moved off third-party scripts and a certificate is not a good reason to move back.',
     'Search results now have their own page at #/search?q=… , so a result set can be linked, bookmarked and shared — and the site finally has a real search URL to put behind its structured data.',
     'Search also stopped downloading 427KB of lesson text the instant you opened it. Nothing loads until you actually type; then a 77KB preview covering the opening of every lesson lands first, and the full index follows in the background so deeper matches fill in behind it. Opening search to jump to a page by name now costs nothing at all.',
     'Thirty-six new automated checks cover all three. They earned their keep immediately: the exam suite caught that "Sit another paper" was a dead link, because the result view renders at #/exam so an anchor to #/exam changes nothing.'
   ]},
-  {date:'2026-07-27', title:'Interface overhaul — a real icon set, motion, and difficulty at a glance', items:[
+  {id:'2026-07-27-e3156594a3af', date:'2026-07-27', title:'Interface overhaul — a real icon set, motion, and difficulty at a glance', items:[
     'Every tool and lab card used an emoji as its icon. Beyond looking like a ransom note next to the site\'s flat stroke icons, the emoji repeated — the same globe stood for the subnet calculator, the SSRF lab and DNS recon, and the same open padlock for three unrelated labs — so the icon told you nothing. All 74 are now drawn from one 63-glyph stroke set that inherits the current text colour, so it themes automatically and works in high-contrast mode.',
     'The focus timer used to render above the lesson title, so starting it pushed the whole lesson down and the title stopped being the first thing on the page. It is now a pinned pill that stays out of the reading flow.',
     'Path cards show difficulty as a colour-coded chip with a matching edge marker, so 26 near-identical cards can be scanned for "where do I start" and "what is out of my depth". The level is always spelled out, never colour alone.',
@@ -9606,194 +9611,194 @@ const CHANGELOG = [
     'Fixed the floating section mini-map: hidden labels still occupied width, so the dots landed at ragged positions instead of forming a column, and the longest label pushed its dot off the screen edge.',
     'New automated checks cover contrast in both themes, tap-target size, focus visibility, reduced-motion, and the icons — 23 in total. They caught a genuine mistake made during this work: the first version of the difficulty chips measured 2.91:1 against the light theme, well under the 4.5:1 minimum.'
   ]},
-  {date:'2026-07-27', title:'Every tool and lab page rewritten with real content', items:[
+  {id:'2026-07-27-77b80088a12d', date:'2026-07-27', title:'Every tool and lab page rewritten with real content', items:[
     'The 74 tool and lab pages had about 53 words of their own content each, followed by a link list naming every other item in the section — a list that made up roughly 90% of the page and was identical across all of them. Search engines treat that as thin, duplicated content, so no amount of keyword work would have made those pages rank.',
     'Each one now has a proper explanation of the concept, step-by-step instructions matching the tool\'s actual controls, the things worth taking away, and answers to the questions people genuinely search for — around 336 words per tool and 267 per lab, all newly written. The link list is down to a handful of genuinely related items.',
     'Those answers are also marked up as FAQ data on all 74 pages plus the FAQ itself, which is the realistic opening in search: the head terms belong to sites like jwt.io and the CVSS standards body, but the questions underneath them are still winnable — especially with a free course and a hands-on lab behind every answer.',
     'A new automated check fails the build if any of these pages drops back below 180 words of its own content.'
   ]},
-  {date:'2026-07-27', title:'Search-engine overhaul — every lesson can finally rank', items:[
+  {id:'2026-07-27-0f726bbd5f04', date:'2026-07-27', title:'Search-engine overhaul — every lesson can finally rank', items:[
     'Fixed the single biggest thing holding the site back in search: every one of the 587 crawlable pages declared its canonical URL as the SPA hash route (`/#/lesson/...`). Google discards everything after the `#`, so all of them were telling Google they were duplicates of the homepage — meaning no lesson, tool or lab could rank on its own. Each page now points at its own real URL.',
     'Added the structured data search engines actually read: breadcrumbs on all 590 pages, Course data on every path (the format eligible for Google\'s course results), FAQ data on a new crawlable FAQ page, and — for the first time — a description of the site itself on the homepage, which previously had none at all.',
     'Lesson data now states reading time, level, language and last-updated date, and the sitemap carries a real last-modified date per page taken from the project history, so edits get re-crawled instead of sitting unnoticed.',
     'New internal linking: previous/next links on every lesson, a full index of all 26 paths, and breadcrumbs that lead somewhere (they all pointed at the homepage before). Four new automated checks make the canonical mistake impossible to reintroduce.'
   ]},
-  {date:'2026-07-26', title:'Lessons no longer depend on a third-party CDN', items:[
+  {id:'2026-07-26', date:'2026-07-26', title:'Lessons no longer depend on a third-party CDN', items:[
     'Site-wide audit fix. The markdown renderer used to load from cdn.jsdelivr.net and was chained behind Mermaid, so a blocked or slow CDN showed "Couldn\'t load the lesson renderer" on every one of the 485 lessons — and the offline promise only held after one successful load.',
     'marked is now vendored locally (pinned, service-worker precached) and Mermaid is strictly optional: lesson text renders immediately, diagrams fill in afterwards, and a diagram that never loads collapses to a tidy placeholder instead of dumping raw diagram source at the reader.',
     'Since 60% of lessons contain no diagram at all, those lessons no longer wait on the largest library on the page. A new CI test loads lessons with the CDN blocked so this can never regress.',
     'Also fixed: the homepage\'s SEO and social-share metadata still advertised "24 paths, 235 sub-lessons" (two content expansions out of date), two broken "Next up" links in Path 04 that dead-ended the Python chain, and all page scripts now load deferred rather than blocking the parser.'
   ]},
-  {date:'2026-07-26', title:'Labs and Tools doubled — 42 labs, 32 tools', items:[
+  {id:'2026-07-26-eb097d8e27fc', date:'2026-07-26', title:'Labs and Tools doubled — 42 labs, 32 tools', items:[
     'Twenty-sixth batch of the course-wide "double everything" effort, extending beyond lessons into the interactive Labs and Tools sections: LABS grows from 21 to 42, TOOLS grows from 16 to 32.',
     'New labs span web (CSRF, command injection, open redirect, clickjacking, insecure deserialization), recon (subdomain takeover, DNS recon), infrastructure (Windows/Linux privesc, Kerberoasting, cloud IAM misconfig, Docker socket escape), malware analysis (strings triage, YARA rule building), business logic (a real race-condition redemption exploit), API security (webhook HMAC forgery, OAuth redirect hijacking), and GRC/IR (vendor tiering, an incident response tabletop) — plus password cracking and a leaked-secret hunt.',
     'New tools cover networking (CIDR overlap checker, VLSM planner), crypto (Diffie-Hellman visualizer, timing-attack visualizer, Base32/Base85), and practitioner utilities (entropy calculator, raw HTTP builder, log grep playground, risk register builder, SBOM checker, email header analyzer, password policy checker, YARA tester, incident SLA calculator, compliance control mapper, User-Agent parser).',
     'Every new lab and tool reuses the existing house style and CSS classes rather than introducing new visual patterns, and all 74 lab/tool routes were smoke-tested end to end with zero rendering errors before merge.'
   ]},
-  {date:'2026-07-25', title:'Path 23 doubled to 18 lessons', items:[
+  {id:'2026-07-25', date:'2026-07-25', title:'Path 23 doubled to 18 lessons', items:[
     'Twenty-fifth batch of the course-wide content-doubling effort, and the final path in this effort: Path 23 (GRC & Compliance) grows from 9 to 18 lessons.',
     'New lessons: GRC Career Economics & Demand, RACI & Security Committees, Quantitative Risk Analysis & FAIR, ISMS Documentation & Internal Audit, NIST 800-53 & Control Families, Other Compliance Frameworks (PCI-DSS, HIPAA & beyond), Security Awareness Training Programs, Breach Notification & Disclosure Law, and GRC Automation Platforms Deep Dive.',
     'With this batch, every course path (00 through 23) has now been doubled in this effort — Path 19 (CTF) and the LABS/TOOLS arrays were assessed separately given their fundamentally different content structure.'
   ]},
-  {date:'2026-07-25', title:'Path 22 doubled to 15 lessons', items:[
+  {id:'2026-07-25-08766c7442a7', date:'2026-07-25', title:'Path 22 doubled to 15 lessons', items:[
     'Twenty-fourth batch of the course-wide content-doubling effort: Path 22 (DevSecOps & AppSec Program) grows from 8 to 15 lessons (7 core lessons doubled to 14, plus the capstone lab unchanged).',
     'New lessons: Shift Left vs. Shift Right, Infrastructure as Code (IaC) Security Scanning, Container Image & Registry Security, SBOM & Software Bill of Materials, Security Champions Programs, Vulnerability Management & Prioritization, and AppSec Tooling & Orchestration.',
     'The new SBOM lesson covers requirements that moved from voluntary best practice into genuine regulatory mandate, directly connecting to Path 23\'s GRC coverage of exactly that kind of compliance shift.'
   ]},
-  {date:'2026-07-25', title:'Path 21 doubled to 24 lessons', items:[
+  {id:'2026-07-25-3675730e7c62', date:'2026-07-25', title:'Path 21 doubled to 24 lessons', items:[
     'Twenty-third batch of the course-wide content-doubling effort: Path 21 (API Security) grows from 13 to 24 lessons (11 core lessons doubled to 22, plus the capstone lab and roadmap unchanged).',
     'New lessons: Real-World API Breach Case Studies, API Versioning & Shadow APIs, API Security Standards & Frameworks, OAuth2 & OIDC Deep Dive, API Key & Secret Management, Webhook Security, API Gateway Security, WebSocket Security, gRPC & Protobuf Security, GraphQL Authorization Patterns, and API Documentation & Postman Workflows.',
     'The new gRPC and WebSocket lessons fill a real gap: every previous lesson in this path assumed REST/GraphQL\'s request-response model, even though internal microservice traffic and real-time features increasingly don\'t follow that model at all.'
   ]},
-  {date:'2026-07-25', title:'Path 20 doubled to 14 lessons', items:[
+  {id:'2026-07-25-7d520af2ecd8', date:'2026-07-25', title:'Path 20 doubled to 14 lessons', items:[
     'Twenty-second batch of the course-wide content-doubling effort: Path 20 (Career Prep) grows from 7 to 14 lessons.',
     'New lessons: LinkedIn Optimization for Security Roles, Entry-Level vs. Experienced Career Paths, Writing Technical Blog Posts, Navigating Recruiters & Referrals, Salary Negotiation, Mentorship & Imposter Syndrome, and Career Growth After Year One.',
     'The new mentorship lesson names imposter syndrome directly and explains it as a predictable consequence of comparing your unfiltered daily reality against the community\'s curated public highlight reel, not an accurate signal about competence.'
   ]},
-  {date:'2026-07-25', title:'Path 18 doubled to 23 lessons', items:[
+  {id:'2026-07-25-ca3b3114e712', date:'2026-07-25', title:'Path 18 doubled to 23 lessons', items:[
     'Twenty-first batch of the course-wide content-doubling effort: Path 18 (AI & AI Security) grows from 15 to 23 lessons (the original 8 foundational lessons doubled to 16, with the 7 previously-added lessons kept unchanged and renumbered).',
     'New lessons: Transformer Architecture Deep Dive, AI Threat Modeling, Indirect Prompt Injection Deep Dive (the dual-LLM defensive pattern), Jailbreak Defenses & Guardrails, RAG Security Risks, Multimodal Attack Vectors, AI Safety Evaluation & Benchmarking (Attack Success Rate methodology), and Defensive Prompt Engineering.',
     'The new transformer-architecture lesson explains, at the mechanical level, exactly why prompt injection remains structurally unsolved — attention weighs every token uniformly, with no architectural separation between trusted instructions and untrusted data.'
   ]},
-  {date:'2026-07-25', title:'Path 17 doubled to 17 lessons', items:[
+  {id:'2026-07-25-cec8f75fb0b6', date:'2026-07-25', title:'Path 17 doubled to 17 lessons', items:[
     'Twentieth batch of the course-wide content-doubling effort: Path 17 (Malware & Reverse Engineering) grows from 9 to 17 lessons (8 core lessons doubled to 16, plus the capstone lab unchanged).',
     'New lessons: x86 vs. ARM Architectures, C2 Frameworks and Infrastructure (beaconing, DGAs, Cobalt Strike/Sliver/Mythic), ELF Format & Linux Malware (cryptominers, fileless memfd_create techniques), Ghidra Scripting Basics, API Hooking & Monitoring (Frida), Control Flow Obfuscation Deep Dive (flattening, opaque predicates), Sigma Rules & Detection Engineering, and Malware Triage Methodology.',
     'The new ELF-format lesson fills a real gap: every previous lesson in this path used Windows PE examples, even though most cloud/container malware in 2026 targets Linux specifically.'
   ]},
-  {date:'2026-07-25', title:'Path 16 doubled to 26 lessons', items:[
+  {id:'2026-07-25-9bc6f081b3d8', date:'2026-07-25', title:'Path 16 doubled to 26 lessons', items:[
     'Nineteenth batch of the course-wide content-doubling effort: Path 16 (Advanced Cyber Topics) grows from 18 to 26 lessons (8 core lessons doubled to 16, plus 10 existing labs unchanged).',
     'New lessons: Linux/Windows Privesc Tools Deep Dive, Kerberos Attacks Deep Dive (the protocol mechanics behind Kerberoasting and AS-REP Roasting), AD Persistence & Detection (DCSync, Skeleton Key), IAM Deep Dive, Kubernetes Attack Paths (chaining one pod into full cluster control), Malware Persistence Mechanisms, and Threat Hunting Fundamentals.',
     'The new threat-hunting-fundamentals lesson gives the existing Threat Hunting Lab a proper conceptual foundation it previously lacked, covering hypothesis-driven hunting against the MITRE ATT&CK framework.'
   ]},
-  {date:'2026-07-25', title:'Path 15 doubled to 18 lessons', items:[
+  {id:'2026-07-25-665390a4a2b8', date:'2026-07-25', title:'Path 15 doubled to 18 lessons', items:[
     'Eighteenth batch of the course-wide content-doubling effort: Path 15 (Bug Bounty) grows from 11 to 18 lessons (8 core lessons doubled to 16, plus 2 existing labs unchanged).',
     'New lessons: Bug Bounty Platforms Deep Dive (triage and reputation mechanics), Scope and Legal Boundaries (safe harbor, third-party scope traps), Burp Suite for Bug Bounty Workflow, Hunting XSS & Injection Bugs, Race Conditions Deep Dive (the single-packet attack), Mobile & API Bug Bounty (BOLA, mass assignment), and Duplicates & Triage Realities.',
     'The new race-conditions lesson explains why automated scanners essentially never find this bug class, and why deliberate manual testing with Turbo Intruder remains a genuinely valuable specialization.'
   ]},
-  {date:'2026-07-25', title:'Path 14 doubled to 24 lessons', items:[
+  {id:'2026-07-25-b8055db8c1b4', date:'2026-07-25', title:'Path 14 doubled to 24 lessons', items:[
     'Seventeenth batch of the course-wide content-doubling effort: Path 14 (Ethical Hacking) grows from 12 to 24 lessons.',
     'New lessons: Rules of Engagement Deep Dive, Pentest Methodologies & Standards (PTES/OSSTMM/NIST 800-115), OSINT Tools Deep Dive, Vulnerability Scanning Tools, Exploit Development Basics, Privilege Escalation Methodology, Lateral Movement Techniques, Pivoting & Tunneling, Red Team vs. Penetration Testing, Social Engineering in Pentests, Wireless Pentesting Basics, and Purple Teaming Basics.',
     'The new red-team-vs-pentest and purple-teaming lessons finally give this path proper vocabulary for engagement types beyond the standard 5-phase pentest.'
   ]},
-  {date:'2026-07-25', title:'Path 13 doubled to 18 lessons', items:[
+  {id:'2026-07-25-610605e8744a', date:'2026-07-25', title:'Path 13 doubled to 18 lessons', items:[
     'Sixteenth batch of the course-wide content-doubling effort: Path 13 (Mobile App Security) grows from 9 to 18 lessons.',
     'New lessons: Android Permissions Deep Dive, Reverse Engineering Mobile Apps (Frida), Mobile Authentication & Biometrics (the secure enclave), Mobile API Security, Cross-Platform Mobile Security (React Native/Flutter), Mobile App Hardening, Mobile Malware & App Store Security, Mobile Device Management (MDM), and Mobile Security Careers & Certifications.',
     'The new biometrics lesson corrects a common misconception: Face ID doesn\'t send biometric data anywhere, it unlocks a key that never leaves the secure enclave.'
   ]},
-  {date:'2026-07-25', title:'Path 12 doubled to 20 lessons', items:[
+  {id:'2026-07-25-8f7efc72946d', date:'2026-07-25', title:'Path 12 doubled to 20 lessons', items:[
     'Fifteenth batch of the course-wide content-doubling effort: Path 12 (Network Security) grows from 10 to 20 lessons.',
     'New lessons: Network Forensics Basics, ARP Spoofing Hands-On, VPN Protocols Deep Dive, Network Segmentation in Practice, Network Security Monitoring Tools (Zeek/Suricata), Network Access Control (802.1X), Bluetooth & IoT Security, DNS Attacks Hands-On, DDoS Attacks & Mitigation, and Cloud Network Security.',
     'The new Bluetooth/IoT lesson uses the Mirai botnet as its central case study for why default credentials matter at scale.'
   ]},
-  {date:'2026-07-25', title:'Path 11 doubled to 26 lessons', items:[
+  {id:'2026-07-25-686219a7a0c7', date:'2026-07-25', title:'Path 11 doubled to 26 lessons', items:[
     'Fourteenth batch of the course-wide content-doubling effort: Path 11 (Web Security & Hacking) grows from 13 to 26 lessons.',
     'New lessons: Path Traversal Basics, CSRF, Clickjacking, Web Security Headers Deep Dive, Business Logic Vulnerabilities, Race Conditions in Web Applications, XXE, Local & Remote File Inclusion, Insecure Deserialization, API Security Fundamentals, GraphQL Security Basics, Web Application Firewalls, and Secure Coding for Web Developers.',
     'The new secure-coding lesson closes the path by naming the single root cause connecting nearly every vulnerability covered: trusting data or requests without verifying they\'re actually legitimate.'
   ]},
-  {date:'2026-07-25', title:'Path 10 doubled to 20 lessons', items:[
+  {id:'2026-07-25-c67518ffcb71', date:'2026-07-25', title:'Path 10 doubled to 20 lessons', items:[
     'Thirteenth batch of the course-wide content-doubling effort: Path 10 (Cybersecurity Fundamentals) grows from 10 to 20 lessons.',
     'New lessons: Defense in Depth, Types of Security Controls, Vulnerability Management Basics, Insider Threats, Supply Chain Security Basics, Security Policies & Awareness Training, Incident Response Basics, Business Continuity & Disaster Recovery, Physical Security Basics, and Security Metrics & KPIs.',
     'The new metrics lesson closes the loop on the whole path, explaining how to actually measure whether a security program works rather than just assuming it does.'
   ]},
-  {date:'2026-07-25', title:'Path 05 doubled to 18 lessons', items:[
+  {id:'2026-07-25-5269d5549275', date:'2026-07-25', title:'Path 05 doubled to 18 lessons', items:[
     'Twelfth batch of the course-wide content-doubling effort: Path 05 (How the Web Works) grows from 9 to 18 lessons.',
     'New lessons: How Browsers Render Pages (the DOM and XSS), HTTP Methods & Status Codes, Browser Storage Basics, Same-Origin Policy & CORS, WebSockets & the Real-Time Web, Web Forms & Input Handling, Content Security Policy Basics, Web Caching Basics, and Web Frameworks: An Overview.',
     'The new Same-Origin Policy lesson covers the single foundational trust boundary nearly every other web security mechanism in this course builds on.'
   ]},
-  {date:'2026-07-25', title:'Path 04 doubled to 22 lessons', items:[
+  {id:'2026-07-25-9b03de93e5a0', date:'2026-07-25', title:'Path 04 doubled to 22 lessons', items:[
     'Eleventh batch of the course-wide content-doubling effort: Path 04 (Programming & Python) grows from 11 to 22 lessons.',
     'New lessons: Dictionaries & Sets, Error Handling & Exceptions, String Manipulation & Regex, Working with Files in Python, Python Modules & Packages, Object-Oriented Python Basics, Writing Secure Python Code, Python/requests/APIs, Python for Network Scripting, Python Security Libraries Overview, and Python Careers & Next Steps.',
     'The new secure-coding lesson covers eval()/exec(), shell=True, hardcoded secrets, and unsafe pickle deserialization.'
   ]},
-  {date:'2026-07-25', title:'Path 03 doubled to 26 lessons', items:[
+  {id:'2026-07-25-b636f8b36c92', date:'2026-07-25', title:'Path 03 doubled to 26 lessons', items:[
     'Tenth batch of the course-wide content-doubling effort: Path 03 (Operating Systems & Linux) grows from 13 to 26 lessons — the largest single-path expansion yet.',
     'New lessons: Choosing a Linux Distro for Security Work, The Linux Filesystem Hierarchy, Text Processing Tools (sed/awk), Linux Package Management, Linux Process Management, Linux Networking Commands, SSH & Remote Access, Linux Cron & Scheduling, Linux Logging Basics, Linux Firewall Basics, Shell Scripting Security Pitfalls, a Practical Linux Hardening Checklist, and Linux Careers & Certifications.',
     'The new hardening-checklist lesson consolidates every earlier lesson in the path into one practical, sensibly-ordered sequence.'
   ]},
-  {date:'2026-07-25', title:'Path 02 doubled to 20 lessons', items:[
+  {id:'2026-07-25-ee55319a1654', date:'2026-07-25', title:'Path 02 doubled to 20 lessons', items:[
     'Ninth batch of the course-wide content-doubling effort: Path 02 (Networking Fundamentals) grows from 10 to 20 lessons — the largest single-path expansion so far.',
     'New lessons: Routing Basics, Subnetting & CIDR Notation, NAT & Port Forwarding, Switches & VLANs, Wireless Networking Basics, Firewalls: The Basics, Common Network Attacks Overview, Network Troubleshooting Tools, Cloud & Modern Networking, and Network Security Careers & Certifications.',
     'The new Cloud & Modern Networking lesson explicitly bridges this path\'s physical-networking fundamentals to Path 08\'s cloud-networking material.'
   ]},
-  {date:'2026-07-25', title:'Path 09 doubled to 14 lessons', items:[
+  {id:'2026-07-25-7b90702eb788', date:'2026-07-25', title:'Path 09 doubled to 14 lessons', items:[
     'Eighth batch of the course-wide content-doubling effort: Path 09 (Digital Privacy & Personal Security) grows from 7 to 14 lessons.',
     'New lessons: Social Media Privacy & Oversharing, Privacy-Focused Tools & Alternatives, Device & Location Privacy, Data Broker Opt-Outs, Privacy Laws & Your Rights (GDPR/CCPA), Protecting Family & Children\'s Privacy, and Deleting Your Digital Footprint.',
     'The new closing lesson ties the whole path together into a practical, prioritized cleanup process.'
   ]},
-  {date:'2026-07-25', title:'Path 08 doubled to 14 lessons', items:[
+  {id:'2026-07-25-c872e1b321d7', date:'2026-07-25', title:'Path 08 doubled to 14 lessons', items:[
     'Seventh batch of the course-wide content-doubling effort: Path 08 (Cloud Computing Basics) grows from 7 to 14 lessons.',
     'New lessons: Cloud Compute Basics, Cloud Serverless Basics, Cloud Databases Basics, Cloud Logging & Monitoring Basics, Cloud Cost & Billing Security, Cloud Multi-Account Governance, and Cloud Security Careers & Certifications.',
     'The new billing-security lesson covers cryptomining abuse as a distinct, often-overlooked cloud attack surface — damage measured in dollars, not just data.'
   ]},
-  {date:'2026-07-25', title:'Path 07 doubled to 14 lessons', items:[
+  {id:'2026-07-25-50c96b78a73f', date:'2026-07-25', title:'Path 07 doubled to 14 lessons', items:[
     'Sixth batch of the course-wide content-doubling effort: Path 07 (Windows Security Basics) grows from 7 to 14 lessons.',
     'New lessons: RDP & Remote Access Security, Recognizing a Compromised Windows Machine, Windows Active Directory: The Basics, Windows Group Policy Basics, Windows Services & Task Manager for Security, Windows Backup & Recovery, and Windows Privilege Escalation: An Introduction.',
     'The new Active Directory and Group Policy lessons build a foundation that Path 16\'s hands-on Active Directory attack lab now assumes.'
   ]},
-  {date:'2026-07-25', title:'Path 06 doubled to 14 lessons', items:[
+  {id:'2026-07-25-32ffee141d4c', date:'2026-07-25', title:'Path 06 doubled to 14 lessons', items:[
     'Fifth batch of the course-wide content-doubling effort: Path 06 (Cryptography Fundamentals) grows from 7 to 14 lessons.',
     'New lessons: Key Exchange & Diffie-Hellman, Elliptic Curve Cryptography, The TLS Handshake Step by Step, Common Cryptographic Attacks, Applied Cryptography, Blockchain & Cryptocurrency Cryptography, and Post-Quantum Cryptography.',
     'Lesson order re-sequenced so the new material builds naturally on what came before it, all the way to the hands-on lab at the end.'
   ]},
-  {date:'2026-07-25', title:'Path 01 doubled to 12 lessons', items:[
+  {id:'2026-07-25-1ba9c1a6aadd', date:'2026-07-25', title:'Path 01 doubled to 12 lessons', items:[
     'Fourth batch of the course-wide content-doubling effort: Path 01 (Introduction to Cybersecurity) grows from 6 to 12 lessons.',
     'New lessons: The CIA Triad, A Tour of Common Cyberattacks, Cybersecurity Laws & Ethics, Security Frameworks: A Beginner\'s Map, Building Your First Home Lab, and Joining the Security Community.',
     'Lesson order and "Next up" links re-sequenced across the whole path to keep the beginner narrative coherent.'
   ]},
-  {date:'2026-07-25', title:'Path 00 doubled to 12 lessons', items:[
+  {id:'2026-07-25-3d65a68150a2', date:'2026-07-25', title:'Path 00 doubled to 12 lessons', items:[
     'Third batch of the course-wide content-doubling effort: Path 00 (Computer Basics & Security Mindset) grows from 6 to 12 lessons.',
     'New lessons: Using Your Web Browser Safely, Wi-Fi & Connecting Safely, Updates & Backups, Email Basics & Safety, Common Tech Scams for Beginners, and Building Good Digital Habits.',
     'Lesson order and "Next up" links across the whole path were re-sequenced so absolute beginners still move through a logical, connected story.'
   ]},
-  {date:'2026-07-25', title:'Zero Trust path doubled to 18 lessons', items:[
+  {id:'2026-07-25-963d5b49b67d', date:'2026-07-25', title:'Zero Trust path doubled to 18 lessons', items:[
     'Second batch of the course-wide content-doubling effort: Path 24 (Zero Trust Architecture) grows from 9 to 18 lessons.',
     'New lessons: Data-Centric Zero Trust, Zero Trust for APIs & Microservices, Privileged Access Management, Zero Trust for Third Parties, Zero Trust Maturity Models, Analytics & Monitoring, Common Zero Trust Pitfalls, Remote & Hybrid Work, and Zero Trust Careers & Certifications.'
   ]},
-  {date:'2026-07-25', title:'OT/ICS path doubled to 14 lessons', items:[
+  {id:'2026-07-25-7effe2e47e4a', date:'2026-07-25', title:'OT/ICS path doubled to 14 lessons', items:[
     'First batch of a course-wide content-doubling effort: Path 25 (OT/ICS & Critical Infrastructure Security) grows from 7 to 14 lessons.',
     'New lessons: OT Asset Inventory & Visibility, ICS Vulnerability Management, Safety Instrumented Systems, ICS Incident Response, ICS Supply Chain Risk, IIoT & Cloud Convergence, and OT/ICS Careers & Certifications.',
     'More paths will be doubled in upcoming batches.'
   ]},
-  {date:'2026-07-25', title:'CTF Zone expanded to 24 challenges', items:[
+  {id:'2026-07-25-a514895dfd0b', date:'2026-07-25', title:'CTF Zone expanded to 24 challenges', items:[
     '16 new self-contained CTF puzzles across API Security (BOLA, mass assignment, rate-limit bypass), a JWT chain (weak-secret brute force, algorithm confusion, kid header injection), business logic bugs (price tampering, coupon-replay race condition, step-skipping), AI Red Teaming (prompt leak, indirect injection, jailbreak-the-judge), plus Crypto (small-prime RSA factoring), Forensics (EXIF metadata trail), and Linux privesc (SUID interpreter abuse).',
     'Every challenge now carries an explicit difficulty tier (Easy/Medium/Hard) and progressive hints.',
     'New closing lesson: a six-part solution write-up template (summary, recon, hypothesis, exploitation steps, root cause, remediation) with a worked example, for turning CTF solves into portfolio-ready write-ups or bug bounty reports.'
   ]},
-  {date:'2026-07-25', title:'New path: OT/ICS & Critical Infrastructure Security', items:[
+  {id:'2026-07-25-059f8d43598a', date:'2026-07-25', title:'New path: OT/ICS & Critical Infrastructure Security', items:[
     'A new 7-lesson advanced path: SCADA/ICS architecture fundamentals, industrial protocols (Modbus, DNP3) and why they lack built-in authentication, the Purdue Model, real-world attacks (Stuxnet, the Ukraine grid attacks, Oldsmar, Triton/Trisis) mapped back to the failure modes that caused them, practical OT security controls, and a full capstone security assessment.',
     'Comes with a full 10-question path quiz, like every other path.'
   ]},
-  {date:'2026-07-25', title:'New path: Zero Trust Architecture', items:[
+  {id:'2026-07-25-73fa79e7573d', date:'2026-07-25', title:'New path: Zero Trust Architecture', items:[
     'A new 9-lesson advanced path: never trust/always verify, identity as the perimeter, device posture, micro-segmentation, continuous verification, ZTNA vs. VPN, Zero Trust in the cloud, a practical rollout roadmap, and a closing lesson on real-world case studies (Google BeyondCorp) capped with a maturity-assessment capstone exercise.',
     'Comes with a full 10-question path quiz, like every other path.'
   ]},
-  {date:'2026-07-25', title:'New Active Directory Attack Lab', items:[
+  {id:'2026-07-25-c6abdbed1b64', date:'2026-07-25', title:'New Active Directory Attack Lab', items:[
     'A guided, three-stage walkthrough of the classic AD attack chain: BloodHound-style graph recon to find a misconfigured-ACL path to Domain Admin, Kerberoasting a service account whose password leaked into its own description field, and forging a Golden Ticket once the krbtgt hash is obtained.'
   ]},
-  {date:'2026-07-25', title:'4 new AI Red Teaming labs', items:[
+  {id:'2026-07-25-9b81a79c7fd0', date:'2026-07-25', title:'4 new AI Red Teaming labs', items:[
     'Prompt Injection Simulator: a support bot with a hidden system prompt it\'s told never to reveal — get it to reveal it anyway.',
     'Jailbreak Playground: a direct ask gets refused; find the roleplay or hypothetical framing that gets the same secret out.',
     'Indirect Prompt Injection Challenge: you control a job posting an AI assistant is about to summarize for someone else — plant an instruction it follows instead.',
     'Agentic Risk Scenario: a defensive exercise — an AI agent with email tool-access is about to process an inbox; spot and quarantine the malicious email before running it.'
   ]},
-  {date:'2026-07-25', title:'4 new API Security labs', items:[
+  {id:'2026-07-25-8c20caddab5d', date:'2026-07-25', title:'4 new API Security labs', items:[
     'BOLA/BFLA Playground: a fake employee-directory API with two separate bugs to find — read someone else\'s record, then call an admin-only action with no admin role at all.',
     'GraphQL Introspection Abuse: a single /graphql endpoint where introspection is left on and no field is authorized — map the schema, then pull a field the UI never shows.',
     'Mass Assignment Toy: a "update my profile" endpoint that binds your whole JSON body onto your account with no allow-list. Find the field that shouldn\'t be writable.',
     'Rate-Limit Bypass Simulator: a login endpoint that blocks after 3 bad guesses, but trusts a client-supplied header to decide who "you" are.'
   ]},
-  {date:'2026-07-25', title:'Removed Listen mode, fixed navigation not scrolling to top', items:[
+  {id:'2026-07-25-e6b7763d16b3', date:'2026-07-25', title:'Removed Listen mode, fixed navigation not scrolling to top', items:[
     'Removed Listen mode and Playlist mode — the browser text-to-speech read-aloud feature was unreliable across Chrome and Safari (silent playback, stalled mid-lesson) and has been pulled rather than patched further.',
     'Fixed a real bug: clicking a nav or footer link (Paths, Careers, Tracks, etc.) could leave the page scrolled wherever you already were instead of jumping to the top of the new page — a site-wide smooth-scroll style was getting cut off by the page content swapping in.'
   ]},
-  {date:'2026-07-24', title:'Faster first load, missed-question review & update flags', items:[
+  {id:'2026-07-24', date:'2026-07-24', title:'Faster first load, missed-question review & update flags', items:[
     'Roughly half a megabyte less to download on first visit — the glossary and search index no longer block the offline installer, they load in the background instead.',
     'Missed-question review (#/quiz/missed): questions you get wrong now come back on a spaced schedule until you\'ve answered each correctly three times.',
     '"Updated since you read it" — lessons edited after you completed them are now flagged, so you know what\'s worth a second look.',
     'Lesson 👍/👎 feedback now reaches the site owner (when signed in) instead of only ever sitting in your own browser.',
     'Added an automated test suite and CI so content and routing regressions get caught before they ship.'
   ]},
-  {date:'2026-07-24', title:'Full quiz coverage, onboarding tour, transcripts & SEO', items:[
+  {id:'2026-07-24-083c9eafe1e0', date:'2026-07-24', title:'Full quiz coverage, onboarding tour, transcripts & SEO', items:[
     'Every path now has a quiz — API Security, DevSecOps, and GRC were missing one entirely, so "quizzes passed" could never reach 100%.',
     'All quiz banks doubled from 5 to 10 questions (240 questions total), which also means weekly chains now deliver the full seven they promise.',
     'End-of-lesson quick checks: one question at the end of every lesson, drawn from that path\'s bank. Practice only — it never affects your quiz score.',
@@ -9803,7 +9808,7 @@ const CHANGELOG = [
     'Lessons-per-week trend chart and prerequisite heads-up on advanced paths.',
     'Opt-in local streak reminders, and all 16 tools plus 12 labs are now search-engine indexable.'
   ]},
-  {date:'2026-07-24', title:'Playlist mode, shuffle quiz, zen mode & more', items:[
+  {id:'2026-07-24-6b45a6a86d69', date:'2026-07-24', title:'Playlist mode, shuffle quiz, zen mode & more', items:[
     'Playlist mode: listen to an entire path back-to-back, podcast-style — auto-advances lesson to lesson using your browser\'s text-to-speech.',
     'Shuffle quiz (#/quiz/shuffle): 10 random, no-stakes questions pulled from every path at once.',
     'Anki-compatible flashcard export on the Flashcards page — download your deck as a .csv Anki can import directly.',
@@ -9811,7 +9816,7 @@ const CHANGELOG = [
     'Zen/focus reading mode (🧘): hides everything but the lesson text.',
     'Lesson helpful/not-helpful rating (👍/👎) on every lesson.'
   ]},
-  {date:'2026-07-23', title:'GRC path, 5 new labs, capstone chain & a dozen new tools', items:[
+  {id:'2026-07-23', date:'2026-07-23', title:'GRC path, 5 new labs, capstone chain & a dozen new tools', items:[
     'New Path 23 — GRC & Compliance: governance, risk management, ISO 27001, NIST CSF, SOC 2, vendor risk, and how to break into a non-coding security career.',
     'Five new labs: Path Traversal, SSRF, and XXE playgrounds, a Log Analysis / Incident Response lab, and an OSINT Sandbox.',
     'Capstone attack chain: a narrative that chains four existing labs into one realistic breach, start to finish.',
@@ -9821,7 +9826,7 @@ const CHANGELOG = [
     'A 2-minute career-fit quiz recommending which track suits you.',
     'High-contrast mode, a lab points/scoreboard, achievement rarity tiers, and a homepage "what to learn next" recommender.'
   ]},
-  {date:'2026-07-23', title:'Labs, career tools, skill tree & offline path packs', items:[
+  {id:'2026-07-23-6a2cf11d37fe', date:'2026-07-23', title:'Labs, career tools, skill tree & offline path packs', items:[
     'Two new labs: an IDOR playground and a JWT forgery lab (tamper the header/payload and slip past a vulnerable "verify" endpoint).',
     'New tool: Vulnerability Report Writer — a guided form that exports a clean Markdown or printable report.',
     'Mock Technical Interview mode: timed random questions from the interview bank, self-scored.',
@@ -9830,7 +9835,7 @@ const CHANGELOG = [
     'Offline path packs: download any path as a self-contained .zip of its lesson files.',
     'Optional public learning profile page for anyone who opts into the leaderboard.'
   ]},
-  {date:'2026-07-23', title:'Leaderboard, printable lessons, mini-map & more', items:[
+  {id:'2026-07-23-854f61d990c4', date:'2026-07-23', title:'Leaderboard, printable lessons, mini-map & more', items:[
     'Optional community leaderboard: opt in from your Progress page to show up on a public top-10 by lessons completed.',
     'Lessons now have a proper print/PDF view (📄 icon) — clean, chrome-free, black-on-white.',
     'A floating scroll-spy mini-map on wide screens shows which section of a long lesson you\'re in.',
@@ -9838,37 +9843,37 @@ const CHANGELOG = [
     'Certificates can now be shared to X (in addition to LinkedIn).',
     'Optional ads (Google AdSense) — minimal, off by default, only in the lesson sidebar and below lesson content.'
   ]},
-  {date:'2026-07-23', title:'Two new advanced paths: API Security & DevSecOps', items:[
+  {id:'2026-07-23-cb4c45dc3dac', date:'2026-07-23', title:'Two new advanced paths: API Security & DevSecOps', items:[
     'Path 21 — API Security: OWASP API Top 10, BOLA/BFLA, JWT attacks, GraphQL security, rate limiting & mass assignment, and a capstone lab against a real vulnerable API.',
     'Path 22 — DevSecOps & AppSec Program: SAST/DAST/SCA, CI/CD pipeline security, secrets & supply chain, threat modeling, metrics, and building an AppSec program from scratch.',
     'Both paths are now woven into the AppSec Engineer and Bug Bounty Hunter practice tracks.'
   ]},
-  {date:'2026-07-23', title:'Listen mode, daily challenge, more labs & tools', items:[
+  {id:'2026-07-23-d46ecd4c935a', date:'2026-07-23', title:'Listen mode, daily challenge, more labs & tools', items:[
     'Listen mode: lessons can now be read aloud (where your browser supports speech).',
     'Daily challenge (#/daily): one question a day from across the course, and it counts toward your streak.',
     'Two new labs — a SQL-injection sandbox and a phishing-spotter game.',
     'Three new tools — a regex tester, a hash identifier, and an HTTP security-header analyzer.',
     'A shareable progress card you can download/post, and a command palette (Ctrl/Cmd+K) that jumps to any page, tool, or lab.'
   ]},
-  {date:'2026-07-22', title:'Tools, glossary search, activity heatmap & more', items:[
+  {id:'2026-07-22', date:'2026-07-22', title:'Tools, glossary search, activity heatmap & more', items:[
     'New Tools section: encoder/decoder, hash generator, JWT decoder, CVSS 3.1 calculator, subnet calculator, password-strength meter, and a cipher playground.',
     'Search now covers full lesson text, not just titles.',
     'Activity heatmap on your progress page, plus reading preferences (text size, width, and a legibility boost).',
     'Notes can now be exported as a single Markdown file, and every lesson has a "suggest an edit" link.',
     'New interview question bank and a changelog page (this one).'
   ]},
-  {date:'2026-07-20', title:'Glossary, flashcards & study tools', items:[
+  {id:'2026-07-20', date:'2026-07-20', title:'Glossary, flashcards & study tools', items:[
     'A searchable glossary of every key term across all 205 lessons.',
     'Flashcard review mode with spaced repetition to lock terms into memory.',
     'Reading time, in-page tables of contents, code-copy buttons, and syntax highlighting on lessons.',
     'Day-streak tracking, quiz review, progress backup/restore, and keyboard shortcuts.'
   ]},
-  {date:'2026-07-18', title:'Installable & offline', items:[
+  {id:'2026-07-18', date:'2026-07-18', title:'Installable & offline', items:[
     'KashSec is now a full Progressive Web App — install it and the whole course works offline.',
     'Interactive labs: an in-browser Linux terminal, a vulnerable-web-app playground, and a packet-capture viewer.',
     'Career practice tracks and static per-lesson pages so search engines can index every lesson.'
   ]},
-  {date:'2026-07-16', title:'21 paths, reordered beginner-first', items:[
+  {id:'2026-07-16', date:'2026-07-16', title:'21 paths, reordered beginner-first', items:[
     'Four fresher-focused paths added (Cryptography, Windows, Cloud, Digital Privacy) and every lesson deepened.',
     'Paths reordered from absolute basics up to advanced, so the numbering tracks difficulty.'
   ]}
@@ -9881,6 +9886,7 @@ function renderChangelog(){
         <div class="sec-eyebrow">Changelog</div>
         <h1>What's new</h1>
         <p class="sec-lead">KashSec is free and actively improved. Here's what's changed recently.</p>
+        <p><a href="/feed.xml">Follow updates with RSS</a> — add this feed to your reader. No account needed.</p>
       </div>
       <div class="changelog" data-reveal style="--i:1">
         ${CHANGELOG.map(c=>`

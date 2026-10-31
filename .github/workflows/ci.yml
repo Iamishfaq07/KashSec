@@ -63,6 +63,9 @@ jobs:
       - name: Smoke test all routes
         run: npm run test:smoke
 
+      - name: Release feed identities and subscription
+        run: npm run test:feed
+
       - name: Canonical pages and content safety
         run: npm run test:canonical
 
