@@ -22,7 +22,7 @@ try{
   assert.match(await p.inputValue('#stSystem'),/invoice API/);
   assert.equal(await p.locator('#tsCoverage').innerText(),'2 of 6 categories documented');
   await p.fill('#st-spoofing','<img src=x onerror="window.injected=true">');
-  await p.click('#tsSave');assert.match(await p.locator('#tsStatus').innerText(),/Saved in this browser/);
+  await p.click('#tsSave');await p.waitForFunction(()=>/^(Saved in this browser|The saved worksheet changed)/.test(document.querySelector('#tsStatus').textContent));assert.match(await p.locator('#tsStatus').innerText(),/Saved in this browser/);
   const saved=JSON.parse(await p.evaluate(k=>localStorage.getItem(k),KEY));
   await p.reload();await p.locator('#tsSave').waitFor();
   assert.equal(await p.inputValue('#st-spoofing'),saved.categories.spoofing.threat);
@@ -38,10 +38,10 @@ try{
   await p.locator('#tsImport').setInputFiles({name:'backup.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(imported))});
   await p.waitForFunction(()=>document.querySelector('#stSystem').value==='Imported model');
   assert.equal(JSON.parse(await p.evaluate(k=>localStorage.getItem(k),KEY)).system,saved.system);
-  await p.click('#tsSave');assert.equal(JSON.parse(await p.evaluate(k=>localStorage.getItem(k),KEY)).system,'Imported model');
+  await p.click('#tsSave');await p.waitForFunction(()=>/^(Saved in this browser|The saved worksheet changed)/.test(document.querySelector('#tsStatus').textContent));assert.equal(JSON.parse(await p.evaluate(k=>localStorage.getItem(k),KEY)).system,'Imported model');
   // A second tab must not silently replace a newer saved draft.
-  const other=await c.newPage();await open(other);await other.fill('#stSystem','Newer tab');await other.click('#tsSave');
-  await p.fill('#stSystem','Stale tab');await p.click('#tsSave');
+  const other=await c.newPage();await open(other);await other.fill('#stSystem','Newer tab');await other.click('#tsSave');await other.waitForFunction(()=>document.querySelector('#tsStatus').textContent.startsWith('Saved in this browser'));
+  await p.fill('#stSystem','Stale tab');await p.click('#tsSave');await p.waitForFunction(()=>/^(Saved in this browser|The saved worksheet changed)/.test(document.querySelector('#tsStatus').textContent));
   assert.match(await p.locator('#tsStatus').innerText(),/changed in another tab/);
   assert.equal(JSON.parse(await p.evaluate(k=>localStorage.getItem(k),KEY)).system,'Newer tab');
   p.once('dialog',d=>d.accept());await p.click('#tsLoad');assert.equal(await p.inputValue('#stSystem'),'Newer tab');
@@ -55,17 +55,38 @@ try{
     await q.locator('.ts-category summary').last().focus();await q.keyboard.press('Enter');
     assert.equal(await q.locator('.ts-category').last().getAttribute('open'),'');
     await q.locator('.ts-category [data-field="verification"]').last().fill('Verification evidence');
-    await q.click('#tsSave');assert.match(await q.locator('#tsStatus').innerText(),/Saved in this browser/);await mobile.close();
+    await q.click('#tsSave');await q.waitForFunction(()=>document.querySelector('#tsStatus').textContent.startsWith('Saved in this browser'));assert.match(await q.locator('#tsStatus').innerText(),/Saved in this browser/);await mobile.close();
   }
   const denied=await context(),d=await denied.newPage();
   await d.addInitScript(()=>{Storage.prototype.setItem=function(){throw new DOMException('Blocked','QuotaExceededError');};});
-  await open(d);await d.fill('#stSystem','Keep me');await d.click('#tsSave');assert.match(await d.locator('#tsStatus').innerText(),/Could not save/);
+  await open(d);await d.fill('#stSystem','Keep me');await d.click('#tsSave');await d.waitForFunction(()=>document.querySelector('#tsStatus').textContent.startsWith('Could not save'));assert.match(await d.locator('#tsStatus').innerText(),/Could not save/);
   assert.equal(JSON.parse(await download(d,'#tsExport')).system,'Keep me');await denied.close();
+  // Hold an origin lock so two tabs queue saves against the same baseline.
+  const racing=await context(),a=await racing.newPage(),b=await racing.newPage();
+  await open(a);await open(b);
+  await a.evaluate(()=>{navigator.locks.request('kashsec_threat_studio_v1',()=>new Promise(resolve=>{window.__unlock=resolve;}));});
+  await a.waitForFunction(()=>!!window.__unlock);
+  await a.fill('#stSystem','First queued');await a.click('#tsSave');
+  await b.fill('#stSystem','Second queued');await b.click('#tsSave');
+  await a.fill('#stSystem','Edited while waiting');
+  await a.evaluate(()=>window.__unlock());
+  await a.waitForFunction(()=>document.querySelector('#tsStatus').textContent.startsWith('Earlier draft saved'));
+  await b.waitForFunction(()=>document.querySelector('#tsStatus').textContent.includes('changed in another tab'));
+  assert.equal(JSON.parse(await a.evaluate(k=>localStorage.getItem(k),KEY)).system,'First queued');
+  a.once('dialog',dialog=>dialog.dismiss());await a.click('#tsBlank');
+  assert.equal(await a.inputValue('#stSystem'),'Edited while waiting','queued save preserves the unsaved-draft guard');
+  await a.click('#tsSave');await a.waitForFunction(()=>document.querySelector('#tsStatus').textContent.startsWith('Saved in this browser'));
+  assert.equal(JSON.parse(await a.evaluate(k=>localStorage.getItem(k),KEY)).system,'Edited while waiting');
+  await racing.close();
+  const fallback=await context(),f=await fallback.newPage();
+  await f.addInitScript(()=>Object.defineProperty(navigator,'locks',{value:undefined}));
+  await open(f);await f.fill('#stSystem','Fallback draft');await f.click('#tsSave');
+  assert.equal(JSON.parse(await f.evaluate(k=>localStorage.getItem(k),KEY)).system,'Fallback draft');await fallback.close();
   // First visit caches the module; a saved worksheet must reopen offline.
   const offline=await browser.newContext({serviceWorkers:'allow',reducedMotion:'reduce'}),o=await offline.newPage();
   await offline.addInitScript(()=>{if(!localStorage.getItem('kashsec_state_v1'))localStorage.setItem('kashsec_state_v1',JSON.stringify({tourSeen:true}));});
   await open(o);await o.evaluate(async()=>{await navigator.serviceWorker.ready;if(!navigator.serviceWorker.controller)await new Promise(r=>navigator.serviceWorker.addEventListener('controllerchange',r,{once:true}));});
   await o.waitForFunction(async()=>!!(await caches.match(new URL('threat-studio.js',location.origin).href)));
-  await o.fill('#stSystem','Offline model');await o.click('#tsSave');await offline.setOffline(true);await o.reload();await o.locator('#tsSave').waitFor();assert.equal(await o.inputValue('#stSystem'),'Offline model');await offline.close();
+  await o.fill('#stSystem','Offline model');await o.click('#tsSave');await o.waitForFunction(()=>document.querySelector('#tsStatus').textContent.startsWith('Saved in this browser'));await offline.setOffline(true);await o.reload();await o.locator('#tsSave').waitFor();assert.equal(await o.inputValue('#stSystem'),'Offline model');await offline.close();
   console.log('PASS: templates, persistence, conflict protection, valid/invalid imports, exports, storage failure, mobile keyboard use and offline reload.');
 }finally{await browser.close();}

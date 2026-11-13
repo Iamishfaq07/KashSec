@@ -86,10 +86,17 @@ export function mountThreatStudio({root, categories, escapeHtml: esc}) {
   const canReplace=()=>!dirty || window.confirm('Replace your unsaved worksheet? Export it first if you want to keep a copy.');
   $('#tsSave').addEventListener('click',()=>{
     read();
-    try {
-      if(localStorage.getItem(KEY)!==baseline) {status('The saved worksheet changed in another tab. Export your draft, then load the saved worksheet before saving.');return;}
-      const raw=JSON.stringify(draft);localStorage.setItem(KEY,raw);baseline=raw;dirty=false;status('Saved in this browser. Export a backup to keep a separate copy.');
-    }catch(_){status('Could not save in this browser. Export a backup to keep your work.');}
+    const raw=JSON.stringify(draft), expectedBaseline=baseline;
+    const save=()=>{
+      try {
+        if(localStorage.getItem(KEY)!==expectedBaseline) {status('The saved worksheet changed in another tab. Export your draft, then load the saved worksheet before saving.');return;}
+        localStorage.setItem(KEY,raw);baseline=raw;
+        dirty=JSON.stringify(draft)!==raw;
+        status(dirty ? 'Earlier draft saved. Unsaved changes remain — save or export before leaving.' : 'Saved in this browser. Export a backup to keep a separate copy.');
+      }catch(_){status('Could not save in this browser. Export a backup to keep your work.');}
+    };
+    if(navigator.locks?.request) navigator.locks.request(KEY,save).catch(()=>status('Could not save in this browser. Export a backup to keep your work.'));
+    else save();
   });
   $('#tsLoad').addEventListener('click',()=>{
     if(!canReplace())return;

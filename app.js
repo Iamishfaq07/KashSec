@@ -2188,6 +2188,7 @@ let currentPlaygroundRefresh = null;
 let currentStartGuideRefresh = null;
 let currentReviewRefresh = null;
 let currentCourseRefresh = null;
+let currentHomeRefresh = null;
 let currentPathPackAbort = null;
 const lessonFallbacks = new Map();
 let currentLabMessageController = null;
@@ -2206,6 +2207,7 @@ function route(){
   currentPathPackAbort?.();
   currentPathPackAbort = null;
   currentCourseRefresh = null;
+  currentHomeRefresh = null;
   currentReaderFlush?.();
   currentReaderFlush = currentReaderReset = currentReaderUpdate = null;
   currentInvestigationFlush?.();
@@ -2878,6 +2880,14 @@ ${pathCardHTML(p,i)}
     app.querySelectorAll('[data-session]').forEach(button=>button.setAttribute('aria-pressed', String(button.dataset.session===key)));
   };
   app.querySelectorAll('[data-session]').forEach(button=>button.addEventListener('click',()=>showSession(button.dataset.session)));
+  currentHomeRefresh = ()=>{
+    const progress = overallProgress();
+    const track = app.querySelector('.home-progress-track');
+    const pct = Math.min(progress.pct,100);
+    track.setAttribute('aria-valuenow',String(pct));
+    track.firstElementChild.style.width = pct+'%';
+    app.querySelector('.home-session-progress > p').textContent = `${progress.done} of ${progress.total} lessons completed`;
+  };
   showSession('learn');
   wireFAQ();
   fitPathsFiller();
@@ -14985,6 +14995,7 @@ if(typeof SupabaseSync !== 'undefined' && SupabaseSync.CONFIGURED){
           refreshLessonPractice();
         }
       }
+      currentHomeRefresh?.();
       currentPlannerRefresh?.();
       currentInvestigationRefresh?.();
       currentPlaygroundRefresh?.();
