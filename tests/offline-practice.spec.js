@@ -6,6 +6,9 @@ import http from 'node:http';
 import {fileURLToPath} from 'node:url';
 import {chromium} from 'playwright';
 const root=path.resolve(fileURLToPath(new URL('..',import.meta.url)));
+const appSource=fs.readFileSync(path.join(root,'app.js'),'utf8');
+const paths=new Function(appSource.match(/const PATHS = \[[\s\S]*?\n\];/)[0]+';return PATHS;')();
+const appsecCount=paths.find(p=>p.id==='22-devsecops-appsec').subs.length;
 const overrides=new Map(),requests=new Map();
 const asset='/downloads/appsec_invoice_lab.py',lesson='/course/22-devsecops-appsec/appsec-fix-verify-lab.md';
 const server=http.createServer((req,res)=>{
@@ -46,10 +49,10 @@ try{
     assert.equal(requests.get('/search-index.js')||0,0);assert.equal(requests.get('/search-preview.js')||0,0);
     await page.evaluate(()=>location.hash='#/search?q=kerberoasting');
     await page.waitForFunction(()=>Array.isArray(SEARCH_CONTENT));
-    assert.equal(await page.evaluate(()=>SEARCH_CONTENT.length),491);
+    assert.equal(await page.evaluate(()=>SEARCH_CONTENT.length),await page.evaluate(()=>totalSubLessons()));
     assert.ok(await page.evaluate(async()=>!!await(await caches.open('kashsec-content')).match('/search-index.js')));
     await context.setOffline(true);await page.reload();await page.waitForFunction(()=>Array.isArray(SEARCH_CONTENT));
-    assert.equal(await page.evaluate(()=>SEARCH_CONTENT.length),491);assert.ok(await page.locator('.searchpage-hit').count());
+    assert.equal(await page.evaluate(()=>SEARCH_CONTENT.length),await page.evaluate(()=>totalSubLessons()));assert.ok(await page.locator('.searchpage-hit').count());
     assert.equal(await page.getByRole('button',{name:'Retry lesson search'}).count(),0);
   },'allow');
   await test('Poisoned search cache entries and bad network data are rejected; a fresh retry repairs offline search',async page=>{
@@ -68,11 +71,12 @@ try{
     assert.ok(await page.locator('.searchpage-hit[href="#/labs/csrf"]').isVisible());
     overrides.delete('/search-preview.js');overrides.delete('/search-index.js');
     await page.getByRole('button',{name:'Retry lesson search'}).click();await page.waitForFunction(()=>Array.isArray(SEARCH_CONTENT));
-    assert.equal(await page.evaluate(()=>SEARCH_CONTENT.length),491);
+    assert.equal(await page.evaluate(()=>SEARCH_CONTENT.length),await page.evaluate(()=>totalSubLessons()));
   },'allow');
   await test('AppSec ZIP includes the complete exercise, local lesson links and useful roadmap guidance',async page=>{
     await open(page);const event=page.waitForEvent('download');await page.locator('#downloadPackBtn').click();const download=await event;
-    const files=entries(fs.readFileSync(await download.path()));assert.equal(files.size,20);assert.equal(files.get('appsec_invoice_lab.py'),fs.readFileSync(path.join(root,asset),'utf8'));
+    const files=entries(fs.readFileSync(await download.path()));assert.equal(files.size,appsecCount+2);assert.equal(files.get('appsec_invoice_lab.py'),fs.readFileSync(path.join(root,asset),'utf8'));
+    for(const id of ['vulnerability-triage-in-practice','verify-vulnerability-remediation']) assert.ok([...files.keys()].some(name=>name.endsWith('-'+id+'.md')));
     const lab=[...files].find(([name])=>name.endsWith('-appsec-fix-verify-lab.md'))[1];assert.ok(lab.includes('(./appsec_invoice_lab.py)'));assert.ok(!lab.includes('/downloads/'));
     assert.match(files.get('00-index.md'),/Your learning route/);assert.match(files.get('00-index.md'),/CSSLP/);assert.match(files.get('00-index.md'),/Python 3.10/);
     assert.ok([...files.keys()].every(name=>!name.includes('..')&&!name.startsWith('/')));
@@ -93,6 +97,12 @@ try{
   await test('HTML lesson responses cannot be silently shipped in a ZIP',async page=>{
     overrides.set(lesson,{body:'<!doctype html><html>Error</html>'});await open(page);let downloads=0;page.on('download',()=>downloads++);await page.locator('#downloadPackBtn').click();await page.waitForFunction(()=>document.getElementById('offlinePathStatus').textContent.includes('No pack was downloaded.'));assert.equal(downloads,0);
   });
+  await test('a provenance marker cannot disguise an HTML lesson response',async page=>{
+    overrides.set(lesson,{type:'text/plain',body:'<!-- coderabbit-ai-generated:v1 -->\n<html>\n# Not a lesson\n</html>'});
+    await open(page);let downloads=0;page.on('download',()=>downloads++);
+    await page.locator('#downloadPackBtn').click();await page.waitForFunction(()=>document.getElementById('offlinePathStatus').textContent.includes('No pack was downloaded.'));
+    assert.equal(downloads,0);
+  });
   await test('stalled pack requests can be cancelled or abandoned by navigation without a later download',async page=>{
     overrides.set(lesson,{hold:true});await open(page);let downloads=0;page.on('download',()=>downloads++);
     await page.locator('#downloadPackBtn').click();await page.locator('#cancelPackBtn').click();await page.waitForFunction(()=>document.getElementById('offlinePathStatus').textContent.includes('Download cancelled'));assert.equal(await page.locator('#downloadPackBtn').isEnabled(),true);assert.equal(downloads,0);
@@ -106,16 +116,16 @@ try{
   await test('offline saving reports a missing practice file, retries it, and serves the exercise without a network',async(page,context)=>{
     await page.goto(BASE+'/',{waitUntil:'domcontentloaded'});await workerReady(page);assert.equal(requests.get(asset)||0,0);
     overrides.set(asset,{body:'<!doctype html><html>Not a lab</html>'});await open(page);await page.locator('#savePathOfflineBtn').click();await page.waitForFunction(()=>document.getElementById('offlinePathStatus').textContent.includes('files failed'));
-    assert.match(await page.locator('#offlinePathStatus').innerText(),/18 of 18 lessons and 0 of 1 practice files/);
+    assert.ok((await page.locator('#offlinePathStatus').innerText()).includes(`${appsecCount} of ${appsecCount} lessons and 0 of 1 practice files`));
     assert.equal(await page.evaluate(async asset=>!!(await(await caches.open('kashsec-content')).match(asset)),asset),false);
-    overrides.delete(asset);await page.locator('#savePathOfflineBtn').click();await page.waitForFunction(()=>document.getElementById('offlinePathStatus').textContent.startsWith('All 18 lessons and 1 practice file saved'));
+    overrides.delete(asset);await page.locator('#savePathOfflineBtn').click();await page.waitForFunction(count=>document.getElementById('offlinePathStatus').textContent.startsWith(`All ${count} lessons and 1 practice file saved`),appsecCount);
     await context.setOffline(true);await page.goto(BASE+'/lesson/22-devsecops-appsec/appsec-fix-verify-lab.html',{waitUntil:'domcontentloaded'});await page.locator('#content[aria-busy="false"]').waitFor();assert.equal(await page.locator('#retryLesson').count(),0);
     const text=await page.evaluate(async asset=>{const response=await fetch(asset);return response.text();},asset);assert.match(text,/class InvoiceSecurityTests/);
   },'allow');
   await test('bad cached lesson text and HTML network errors cannot poison offline reading or retries',async page=>{
     await page.goto(BASE+'/',{waitUntil:'domcontentloaded'});await workerReady(page);
     await page.evaluate(async lesson=>{const cache=await caches.open('kashsec-content');await cache.put(lesson,new Response('<!doctype html><html>Old error</html>',{headers:{'Content-Type':'text/html'}}));},lesson);
-    overrides.set(lesson,{body:'<!doctype html><html>New error</html>'});await page.goto(BASE+'/lesson/22-devsecops-appsec/appsec-fix-verify-lab.html',{waitUntil:'domcontentloaded'});await page.locator('#retryLesson').waitFor();
+    overrides.set(lesson,{type:'text/plain',body:'<!-- coderabbit-ai-generated:v1 -->\n<html>\n# Not a lesson\n</html>'});await page.goto(BASE+'/lesson/22-devsecops-appsec/appsec-fix-verify-lab.html',{waitUntil:'domcontentloaded'});await page.locator('#retryLesson').waitFor();
     assert.equal(await page.evaluate(async lesson=>!!(await(await caches.open('kashsec-content')).match(lesson)),lesson),false);
     overrides.delete(lesson);await page.locator('#retryLesson').click();await page.locator('#content[aria-busy="false"]').waitFor();assert.equal(await page.locator('#retryLesson').count(),0);
     assert.match(await page.locator('#content h1').innerText(),/Fix & Verify/);

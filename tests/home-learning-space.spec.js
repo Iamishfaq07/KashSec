@@ -41,7 +41,7 @@ try {
   })));
   const page = await context.newPage();
   await page.goto(BASE + '/');
-  assert.match(await page.locator('.home-session-progress').innerText(), /1 of 491 lessons completed/);
+  assert.equal(await page.locator('.home-session-progress > p').innerText(), `1 of ${await page.evaluate(()=>totalSubLessons())} lessons completed`);
   assert.equal(await page.locator('#homeSessionPick a').first().getAttribute('href'), '#/lesson/01-introduction/what-is-cybersecurity');
   assert.match(await page.locator('#homeSessionPick').innerText(), /PICK UP WHERE YOU LEFT OFF/i);
   assert.equal(await page.locator('.home-hero-copy .btn-amber').getAttribute('href'), '#/lesson/01-introduction/what-is-cybersecurity');

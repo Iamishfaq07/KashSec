@@ -129,6 +129,7 @@ function ensureSanitizer(){
 
 // Warm only the adjacent lesson after an intentional hover/focus/touch. Never
 // download a path just because it is visible, or spend data on slow connections.
+function lessonValidationText(text){ return text.replace(/^\s*<!-- coderabbit-ai-generated:v1 -->\s*/, ''); }
 const lessonPrefetches = new Map();
 function prefetchLesson(pathId, subId){
   const connection = navigator.connection;
@@ -143,7 +144,7 @@ function prefetchLesson(pathId, subId){
   entry.promise = fetch(url, {signal:controller.signal}).then(async response=>{
     if(!response.ok) return null;
     const text = await response.text();
-    return /^\s*(?:<!doctype\s+html|<html\b)/i.test(text) || !/^#\s+\S/m.test(text) ? null : text;
+    return /^\s*(?:<!doctype\s+html|<html\b)/i.test(lessonValidationText(text)) || !/^#\s+\S/m.test(text) ? null : text;
   }).catch(()=>null).finally(()=>clearTimeout(timer));
   lessonPrefetches.set(url, entry);
   while(lessonPrefetches.size > 2){
@@ -1707,6 +1708,18 @@ const PATHS = [
         "id": "appsec-program-lab",
         "title": "AppSec Program Capstone Lab",
         "desc": "Design a lightweight AppSec program for a real-shaped organisation."
+      },
+      {
+        "n": "19",
+        "id": "vulnerability-triage-in-practice",
+        "title": "Vulnerability Triage in Practice",
+        "desc": "Combine exploitation evidence, exposure, and uncertainty to choose a defensible next step."
+      },
+      {
+        "n": "20",
+        "id": "verify-vulnerability-remediation",
+        "title": "Verify Vulnerability Remediation",
+        "desc": "Check the deployed fix, record evidence, and monitor what remains."
       }
     ]
   },
@@ -3048,7 +3061,7 @@ async function fetchPathFile(file, signal){
   try{
     const response = await fetch(file.url,{signal:controller.signal});
     const text = await response.text();
-    const html = /text\/html/i.test(response.headers.get('content-type') || '') || /^\s*</.test(text);
+    const html = /text\/html/i.test(response.headers.get('content-type') || '') || /^\s*</.test(file.lesson ? lessonValidationText(text) : text);
     const valid = file.lesson ? /^#\s+\S/m.test(text) : text.startsWith(file.startsWith) && text.includes(file.marker);
     if(!response.ok || html || !valid) throw new Error('Invalid file response');
     return text;
@@ -3303,6 +3316,10 @@ const PATH_GUIDES = [
       }
     ],
     "certs": [
+      {
+        "id": "network-plus",
+        "reason": "A networking foundation; add device configuration and troubleshooting practice before the exam."
+      },
       {
         "id": "ccna",
         "reason": "For a network engineering goal; requires much more routing, switching, and device practice."
@@ -4159,8 +4176,8 @@ const PATH_GUIDES = [
       },
       {
         "title": "Fix, verify, and present",
-        "through": "appsec-program-lab",
-        "outcome": "Pass the local lab and connect its evidence to a practical rollout plan."
+        "through": "verify-vulnerability-remediation",
+        "outcome": "Practice prioritization and verify fixes with evidence."
       }
     ],
     "certs": [
@@ -4178,6 +4195,11 @@ const PATH_GUIDES = [
       }
     ],
     "practice": [
+      {
+        "href": "/tools/vulntriage.html",
+        "label": "Vulnerability Triage Practice",
+        "note": "Compare fictional evidence and explain a next step."
+      },
       {
         "href": "/lesson/22-devsecops-appsec/appsec-fix-verify-lab.html",
         "label": "Fix & Verify: local Python lab",
@@ -4589,6 +4611,18 @@ function certTier(level){
   return 'advanced';
 }
 const CERTS = [
+  {
+    "id": "network-plus",
+    "name": "CompTIA Network+",
+    "org": "CompTIA",
+    "level": "Entry",
+    "desc": "A vendor-neutral networking credential covering connectivity, operations, troubleshooting, and security concepts.",
+    "format": "Proctored knowledge and performance-based exam; check the current guide",
+    "prep": "Paths 02, 12",
+    "url": "https://www.comptia.org/en-us/certifications/network/",
+    "readiness": "CompTIA recommends A+ and 9–12 months of networking experience. Add device configuration and troubleshooting practice and check the current exam objectives.",
+    "reviewed": "2026-11-13"
+  },
   {
     "id": "sec1",
     "name": "SEC1 (Cyber Security 101)",
@@ -5771,7 +5805,7 @@ async function renderSubLesson(pathId, subId){
     try{
       timer = setTimeout(()=>controller.abort(new DOMException('Lesson request timed out', 'TimeoutError')), 15000);
       const md = await readLessonMarkdown(pathId, subId, controller.signal, retrying);
-      if(/^\s*(?:<!doctype\s+html|<html\b)/i.test(md) || !/^#\s+\S/m.test(md)) throw new Error('Invalid lesson response');
+      if(/^\s*(?:<!doctype\s+html|<html\b)/i.test(lessonValidationText(md)) || !/^#\s+\S/m.test(md)) throw new Error('Invalid lesson response');
       stage = 'renderer';
       await Promise.all([ensureMarked(), ensureSanitizer()]);
       if(!isCurrent()) return;
@@ -6329,6 +6363,20 @@ const LESSON_CHECKS = {
     correct:2,
     explain:'A program plan becomes more useful when it includes technical evidence. Show what changed, how you checked it, and the limits of the exercise.',
     review:'5. Include technical evidence'
+  },
+  '22-devsecops-appsec/vulnerability-triage-in-practice': {
+    q:'A catalog lists a vulnerability as exploited, but you do not know whether your deployed version is affected. What should you do first?',
+    options:['Confirm the deployed component and exposure while arranging a mitigation path','Assume all assets are affected and close the investigation','Ignore the catalog until a scanner produces a higher score','Declare the finding fixed without examining the deployment'],
+    correct:0,
+    explain:'Known exploitation is an urgent signal to investigate. Applicability and exposure still need evidence, and teams can prepare mitigation in parallel.',
+    review:'Start with applicability'
+  },
+  '22-devsecops-appsec/verify-vulnerability-remediation': {
+    q:'An upgrade passes CI. What evidence best supports closing an affected production finding?',
+    options:['A screenshot of the pull request alone','Evidence the fixed build reached the affected asset, plus targeted checks and a record of remaining risk','The developer says the dependency is probably unused','A lower backlog count'],
+    correct:1,
+    explain:'A source fix is not necessarily deployed everywhere. Check the affected asset, relevant behavior and residual exposure before closing the finding.',
+    review:'Verify the deployed change'
   }
 };
 
@@ -10185,6 +10233,7 @@ const TOOLS = [
   {id:'logparser', ico:'filter', title:'Log Grep / Filter Playground', desc:'Filter a block of log lines with a regex — the exact "find the signal in the noise" skill IR work depends on.', related:'Path 03 — Linux'},
   {id:'riskregister', ico:'ledger', title:'Risk Register Builder', desc:'Add risks with likelihood and impact, get an auto-scored severity, and export the register as Markdown.', related:'Path 23 — GRC & Compliance'},
   {id:'sbomcheck', ico:'package', title:'Dependency / SBOM Risk Checker', desc:'Paste a dependency list and flag ones matching a known-vulnerable version range.', related:'Path 22 — DevSecOps & AppSec'},
+  {id:'vulntriage', ico:'shield', title:'Vulnerability Triage Practice', desc:'Work through fictional findings and choose evidence-led next steps for applicability, mitigation, and verification.', related:'Path 22 — DevSecOps & AppSec'},
   {id:'emailheaders', ico:'mail', title:'Email Header Analyzer', desc:'Paste raw email headers and get flagged for From/Return-Path mismatches, SPF failures, and missing DKIM.', related:'Path 09 — Digital Privacy'},
   {id:'passpolicy', ico:'check', title:'Password Policy Checker', desc:'Test a password against a configurable length/complexity policy, rule by rule.', related:'Path 00 — Absolute Basics'},
   {id:'vlsm', ico:'ruler', title:'VLSM Subnet Planner', desc:'Plan variable-length subnets across several different host-count requirements from one base network.', related:'Path 02 — Networking'},
@@ -10238,7 +10287,7 @@ function renderTool(id){
   const body = document.getElementById('toolBody');
   ({encoder:toolEncoder, hash:toolHash, jwt:toolJwt, cvss:toolCvss, subnet:toolSubnet, password:toolPassword, cipher:toolCipher, regex:toolRegex, hashid:toolHashId, headers:toolHeaders, vulnreport:toolVulnReport,
     resumehelper:toolResumeHelper, portfoliogen:toolPortfolioGen, codereview:toolCodeReview, attckmap:toolAttckMap, stride:toolStride,
-    cidroverlap:toolCidrOverlap, useragent:toolUserAgent, entropy:toolEntropy, httpbuilder:toolHttpBuilder, logparser:toolLogParser, riskregister:toolRiskRegister, sbomcheck:toolSbomCheck, emailheaders:toolEmailHeaders,
+    cidroverlap:toolCidrOverlap, useragent:toolUserAgent, entropy:toolEntropy, httpbuilder:toolHttpBuilder, logparser:toolLogParser, riskregister:toolRiskRegister, sbomcheck:toolSbomCheck, vulntriage:toolVulnTriage, emailheaders:toolEmailHeaders,
     passpolicy:toolPassPolicy, vlsm:toolVlsm, yaratester:toolYaraTester, slacalc:toolSlaCalc, controlmapper:toolControlMapper, dhvisualizer:toolDhVisualizer, base32:toolBase32, timingviz:toolTimingViz}[id])(body);
   setupReveal();
 }
@@ -10249,6 +10298,39 @@ function textToBytes(s){ return new TextEncoder().encode(s); }
 function b64EncodeUtf8(s){ return btoa(String.fromCharCode(...textToBytes(s))); }
 function b64DecodeUtf8(s){ return new TextDecoder().decode(Uint8Array.from(atob(s), c=>c.charCodeAt(0))); }
 function b64UrlDecode(s){ s = s.replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4) s+='='; return b64DecodeUtf8(s); }
+
+/* Fictional practice cases: no live vulnerability data or automatic risk score. */
+function toolVulnTriage(el){
+  const cases = [
+    {title:'1. A catalog alert', evidence:'A fictional library appears in an exploited-vulnerability catalog. Your inventory is a month old, and the version running on the public service is unknown.', question:'What is the most useful next step?', options:['Verify the deployed version and exposure while preparing mitigation','Close the finding because no version is confirmed','Assume every service is affected and mark it fixed'], correct:0, explanation:'Known exploitation is a reason to investigate promptly. Confirm applicability on the actual asset and prepare an owner and mitigation in parallel.'},
+    {title:'2. A reachable finding', evidence:'A fictional vulnerability is confirmed in a public service, the affected behavior is reachable, and exploitation is observed. Another internal finding has a higher severity score but no confirmed exposure.', question:'What should the team prioritize?', options:['Only the finding with the higher score','Mitigation of the exposed, exploited service and assignment of an owner','Neither finding until the next annual review'], correct:1, explanation:'Severity is one signal. Confirmed exposure and exploitation can justify an urgent response; continue assessing the other finding too.'},
+    {title:'3. A fix has merged', evidence:'A team upgraded a vulnerable dependency and the test suite passed in CI. The production asset has not yet been checked.', question:'What evidence supports closure?', options:['The pull request merged, so no other checks are needed','The issue has been open for a week','Confirm the fixed build is deployed, run targeted checks, and document remaining risk'], correct:2, explanation:'Source and CI results are useful, but the affected deployment and its behavior need verification. Record the evidence and any residual risk.'}
+  ];
+  el.innerHTML = `<div class="triage-practice"><div class="tool-controls"><label>Choose a fictional case <select class="fc-select" id="vtCase">${cases.map((c,i)=>`<option value="${i}">${c.title}</option>`).join('')}</select></label></div>
+    <div class="triage-evidence"><strong>Case evidence</strong><p id="vtEvidence"></p></div>
+    <label class="tool-field" for="vtAnswer" id="vtQuestion"></label>
+    <select class="fc-select" id="vtAnswer"></select>
+    <div class="tool-btnrow"><button class="btn-amber sm" id="vtCheck" type="button">Check my reasoning</button></div>
+    <p id="vtFeedback" role="status" aria-live="polite"></p>
+    <p>Practice only: these cases use fictional data, not live CVE, KEV, or EPSS results. Check current sources and your own environment before making a real decision.</p>
+    <p><a href="/lesson/22-devsecops-appsec/vulnerability-triage-in-practice.html">Read the triage lesson</a> · <a href="/lesson/22-devsecops-appsec/verify-vulnerability-remediation.html">Learn to verify a fix</a></p></div>`;
+  const selector=el.querySelector('#vtCase'), answer=el.querySelector('#vtAnswer'), feedback=el.querySelector('#vtFeedback');
+  const show=()=>{
+    const item=cases[Number(selector.value)];
+    el.querySelector('#vtEvidence').textContent=item.evidence;
+    el.querySelector('#vtQuestion').textContent=item.question;
+    answer.innerHTML='<option value="">Choose an answer</option>'+item.options.map((option,i)=>`<option value="${i}">${escapeHtml(option)}</option>`).join('');
+    feedback.textContent='';
+  };
+  selector.addEventListener('change',show);
+  answer.addEventListener('change',()=>{feedback.textContent='';});
+  el.querySelector('#vtCheck').addEventListener('click',()=>{
+    if(answer.value===''){ feedback.textContent='Choose an answer first.'; return; }
+    const item=cases[Number(selector.value)];
+    feedback.textContent=(Number(answer.value)===item.correct ? 'Good reasoning. ' : 'Try again. ')+item.explanation;
+  });
+  show();
+}
 
 /* --- Encoder / Decoder --- */
 function toolEncoder(el){

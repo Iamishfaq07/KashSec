@@ -2,17 +2,25 @@
 
 **A completely free cybersecurity course, from absolute zero to job-ready.**
 
-26 learning paths · 491 sub-lessons · 104 typed-answer practice tasks · 42 interactive labs · 32 browser-based tools · timed mock exams · always free
+26 learning paths · 493 sub-lessons · 104 typed-answer practice tasks · 42 interactive labs · 33 browser-based tools · timed mock exams · always free
 
 [![Live Site](https://img.shields.io/badge/live-kashsec.vercel.app-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
 ## What's new
 
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:48a87eb411dfca658c0b51b9b9c97f963ff9938a4221aa77b16132a89ad3ba06 -->
+
+- **Vulnerability triage practice** — try three fictional cases, then learn to assess applicability and verify a deployed fix in two AppSec lessons. The networking roadmap now includes CompTIA Network+ with provider guidance.
+
+<!-- /coderabbit-ai-generated:v1 -->
+
 - **Resume expert casework** — Expert Labs shows saved answer/report-draft status, provides keyboard-accessible section and next-case links, and detects when another tab has changed the same saved case. Auto-save pauses in that situation so you can download your current report before inspecting or loading the latest saved version.
 
 - **Expert Labs** — the Labs page now has a separate Expert Labs tab with four evidence-led AppSec and cloud cases: tenant isolation, webhook replay, release-artifact trust, and cloud permission scope. Each includes prerequisites, staged hints, a local Python repair exercise, reasoning review, and evidence/report downloads. Drafts stay in the browser separately from course progress. Open `/expert-labs/`; Python 3.10+ is required for coding, with no extra packages or cloud account. Run `npm run test:expert` and `npm run test:preview-expert` to verify both readers.
 - **Find paths and take practice offline** — search path topics, lesson titles, and relevant certifications, combine with level filters, and keep the selection when returning from a roadmap. AppSec ZIPs include the runnable Python exercise and local links. Downloads validate files, show progress, and can be cancelled; browser offline saving also includes the exercise and rejects HTML error pages.
-- **Path maps and AppSec practice** — every path now has four connected learning stages, suggested preparation, practical portfolio evidence, and relevant certification options with official provider links and eligibility notes. AppSec grows to 18 lessons with testable requirements, secure code review, and a downloadable, dependency-free Python Fix & Verify lab. Each AppSec lesson has its own optional question, explanation, retry, and review-section link in both readers. Certification plans are shared between each path and the filterable certification planner.
+- **Path maps and AppSec practice** — every path now has four connected learning stages, suggested preparation, practical portfolio evidence, and relevant certification options with official provider links and eligibility notes. AppSec grows to 20 lessons with testable requirements, secure code review, and a downloadable, dependency-free Python Fix & Verify lab. Each AppSec lesson has its own optional question, explanation, retry, and review-section link in both readers. Certification plans are shared between each path and the filterable certification planner.
 - **Smoother reading** — unfinished lessons offer an optional, device-local saved reading place. Progress follows the lesson text, unopened sidebar paths build their links only when expanded, mobile contents start collapsed, and section links move keyboard focus. Hovering or focusing the next-lesson control warms one Markdown file; data-saving and slow connections skip this. Clipboard failures select the code for manual copying, and notes explain when browser storage could not save them.
 - **Start-here learning routes** — choose your experience and interest to preview a short route through existing lessons, experiments, and investigations (`#/start`). Saved routes follow real completion and point to the next unfinished step. Choices are backed up and optionally synced; setting the study-planner focus is a separate action that keeps your daily goal. Return links connect the learning formats back to the route.
 - **Beginner Learning Playground** — three guided experiments teach web requests, UTF-8/Base64, and invoice access checks with immediate feedback and small goals. Use touch, mouse, or keyboard, with no timer or penalty for retrying. Open `#/playground` from Home, Course, My Progress, or search. Completed experiments sync with progress; typed messages and demo settings are never saved. Investigation cases also include optional hints, term explanations, and a quick-start guide.

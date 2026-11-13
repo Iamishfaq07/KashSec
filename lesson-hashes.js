@@ -444,6 +444,8 @@ const LESSON_HASHES = {
  "22-devsecops-appsec/appsec-tooling-and-orchestration": "a079835b3b",
  "22-devsecops-appsec/appsec-fix-verify-lab": "1844f94be3",
  "22-devsecops-appsec/appsec-program-lab": "24eee88168",
+ "22-devsecops-appsec/vulnerability-triage-in-practice": "499e6be5b8",
+ "22-devsecops-appsec/verify-vulnerability-remediation": "b2e7b8beaa",
  "23-grc-compliance/what-is-grc": "16f72f7700",
  "23-grc-compliance/grc-career-economics-and-demand": "91c6d2aadc",
  "23-grc-compliance/governance-basics": "ce6c2933cf",

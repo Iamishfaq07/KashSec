@@ -26,6 +26,22 @@
  */
 
 export const TOOL_CONTENT = {
+  vulntriage: {
+    intent: 'vulnerability triage practice applicability mitigation verification',
+    intro: 'Practice making defensible vulnerability decisions using fictional cases. The exercise separates evidence that a vulnerability is exploited from evidence that your own deployed service is affected. It does not query a live vulnerability database or calculate risk for a real organization.',
+    steps: ['Choose one of the three fictional cases.', 'Read the evidence and choose the next action.', 'Check your reasoning and compare it with the explanation.', 'Read the linked lessons and repeat with a different case.'],
+    notes: [
+      {h:'Confirm applicability', p:'Find the version and configuration actually deployed on the affected asset. An inventory record or a catalog entry is a starting point, not proof that a particular service is vulnerable.'},
+      {h:'Look beyond severity', p:'Consider exposure, reachability, observed exploitation, operational impact and uncertainty. A score is a useful input, but it does not make the decision for the asset owner.'},
+      {h:'Verify closure', p:'A merged change is not necessarily deployed everywhere. Check the running build and relevant behavior, record what was tested, and identify remaining risk.'}
+    ],
+    faq: [
+      {q:'Does this tool look up real CVEs?', a:'No. The cases are fictional and run locally. Consult current vendor advisories and authoritative catalogs for real findings.'},
+      {q:'Does known exploitation prove my asset is affected?', a:'No. It is an important signal to investigate; verify the version, configuration and exposure on the relevant asset.'},
+      {q:'Does a passing CI build prove remediation?', a:'It is useful evidence but does not prove that the fix was deployed to every affected asset. Verify the deployed change and relevant behavior.'}
+    ],
+    related: ['cvss', 'sbomcheck', 'riskregister', 'vulnreport']
+  },
   encoder: {
     intent: 'base64 decode online privately',
     intro: 'Base64, URL and hex encoding are not encryption. They are ways of rewriting data so it survives being sent through systems that only cope with plain text. Attackers lean on that confusion constantly: an encoded payload looks scrambled enough to slip past a bored reviewer while being trivially readable by anyone who recognises the format.',
