@@ -12,7 +12,7 @@
     "build:search": "node generate-search-index.js",
     "build:feed": "node generate-feed.js",
     "build:prerender": "node generate-prerender.js",
-    "test": "node tests/data-integrity.test.js && npm run test:feed && npm run test:canonical && npm run test:cvss && npm run test:threat-studio && npm run test:smoke && npm run test:cdn && npm run test:ui && npm run test:offline && npm run test:progress && npm run test:planner && npm run test:investigations && npm run test:playground && npm run test:guide && npm run test:lesson-practice && npm run test:flashcards && npm run test:study-review && npm run test:exam && npm run test:search && npm run test:tasks && npm run test:audit && npm run test:reader && npm run test:path-guides && npm run test:discovery && npm run test:lesson-checks && npm run test:expert && npm run test:seo",
+    "test": "node tests/data-integrity.test.js && npm run test:feed && npm run test:canonical && npm run test:cvss && npm run test:threat-studio && npm run test:triage && npm run test:httpstatus && npm run test:dnsrecords && npm run test:smoke && npm run test:cdn && npm run test:ui && npm run test:offline && npm run test:progress && npm run test:planner && npm run test:investigations && npm run test:playground && npm run test:guide && npm run test:lesson-practice && npm run test:flashcards && npm run test:study-review && npm run test:exam && npm run test:search && npm run test:tasks && npm run test:audit && npm run test:reader && npm run test:path-guides && npm run test:discovery && npm run test:lesson-checks && npm run test:expert && npm run test:seo",
     "test:feed": "node tests/feed.spec.js",
     "test:seo": "node tests/seo-discovery.spec.js",
     "test:canonical": "node tests/canonical-security.spec.js && npm run test:auth-navigation && node tests/navigation-refresh.spec.js",
@@ -23,7 +23,7 @@
     "test:data": "node tests/data-integrity.test.js",
     "test:smoke": "node tests/smoke.spec.js",
     "test:cdn": "node tests/cdn-resilience.spec.js && node tests/lesson-resilience.spec.js",
-    "test:ui": "node tests/ui-quality.spec.js && node tests/navigation-quality.spec.js && node tests/home-learning-space.spec.js",
+    "test:ui": "node tests/ui-quality.spec.js && node tests/navigation-quality.spec.js && node tests/home-learning-space.spec.js && node tests/tour-csp.spec.js",
     "test:offline": "node tests/offline-pack.spec.js",
     "test:progress": "node tests/progress-recovery.spec.js",
     "test:planner": "node tests/study-planner.spec.js",
@@ -49,9 +49,13 @@
     "test:preview-path-guides": "node tests/preview-path-guides.spec.js",
     "test:discovery": "node tests/path-discovery.spec.js && node tests/offline-practice.spec.js",
     "test:lesson-checks": "node tests/lesson-checks.spec.js",
-    "test:preview-checks": "CHECK_FRONTEND=preview node tests/lesson-checks.spec.js",
+    "test:preview-checks": "CHECK_FRONTEND=preview node tests/lesson-checks.spec.js && npm run test:preview-dns",
     "test:expert": "node tests/expert-labs.spec.js && node tests/expert-style.spec.js && node tests/expert-workflow.spec.js && node tests/expert-finder.spec.js && node tests/expert-backup.spec.js",
-    "test:preview-expert": "CHECK_FRONTEND=preview node tests/expert-labs.spec.js && CHECK_FRONTEND=preview node tests/expert-style.spec.js && CHECK_FRONTEND=preview node tests/expert-workflow.spec.js && CHECK_FRONTEND=preview node tests/expert-finder.spec.js && CHECK_FRONTEND=preview node tests/expert-backup.spec.js"
+    "test:preview-expert": "CHECK_FRONTEND=preview node tests/expert-labs.spec.js && CHECK_FRONTEND=preview node tests/expert-style.spec.js && CHECK_FRONTEND=preview node tests/expert-workflow.spec.js && CHECK_FRONTEND=preview node tests/expert-finder.spec.js && CHECK_FRONTEND=preview node tests/expert-backup.spec.js",
+    "test:triage": "node tests/vulntriage.spec.js",
+    "test:httpstatus": "node tests/httpstatus.spec.js",
+    "test:dnsrecords": "node tests/dnsrecords.spec.js",
+    "test:preview-dns": "node tests/preview-dns.spec.js"
   },
   "repository": {
     "type": "git",

@@ -129,6 +129,7 @@ function ensureSanitizer(){
 
 // Warm only the adjacent lesson after an intentional hover/focus/touch. Never
 // download a path just because it is visible, or spend data on slow connections.
+function lessonValidationText(text){ return text.replace(/^\s*<!-- coderabbit-ai-generated:v1 -->\s*/, ''); }
 const lessonPrefetches = new Map();
 function prefetchLesson(pathId, subId){
   const connection = navigator.connection;
@@ -143,7 +144,7 @@ function prefetchLesson(pathId, subId){
   entry.promise = fetch(url, {signal:controller.signal}).then(async response=>{
     if(!response.ok) return null;
     const text = await response.text();
-    return /^\s*(?:<!doctype\s+html|<html\b)/i.test(text) || !/^#\s+\S/m.test(text) ? null : text;
+    return /^\s*(?:<!doctype\s+html|<html\b)/i.test(lessonValidationText(text)) || !/^#\s+\S/m.test(text) ? null : text;
   }).catch(()=>null).finally(()=>clearTimeout(timer));
   lessonPrefetches.set(url, entry);
   while(lessonPrefetches.size > 2){
@@ -1136,7 +1137,8 @@ const PATHS = [
      {n:"17", id:"dns-lab",             title:"DNS Lab",                  desc:"Understand how DNS works and how it can be abused."},
      {n:"18", id:"cloud-and-modern-networking", title:"Cloud & Modern Networking", desc:"SDN, virtual networks, and why the concepts transfer even when hardware disappears."},
      {n:"19", id:"network-certifications-careers", title:"Network Security Careers & Certifications", desc:"Network+, CCNA, and why this foundation underlies most other security specializations."},
-     {n:"20", id:"practical-packet-lab", title:"Practical Packet Analysis Intro", desc:"See how data actually moves, hands-on."}
+     {n:"20", id:"practical-packet-lab", title:"Practical Packet Analysis Intro", desc:"See how data actually moves, hands-on."},
+     {n:"21", id:"dns-response-troubleshooting", title:"DNS Response Troubleshooting", desc:"Distinguish a missing name, missing record type, and resolution failure."}
    ]},
   {n:"03", id:"03-linux", title:"Operating Systems & Linux", level:"Beginner",
    desc:"Install Kali in VirtualBox, then a full tour of the Linux command line.",
@@ -1707,6 +1709,18 @@ const PATHS = [
         "id": "appsec-program-lab",
         "title": "AppSec Program Capstone Lab",
         "desc": "Design a lightweight AppSec program for a real-shaped organisation."
+      },
+      {
+        "n": "19",
+        "id": "vulnerability-triage-in-practice",
+        "title": "Vulnerability Triage in Practice",
+        "desc": "Combine exploitation evidence, exposure, and uncertainty to choose a defensible next step."
+      },
+      {
+        "n": "20",
+        "id": "verify-vulnerability-remediation",
+        "title": "Verify Vulnerability Remediation",
+        "desc": "Check the deployed fix, record evidence, and monitor what remains."
       }
     ]
   },
@@ -2451,22 +2465,51 @@ const TOUR_STEPS = [
   {sel:'#progressRingBtn',  title:'Your progress lives here', body:'Everything you complete is saved automatically in this browser. No account needed — but you can sign in to sync across devices.'}
 ];
 let tourIndex = 0;
+let tourReturnFocus = null;
+let tourTimer = null, tourDeferred = false;
 function maybeStartTour(){
   // Recovery controls must stay usable even if unreadable state reset the tour.
   if(STATE.tourSeen || getRecoveryCopy() !== null) return;
   if(activeRoute() !== '#/') return;
   // A returning user with real progress shouldn't be tour-bombed.
   if(Object.keys(STATE.completed).length > 0){ STATE.tourSeen = true; saveState(); return; }
-  if(document.getElementById('tourOverlay')) return;
+  if(document.getElementById('tourOverlay') || tourTimer) return;
   tourIndex = 0;
-  setTimeout(()=>{ if(activeRoute() === '#/' && !STATE.tourSeen) paintTourStep(); }, 700);
+  tourTimer = setTimeout(()=>{
+    tourTimer = null;
+    if(activeRoute() !== '#/' || STATE.tourSeen || getRecoveryCopy() !== null) return;
+    if(activeDialog){ tourDeferred = true; return; }
+    tourDeferred = false;
+    tourReturnFocus = document.activeElement;
+    paintTourStep();
+  }, 700);
 }
 function endTour(){
   STATE.tourSeen = true;
   saveState();
   document.getElementById('tourOverlay')?.remove();
   document.querySelector('.tour-highlight')?.classList.remove('tour-highlight');
+  if(tourReturnFocus?.isConnected) tourReturnFocus.focus();
+  tourReturnFocus = null;
 }
+function positionTourCard(){
+  const card = document.querySelector('#tourOverlay .tour-card');
+  const selector = TOUR_STEPS[tourIndex]?.sel;
+  const target = selector && document.querySelector(selector);
+  if(!card || !target) return;
+  const viewport = window.visualViewport;
+  const width = viewport?.width || window.innerWidth;
+  const height = viewport?.height || window.innerHeight;
+  const x = viewport?.offsetLeft || 0, y = viewport?.offsetTop || 0;
+  card.style.maxWidth = Math.max(0,width - 24) + 'px';
+  card.style.maxHeight = Math.max(0,height - 24) + 'px';
+  const r = target.getBoundingClientRect();
+  card.style.top = Math.max(y+12, Math.min(y+height-card.offsetHeight-12, r.bottom+12)) + 'px';
+  card.style.left = Math.max(x+12, Math.min(x+width-card.offsetWidth-12, r.left+r.width/2-card.offsetWidth/2)) + 'px';
+}
+window.addEventListener('resize', positionTourCard);
+window.visualViewport?.addEventListener('resize', positionTourCard);
+window.visualViewport?.addEventListener('scroll', positionTourCard);
 function paintTourStep(){
   document.getElementById('tourOverlay')?.remove();
   document.querySelector('.tour-highlight')?.classList.remove('tour-highlight');
@@ -2491,13 +2534,16 @@ function paintTourStep(){
     </div>`;
   document.body.appendChild(overlay);
 
-  // Anchor the card near its target, clamped inside the viewport.
-  const card = overlay.querySelector('.tour-card');
-  const r = target.getBoundingClientRect();
-  const top = Math.min(window.innerHeight - card.offsetHeight - 16, r.bottom + 12);
-  const left = Math.max(12, Math.min(window.innerWidth - card.offsetWidth - 12, r.left + r.width/2 - card.offsetWidth/2));
-  card.style.top = Math.max(12, top) + 'px';
-  card.style.left = left + 'px';
+  positionTourCard();
+  document.getElementById('tourSkip').focus();
+  overlay.addEventListener('keydown', e=>{
+    if(e.key === 'Escape'){ e.preventDefault(); endTour(); }
+    else if(e.key === 'Tab'){
+      const first = document.getElementById('tourSkip'), last = document.getElementById('tourNext');
+      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+  });
 
   document.getElementById('tourSkip').addEventListener('click', endTour);
   document.getElementById('tourNext').addEventListener('click', ()=>{ tourIndex++; paintTourStep(); });
@@ -2869,14 +2915,19 @@ ${pathCardHTML(p,i)}
     </section>
   `;
   const sessionChoices = {
-    learn: {label:'LESSON OF THE DAY', title:`${daily.pathN}.${daily.subN} · ${daily.subTitle}`, description:`Explore ${daily.pathTitle} with a focused lesson.`, href:`#/lesson/${daily.pathId}/${daily.subId}`, action:'Read the lesson'},
     practice: {label:'HANDS-ON PRACTICE', title:'Spot the signs of phishing', description:'Examine realistic messages and learn to recognize the red flags.', href:'#/labs/phishing', action:'Try the lab'},
     review: {label:'REINFORCE YOUR KNOWLEDGE', title:'Review with flashcards', description:'Revisit key terms and check what you remember.', href:'#/review', action:'Open flashcards'}
   };
   const pick = document.getElementById('homeSessionPick');
+  let selectedSession = 'learn';
   const showSession = key=>{
-    const choice = sessionChoices[key];
-    pick.innerHTML = `<span>${choice.label}</span><h3>${escapeHtml(choice.title)}</h3><p>${escapeHtml(choice.description)}</p><a href="${choice.href}">${choice.action} <span aria-hidden="true">→</span></a>`;
+    selectedSession = key;
+    const resume = STATE.lastVisited ? findSubContext(STATE.lastVisited.pathId, STATE.lastVisited.subId) : null;
+    const suggested = resume || (!overallProgress().done ? findSubContext('01-introduction', 'what-is-cybersecurity') : null);
+    const choice = key === 'learn' ? (suggested
+      ? {label:resume ? 'PICK UP WHERE YOU LEFT OFF' : 'START WITH THE BASICS', title:`${suggested.path.n}.${suggested.sub.n} · ${suggested.sub.title}`, description:resume ? `Continue ${suggested.path.title} at your own pace.` : 'Start with a short introduction to cybersecurity.', href:`#/lesson/${suggested.path.id}/${suggested.sub.id}`, action:resume ? 'Continue learning' : 'Start the lesson', daily:true}
+      : {label:'LESSON OF THE DAY', title:`${daily.pathN}.${daily.subN} · ${daily.subTitle}`, description:`Explore ${daily.pathTitle} with a focused lesson.`, href:`#/lesson/${daily.pathId}/${daily.subId}`, action:'Read the lesson'}) : sessionChoices[key];
+    pick.innerHTML = `<span>${choice.label}</span><h3>${escapeHtml(choice.title)}</h3><p>${escapeHtml(choice.description)}</p><a href="${choice.href}">${choice.action} <span aria-hidden="true">→</span></a>${choice.daily ? `<a class="home-session-daily" href="#/lesson/${daily.pathId}/${daily.subId}">Explore today's lesson <span aria-hidden="true">→</span></a>` : ''}`;
     app.querySelectorAll('[data-session]').forEach(button=>button.setAttribute('aria-pressed', String(button.dataset.session===key)));
   };
   app.querySelectorAll('[data-session]').forEach(button=>button.addEventListener('click',()=>showSession(button.dataset.session)));
@@ -2887,6 +2938,7 @@ ${pathCardHTML(p,i)}
     track.setAttribute('aria-valuenow',String(pct));
     track.firstElementChild.style.width = pct+'%';
     app.querySelector('.home-session-progress > p').textContent = `${progress.done} of ${progress.total} lessons completed`;
+    if(selectedSession === 'learn' && !pick.contains(document.activeElement)) showSession('learn');
   };
   showSession('learn');
   wireFAQ();
@@ -3010,7 +3062,7 @@ async function fetchPathFile(file, signal){
   try{
     const response = await fetch(file.url,{signal:controller.signal});
     const text = await response.text();
-    const html = /text\/html/i.test(response.headers.get('content-type') || '') || /^\s*</.test(text);
+    const html = /text\/html/i.test(response.headers.get('content-type') || '') || /^\s*</.test(file.lesson ? lessonValidationText(text) : text);
     const valid = file.lesson ? /^#\s+\S/m.test(text) : text.startsWith(file.startsWith) && text.includes(file.marker);
     if(!response.ok || html || !valid) throw new Error('Invalid file response');
     return text;
@@ -3260,11 +3312,15 @@ const PATH_GUIDES = [
       },
       {
         "title": "Show your evidence",
-        "through": "practical-packet-lab",
-        "outcome": "Capture and explain a local network exchange."
+        "through": "dns-response-troubleshooting",
+        "outcome": "Explain a local exchange and investigate DNS responses."
       }
     ],
     "certs": [
+      {
+        "id": "network-plus",
+        "reason": "A networking foundation; add device configuration and troubleshooting practice before the exam."
+      },
       {
         "id": "ccna",
         "reason": "For a network engineering goal; requires much more routing, switching, and device practice."
@@ -4121,8 +4177,8 @@ const PATH_GUIDES = [
       },
       {
         "title": "Fix, verify, and present",
-        "through": "appsec-program-lab",
-        "outcome": "Pass the local lab and connect its evidence to a practical rollout plan."
+        "through": "verify-vulnerability-remediation",
+        "outcome": "Practice prioritization and verify fixes with evidence."
       }
     ],
     "certs": [
@@ -4140,6 +4196,11 @@ const PATH_GUIDES = [
       }
     ],
     "practice": [
+      {
+        "href": "/tools/vulntriage.html",
+        "label": "Vulnerability Triage Practice",
+        "note": "Compare fictional evidence and explain a next step."
+      },
       {
         "href": "/lesson/22-devsecops-appsec/appsec-fix-verify-lab.html",
         "label": "Fix & Verify: local Python lab",
@@ -4551,6 +4612,18 @@ function certTier(level){
   return 'advanced';
 }
 const CERTS = [
+  {
+    "id": "network-plus",
+    "name": "CompTIA Network+",
+    "org": "CompTIA",
+    "level": "Entry",
+    "desc": "A vendor-neutral networking credential covering connectivity, operations, troubleshooting, and security concepts.",
+    "format": "Proctored knowledge and performance-based exam; check the current guide",
+    "prep": "Paths 02, 12",
+    "url": "https://www.comptia.org/en-us/certifications/network/",
+    "readiness": "CompTIA recommends A+ and 9–12 months of networking experience. Add device configuration and troubleshooting practice and check the current exam objectives.",
+    "reviewed": "2026-11-13"
+  },
   {
     "id": "sec1",
     "name": "SEC1 (Cyber Security 101)",
@@ -5360,7 +5433,7 @@ const LESSON_PRACTICE = [
   {kind:'playground',id:'network',title:'Follow a web request',minutes:5,icon:'radio',
     why:'Walk through DNS, a connection, TLS, and a page request. Change the failure and see where the trip stops.',
     prompt:'If finding the address fails, will the browser send a page request to the web server?',
-    lessons:['00-fresher-basics/how-internet-works','02-networking/dns','02-networking/http-https','02-networking/tcp-vs-udp','02-networking/protocols','06-crypto-fundamentals/tls-handshake-explained']},
+    lessons:['00-fresher-basics/how-internet-works','02-networking/dns','02-networking/dns-response-troubleshooting','02-networking/http-https','02-networking/tcp-vs-udp','02-networking/protocols','06-crypto-fundamentals/tls-handshake-explained']},
   {kind:'playground',id:'encoding',title:'Turn text into bytes',minutes:5,icon:'swap',
     why:'Inspect UTF-8 bytes and reverse a Base64 message. Try another alphabet or an emoji.',
     prompt:'Can somebody recover a Base64 message without knowing a secret key?',
@@ -5380,7 +5453,11 @@ const LESSON_PRACTICE = [
   {kind:'investigations',id:'exposed-cloud-key',title:'The key that outlived the commit',minutes:20,icon:'cloud',
     why:'Follow an exposed credential through audit evidence. Separate attempted actions from confirmed actions.',
     prompt:'If a secret is removed from a commit, what else must change to stop it being used?',
-    lessons:['16-advanced/cloud-security','16-advanced/iam-deep-dive','21-api-security/api-key-and-secret-management']}
+    lessons:['16-advanced/cloud-security','16-advanced/iam-deep-dive','21-api-security/api-key-and-secret-management']},
+  {kind:'investigations',id:'patch-rollout',title:'The fix that missed a region',minutes:20,icon:'shield',
+    why:'Compare an advisory, deployed versions, and test evidence to decide what is still exposed.',
+    prompt:'What would show that a merged fix reached every affected deployment?',
+    lessons:['22-devsecops-appsec/vulnerability-management-and-prioritization','22-devsecops-appsec/vulnerability-triage-in-practice','22-devsecops-appsec/verify-vulnerability-remediation']}
 ];
 function lessonPracticeItems(ctx){
   return LESSON_PRACTICE.filter(item=>item.lessons.includes(`${ctx.path.id}/${ctx.sub.id}`));
@@ -5733,7 +5810,7 @@ async function renderSubLesson(pathId, subId){
     try{
       timer = setTimeout(()=>controller.abort(new DOMException('Lesson request timed out', 'TimeoutError')), 15000);
       const md = await readLessonMarkdown(pathId, subId, controller.signal, retrying);
-      if(/^\s*(?:<!doctype\s+html|<html\b)/i.test(md) || !/^#\s+\S/m.test(md)) throw new Error('Invalid lesson response');
+      if(/^\s*(?:<!doctype\s+html|<html\b)/i.test(lessonValidationText(md)) || !/^#\s+\S/m.test(md)) throw new Error('Invalid lesson response');
       stage = 'renderer';
       await Promise.all([ensureMarked(), ensureSanitizer()]);
       if(!isCurrent()) return;
@@ -6145,6 +6222,153 @@ function wirePomodoro(){
    Each review target is a heading in the source lesson. The preview consumes
    the same questions through generate-preview-content.js. */
 const LESSON_CHECKS = {
+  '02-networking/what-is-a-network': {
+    q:"A video call feels delayed even though the connection can transfer large files quickly. Which measurement best describes that delay?",
+    options:["Latency","Bandwidth","The Wi-Fi network name","The number of open browser tabs"],
+    correct:0,
+    explain:"Latency measures how long data takes to travel; bandwidth describes how much data a connection can carry over time.",
+    review:"Bandwidth vs. latency — two different kinds of \"speed\""
+  },
+  '02-networking/routing-basics': {
+    q:"A device has no more specific route for an outside destination. Where does it usually send the packet?",
+    options:["To a DNS record","To its default gateway","To every device on the local network","Directly to the destination without using a router"],
+    correct:1,
+    explain:"A default route points to a gateway for destinations without a more specific matching route.",
+    review:"The default gateway: your network's exit door"
+  },
+  '02-networking/ip-addresses': {
+    q:"What can DHCP provide to a device joining a network?",
+    options:["A permanent domain name for every device","Encryption for every application","An automatically assigned IP configuration","A guarantee that its address can never change"],
+    correct:2,
+    explain:"DHCP can automatically assign network settings such as an IP address; an assigned address can change.",
+    review:"Static vs. dynamic IPs — and DHCP"
+  },
+  '02-networking/subnetting-and-cidr': {
+    q:"How many total IPv4 addresses are in a /24 block?",
+    options:["24","128","254","256"],
+    correct:3,
+    explain:"A /24 leaves eight address bits, giving 2⁸, or 256 total addresses. Usable host counts depend on the subnet and its use.",
+    review:"Reading CIDR notation"
+  },
+  '02-networking/nat-and-port-forwarding': {
+    q:"What does a port-forwarding rule generally do?",
+    options:["Sends matching incoming traffic to a chosen internal address and port","Encrypts all traffic on the network","Assigns a domain name to every device","Stops the chosen internal service from receiving traffic"],
+    correct:0,
+    explain:"Port forwarding maps selected incoming traffic to an internal service, potentially making that service reachable from outside.",
+    review:"Port forwarding: deliberately opening a door"
+  },
+  '02-networking/ports': {
+    q:"Why does a client typically use an ephemeral port when connecting to a server?",
+    options:["To replace the destination IP address","To identify the client side of a connection","To guarantee that the traffic is encrypted","To convert UDP traffic into TCP"],
+    correct:1,
+    explain:"The client typically selects a temporary source port; the server listens on its destination port.",
+    review:"Ephemeral ports — the other side of every connection"
+  },
+  '02-networking/packets': {
+    q:"What happens during encapsulation as data moves down a network stack?",
+    options:["The application removes all addressing information","Every device receives the same private key","Each layer adds its own protocol information around the data","The destination changes the source data into a domain name"],
+    correct:2,
+    explain:"Layers add protocol information to the data they carry. The receiver processes the corresponding layers in reverse.",
+    review:"Encapsulation — envelopes inside envelopes"
+  },
+  '02-networking/switches-and-vlans': {
+    q:"What does a VLAN allow an organization to do on compatible network equipment?",
+    options:["Make a cable carry unlimited bandwidth","Remove the need for IP addresses","Encrypt every application automatically","Separate devices into logical network segments"],
+    correct:3,
+    explain:"VLANs provide logical segmentation on compatible switching equipment. Traffic between segments still depends on routing and policy.",
+    review:"VLANs: one physical switch, several logical networks"
+  },
+  '02-networking/protocols': {
+    q:"Why do two systems need an agreed network protocol?",
+    options:["So they can interpret messages and follow compatible rules","So they always use the same operating system","So no network failure can occur","So every message remains secret by default"],
+    correct:0,
+    explain:"A protocol specifies rules for communication, such as message formats and expected behavior. Encryption depends on the protocol and its use.",
+    review:"Just an agreed set of rules"
+  },
+  '02-networking/tcp-vs-udp': {
+    q:"Which sequence describes a typical TCP connection handshake?",
+    options:["ACK, ACK, SYN","SYN, SYN-ACK, ACK","GET, POST, DELETE","DNS, HTTP, TLS"],
+    correct:1,
+    explain:"A client sends SYN, the server responds with SYN-ACK, and the client acknowledges with ACK.",
+    review:"The TCP three-way handshake"
+  },
+  '02-networking/wireless-networking-basics': {
+    q:"A nearby access point uses the same network name as a trusted café. What concern does this illustrate?",
+    options:["A VLAN automatically shares its passwords","A router has necessarily failed","A rogue access point may be impersonating the trusted network","A matching name proves the network is authentic"],
+    correct:2,
+    explain:"An evil twin can copy a legitimate network name. The name alone does not establish who operates the access point.",
+    review:"Evil twin attacks: a wireless-specific threat"
+  },
+  '02-networking/http-https': {
+    q:"What does HTTPS add to HTTP when the connection is correctly established?",
+    options:["A guarantee that the website content is truthful","A guarantee that the server has no vulnerabilities","A requirement that every page be public","TLS protection for the connection"],
+    correct:3,
+    explain:"HTTPS uses TLS to protect data in transit and authenticate the server when certificate validation succeeds. It does not make the site itself trustworthy.",
+    review:"The 'S' is for Secure"
+  },
+  '02-networking/firewalls-basics': {
+    q:"What distinguishes a stateful firewall from a stateless packet filter?",
+    options:["It can use connection state when evaluating traffic","It makes every allowed application safe","It replaces the need for authentication","It always reads encrypted application content"],
+    correct:0,
+    explain:"A stateful firewall can track connection context; a stateless filter evaluates packets without that connection history.",
+    review:"Stateful vs. stateless filtering"
+  },
+  '02-networking/common-network-attacks-overview': {
+    q:"What is a possible consequence of ARP spoofing on a local network?",
+    options:["A domain name is permanently deleted","Traffic may be sent to a device impersonating the gateway","Every encrypted message becomes readable automatically","A browser installs an operating system update"],
+    correct:1,
+    explain:"Forged ARP messages can associate an IP address with an attacker-controlled MAC address and redirect local traffic.",
+    review:"ARP spoofing: lying about who you are on the local network"
+  },
+  '02-networking/network-troubleshooting-tools': {
+    q:"Which tool is intended for asking a DNS resolver about a name?",
+    options:["A text editor","A file compression tool","nslookup or dig","A screen brightness control"],
+    correct:2,
+    explain:"nslookup and dig can request DNS records. Record the question and response before deciding what the result means.",
+    review:"nslookup / dig: asking DNS directly"
+  },
+  '02-networking/dns-lab': {
+    q:"Which DNS record type identifies authoritative name servers for a zone?",
+    options:["A","MX","AAAA","NS"],
+    correct:3,
+    explain:"NS records identify name servers for a zone; A and AAAA records provide addresses and MX records identify mail exchangers.",
+    review:"Tasks"
+  },
+  '02-networking/cloud-and-modern-networking': {
+    q:"What is an overlay network?",
+    options:["A logical network built over an underlying network","A replacement for all physical infrastructure","A guarantee that all workloads are isolated","A physical cable connecting every device directly"],
+    correct:0,
+    explain:"An overlay creates a logical network over underlying infrastructure. Its actual connectivity and isolation depend on configuration.",
+    review:"Virtual networks and overlay networking"
+  },
+  '02-networking/network-certifications-careers': {
+    q:"How can you demonstrate networking skills to a prospective employer?",
+    options:["Claim that a certificate guarantees a job","Document a project or home lab and explain the decisions and results","List every tool without describing how you used it","Share credentials to a production network"],
+    correct:1,
+    explain:"A documented project or lab gives you concrete evidence to discuss alongside relevant learning and certifications.",
+    review:"Building demonstrable networking experience"
+  },
+  '02-networking/practical-packet-lab': {
+    q:"In a packet capture, what does a TCP SYN followed by SYN-ACK suggest?",
+    options:["A DNS response has been cached forever","HTTP content is necessarily unencrypted","A TCP connection is being established","The capture contains every packet on the internet"],
+    correct:2,
+    explain:"SYN and SYN-ACK are the first two steps of the TCP handshake; the client normally follows with an ACK.",
+    review:"What to look for"
+  },
+  '02-networking/dns': {
+    q:'Which DNS record type names a mail exchanger for a domain?',
+    options:['AAAA','MX','CNAME','PTR'],
+    correct:1,
+    explain:'An MX record names a mail exchanger and provides a preference value. A and AAAA records provide addresses; CNAME identifies an alias target.',
+    review:'Types of DNS records'
+  },
+  '02-networking/dns-response-troubleshooting': {
+    q:'A resolver returns NOERROR with no AAAA answer for a name. What is the careful next interpretation?',
+    options:['The domain can never have any records','The server has definitely been compromised','Check the question and response; the name may exist without an AAAA record','Assume all network traffic is blocked'],
+    correct:2,
+    explain:'An empty answer needs context. It can represent no data for the requested type; check the question and authority section before drawing broader conclusions.',
+    review:'Read the response, not just the empty answer'
+  },
   '18-ai-security/mcp-tool-authorization': {
     q:'A document tells a read-only invoice assistant to send the invoice outside the company. What should enforce the boundary?',
     options:['The document author','The model approving its own call','A trusted tool gateway checking the authenticated actor and task','An approved field supplied in the tool arguments'],
@@ -6291,6 +6515,20 @@ const LESSON_CHECKS = {
     correct:2,
     explain:'A program plan becomes more useful when it includes technical evidence. Show what changed, how you checked it, and the limits of the exercise.',
     review:'5. Include technical evidence'
+  },
+  '22-devsecops-appsec/vulnerability-triage-in-practice': {
+    q:'A catalog lists a vulnerability as exploited, but you do not know whether your deployed version is affected. What should you do first?',
+    options:['Confirm the deployed component and exposure while arranging a mitigation path','Assume all assets are affected and close the investigation','Ignore the catalog until a scanner produces a higher score','Declare the finding fixed without examining the deployment'],
+    correct:0,
+    explain:'Known exploitation is an urgent signal to investigate. Applicability and exposure still need evidence, and teams can prepare mitigation in parallel.',
+    review:'Start with applicability'
+  },
+  '22-devsecops-appsec/verify-vulnerability-remediation': {
+    q:'An upgrade passes CI. What evidence best supports closing an affected production finding?',
+    options:['A screenshot of the pull request alone','Evidence the fixed build reached the affected asset, plus targeted checks and a record of remaining risk','The developer says the dependency is probably unused','A lower backlog count'],
+    correct:1,
+    explain:'A source fix is not necessarily deployed everywhere. Check the affected asset, relevant behavior and residual exposure before closing the finding.',
+    review:'Verify the deployed change'
   }
 };
 
@@ -10129,6 +10367,7 @@ const TOOLS = [
   {id:'jwt',      ico:'ticket', title:'JWT Decoder',            desc:'Decode a JSON Web Token\'s header and payload and read its claims. No signature verification.', related:'Path 11 — Web Security'},
   {id:'cvss',     ico:'gauge', title:'CVSS 4.0 + 3.1 Calculator', desc:'Build a CVSS vector and calculate Base, Threat, and Environmental severity locally.', related:'Path 10 — Fundamentals'},
   {id:'subnet',   ico:'network', title:'Subnet Calculator',      desc:'IPv4 CIDR → network, broadcast, host range, mask, and host count.', related:'Path 02 — Networking'},
+  {id:'dnsrecords', ico:'network', title:'DNS Record Practice', desc:'Choose record types for fictional lookups and learn to read example DNS answers without sending queries.', related:'Path 02 — Networking'},
   {id:'password', ico:'key', title:'Password Strength',      desc:'Rough entropy and crack-time estimate for a password, with feedback.', related:'Path 06 — Cryptography'},
   {id:'cipher',   ico:'lockKey', title:'Cipher Playground',      desc:'Caesar/ROT, XOR, and Vigenère — the classic ciphers from the CTF zone.', related:'Path 19 — CTF Zone'},
   {id:'regex',    ico:'asterisk', title:'Regex Tester',           desc:'Test a regular expression against sample text with live match highlighting and capture groups.', related:'Path 04 — Python'},
@@ -10144,9 +10383,11 @@ const TOOLS = [
   {id:'useragent', ico:'browser', title:'User-Agent String Parser', desc:'Break down a User-Agent string into OS, browser, and version — and flag common automated-client patterns.', related:'Path 12 — Network Security'},
   {id:'entropy', ico:'dice', title:'Entropy Calculator', desc:'Shannon entropy of any text — a genuine static-analysis signal for spotting packed or encrypted data.', related:'Path 17 — Malware & RE'},
   {id:'httpbuilder', ico:'send', title:'Raw HTTP Request Builder', desc:'Build a raw HTTP request from method, path, headers, and body — see exactly what goes over the wire.', related:'Path 10 — Fundamentals'},
+  {id:'httpstatus', ico:'browser', title:'HTTP Response Practice', desc:'Interpret fictional HTTP responses and choose a useful next step for authentication, access, and rate limits.', related:'Path 05 — Web Basics'},
   {id:'logparser', ico:'filter', title:'Log Grep / Filter Playground', desc:'Filter a block of log lines with a regex — the exact "find the signal in the noise" skill IR work depends on.', related:'Path 03 — Linux'},
   {id:'riskregister', ico:'ledger', title:'Risk Register Builder', desc:'Add risks with likelihood and impact, get an auto-scored severity, and export the register as Markdown.', related:'Path 23 — GRC & Compliance'},
   {id:'sbomcheck', ico:'package', title:'Dependency / SBOM Risk Checker', desc:'Paste a dependency list and flag ones matching a known-vulnerable version range.', related:'Path 22 — DevSecOps & AppSec'},
+  {id:'vulntriage', ico:'shield', title:'Vulnerability Triage Practice', desc:'Work through fictional findings and choose evidence-led next steps for applicability, mitigation, and verification.', related:'Path 22 — DevSecOps & AppSec'},
   {id:'emailheaders', ico:'mail', title:'Email Header Analyzer', desc:'Paste raw email headers and get flagged for From/Return-Path mismatches, SPF failures, and missing DKIM.', related:'Path 09 — Digital Privacy'},
   {id:'passpolicy', ico:'check', title:'Password Policy Checker', desc:'Test a password against a configurable length/complexity policy, rule by rule.', related:'Path 00 — Absolute Basics'},
   {id:'vlsm', ico:'ruler', title:'VLSM Subnet Planner', desc:'Plan variable-length subnets across several different host-count requirements from one base network.', related:'Path 02 — Networking'},
@@ -10200,7 +10441,7 @@ function renderTool(id){
   const body = document.getElementById('toolBody');
   ({encoder:toolEncoder, hash:toolHash, jwt:toolJwt, cvss:toolCvss, subnet:toolSubnet, password:toolPassword, cipher:toolCipher, regex:toolRegex, hashid:toolHashId, headers:toolHeaders, vulnreport:toolVulnReport,
     resumehelper:toolResumeHelper, portfoliogen:toolPortfolioGen, codereview:toolCodeReview, attckmap:toolAttckMap, stride:toolStride,
-    cidroverlap:toolCidrOverlap, useragent:toolUserAgent, entropy:toolEntropy, httpbuilder:toolHttpBuilder, logparser:toolLogParser, riskregister:toolRiskRegister, sbomcheck:toolSbomCheck, emailheaders:toolEmailHeaders,
+    cidroverlap:toolCidrOverlap, useragent:toolUserAgent, entropy:toolEntropy, httpbuilder:toolHttpBuilder, httpstatus:toolHttpStatus, dnsrecords:toolDnsRecords, logparser:toolLogParser, riskregister:toolRiskRegister, sbomcheck:toolSbomCheck, vulntriage:toolVulnTriage, emailheaders:toolEmailHeaders,
     passpolicy:toolPassPolicy, vlsm:toolVlsm, yaratester:toolYaraTester, slacalc:toolSlaCalc, controlmapper:toolControlMapper, dhvisualizer:toolDhVisualizer, base32:toolBase32, timingviz:toolTimingViz}[id])(body);
   setupReveal();
 }
@@ -10211,6 +10452,105 @@ function textToBytes(s){ return new TextEncoder().encode(s); }
 function b64EncodeUtf8(s){ return btoa(String.fromCharCode(...textToBytes(s))); }
 function b64DecodeUtf8(s){ return new TextDecoder().decode(Uint8Array.from(atob(s), c=>c.charCodeAt(0))); }
 function b64UrlDecode(s){ s = s.replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4) s+='='; return b64DecodeUtf8(s); }
+
+/* Fictional practice cases: no live vulnerability data or automatic risk score. */
+function toolVulnTriage(el){
+  const cases = [
+    {title:'1. A catalog alert', evidence:'A fictional library appears in an exploited-vulnerability catalog. Your inventory is a month old, and the version running on the public service is unknown.', question:'What is the most useful next step?', options:['Verify the deployed version and exposure while preparing mitigation','Close the finding because no version is confirmed','Assume every service is affected and mark it fixed'], correct:0, explanation:'Known exploitation is a reason to investigate promptly. Confirm applicability on the actual asset and prepare an owner and mitigation in parallel.'},
+    {title:'2. A reachable finding', evidence:'A fictional vulnerability is confirmed in a public service, the affected behavior is reachable, and exploitation is observed. Another internal finding has a higher severity score but no confirmed exposure.', question:'What should the team prioritize?', options:['Only the finding with the higher score','Mitigation of the exposed, exploited service and assignment of an owner','Neither finding until the next annual review'], correct:1, explanation:'Severity is one signal. Confirmed exposure and exploitation can justify an urgent response; continue assessing the other finding too.'},
+    {title:'3. A fix has merged', evidence:'A team upgraded a vulnerable dependency and the test suite passed in CI. The production asset has not yet been checked.', question:'What evidence supports closure?', options:['The pull request merged, so no other checks are needed','The issue has been open for a week','Confirm the fixed build is deployed, run targeted checks, and document remaining risk'], correct:2, explanation:'Source and CI results are useful, but the affected deployment and its behavior need verification. Record the evidence and any residual risk.'}
+  ];
+  el.innerHTML = `<div class="scenario-practice"><div class="tool-controls"><label>Choose a fictional case <select class="fc-select" id="vtCase">${cases.map((c,i)=>`<option value="${i}">${c.title}</option>`).join('')}</select></label></div>
+    <div class="scenario-evidence"><strong>Case evidence</strong><p id="vtEvidence"></p></div>
+    <label class="tool-field" for="vtAnswer" id="vtQuestion"></label>
+    <select class="fc-select" id="vtAnswer"></select>
+    <div class="tool-btnrow"><button class="btn-amber sm" id="vtCheck" type="button">Check my reasoning</button></div>
+    <p class="scenario-feedback" id="vtFeedback" role="status" aria-live="polite"></p>
+    <p>Practice only: these cases use fictional data, not live CVE, KEV, or EPSS results. Check current sources and your own environment before making a real decision.</p>
+    <p><a href="/lesson/22-devsecops-appsec/vulnerability-triage-in-practice.html">Read the triage lesson</a> · <a href="/lesson/22-devsecops-appsec/verify-vulnerability-remediation.html">Learn to verify a fix</a></p></div>`;
+  const selector=el.querySelector('#vtCase'), answer=el.querySelector('#vtAnswer'), feedback=el.querySelector('#vtFeedback');
+  const show=()=>{
+    const item=cases[Number(selector.value)];
+    el.querySelector('#vtEvidence').textContent=item.evidence;
+    el.querySelector('#vtQuestion').textContent=item.question;
+    answer.innerHTML='<option value="">Choose an answer</option>'+item.options.map((option,i)=>`<option value="${i}">${escapeHtml(option)}</option>`).join('');
+    feedback.textContent='';
+  };
+  selector.addEventListener('change',show);
+  answer.addEventListener('change',()=>{feedback.textContent='';});
+  el.querySelector('#vtCheck').addEventListener('click',()=>{
+    if(answer.value===''){ feedback.textContent='Choose an answer first.'; return; }
+    const item=cases[Number(selector.value)];
+    feedback.textContent=(Number(answer.value)===item.correct ? 'Good reasoning. ' : 'Try again. ')+item.explanation;
+  });
+  show();
+}
+
+/* Local scenarios teach interpretation; this tool never sends HTTP requests. */
+function toolHttpStatus(el){
+  const cases = [
+    {title:'401: Missing or invalid credentials', response:'HTTP/1.1 401 Unauthorized\nWWW-Authenticate: Bearer', options:['Check the required authentication and provide valid credentials','Assume the requested resource does not exist','Retry the identical request indefinitely'], correct:0, explanation:'A 401 means the request lacks valid authentication credentials. The challenge describes an authentication scheme; credentials may be missing or invalid.'},
+    {title:'403: Request refused', response:'HTTP/1.1 403 Forbidden', options:['Assume the server has verified your identity','Check the requested action and relevant access policy','Assume the server is temporarily unavailable'], correct:1, explanation:'A 403 means the server understood and refused the request. It does not by itself prove the server identified the requester.'},
+    {title:'404: Resource not found or undisclosed', response:'HTTP/1.1 404 Not Found', options:['Conclude the resource never existed','Conclude authentication succeeded','Check the URL and authorized context without assuming why it returned 404'], correct:2, explanation:'A 404 can mean no current representation was found or that the server is unwilling to disclose one. The response alone does not distinguish those cases.'},
+    {title:'429: Too many requests', response:'HTTP/1.1 429 Too Many Requests\nRetry-After: 60', options:['Respect the indicated delay and review the client rate','Immediately send many more requests','Treat the response as proof the account was deleted'], correct:0, explanation:'429 indicates rate limiting. Retry-After may indicate how long to wait; also consider the operation and its retry safety.'}
+  ];
+  el.innerHTML = `<div class="scenario-practice"><div class="tool-controls"><label>Choose a response <select class="fc-select" id="hsCase">${cases.map((c,i)=>`<option value="${i}">${escapeHtml(c.title)}</option>`).join('')}</select></label></div>
+    <div class="scenario-evidence"><strong>Sample response</strong><pre id="hsResponse"></pre></div>
+    <label class="tool-field" for="hsAnswer">What is the best next step?</label><select class="fc-select" id="hsAnswer"></select>
+    <div class="tool-btnrow"><button class="btn-amber sm" type="button" id="hsCheck">Check my reasoning</button></div>
+    <p class="scenario-feedback" id="hsFeedback" role="status" aria-live="polite"></p>
+    <p>These responses are fictional. This practice does not make network requests. Real applications may add context in headers or response bodies.</p>
+    <p><a href="/lesson/05-web-basics/http-methods-status-codes.html">Read about methods and status codes</a> · <a href="/tools/httpbuilder.html">Build a sample request</a></p></div>`;
+  const selector=el.querySelector('#hsCase'), answer=el.querySelector('#hsAnswer'), feedback=el.querySelector('#hsFeedback');
+  const show=()=>{
+    const item=cases[Number(selector.value)];
+    el.querySelector('#hsResponse').textContent=item.response;
+    answer.innerHTML='<option value="">Choose an answer</option>'+item.options.map((option,i)=>`<option value="${i}">${escapeHtml(option)}</option>`).join('');
+    feedback.textContent='';
+  };
+  selector.addEventListener('change',show);
+  answer.addEventListener('change',()=>{feedback.textContent='';});
+  el.querySelector('#hsCheck').addEventListener('click',()=>{
+    if(answer.value===''){ feedback.textContent='Choose an answer first.'; return; }
+    const item=cases[Number(selector.value)];
+    feedback.textContent=(Number(answer.value)===item.correct ? 'Good reasoning. ' : 'Try again. ')+item.explanation;
+  });
+  show();
+}
+
+/* Fixed documentation examples only: the practice never performs DNS lookups. */
+function toolDnsRecords(el){
+  const cases = [
+    {title:'Find an IPv4 address', question:'Which record type returns an IPv4 address for web.lab.test?', answer:'A', hint:'Look for the record type used for IPv4 addresses.', record:'web.lab.test. 300 IN A 192.0.2.20', explanation:'An A record contains an IPv4 address. This example address is reserved for documentation.'},
+    {title:'Find an IPv6 address', question:'Which record type returns an IPv6 address for web.lab.test?', answer:'AAAA', hint:'IPv6 uses a different address record type from IPv4.', record:'web.lab.test. 300 IN AAAA 2001:db8::20', explanation:'An AAAA record contains an IPv6 address. This example uses documentation address space.'},
+    {title:'Find a mail server', question:'Which record type identifies a mail exchanger for lab.test?', answer:'MX', hint:'Look for the record type associated with mail exchange.', record:'lab.test. 300 IN MX 10 mail.lab.test.', explanation:'An MX record names a mail exchanger and gives its preference value. Lower values indicate greater preference.'},
+    {title:'Follow an alias', question:'Which record type points portal.lab.test to another domain name?', answer:'CNAME', hint:'The record is an alias to a name, not an address.', record:'portal.lab.test. 300 IN CNAME web.lab.test.', explanation:'A CNAME record identifies a canonical name for an alias. Further resolution may be needed to obtain an address.'},
+    {title:'Read a text value', question:'Which record type can hold a text value for lab.test?', answer:'TXT', hint:'Look for the record type that carries text.', record:'lab.test. 300 IN TXT "site-verification=training"', explanation:'TXT records carry text. The meaning of a value depends on the application that uses it.'}
+  ];
+  const types=['A','AAAA','MX','CNAME','TXT'];
+  el.innerHTML = `<div class="scenario-practice"><div class="tool-controls"><label>Choose a practice task <select class="fc-select" id="dnsCase">${cases.map((c,i)=>`<option value="${i}">${escapeHtml(c.title)}</option>`).join('')}</select></label></div>
+    <div class="scenario-evidence"><strong>Your task</strong><p id="dnsQuestion"></p></div>
+    <label class="tool-field" for="dnsType">Choose a record type</label><select class="fc-select" id="dnsType"><option value="">Choose an answer</option>${types.map(type=>`<option value="${type}">${type}</option>`).join('')}</select>
+    <div class="tool-btnrow"><button class="btn-amber sm" id="dnsCheck" type="button">Check my answer</button></div>
+    <p class="scenario-feedback" id="dnsFeedback" role="status" aria-live="polite"></p>
+    <div class="scenario-evidence" id="dnsResult" hidden><strong>Example answer</strong><pre id="dnsRecord"></pre><p>The 300 is the example TTL in seconds. A TTL describes caching; it does not guarantee when every resolver will show a change.</p></div>
+    <p>These are fictional, fixed examples. This practice makes no DNS queries and does not describe a live domain.</p>
+    <p><a href="/lesson/02-networking/dns.html">Read the DNS lesson</a> · <a href="/lesson/02-networking/dns-lab.html">Explore the DNS lab</a></p></div>`;
+  const selector=el.querySelector('#dnsCase'), type=el.querySelector('#dnsType'), feedback=el.querySelector('#dnsFeedback'), result=el.querySelector('#dnsResult');
+  const clear=()=>{feedback.textContent=''; result.hidden=true;};
+  const show=()=>{el.querySelector('#dnsQuestion').textContent=cases[Number(selector.value)].question; type.value=''; clear();};
+  selector.addEventListener('change',show);
+  type.addEventListener('change',clear);
+  el.querySelector('#dnsCheck').addEventListener('click',()=>{
+    if(!type.value){feedback.textContent='Choose a record type first.'; return;}
+    const item=cases[Number(selector.value)];
+    if(type.value!==item.answer){feedback.textContent='Try again. '+item.hint; result.hidden=true; return;}
+    el.querySelector('#dnsRecord').textContent=item.record;
+    feedback.textContent='Correct. '+item.explanation;
+    result.hidden=false;
+  });
+  show();
+}
 
 /* --- Encoder / Decoder --- */
 function toolEncoder(el){
@@ -14427,6 +14767,7 @@ function dialogFocusables(overlay){
 }
 function openDialog(overlay, firstFocus, close){
   if(activeDialog?.overlay === overlay){ firstFocus.focus(); return; }
+  if(document.getElementById('tourOverlay')) endTour();
   activeDialog?.close();
   const returnFocus = document.activeElement;
   const inerted = [...document.body.children].filter(el=>el !== overlay && !el.inert);
@@ -14447,6 +14788,7 @@ function closeDialog(overlay){
   activeDialog = null;
   inerted.forEach(el=>{ el.inert = false; });
   if(returnFocus?.isConnected) returnFocus.focus();
+  if(tourDeferred){ tourDeferred = false; maybeStartTour(); }
 }
 document.addEventListener('keydown', e=>{
   if(!activeDialog) return;

@@ -5,6 +5,9 @@ import {chromium} from 'playwright';
 const root=new URL('..',import.meta.url);
 const read=file=>fs.readFile(new URL(file,root),'utf8');
 const SITE='https://kashsec.vercel.app';
+const app=await read('app.js');
+const paths=new Function(app.match(/const PATHS = \[[\s\S]*?\n\];/)[0]+';return PATHS;')();
+const totalLessons=paths.reduce((n,p)=>n+p.subs.length,0);
 const locs=[...(await read('sitemap.xml')).matchAll(/<loc>(.*?)<\/loc>/g)].map(m=>m[1]);
 assert.equal(new Set(locs).size,locs.length);
 const titles=new Set(),descriptions=new Set();
@@ -43,7 +46,7 @@ try{
   const c=await context({javaScriptEnabled:false}),p=await c.newPage();
   await p.goto(BASE+'/');await p.locator('[data-home-static]').waitFor();
   assert.equal(await p.locator('[data-home-static] a[href^="/lesson/"][href$="/"]').count(),30);
-  assert.ok((await p.locator('main').innerText()).includes('491'));
+  assert.ok((await p.locator('main').innerText()).includes(String(totalLessons)));
   assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   await p.getByRole('link',{name:'AI tool authorization lab',exact:true}).click();
   assert.ok((await p.locator('main').innerText()).includes('agent_tool_allowed'));

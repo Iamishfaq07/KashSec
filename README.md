@@ -2,21 +2,75 @@
 
 **A completely free cybersecurity course, from absolute zero to job-ready.**
 
-26 learning paths · 491 sub-lessons · 104 typed-answer practice tasks · 42 interactive labs · 32 browser-based tools · timed mock exams · always free
+26 learning paths · 494 sub-lessons · 104 typed-answer practice tasks · 42 interactive labs · 35 browser-based tools · timed mock exams · always free
 
 [![Live Site](https://img.shields.io/badge/live-kashsec.vercel.app-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
 ## What's new
 
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:08465b04ea21e76265a6c5b60f4d2f723355e98a93d426a945890a9b7b97a494 -->
+
+- **DNS troubleshooting** — compare fictional NXDOMAIN, NODATA and SERVFAIL observations, practise careful handovers, and try lesson-specific checks in both readers.
+
+<!-- /coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:db4b8f83df83531ec9e2ceba97d108e33c15513681a7204a753d5256408148e7 -->
+
+- **DNS Record Practice** — choose record types for five fictional tasks, see example answers and learn what their TTL means without sending DNS queries.
+
+<!-- /coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:cfe2f05b09d30da50edcaa81681a705350384a8a1d715e7764f473bd222bda23 -->
+
+- **Patch rollout investigation** — compare a fictional advisory, inventory and deployment record, then explain which region remains exposed and what evidence is needed to close the finding.
+
+<!-- /coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:59d33a75a93679efb9db25c5c242315813689fcd731311c00813d455d12ed374 -->
+
+- **HTTP Response Practice** — interpret fictional authentication, access, missing-resource and rate-limit responses, with explanations and a link back to the HTTP lesson.
+
+<!-- /coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:48a87eb411dfca658c0b51b9b9c97f963ff9938a4221aa77b16132a89ad3ba06 -->
+
+- **Vulnerability triage practice** — try three fictional cases, then learn to assess applicability and verify a deployed fix in two AppSec lessons. The networking roadmap now includes CompTIA Network+ with provider guidance.
+
+<!-- /coderabbit-ai-generated:v1 -->
+
 - **Resume expert casework** — Expert Labs shows saved answer/report-draft status, provides keyboard-accessible section and next-case links, and detects when another tab has changed the same saved case. Auto-save pauses in that situation so you can download your current report before inspecting or loading the latest saved version.
 
 - **Expert Labs** — the Labs page now has a separate Expert Labs tab with four evidence-led AppSec and cloud cases: tenant isolation, webhook replay, release-artifact trust, and cloud permission scope. Each includes prerequisites, staged hints, a local Python repair exercise, reasoning review, and evidence/report downloads. Drafts stay in the browser separately from course progress. Open `/expert-labs/`; Python 3.10+ is required for coding, with no extra packages or cloud account. Run `npm run test:expert` and `npm run test:preview-expert` to verify both readers.
 - **Find paths and take practice offline** — search path topics, lesson titles, and relevant certifications, combine with level filters, and keep the selection when returning from a roadmap. AppSec ZIPs include the runnable Python exercise and local links. Downloads validate files, show progress, and can be cancelled; browser offline saving also includes the exercise and rejects HTML error pages.
-- **Path maps and AppSec practice** — every path now has four connected learning stages, suggested preparation, practical portfolio evidence, and relevant certification options with official provider links and eligibility notes. AppSec grows to 18 lessons with testable requirements, secure code review, and a downloadable, dependency-free Python Fix & Verify lab. Each AppSec lesson has its own optional question, explanation, retry, and review-section link in both readers. Certification plans are shared between each path and the filterable certification planner.
+- **Path maps and AppSec practice** — every path now has four connected learning stages, suggested preparation, practical portfolio evidence, and relevant certification options with official provider links and eligibility notes. AppSec grows to 20 lessons with testable requirements, secure code review, and a downloadable, dependency-free Python Fix & Verify lab. Each AppSec lesson has its own optional question, explanation, retry, and review-section link in both readers. Certification plans are shared between each path and the filterable certification planner.
+
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:1378712e6592930392bfad5c3740831c317af7a02cb2d1b9e310abd2f8c35b3b -->
+
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:2004fa540cd1829fedbe981ef4c0d99ddabe5418c725e6a88de7641e6cd7bdb2 -->
+
+- **Networking checks** — every Networking lesson now has its own optional question, feedback, retry and a link to the relevant section in both readers.
+
+<!-- /coderabbit-ai-generated:v1 -->
+
+<!-- /coderabbit-ai-generated:v1 -->
 - **Smoother reading** — unfinished lessons offer an optional, device-local saved reading place. Progress follows the lesson text, unopened sidebar paths build their links only when expanded, mobile contents start collapsed, and section links move keyboard focus. Hovering or focusing the next-lesson control warms one Markdown file; data-saving and slow connections skip this. Clipboard failures select the code for manual copying, and notes explain when browser storage could not save them.
 - **Start-here learning routes** — choose your experience and interest to preview a short route through existing lessons, experiments, and investigations (`#/start`). Saved routes follow real completion and point to the next unfinished step. Choices are backed up and optionally synced; setting the study-planner focus is a separate action that keeps your daily goal. Return links connect the learning formats back to the route.
 - **Beginner Learning Playground** — three guided experiments teach web requests, UTF-8/Base64, and invoice access checks with immediate feedback and small goals. Use touch, mouse, or keyboard, with no timer or penalty for retrying. Open `#/playground` from Home, Course, My Progress, or search. Completed experiments sync with progress; typed messages and demo settings are never saved. Investigation cases also include optional hints, term explanations, and a quick-start guide.
-- **Incident Workbench** — investigate three fictional cases with searchable evidence files, saved analyst notes, decision reviews, retries, and downloadable evidence packs and case reports. Open it from Home, Labs, My Progress, or the command palette (`#/investigations`). Casework is included in progress backups and optional cloud sync; cases you open are available offline.
+- **Incident Workbench** — investigate four fictional cases with searchable evidence files, saved analyst notes, decision reviews, retries, and downloadable evidence packs and case reports. Open it from Home, Labs, My Progress, or the command palette (`#/investigations`). Casework is included in progress backups and optional cloud sync; cases you open are available offline.
 - **Personal study planner** — choose a learning path and a daily lesson goal, see this week's completions in your local time, and open your next unfinished lessons. Saved plans are included in progress backups and support optional cloud sync. Open it from the course page, My Progress, or search (`#/planner`).
 - **New advanced path: OT/ICS & Critical Infrastructure Security** — SCADA/ICS fundamentals, industrial protocols (Modbus, DNP3) and why they lack built-in security, the Purdue Model, real-world attacks (Stuxnet, the Ukraine grid attacks, Oldsmar, Triton), practical OT controls, and a full capstone security assessment
 - **New advanced path: Zero Trust Architecture** — never trust/always verify, identity as the perimeter, device posture, micro-segmentation, ZTNA vs. VPN, continuous verification, Zero Trust in the cloud, and a practical rollout roadmap capped with a BeyondCorp case study and maturity-assessment capstone

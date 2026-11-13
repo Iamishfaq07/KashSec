@@ -41,6 +41,9 @@ function rewriteLinks(markdown: string) {
   return markdown
     .replace(/\]\(\/expert-labs\/([a-z0-9-]+)\.html\)/g, "](/expert-labs/$1)")
     .replace(/\]\(\/expert-labs\/\)/g, "](/expert-labs)")
+    .replace(/\]\(\/lesson\/([a-z0-9-]+)\/([a-z0-9-]+)\.html\)/g, "](/lesson/$1/$2)")
+    .replace(/\]\(\/tools\/([a-z0-9-]+)\.html\)/g, "](https://kashsec.vercel.app/tools/$1.html)")
+    .replace(/\]\(#\/playground\/([a-z0-9-]+)\)/g, "](https://kashsec.vercel.app/#/playground/$1)")
     .replace(/\]\(#\/lesson\/([a-z0-9-]+)\/([a-z0-9-]+)\)/g, "](/lesson/$1/$2)")
     .replace(/\]\(#\/lesson\/([a-z0-9-]+)\)/g, "](/paths/$1)")
     .replace(/\]\(#\/careers[^)]*\)/g, "](/paths/20-career-prep)")
@@ -89,7 +92,7 @@ function parseChunk(markdown: string) {
 
 export function renderLesson(markdown: string) {
   headingIds = new Map();
-  let source = rewriteLinks(liftSvg(markdown.replace(/^#\s+.+\n+/, "")));
+  let source = rewriteLinks(liftSvg(markdown.replace(/^(\s*<!-- coderabbit-ai-generated:v1 -->\s*)?#\s+.+\n+/, "$1")));
   source = source.replace(
     /^\?\?\?refs\n([\s\S]*?)^\?\?\?[ \t]*$/gm,
     (_all, body: string) => {
