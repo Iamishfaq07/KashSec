@@ -2451,6 +2451,7 @@ const TOUR_STEPS = [
   {sel:'#progressRingBtn',  title:'Your progress lives here', body:'Everything you complete is saved automatically in this browser. No account needed — but you can sign in to sync across devices.'}
 ];
 let tourIndex = 0;
+let tourReturnFocus = null;
 function maybeStartTour(){
   // Recovery controls must stay usable even if unreadable state reset the tour.
   if(STATE.tourSeen || getRecoveryCopy() !== null) return;
@@ -2466,8 +2467,29 @@ function endTour(){
   saveState();
   document.getElementById('tourOverlay')?.remove();
   document.querySelector('.tour-highlight')?.classList.remove('tour-highlight');
+  if(tourReturnFocus?.isConnected) tourReturnFocus.focus();
+  tourReturnFocus = null;
 }
+function positionTourCard(){
+  const card = document.querySelector('#tourOverlay .tour-card');
+  const selector = TOUR_STEPS[tourIndex]?.sel;
+  const target = selector && document.querySelector(selector);
+  if(!card || !target) return;
+  const viewport = window.visualViewport;
+  const width = viewport?.width || window.innerWidth;
+  const height = viewport?.height || window.innerHeight;
+  const x = viewport?.offsetLeft || 0, y = viewport?.offsetTop || 0;
+  card.style.maxWidth = Math.max(0,width - 24) + 'px';
+  card.style.maxHeight = Math.max(0,height - 24) + 'px';
+  const r = target.getBoundingClientRect();
+  card.style.top = Math.max(y+12, Math.min(y+height-card.offsetHeight-12, r.bottom+12)) + 'px';
+  card.style.left = Math.max(x+12, Math.min(x+width-card.offsetWidth-12, r.left+r.width/2-card.offsetWidth/2)) + 'px';
+}
+window.addEventListener('resize', positionTourCard);
+window.visualViewport?.addEventListener('resize', positionTourCard);
+window.visualViewport?.addEventListener('scroll', positionTourCard);
 function paintTourStep(){
+  if(!document.getElementById('tourOverlay')) tourReturnFocus = document.activeElement;
   document.getElementById('tourOverlay')?.remove();
   document.querySelector('.tour-highlight')?.classList.remove('tour-highlight');
   const step = TOUR_STEPS[tourIndex];
@@ -2491,13 +2513,16 @@ function paintTourStep(){
     </div>`;
   document.body.appendChild(overlay);
 
-  // Anchor the card near its target, clamped inside the viewport.
-  const card = overlay.querySelector('.tour-card');
-  const r = target.getBoundingClientRect();
-  const top = Math.min(window.innerHeight - card.offsetHeight - 16, r.bottom + 12);
-  const left = Math.max(12, Math.min(window.innerWidth - card.offsetWidth - 12, r.left + r.width/2 - card.offsetWidth/2));
-  card.style.top = Math.max(12, top) + 'px';
-  card.style.left = left + 'px';
+  positionTourCard();
+  document.getElementById('tourSkip').focus();
+  overlay.addEventListener('keydown', e=>{
+    if(e.key === 'Escape'){ e.preventDefault(); endTour(); }
+    else if(e.key === 'Tab'){
+      const first = document.getElementById('tourSkip'), last = document.getElementById('tourNext');
+      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+  });
 
   document.getElementById('tourSkip').addEventListener('click', endTour);
   document.getElementById('tourNext').addEventListener('click', ()=>{ tourIndex++; paintTourStep(); });
