@@ -12,7 +12,7 @@
     "build:search": "node generate-search-index.js",
     "build:feed": "node generate-feed.js",
     "build:prerender": "node generate-prerender.js",
-    "test": "node tests/data-integrity.test.js && npm run test:feed && npm run test:canonical && npm run test:cvss && npm run test:threat-studio && npm run test:triage && npm run test:smoke && npm run test:cdn && npm run test:ui && npm run test:offline && npm run test:progress && npm run test:planner && npm run test:investigations && npm run test:playground && npm run test:guide && npm run test:lesson-practice && npm run test:flashcards && npm run test:study-review && npm run test:exam && npm run test:search && npm run test:tasks && npm run test:audit && npm run test:reader && npm run test:path-guides && npm run test:discovery && npm run test:lesson-checks && npm run test:expert && npm run test:seo",
+    "test": "node tests/data-integrity.test.js && npm run test:feed && npm run test:canonical && npm run test:cvss && npm run test:threat-studio && npm run test:triage && npm run test:httpstatus && npm run test:smoke && npm run test:cdn && npm run test:ui && npm run test:offline && npm run test:progress && npm run test:planner && npm run test:investigations && npm run test:playground && npm run test:guide && npm run test:lesson-practice && npm run test:flashcards && npm run test:study-review && npm run test:exam && npm run test:search && npm run test:tasks && npm run test:audit && npm run test:reader && npm run test:path-guides && npm run test:discovery && npm run test:lesson-checks && npm run test:expert && npm run test:seo",
     "test:feed": "node tests/feed.spec.js",
     "test:seo": "node tests/seo-discovery.spec.js",
     "test:canonical": "node tests/canonical-security.spec.js && npm run test:auth-navigation && node tests/navigation-refresh.spec.js",
@@ -52,7 +52,8 @@
     "test:preview-checks": "CHECK_FRONTEND=preview node tests/lesson-checks.spec.js",
     "test:expert": "node tests/expert-labs.spec.js && node tests/expert-style.spec.js && node tests/expert-workflow.spec.js && node tests/expert-finder.spec.js && node tests/expert-backup.spec.js",
     "test:preview-expert": "CHECK_FRONTEND=preview node tests/expert-labs.spec.js && CHECK_FRONTEND=preview node tests/expert-style.spec.js && CHECK_FRONTEND=preview node tests/expert-workflow.spec.js && CHECK_FRONTEND=preview node tests/expert-finder.spec.js && CHECK_FRONTEND=preview node tests/expert-backup.spec.js",
-    "test:triage": "node tests/vulntriage.spec.js"
+    "test:triage": "node tests/vulntriage.spec.js",
+    "test:httpstatus": "node tests/httpstatus.spec.js"
   },
   "repository": {
     "type": "git",

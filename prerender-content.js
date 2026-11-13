@@ -26,6 +26,22 @@
  */
 
 export const TOOL_CONTENT = {
+  httpstatus: {
+    intent:'http status code practice 401 403 404 429',
+    intro:'Practice interpreting four fictional HTTP responses and choosing an appropriate next step. The cases run in your browser without contacting a server. They focus on authentication, refused requests, missing or undisclosed resources, and rate limits.',
+    steps:['Choose a sample response.', 'Read the status and any sample header.', 'Choose a next step and check the explanation.', 'Try each case, then compare it with the linked HTTP lesson.'],
+    notes:[
+      {h:'Authentication and refusal differ',p:'A 401 response indicates that valid authentication credentials are missing. A 403 means the server understood but refused the request; it does not prove the requester was identified.'},
+      {h:'A missing page may be undisclosed',p:'A 404 can mean a current representation was not found or that the server is unwilling to disclose one. Check the URL and your authorized context rather than drawing conclusions from the status alone.'},
+      {h:'Respect rate limits',p:'A 429 indicates too many requests. Retry-After may describe a delay, but a client should also consider whether a request is safe to repeat and follow the service’s documented limits.'}
+    ],
+    faq:[
+      {q:'Does this tool send requests?',a:'No. It uses fictional responses built into the page; you do not need an account or a network service to work through them.'},
+      {q:'Does 403 always mean I am authenticated?',a:'No. The server refuses the request, but the status alone does not establish whether it identified the requester.'},
+      {q:'Does a 404 prove that a resource never existed?',a:'No. It can also indicate that the server is unwilling to disclose a current representation.'}
+    ],
+    related:['httpbuilder','headers','jwt','vulntriage']
+  },
   vulntriage: {
     intent: 'vulnerability triage practice applicability mitigation verification',
     intro: 'Practice making defensible vulnerability decisions using fictional cases. The exercise separates evidence that a vulnerability is exploited from evidence that your own deployed service is affected. It does not query a live vulnerability database or calculate risk for a real organization.',

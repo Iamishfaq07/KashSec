@@ -85,6 +85,11 @@ jobs:
         env:
           BASE: http://127.0.0.1:8000
 
+      - name: HTTP response practice
+        run: npm run test:httpstatus
+        env:
+          BASE: http://127.0.0.1:8000
+
       - name: Vulnerability triage practice
         run: npm run test:triage
         env:

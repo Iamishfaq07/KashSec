@@ -2,11 +2,19 @@
 
 **A completely free cybersecurity course, from absolute zero to job-ready.**
 
-26 learning paths · 493 sub-lessons · 104 typed-answer practice tasks · 42 interactive labs · 33 browser-based tools · timed mock exams · always free
+26 learning paths · 493 sub-lessons · 104 typed-answer practice tasks · 42 interactive labs · 34 browser-based tools · timed mock exams · always free
 
 [![Live Site](https://img.shields.io/badge/live-kashsec.vercel.app-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
 ## What's new
+
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:59d33a75a93679efb9db25c5c242315813689fcd731311c00813d455d12ed374 -->
+
+- **HTTP Response Practice** — interpret fictional authentication, access, missing-resource and rate-limit responses, with explanations and a link back to the HTTP lesson.
+
+<!-- /coderabbit-ai-generated:v1 -->
 
 <!-- coderabbit-ai-generated:v1 -->
 

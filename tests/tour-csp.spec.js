@@ -28,14 +28,17 @@ try{
   {
     const context=await browser.newContext({serviceWorkers:'block'});
     await context.route('**/*',r=>new URL(r.request().url()).origin===new URL(BASE).origin?r.continue():r.abort());
+    await context.addInitScript(()=>localStorage.setItem('kashsec_state_v1',JSON.stringify({tourSeen:true})));
     const page=await context.newPage();
     await page.goto(BASE+'/');
-    await page.locator('#searchBtn').click();
+    await page.clock.install();
+    await page.evaluate(()=>{ document.querySelector('#searchBtn').focus(); STATE.tourSeen=false; openSearch(); maybeStartTour(); });
     await page.locator('#searchInput').waitFor();
-    await page.waitForTimeout(1000);
+    await page.clock.fastForward(700);
     assert.equal(await page.locator('#tourOverlay').count(),0,'tour waits for an open dialog');
     assert.equal(await page.locator('#searchInput').evaluate(e=>e===document.activeElement),true,'search keeps focus');
     await page.keyboard.press('Escape');
+    await page.clock.fastForward(700);
     await page.locator('#tourSkip').waitFor();
     await page.evaluate(()=>document.querySelectorAll('a[href="#/tracks"]').forEach(el=>el.remove()));
     await page.locator('#tourNext').click();

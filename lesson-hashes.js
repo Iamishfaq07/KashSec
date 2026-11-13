@@ -99,7 +99,7 @@ const LESSON_HASHES = {
  "05-web-basics/how-browsers-render-pages": "a5c64b5040",
  "05-web-basics/html-css-js": "21edc31510",
  "05-web-basics/client-vs-server": "f4303192a9",
- "05-web-basics/http-methods-status-codes": "4a1b91aee5",
+ "05-web-basics/http-methods-status-codes": "c4c9de3256",
  "05-web-basics/cookies-sessions": "bbc0512e87",
  "05-web-basics/browser-storage-basics": "cef59c3a81",
  "05-web-basics/same-origin-policy-and-cors": "6c363056bc",

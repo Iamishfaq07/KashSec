@@ -10230,6 +10230,7 @@ const TOOLS = [
   {id:'useragent', ico:'browser', title:'User-Agent String Parser', desc:'Break down a User-Agent string into OS, browser, and version — and flag common automated-client patterns.', related:'Path 12 — Network Security'},
   {id:'entropy', ico:'dice', title:'Entropy Calculator', desc:'Shannon entropy of any text — a genuine static-analysis signal for spotting packed or encrypted data.', related:'Path 17 — Malware & RE'},
   {id:'httpbuilder', ico:'send', title:'Raw HTTP Request Builder', desc:'Build a raw HTTP request from method, path, headers, and body — see exactly what goes over the wire.', related:'Path 10 — Fundamentals'},
+  {id:'httpstatus', ico:'browser', title:'HTTP Response Practice', desc:'Interpret fictional HTTP responses and choose a useful next step for authentication, access, and rate limits.', related:'Path 05 — Web Basics'},
   {id:'logparser', ico:'filter', title:'Log Grep / Filter Playground', desc:'Filter a block of log lines with a regex — the exact "find the signal in the noise" skill IR work depends on.', related:'Path 03 — Linux'},
   {id:'riskregister', ico:'ledger', title:'Risk Register Builder', desc:'Add risks with likelihood and impact, get an auto-scored severity, and export the register as Markdown.', related:'Path 23 — GRC & Compliance'},
   {id:'sbomcheck', ico:'package', title:'Dependency / SBOM Risk Checker', desc:'Paste a dependency list and flag ones matching a known-vulnerable version range.', related:'Path 22 — DevSecOps & AppSec'},
@@ -10287,7 +10288,7 @@ function renderTool(id){
   const body = document.getElementById('toolBody');
   ({encoder:toolEncoder, hash:toolHash, jwt:toolJwt, cvss:toolCvss, subnet:toolSubnet, password:toolPassword, cipher:toolCipher, regex:toolRegex, hashid:toolHashId, headers:toolHeaders, vulnreport:toolVulnReport,
     resumehelper:toolResumeHelper, portfoliogen:toolPortfolioGen, codereview:toolCodeReview, attckmap:toolAttckMap, stride:toolStride,
-    cidroverlap:toolCidrOverlap, useragent:toolUserAgent, entropy:toolEntropy, httpbuilder:toolHttpBuilder, logparser:toolLogParser, riskregister:toolRiskRegister, sbomcheck:toolSbomCheck, vulntriage:toolVulnTriage, emailheaders:toolEmailHeaders,
+    cidroverlap:toolCidrOverlap, useragent:toolUserAgent, entropy:toolEntropy, httpbuilder:toolHttpBuilder, httpstatus:toolHttpStatus, logparser:toolLogParser, riskregister:toolRiskRegister, sbomcheck:toolSbomCheck, vulntriage:toolVulnTriage, emailheaders:toolEmailHeaders,
     passpolicy:toolPassPolicy, vlsm:toolVlsm, yaratester:toolYaraTester, slacalc:toolSlaCalc, controlmapper:toolControlMapper, dhvisualizer:toolDhVisualizer, base32:toolBase32, timingviz:toolTimingViz}[id])(body);
   setupReveal();
 }
@@ -10306,12 +10307,12 @@ function toolVulnTriage(el){
     {title:'2. A reachable finding', evidence:'A fictional vulnerability is confirmed in a public service, the affected behavior is reachable, and exploitation is observed. Another internal finding has a higher severity score but no confirmed exposure.', question:'What should the team prioritize?', options:['Only the finding with the higher score','Mitigation of the exposed, exploited service and assignment of an owner','Neither finding until the next annual review'], correct:1, explanation:'Severity is one signal. Confirmed exposure and exploitation can justify an urgent response; continue assessing the other finding too.'},
     {title:'3. A fix has merged', evidence:'A team upgraded a vulnerable dependency and the test suite passed in CI. The production asset has not yet been checked.', question:'What evidence supports closure?', options:['The pull request merged, so no other checks are needed','The issue has been open for a week','Confirm the fixed build is deployed, run targeted checks, and document remaining risk'], correct:2, explanation:'Source and CI results are useful, but the affected deployment and its behavior need verification. Record the evidence and any residual risk.'}
   ];
-  el.innerHTML = `<div class="triage-practice"><div class="tool-controls"><label>Choose a fictional case <select class="fc-select" id="vtCase">${cases.map((c,i)=>`<option value="${i}">${c.title}</option>`).join('')}</select></label></div>
-    <div class="triage-evidence"><strong>Case evidence</strong><p id="vtEvidence"></p></div>
+  el.innerHTML = `<div class="scenario-practice"><div class="tool-controls"><label>Choose a fictional case <select class="fc-select" id="vtCase">${cases.map((c,i)=>`<option value="${i}">${c.title}</option>`).join('')}</select></label></div>
+    <div class="scenario-evidence"><strong>Case evidence</strong><p id="vtEvidence"></p></div>
     <label class="tool-field" for="vtAnswer" id="vtQuestion"></label>
     <select class="fc-select" id="vtAnswer"></select>
     <div class="tool-btnrow"><button class="btn-amber sm" id="vtCheck" type="button">Check my reasoning</button></div>
-    <p id="vtFeedback" role="status" aria-live="polite"></p>
+    <p class="scenario-feedback" id="vtFeedback" role="status" aria-live="polite"></p>
     <p>Practice only: these cases use fictional data, not live CVE, KEV, or EPSS results. Check current sources and your own environment before making a real decision.</p>
     <p><a href="/lesson/22-devsecops-appsec/vulnerability-triage-in-practice.html">Read the triage lesson</a> · <a href="/lesson/22-devsecops-appsec/verify-vulnerability-remediation.html">Learn to verify a fix</a></p></div>`;
   const selector=el.querySelector('#vtCase'), answer=el.querySelector('#vtAnswer'), feedback=el.querySelector('#vtFeedback');
@@ -10325,6 +10326,38 @@ function toolVulnTriage(el){
   selector.addEventListener('change',show);
   answer.addEventListener('change',()=>{feedback.textContent='';});
   el.querySelector('#vtCheck').addEventListener('click',()=>{
+    if(answer.value===''){ feedback.textContent='Choose an answer first.'; return; }
+    const item=cases[Number(selector.value)];
+    feedback.textContent=(Number(answer.value)===item.correct ? 'Good reasoning. ' : 'Try again. ')+item.explanation;
+  });
+  show();
+}
+
+/* Local scenarios teach interpretation; this tool never sends HTTP requests. */
+function toolHttpStatus(el){
+  const cases = [
+    {title:'401: Missing or invalid credentials', response:'HTTP/1.1 401 Unauthorized\nWWW-Authenticate: Bearer', options:['Check the required authentication and provide valid credentials','Assume the requested resource does not exist','Retry the identical request indefinitely'], correct:0, explanation:'A 401 means the request lacks valid authentication credentials. The challenge describes an authentication scheme; credentials may be missing or invalid.'},
+    {title:'403: Request refused', response:'HTTP/1.1 403 Forbidden', options:['Assume the server has verified your identity','Check the requested action and relevant access policy','Assume the server is temporarily unavailable'], correct:1, explanation:'A 403 means the server understood and refused the request. It does not by itself prove the server identified the requester.'},
+    {title:'404: Resource not found or undisclosed', response:'HTTP/1.1 404 Not Found', options:['Conclude the resource never existed','Conclude authentication succeeded','Check the URL and authorized context without assuming why it returned 404'], correct:2, explanation:'A 404 can mean no current representation was found or that the server is unwilling to disclose one. The response alone does not distinguish those cases.'},
+    {title:'429: Too many requests', response:'HTTP/1.1 429 Too Many Requests\nRetry-After: 60', options:['Respect the indicated delay and review the client rate','Immediately send many more requests','Treat the response as proof the account was deleted'], correct:0, explanation:'429 indicates rate limiting. Retry-After may indicate how long to wait; also consider the operation and its retry safety.'}
+  ];
+  el.innerHTML = `<div class="scenario-practice"><div class="tool-controls"><label>Choose a response <select class="fc-select" id="hsCase">${cases.map((c,i)=>`<option value="${i}">${escapeHtml(c.title)}</option>`).join('')}</select></label></div>
+    <div class="scenario-evidence"><strong>Sample response</strong><pre id="hsResponse"></pre></div>
+    <label class="tool-field" for="hsAnswer">What is the best next step?</label><select class="fc-select" id="hsAnswer"></select>
+    <div class="tool-btnrow"><button class="btn-amber sm" type="button" id="hsCheck">Check my reasoning</button></div>
+    <p class="scenario-feedback" id="hsFeedback" role="status" aria-live="polite"></p>
+    <p>These responses are fictional. This practice does not make network requests. Real applications may add context in headers or response bodies.</p>
+    <p><a href="/lesson/05-web-basics/http-methods-status-codes.html">Read about methods and status codes</a> · <a href="/tools/httpbuilder.html">Build a sample request</a></p></div>`;
+  const selector=el.querySelector('#hsCase'), answer=el.querySelector('#hsAnswer'), feedback=el.querySelector('#hsFeedback');
+  const show=()=>{
+    const item=cases[Number(selector.value)];
+    el.querySelector('#hsResponse').textContent=item.response;
+    answer.innerHTML='<option value="">Choose an answer</option>'+item.options.map((option,i)=>`<option value="${i}">${escapeHtml(option)}</option>`).join('');
+    feedback.textContent='';
+  };
+  selector.addEventListener('change',show);
+  answer.addEventListener('change',()=>{feedback.textContent='';});
+  el.querySelector('#hsCheck').addEventListener('click',()=>{
     if(answer.value===''){ feedback.textContent='Choose an answer first.'; return; }
     const item=cases[Number(selector.value)];
     feedback.textContent=(Number(answer.value)===item.correct ? 'Good reasoning. ' : 'Try again. ')+item.explanation;
