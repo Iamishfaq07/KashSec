@@ -2452,15 +2452,23 @@ const TOUR_STEPS = [
 ];
 let tourIndex = 0;
 let tourReturnFocus = null;
+let tourTimer = null, tourDeferred = false;
 function maybeStartTour(){
   // Recovery controls must stay usable even if unreadable state reset the tour.
   if(STATE.tourSeen || getRecoveryCopy() !== null) return;
   if(activeRoute() !== '#/') return;
   // A returning user with real progress shouldn't be tour-bombed.
   if(Object.keys(STATE.completed).length > 0){ STATE.tourSeen = true; saveState(); return; }
-  if(document.getElementById('tourOverlay')) return;
+  if(document.getElementById('tourOverlay') || tourTimer) return;
   tourIndex = 0;
-  setTimeout(()=>{ if(activeRoute() === '#/' && !STATE.tourSeen) paintTourStep(); }, 700);
+  tourTimer = setTimeout(()=>{
+    tourTimer = null;
+    if(activeRoute() !== '#/' || STATE.tourSeen || getRecoveryCopy() !== null) return;
+    if(activeDialog){ tourDeferred = true; return; }
+    tourDeferred = false;
+    tourReturnFocus = document.activeElement;
+    paintTourStep();
+  }, 700);
 }
 function endTour(){
   STATE.tourSeen = true;
@@ -2489,7 +2497,6 @@ window.addEventListener('resize', positionTourCard);
 window.visualViewport?.addEventListener('resize', positionTourCard);
 window.visualViewport?.addEventListener('scroll', positionTourCard);
 function paintTourStep(){
-  if(!document.getElementById('tourOverlay')) tourReturnFocus = document.activeElement;
   document.getElementById('tourOverlay')?.remove();
   document.querySelector('.tour-highlight')?.classList.remove('tour-highlight');
   const step = TOUR_STEPS[tourIndex];
@@ -2894,14 +2901,19 @@ ${pathCardHTML(p,i)}
     </section>
   `;
   const sessionChoices = {
-    learn: {label:'LESSON OF THE DAY', title:`${daily.pathN}.${daily.subN} · ${daily.subTitle}`, description:`Explore ${daily.pathTitle} with a focused lesson.`, href:`#/lesson/${daily.pathId}/${daily.subId}`, action:'Read the lesson'},
     practice: {label:'HANDS-ON PRACTICE', title:'Spot the signs of phishing', description:'Examine realistic messages and learn to recognize the red flags.', href:'#/labs/phishing', action:'Try the lab'},
     review: {label:'REINFORCE YOUR KNOWLEDGE', title:'Review with flashcards', description:'Revisit key terms and check what you remember.', href:'#/review', action:'Open flashcards'}
   };
   const pick = document.getElementById('homeSessionPick');
+  let selectedSession = 'learn';
   const showSession = key=>{
-    const choice = sessionChoices[key];
-    pick.innerHTML = `<span>${choice.label}</span><h3>${escapeHtml(choice.title)}</h3><p>${escapeHtml(choice.description)}</p><a href="${choice.href}">${choice.action} <span aria-hidden="true">→</span></a>`;
+    selectedSession = key;
+    const resume = STATE.lastVisited ? findSubContext(STATE.lastVisited.pathId, STATE.lastVisited.subId) : null;
+    const suggested = resume || (!overallProgress().done ? findSubContext('01-introduction', 'what-is-cybersecurity') : null);
+    const choice = key === 'learn' ? (suggested
+      ? {label:resume ? 'PICK UP WHERE YOU LEFT OFF' : 'START WITH THE BASICS', title:`${suggested.path.n}.${suggested.sub.n} · ${suggested.sub.title}`, description:resume ? `Continue ${suggested.path.title} at your own pace.` : 'Start with a short introduction to cybersecurity.', href:`#/lesson/${suggested.path.id}/${suggested.sub.id}`, action:resume ? 'Continue learning' : 'Start the lesson', daily:true}
+      : {label:'LESSON OF THE DAY', title:`${daily.pathN}.${daily.subN} · ${daily.subTitle}`, description:`Explore ${daily.pathTitle} with a focused lesson.`, href:`#/lesson/${daily.pathId}/${daily.subId}`, action:'Read the lesson'}) : sessionChoices[key];
+    pick.innerHTML = `<span>${choice.label}</span><h3>${escapeHtml(choice.title)}</h3><p>${escapeHtml(choice.description)}</p><a href="${choice.href}">${choice.action} <span aria-hidden="true">→</span></a>${choice.daily ? `<a class="home-session-daily" href="#/lesson/${daily.pathId}/${daily.subId}">Explore today's lesson <span aria-hidden="true">→</span></a>` : ''}`;
     app.querySelectorAll('[data-session]').forEach(button=>button.setAttribute('aria-pressed', String(button.dataset.session===key)));
   };
   app.querySelectorAll('[data-session]').forEach(button=>button.addEventListener('click',()=>showSession(button.dataset.session)));
@@ -2912,6 +2924,7 @@ ${pathCardHTML(p,i)}
     track.setAttribute('aria-valuenow',String(pct));
     track.firstElementChild.style.width = pct+'%';
     app.querySelector('.home-session-progress > p').textContent = `${progress.done} of ${progress.total} lessons completed`;
+    if(selectedSession === 'learn' && !pick.contains(document.activeElement)) showSession('learn');
   };
   showSession('learn');
   wireFAQ();
@@ -14452,6 +14465,7 @@ function dialogFocusables(overlay){
 }
 function openDialog(overlay, firstFocus, close){
   if(activeDialog?.overlay === overlay){ firstFocus.focus(); return; }
+  if(document.getElementById('tourOverlay')) endTour();
   activeDialog?.close();
   const returnFocus = document.activeElement;
   const inerted = [...document.body.children].filter(el=>el !== overlay && !el.inert);
@@ -14472,6 +14486,7 @@ function closeDialog(overlay){
   activeDialog = null;
   inerted.forEach(el=>{ el.inert = false; });
   if(returnFocus?.isConnected) returnFocus.focus();
+  if(tourDeferred){ tourDeferred = false; maybeStartTour(); }
 }
 document.addEventListener('keydown', e=>{
   if(!activeDialog) return;

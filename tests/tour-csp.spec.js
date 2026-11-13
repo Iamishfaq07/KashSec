@@ -25,6 +25,37 @@ try{
     await page.setViewportSize(initial);assert.equal(await page.locator('#tourOverlay').count(),0,'resize cannot recreate a dismissed tour');
     await context.close();
   }
+  {
+    const context=await browser.newContext({serviceWorkers:'block'});
+    await context.route('**/*',r=>new URL(r.request().url()).origin===new URL(BASE).origin?r.continue():r.abort());
+    const page=await context.newPage();
+    await page.goto(BASE+'/');
+    await page.locator('#searchBtn').click();
+    await page.locator('#searchInput').waitFor();
+    await page.waitForTimeout(1000);
+    assert.equal(await page.locator('#tourOverlay').count(),0,'tour waits for an open dialog');
+    assert.equal(await page.locator('#searchInput').evaluate(e=>e===document.activeElement),true,'search keeps focus');
+    await page.keyboard.press('Escape');
+    await page.locator('#tourSkip').waitFor();
+    await page.evaluate(()=>document.querySelectorAll('a[href="#/tracks"]').forEach(el=>el.remove()));
+    await page.locator('#tourNext').click();
+    assert.match(await page.locator('.tour-step-count').innerText(),/Step 3/i);
+    await page.keyboard.press('Escape');
+    assert.equal(await page.locator('#searchBtn').evaluate(e=>e===document.activeElement),true,'skipped step preserves original focus');
+    await context.close();
+  }
+  {
+    const context=await browser.newContext({serviceWorkers:'block'});
+    await context.route('**/*',r=>new URL(r.request().url()).origin===new URL(BASE).origin?r.continue():r.abort());
+    const page=await context.newPage(); await page.goto(BASE+'/');
+    await page.locator('#tourSkip').waitFor();
+    await page.keyboard.press('Control+k');
+    await page.locator('#searchInput').waitFor();
+    assert.equal(await page.locator('#tourOverlay').count(),0,'opening search dismisses the tour');
+    assert.equal(await page.locator('#searchInput').evaluate(e=>e===document.activeElement),true);
+    await page.keyboard.press('Escape');
+    await context.close();
+  }
   const context=await browser.newContext({serviceWorkers:'block'});
   await context.addInitScript(()=>{
     localStorage.setItem('kashsec_state_v1',JSON.stringify({tourSeen:true}));
