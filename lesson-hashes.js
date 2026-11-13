@@ -38,7 +38,7 @@ const LESSON_HASHES = {
  "02-networking/protocols": "6b67b00165",
  "02-networking/tcp-vs-udp": "4df816cbfe",
  "02-networking/wireless-networking-basics": "a78f6d96d2",
- "02-networking/dns": "5e5429d3d1",
+ "02-networking/dns": "818da0d8ad",
  "02-networking/http-https": "d8055877f1",
  "02-networking/firewalls-basics": "f42f6ed32c",
  "02-networking/common-network-attacks-overview": "8bcbd1d30f",

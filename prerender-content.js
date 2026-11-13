@@ -26,6 +26,22 @@
  */
 
 export const TOOL_CONTENT = {
+  dnsrecords: {
+    intent:'dns record types A AAAA MX CNAME TXT practice',
+    intro:'Practice choosing DNS record types with fictional, fixed examples. This exercise runs locally and does not query a resolver or report information about a live domain. After each correct answer it shows an example record and explains what it represents.',
+    steps:['Choose one of the practice tasks.', 'Read the question and select a record type.', 'Check your answer and use the hint if needed.', 'Read the example record, then try another task.'],
+    notes:[
+      {h:'Addresses and names',p:'A and AAAA records carry IPv4 and IPv6 addresses. CNAME records name an alias target; following the target may require another lookup before an address is available.'},
+      {h:'Mail and text',p:'MX records specify a mail exchanger and preference value. TXT records carry text that applications can interpret for different purposes; a TXT record is not inherently an email-security policy.'},
+      {h:'Understand the TTL',p:'The numeric TTL in an answer describes a caching duration in seconds. It is useful when planning changes, but does not guarantee that every resolver will display the same change by a particular deadline.'}
+    ],
+    faq:[
+      {q:'Does this tool perform DNS lookups?',a:'No. The names and addresses are fixed examples and the activity makes no DNS requests.'},
+      {q:'What is the difference between A and AAAA?',a:'An A record contains an IPv4 address, while an AAAA record contains an IPv6 address.'},
+      {q:'Does a low TTL guarantee instant propagation?',a:'No. TTLs describe caching and different resolver behavior can affect when an answer changes.'}
+    ],
+    related:['subnet','cidroverlap','httpstatus','httpbuilder']
+  },
   httpstatus: {
     intent:'http status code practice 401 403 404 429',
     intro:'Practice interpreting four fictional HTTP responses and choosing an appropriate next step. The cases run in your browser without contacting a server. They focus on authentication, refused requests, missing or undisclosed resources, and rate limits.',

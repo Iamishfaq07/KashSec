@@ -2,11 +2,19 @@
 
 **A completely free cybersecurity course, from absolute zero to job-ready.**
 
-26 learning paths · 493 sub-lessons · 104 typed-answer practice tasks · 42 interactive labs · 34 browser-based tools · timed mock exams · always free
+26 learning paths · 493 sub-lessons · 104 typed-answer practice tasks · 42 interactive labs · 35 browser-based tools · timed mock exams · always free
 
 [![Live Site](https://img.shields.io/badge/live-kashsec.vercel.app-EFA43A?style=for-the-badge)](https://kashsec.vercel.app/)
 
 ## What's new
+
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:db4b8f83df83531ec9e2ceba97d108e33c15513681a7204a753d5256408148e7 -->
+
+- **DNS Record Practice** — choose record types for five fictional tasks, see example answers and learn what their TTL means without sending DNS queries.
+
+<!-- /coderabbit-ai-generated:v1 -->
 
 <!-- coderabbit-ai-generated:v1 -->
 

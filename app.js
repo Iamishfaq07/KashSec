@@ -10219,6 +10219,7 @@ const TOOLS = [
   {id:'jwt',      ico:'ticket', title:'JWT Decoder',            desc:'Decode a JSON Web Token\'s header and payload and read its claims. No signature verification.', related:'Path 11 — Web Security'},
   {id:'cvss',     ico:'gauge', title:'CVSS 4.0 + 3.1 Calculator', desc:'Build a CVSS vector and calculate Base, Threat, and Environmental severity locally.', related:'Path 10 — Fundamentals'},
   {id:'subnet',   ico:'network', title:'Subnet Calculator',      desc:'IPv4 CIDR → network, broadcast, host range, mask, and host count.', related:'Path 02 — Networking'},
+  {id:'dnsrecords', ico:'network', title:'DNS Record Practice', desc:'Choose record types for fictional lookups and learn to read example DNS answers without sending queries.', related:'Path 02 — Networking'},
   {id:'password', ico:'key', title:'Password Strength',      desc:'Rough entropy and crack-time estimate for a password, with feedback.', related:'Path 06 — Cryptography'},
   {id:'cipher',   ico:'lockKey', title:'Cipher Playground',      desc:'Caesar/ROT, XOR, and Vigenère — the classic ciphers from the CTF zone.', related:'Path 19 — CTF Zone'},
   {id:'regex',    ico:'asterisk', title:'Regex Tester',           desc:'Test a regular expression against sample text with live match highlighting and capture groups.', related:'Path 04 — Python'},
@@ -10292,7 +10293,7 @@ function renderTool(id){
   const body = document.getElementById('toolBody');
   ({encoder:toolEncoder, hash:toolHash, jwt:toolJwt, cvss:toolCvss, subnet:toolSubnet, password:toolPassword, cipher:toolCipher, regex:toolRegex, hashid:toolHashId, headers:toolHeaders, vulnreport:toolVulnReport,
     resumehelper:toolResumeHelper, portfoliogen:toolPortfolioGen, codereview:toolCodeReview, attckmap:toolAttckMap, stride:toolStride,
-    cidroverlap:toolCidrOverlap, useragent:toolUserAgent, entropy:toolEntropy, httpbuilder:toolHttpBuilder, httpstatus:toolHttpStatus, logparser:toolLogParser, riskregister:toolRiskRegister, sbomcheck:toolSbomCheck, vulntriage:toolVulnTriage, emailheaders:toolEmailHeaders,
+    cidroverlap:toolCidrOverlap, useragent:toolUserAgent, entropy:toolEntropy, httpbuilder:toolHttpBuilder, httpstatus:toolHttpStatus, dnsrecords:toolDnsRecords, logparser:toolLogParser, riskregister:toolRiskRegister, sbomcheck:toolSbomCheck, vulntriage:toolVulnTriage, emailheaders:toolEmailHeaders,
     passpolicy:toolPassPolicy, vlsm:toolVlsm, yaratester:toolYaraTester, slacalc:toolSlaCalc, controlmapper:toolControlMapper, dhvisualizer:toolDhVisualizer, base32:toolBase32, timingviz:toolTimingViz}[id])(body);
   setupReveal();
 }
@@ -10365,6 +10366,40 @@ function toolHttpStatus(el){
     if(answer.value===''){ feedback.textContent='Choose an answer first.'; return; }
     const item=cases[Number(selector.value)];
     feedback.textContent=(Number(answer.value)===item.correct ? 'Good reasoning. ' : 'Try again. ')+item.explanation;
+  });
+  show();
+}
+
+/* Fixed documentation examples only: the practice never performs DNS lookups. */
+function toolDnsRecords(el){
+  const cases = [
+    {title:'Find an IPv4 address', question:'Which record type returns an IPv4 address for web.lab.test?', answer:'A', hint:'Look for the record type used for IPv4 addresses.', record:'web.lab.test. 300 IN A 192.0.2.20', explanation:'An A record contains an IPv4 address. This example address is reserved for documentation.'},
+    {title:'Find an IPv6 address', question:'Which record type returns an IPv6 address for web.lab.test?', answer:'AAAA', hint:'IPv6 uses a different address record type from IPv4.', record:'web.lab.test. 300 IN AAAA 2001:db8::20', explanation:'An AAAA record contains an IPv6 address. This example uses documentation address space.'},
+    {title:'Find a mail server', question:'Which record type identifies a mail exchanger for lab.test?', answer:'MX', hint:'Look for the record type associated with mail exchange.', record:'lab.test. 300 IN MX 10 mail.lab.test.', explanation:'An MX record names a mail exchanger and gives its preference value. Lower values indicate greater preference.'},
+    {title:'Follow an alias', question:'Which record type points portal.lab.test to another domain name?', answer:'CNAME', hint:'The record is an alias to a name, not an address.', record:'portal.lab.test. 300 IN CNAME web.lab.test.', explanation:'A CNAME record identifies a canonical name for an alias. Further resolution may be needed to obtain an address.'},
+    {title:'Read a text value', question:'Which record type can hold a text value for lab.test?', answer:'TXT', hint:'Look for the record type that carries text.', record:'lab.test. 300 IN TXT "site-verification=training"', explanation:'TXT records carry text. The meaning of a value depends on the application that uses it.'}
+  ];
+  const types=['A','AAAA','MX','CNAME','TXT'];
+  el.innerHTML = `<div class="scenario-practice"><div class="tool-controls"><label>Choose a practice task <select class="fc-select" id="dnsCase">${cases.map((c,i)=>`<option value="${i}">${escapeHtml(c.title)}</option>`).join('')}</select></label></div>
+    <div class="scenario-evidence"><strong>Your task</strong><p id="dnsQuestion"></p></div>
+    <label class="tool-field" for="dnsType">Choose a record type</label><select class="fc-select" id="dnsType"><option value="">Choose an answer</option>${types.map(type=>`<option value="${type}">${type}</option>`).join('')}</select>
+    <div class="tool-btnrow"><button class="btn-amber sm" id="dnsCheck" type="button">Check my answer</button></div>
+    <p class="scenario-feedback" id="dnsFeedback" role="status" aria-live="polite"></p>
+    <div class="scenario-evidence" id="dnsResult" hidden><strong>Example answer</strong><pre id="dnsRecord"></pre><p>The 300 is the example TTL in seconds. A TTL describes caching; it does not guarantee when every resolver will show a change.</p></div>
+    <p>These are fictional, fixed examples. This practice makes no DNS queries and does not describe a live domain.</p>
+    <p><a href="/lesson/02-networking/dns.html">Read the DNS lesson</a> · <a href="/lesson/02-networking/dns-lab.html">Explore the DNS lab</a></p></div>`;
+  const selector=el.querySelector('#dnsCase'), type=el.querySelector('#dnsType'), feedback=el.querySelector('#dnsFeedback'), result=el.querySelector('#dnsResult');
+  const clear=()=>{feedback.textContent=''; result.hidden=true;};
+  const show=()=>{el.querySelector('#dnsQuestion').textContent=cases[Number(selector.value)].question; type.value=''; clear();};
+  selector.addEventListener('change',show);
+  type.addEventListener('change',clear);
+  el.querySelector('#dnsCheck').addEventListener('click',()=>{
+    if(!type.value){feedback.textContent='Choose a record type first.'; return;}
+    const item=cases[Number(selector.value)];
+    if(type.value!==item.answer){feedback.textContent='Try again. '+item.hint; result.hidden=true; return;}
+    el.querySelector('#dnsRecord').textContent=item.record;
+    feedback.textContent='Correct. '+item.explanation;
+    result.hidden=false;
   });
   show();
 }
