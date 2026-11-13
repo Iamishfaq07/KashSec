@@ -2719,46 +2719,56 @@ function renderHome(){
   const continueCtx = STATE.lastVisited ? findSubContext(STATE.lastVisited.pathId, STATE.lastVisited.subId) : null;
   const daily = dailyLesson();
   const next = whatToLearnNext();
+  const progress = overallProgress();
   app.innerHTML = `
-    <section class="hero">
+    <section class="hero home-hero">
       ${heroArtSVG()}
-      <div class="hero-inner">
-        <div class="eyebrow" data-reveal>${continueCtx ? '▶ Welcome back' : 'Free cybersecurity course · zero experience needed'}</div>
-        <h1 data-reveal style="--i:1">${continueCtx ? `Pick up right where you <span class="amber">left off</span>.` : `Start cybersecurity from <span class="amber">absolute zero</span>.`}</h1>
-        <p class="hero-sub" data-reveal style="--i:2">
-          ${continueCtx
-            ? `You were on <strong>${continueCtx.path.n}.${continueCtx.sub.n} · ${continueCtx.sub.title}</strong> in ${continueCtx.path.title}. Jump back in, or explore the rest of the course — ${total}+ sub-lessons across ${PATHS.length} paths, always free.`
-            : `Networks, Linux, Python, web hacking, bug bounty, advanced topics, and AI security —
-          all written in plain words with hands-on labs, diagrams, and links to real references.
-          ${total}+ sub-lessons across ${PATHS.length} paths, always free.`}
-        </p>
-        <div class="hero-btns" data-reveal style="--i:3">
-          ${continueCtx
-            ? `<a class="btn-amber" href="#/lesson/${continueCtx.path.id}/${continueCtx.sub.id}">Continue learning →</a>`
-            : `<a class="btn-amber" href="#/lesson/01-introduction/what-is-cybersecurity">Begin lesson 1 →</a>`}
-          <a class="btn-ghost" href="#/start">Find my starting point</a>
+      <div class="home-hero-layout">
+        <div class="home-hero-copy">
+          <div class="eyebrow" data-reveal>${continueCtx ? 'Welcome back to KashSec' : 'Free cybersecurity education'}</div>
+          <h1 data-reveal style="--i:1">${continueCtx ? `Keep building your <span class="amber">security skills</span>.` : `Learn security.<br><span class="amber">Build confidence.</span>`}</h1>
+          <p class="hero-sub" data-reveal style="--i:2">
+            ${continueCtx
+              ? `Pick up with <strong>${escapeHtml(continueCtx.sub.title)}</strong> in ${escapeHtml(continueCtx.path.title)}, or find something new to explore.`
+              : `Go from curious beginner to confident practitioner with clear lessons, hands-on labs, and a roadmap you can follow at your own pace.`}
+          </p>
+          <div class="hero-btns" data-reveal style="--i:3">
+            ${continueCtx
+              ? `<a class="btn-amber" href="#/lesson/${continueCtx.path.id}/${continueCtx.sub.id}">Continue learning <span aria-hidden="true">→</span></a>`
+              : `<a class="btn-amber" href="#/lesson/01-introduction/what-is-cybersecurity">Begin lesson 1 <span aria-hidden="true">→</span></a>`}
+            <a class="btn-ghost" href="#/start">Find my starting point <span aria-hidden="true">→</span></a>
+          </div>
+          <p class="pg-home-link">Prefer to try things first? <a href="#/playground">Try an experiment</a></p>
+          <div class="home-proof" data-reveal style="--i:4">
+            <span><strong>${PATHS.length}</strong> learning paths</span>
+            <span><strong>${total}</strong> lessons</span>
+            <span><strong>${LABS.length}</strong> browser labs</span>
+          </div>
+          <p class="home-free-note">Free to learn. No account required.</p>
         </div>
-        <p class="pg-home-link" data-reveal style="--i:3">Prefer to try things first? <a href="#/playground">Start with a 5-minute experiment →</a></p>
-        <div class="daily-lesson" data-reveal style="--i:3">
-          <span class="daily-tag">${cardIco('calendar')}Lesson of the day</span>
-          <a class="daily-link" href="#/lesson/${daily.pathId}/${daily.subId}">${daily.pathN}.${daily.subN} · ${daily.subTitle}</a>
-          <span class="daily-src">Path ${daily.pathN} — ${daily.pathTitle}</span>
-        </div>
-        ${next ? `
-        <div class="daily-lesson" data-reveal style="--i:3">
-          <span class="daily-tag">🎯 What to learn next</span>
-          ${next.kind==='weak-quiz'
-            ? `<a class="daily-link" href="#/quiz/${next.path.id}">Retake the ${next.path.title} quiz</a><span class="daily-src">You scored ${next.pct}% last time — worth another pass</span>`
-            : `<a class="daily-link" href="#/lesson/${next.ctx.path.id}/${next.ctx.sub.id}">${next.ctx.path.n}.${next.ctx.sub.n} · ${next.ctx.sub.title}</a><span class="daily-src">Bookmarked, not finished yet</span>`}
-        </div>` : ''}
-        <div class="hero-stats" data-reveal style="--i:4">
-          <div><div class="hstat-n" data-count="${PATHS.length}">${PATHS.length}</div><div class="hstat-l">learning paths</div></div>
-          <div><div class="hstat-n" data-count="${total}" data-suffix="+">${total}+</div><div class="hstat-l">sub-lessons</div></div>
-          <div><div class="hstat-n" data-count="${LABS.length}">${LABS.length}</div><div class="hstat-l">interactive labs</div></div>
-          <div><div class="hstat-n" data-count="${TOOLS.length}">${TOOLS.length}</div><div class="hstat-l">security tools</div></div>
-          <div><div class="hstat-n">₹0</div><div class="hstat-l">forever</div></div>
-        </div>
+        <section class="home-session" data-reveal style="--i:2" aria-labelledby="homeSessionTitle">
+          <div class="home-session-top"><span class="home-session-label">YOUR LEARNING SPACE</span><span class="home-session-dot" aria-hidden="true"></span></div>
+          <h2 id="homeSessionTitle">What will you work on today?</h2>
+          <p>Choose a way to learn and jump straight in.</p>
+          <div class="home-session-choices" role="group" aria-label="Choose a learning activity">
+            <button type="button" data-session="learn" aria-pressed="true">Learn</button>
+            <button type="button" data-session="practice" aria-pressed="false">Practice</button>
+            <button type="button" data-session="review" aria-pressed="false">Review</button>
+          </div>
+          <div class="home-session-pick" id="homeSessionPick" aria-live="polite" aria-atomic="true"></div>
+          <div class="home-session-progress">
+            <div><span>Your course progress</span><a href="#/progress">View progress →</a></div>
+            <div class="home-progress-track" role="progressbar" aria-label="Course progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(progress.pct,100)}"><span style="width:${Math.min(progress.pct,100)}%"></span></div>
+            <p>${progress.done} of ${progress.total} lessons completed</p>
+          </div>
+        </section>
       </div>
+      ${next ? `<div class="home-next daily-lesson">
+        <span class="daily-tag">Recommended next</span>
+        ${next.kind==='weak-quiz'
+          ? `<a class="daily-link" href="#/quiz/${next.path.id}">Retake the ${escapeHtml(next.path.title)} quiz</a><span class="daily-src">You scored ${next.pct}% last time</span>`
+          : `<a class="daily-link" href="#/lesson/${next.ctx.path.id}/${next.ctx.sub.id}">${next.ctx.path.n}.${next.ctx.sub.n} · ${escapeHtml(next.ctx.sub.title)}</a><span class="daily-src">Bookmarked, not finished yet</span>`}
+      </div>` : ''}
     </section>
     <section class="sec">
       <div class="sec-head" data-reveal>
@@ -2775,6 +2785,37 @@ function renderHome(){
             <p>${f.d}</p>
           </div>
         `).join('')}
+      </div>
+    </section>
+    <section class="sec">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Learn by doing</div>
+        <h2>Hands-on, right in your browser</h2>
+        <p class="sec-lead">${LABS.length} interactive labs and ${TOOLS.length} security tools — no install, no VM, nothing leaves your machine.</p>
+      </div>
+      <div class="labs-grid" data-reveal>
+        ${HOME_FEATURED_LABS.map(id => LABS.find(l => l.id === id)).filter(Boolean).map(l => `
+          <a class="lab-card" href="#/labs/${l.id}">
+            <div class="lab-ico">${cardIco(l.ico)}</div>
+            <h3>${l.title}</h3>
+            <p>${escapeHtml(l.desc)}</p>
+            <div class="lab-related">Lab · ${l.points||10} pts</div>
+          </a>`).join('')}
+      </div>
+      <div class="sec-cta" data-reveal>
+        <a class="btn-amber" href="#/labs">All ${LABS.length} labs →</a>
+        <a class="btn-ghost" href="#/tools">Browse ${TOOLS.length} tools →</a>
+      </div>
+    </section>
+    <section class="sec" aria-labelledby="homeThreatStudio">
+      <div class="ts-intro"><div><span class="sec-eyebrow">New / Design practice</span><h2 id="homeThreatStudio">Think through the risk. Plan the proof.</h2><p>Build a threat model with guided examples, save your decisions, and connect each control to a verification plan. Export the worksheet for a portfolio or a design discussion.</p></div><a class="btn-amber" href="#/tools/stride">Open the threat workspace →</a></div>
+    </section>
+    <section class="sec" aria-labelledby="homeAIPractice">
+      <div class="sec-head" data-reveal><div class="sec-eyebrow">New AI security practice</div><h2 id="homeAIPractice">Prove what your AI controls allow and deny</h2><p class="sec-lead">Three new lessons connect MCP authorization, RAG data isolation and release tests. Two expert labs use fictional evidence and local Python. No model subscription or API key is needed.</p></div>
+      <div class="labs-grid" data-reveal>
+        <a class="lab-card" href="/expert-labs/agent-tool-boundary.html"><h3>AI tool authorization</h3><p>Keep an invoice assistant inside its trusted task. Reject another tenant, object or tool while preserving legitimate access.</p><span class="lab-related">Expert lab · about 60 min</span></a>
+        <a class="lab-card" href="/expert-labs/rag-document-scope.html"><h3>RAG document isolation</h3><p>Decide which documents may reach model context. Test unauthorized, revoked and missing-metadata cases.</p><span class="lab-related">Expert lab · about 60 min</span></a>
+        <a class="lab-card" href="/lesson/18-ai-security/mcp-tool-authorization.html"><h3>Start with the lessons</h3><p>Learn the boundaries in plain language, then keep a report of your own fix, test results and remaining risks.</p><span class="lab-related">Read → repair → verify → explain</span></a>
       </div>
     </section>
     <section class="sec">
@@ -2802,34 +2843,6 @@ ${pathCardHTML(p,i)}
     </section>
     <section class="sec">
       <div class="sec-head" data-reveal>
-        <div class="sec-eyebrow">Learn by doing</div>
-        <h2>Hands-on, right in your browser</h2>
-        <p class="sec-lead">${LABS.length} interactive labs and ${TOOLS.length} security tools — no install, no VM, nothing leaves your machine.</p>
-      </div>
-      <div class="labs-grid" data-reveal>
-        ${HOME_FEATURED_LABS.map(id => LABS.find(l => l.id === id)).filter(Boolean).map(l => `
-          <a class="lab-card" href="#/labs/${l.id}">
-            <div class="lab-ico">${cardIco(l.ico)}</div>
-            <h3>${l.title}</h3>
-            <p>${escapeHtml(l.desc)}</p>
-            <div class="lab-related">Lab · ${l.points||10} pts</div>
-          </a>`).join('')}
-      </div>
-      <div class="sec-cta" data-reveal>
-        <a class="btn-amber" href="#/labs">All ${LABS.length} labs →</a>
-        <a class="btn-ghost" href="#/tools">Browse ${TOOLS.length} tools →</a>
-      </div>
-    </section>
-    <section class="sec" aria-labelledby="homeAIPractice">
-      <div class="sec-head" data-reveal><div class="sec-eyebrow">New AI security practice</div><h2 id="homeAIPractice">Prove what your AI controls allow and deny</h2><p class="sec-lead">Three new lessons connect MCP authorization, RAG data isolation and release tests. Two expert labs use fictional evidence and local Python. No model subscription or API key is needed.</p></div>
-      <div class="labs-grid" data-reveal>
-        <a class="lab-card" href="/expert-labs/agent-tool-boundary.html"><h3>AI tool authorization</h3><p>Keep an invoice assistant inside its trusted task. Reject another tenant, object or tool while preserving legitimate access.</p><span class="lab-related">Expert lab · about 60 min</span></a>
-        <a class="lab-card" href="/expert-labs/rag-document-scope.html"><h3>RAG document isolation</h3><p>Decide which documents may reach model context. Test unauthorized, revoked and missing-metadata cases.</p><span class="lab-related">Expert lab · about 60 min</span></a>
-        <a class="lab-card" href="/lesson/18-ai-security/mcp-tool-authorization.html"><h3>Start with the lessons</h3><p>Learn the boundaries in plain language, then keep a report of your own fix, test results and remaining risks.</p><span class="lab-related">Read → repair → verify → explain</span></a>
-      </div>
-    </section>
-    <section class="sec">
-      <div class="sec-head" data-reveal>
         <div class="sec-eyebrow">Careers</div>
         <h2>Where can this take you?</h2>
         <p class="sec-lead">Security is many jobs — here's a shortlist and which paths lead to each.</p>
@@ -2853,6 +2866,19 @@ ${pathCardHTML(p,i)}
       <div class="sec-cta" data-reveal><a class="btn-ghost" href="#/faq">All FAQs →</a></div>
     </section>
   `;
+  const sessionChoices = {
+    learn: {label:'LESSON OF THE DAY', title:`${daily.pathN}.${daily.subN} · ${daily.subTitle}`, description:`Explore ${daily.pathTitle} with a focused lesson.`, href:`#/lesson/${daily.pathId}/${daily.subId}`, action:'Read the lesson'},
+    practice: {label:'HANDS-ON PRACTICE', title:'Spot the signs of phishing', description:'Examine realistic messages and learn to recognize the red flags.', href:'#/labs/phishing', action:'Try the lab'},
+    review: {label:'REINFORCE YOUR KNOWLEDGE', title:'Review with flashcards', description:'Revisit key terms and check what you remember.', href:'#/review', action:'Open flashcards'}
+  };
+  const pick = document.getElementById('homeSessionPick');
+  const showSession = key=>{
+    const choice = sessionChoices[key];
+    pick.innerHTML = `<span>${choice.label}</span><h3>${escapeHtml(choice.title)}</h3><p>${escapeHtml(choice.description)}</p><a href="${choice.href}">${choice.action} <span aria-hidden="true">→</span></a>`;
+    app.querySelectorAll('[data-session]').forEach(button=>button.setAttribute('aria-pressed', String(button.dataset.session===key)));
+  };
+  app.querySelectorAll('[data-session]').forEach(button=>button.addEventListener('click',()=>showSession(button.dataset.session)));
+  showSession('learn');
   wireFAQ();
   fitPathsFiller();
 }
@@ -10884,28 +10910,19 @@ const STRIDE_CATS = [
   {id:'dos', t:'Denial of Service', d:'Can the system be made unavailable to legitimate users?'},
   {id:'elevation', t:'Elevation of Privilege', d:'Can someone gain more access than they should have?'}
 ];
-function toolStride(el){
-  el.innerHTML = `
-    <div class="tool-note">Describe the system briefly, then work through each STRIDE category — even "not applicable" is a useful, documented decision.</div>
-    <label class="tool-field">System / feature being modeled<input class="tool-input" id="stSystem" placeholder="e.g. User login flow for a web app"></label>
-    <div class="vr-grid" id="stFields">
-      ${STRIDE_CATS.map(c=>`<label class="tool-field" style="grid-column:1/-1"><b>${c.t}</b> — <span style="font-weight:400;color:var(--muted)">${c.d}</span><textarea class="tool-textarea" id="st-${c.id}" rows="2" placeholder="Threats, or 'N/A' with why…"></textarea></label>`).join('')}
-    </div>
-    <div class="tool-btnrow"><button class="btn-amber sm" id="stDownload" type="button">${cardIco('download')}Download as Markdown</button></div>
-  `;
-  document.getElementById('stDownload').addEventListener('click', ()=>{
-    const system = document.getElementById('stSystem').value.trim() || 'Untitled system';
-    let md = `# STRIDE threat model: ${system}\n\n`;
-    STRIDE_CATS.forEach(c=>{
-      md += `## ${c.t}\n\n${document.getElementById('st-'+c.id).value.trim() || '_(not filled in)_'}\n\n`;
-    });
-    const blob = new Blob([md], {type:'text/markdown'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `stride-${system.toLowerCase().replace(/[^a-z0-9]+/g,'-').slice(0,40)}.md`;
-    a.click();
-    URL.revokeObjectURL(a.href);
-  });
+async function toolStride(el){
+  const generation=renderGeneration;
+  el.innerHTML='<p class="loading" role="status">Opening the threat model workspace…</p>';
+  try {
+    const studio=await withTimeout(import('./threat-studio.js'),12000,'Opening the threat model workspace');
+    if(generation!==renderGeneration)return;
+    studio.mountThreatStudio({root:el,categories:STRIDE_CATS,escapeHtml});
+    cacheOpenedAsset('threat-studio.js');
+  } catch(_) {
+    if(generation!==renderGeneration)return;
+    el.innerHTML='<p>The workspace could not load. Check your connection and try again.</p><button type="button" class="btn-amber" id="tsRetry">Try again</button>';
+    el.querySelector('#tsRetry').addEventListener('click',()=>toolStride(el));
+  }
 }
 
 /* --- CIDR overlap checker --- */

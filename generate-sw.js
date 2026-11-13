@@ -74,6 +74,7 @@ const deferredUrls = [
   'investigations.js',
   'playground.js',
   'learning-guide.js',
+  'threat-studio.js',
   'expert-labs.js',
   'expert-labs.css',
   'downloads/expert_security_lab.py',
