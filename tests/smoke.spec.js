@@ -55,6 +55,7 @@ const ROUTES = [
   ['lab: ssrf', '#/labs/ssrf'],
   ['tool: jwt', '#/tools/jwt'],
   ['tool: cvss', '#/tools/cvss'],
+  ['tool: threat workspace', '#/tools/stride'],
 ];
 
 (async () => {

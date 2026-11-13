@@ -60,6 +60,22 @@ async function waitForSync(page) {
 }
 
 try {
+  const homeContext = await makeContext({delayMerge:true});
+  const homePage = await homeContext.newPage();
+  await homePage.goto(BASE+'/');
+  await homePage.waitForFunction(()=>window.__mergeStarted);
+  await homePage.click('[data-session="practice"]');
+  await homePage.evaluate(()=>window.__releaseMerge());
+  await waitForSync(homePage);
+  await homePage.waitForFunction(()=>document.querySelector('.home-session-progress > p').textContent.startsWith('1 of'));
+  assert.equal(await homePage.locator('[data-session="practice"]').getAttribute('aria-pressed'),'true');
+  assert.match(await homePage.locator('#homeSessionPick').innerText(),/Spot the signs/);
+  const pct = await homePage.evaluate(()=>overallProgress().pct);
+  assert.equal(await homePage.locator('.home-progress-track').getAttribute('aria-valuenow'),String(pct));
+  assert.equal(await homePage.locator('.home-progress-track > span').evaluate(el=>el.style.width),pct+'%');
+  await homePage.locator('#homeSessionPick a').click();
+  assert.equal(await homePage.evaluate(()=>currentHomeRefresh),null);
+  await homeContext.close();checks++;
   const context = await makeContext();
   const page = await context.newPage();
   const errors = [];
