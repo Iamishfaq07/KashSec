@@ -10,6 +10,7 @@ const pathId = '22-devsecops-appsec';
 const path = paths.find(p=>p.id===pathId);
 assert.equal(Object.keys(checks).filter(key=>key.startsWith(pathId+'/')).length,path.subs.length);
 assert.equal(Object.keys(checks).filter(key=>key.startsWith('18-ai-security/')).length,3);
+assert.ok(checks['02-networking/dns'] && checks['02-networking/dns-response-troubleshooting'],'both DNS lessons have dedicated checks');
 assert.deepEqual(checks,JSON.parse(read('preview/src/data/lesson-checks.json')));
 for(const [key,q] of Object.entries(checks)){
   const [checkPath,checkSub]=key.split('/');
@@ -22,7 +23,7 @@ for(const [key,q] of Object.entries(checks)){
   const headings=read(`course/${key}.md`).split('\n').filter(line=>/^#{2,3} /.test(line)).map(line=>line.replace(/^#+ /,''));
   assert.ok(headings.includes(q.review),`${key}: review target exists in the source lesson`);
 }
-console.log(`PASS: ${path.subs.length} AppSec and three AI lessons have dedicated checks, real review targets, and identical preview data.`);
+console.log(`PASS: ${path.subs.length} AppSec, three AI and two DNS lessons have dedicated checks, real review targets, and identical preview data.`);
 const preview=process.env.CHECK_FRONTEND==='preview';
 const BASE=preview?(process.env.PREVIEW_BASE||'http://127.0.0.1:8080'):(process.env.BASE||'http://127.0.0.1:8000');
 const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefined});
@@ -49,6 +50,11 @@ try{
       assert.equal(await page.locator('.prose-lesson a[href="https://kashsec.vercel.app/tools/vulntriage.html"]').count(),1,'practice link opens the main-site tool');
       const target=subId==='vulnerability-triage-in-practice'?'verify-vulnerability-remediation':'vulnerability-triage-in-practice';
       assert.equal(await page.locator(`.prose-lesson a[href="/lesson/22-devsecops-appsec/${target}"]`).count(),1,'related lesson uses the preview route');
+    }
+    if(preview && subId==='dns-response-troubleshooting'){
+      assert.equal(await page.locator('.prose-lesson h1').count(),0,'the lesson does not duplicate the page heading');
+      assert.equal(await page.locator('.prose-lesson a[href="https://kashsec.vercel.app/tools/dnsrecords.html"]').count(),1,'DNS practice opens the main-site tool');
+      assert.equal(await page.locator('.prose-lesson a[href="https://kashsec.vercel.app/#/playground/network"]').count(),1,'the network experiment opens on the main site');
     }
     assert.ok((await host().innerText()).includes(q.q));
     assert.equal(await buttons().count(),4);

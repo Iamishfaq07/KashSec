@@ -1137,7 +1137,8 @@ const PATHS = [
      {n:"17", id:"dns-lab",             title:"DNS Lab",                  desc:"Understand how DNS works and how it can be abused."},
      {n:"18", id:"cloud-and-modern-networking", title:"Cloud & Modern Networking", desc:"SDN, virtual networks, and why the concepts transfer even when hardware disappears."},
      {n:"19", id:"network-certifications-careers", title:"Network Security Careers & Certifications", desc:"Network+, CCNA, and why this foundation underlies most other security specializations."},
-     {n:"20", id:"practical-packet-lab", title:"Practical Packet Analysis Intro", desc:"See how data actually moves, hands-on."}
+     {n:"20", id:"practical-packet-lab", title:"Practical Packet Analysis Intro", desc:"See how data actually moves, hands-on."},
+     {n:"21", id:"dns-response-troubleshooting", title:"DNS Response Troubleshooting", desc:"Distinguish a missing name, missing record type, and resolution failure."}
    ]},
   {n:"03", id:"03-linux", title:"Operating Systems & Linux", level:"Beginner",
    desc:"Install Kali in VirtualBox, then a full tour of the Linux command line.",
@@ -3311,8 +3312,8 @@ const PATH_GUIDES = [
       },
       {
         "title": "Show your evidence",
-        "through": "practical-packet-lab",
-        "outcome": "Capture and explain a local network exchange."
+        "through": "dns-response-troubleshooting",
+        "outcome": "Explain a local exchange and investigate DNS responses."
       }
     ],
     "certs": [
@@ -5432,7 +5433,7 @@ const LESSON_PRACTICE = [
   {kind:'playground',id:'network',title:'Follow a web request',minutes:5,icon:'radio',
     why:'Walk through DNS, a connection, TLS, and a page request. Change the failure and see where the trip stops.',
     prompt:'If finding the address fails, will the browser send a page request to the web server?',
-    lessons:['00-fresher-basics/how-internet-works','02-networking/dns','02-networking/http-https','02-networking/tcp-vs-udp','02-networking/protocols','06-crypto-fundamentals/tls-handshake-explained']},
+    lessons:['00-fresher-basics/how-internet-works','02-networking/dns','02-networking/dns-response-troubleshooting','02-networking/http-https','02-networking/tcp-vs-udp','02-networking/protocols','06-crypto-fundamentals/tls-handshake-explained']},
   {kind:'playground',id:'encoding',title:'Turn text into bytes',minutes:5,icon:'swap',
     why:'Inspect UTF-8 bytes and reverse a Base64 message. Try another alphabet or an emoji.',
     prompt:'Can somebody recover a Base64 message without knowing a secret key?',
@@ -6221,6 +6222,20 @@ function wirePomodoro(){
    Each review target is a heading in the source lesson. The preview consumes
    the same questions through generate-preview-content.js. */
 const LESSON_CHECKS = {
+  '02-networking/dns': {
+    q:'Which DNS record type names a mail exchanger for a domain?',
+    options:['AAAA','MX','CNAME','PTR'],
+    correct:1,
+    explain:'An MX record names a mail exchanger and provides a preference value. A and AAAA records provide addresses; CNAME identifies an alias target.',
+    review:'Types of DNS records'
+  },
+  '02-networking/dns-response-troubleshooting': {
+    q:'A resolver returns NOERROR with no AAAA answer for a name. What is the careful next interpretation?',
+    options:['The domain can never have any records','The server has definitely been compromised','Check the question and response; the name may exist without an AAAA record','Assume all network traffic is blocked'],
+    correct:2,
+    explain:'An empty answer needs context. It can represent no data for the requested type; check the question and authority section before drawing broader conclusions.',
+    review:'Read the response, not just the empty answer'
+  },
   '18-ai-security/mcp-tool-authorization': {
     q:'A document tells a read-only invoice assistant to send the invoice outside the company. What should enforce the boundary?',
     options:['The document author','The model approving its own call','A trusted tool gateway checking the authenticated actor and task','An approved field supplied in the tool arguments'],

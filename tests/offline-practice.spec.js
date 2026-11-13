@@ -9,6 +9,7 @@ const root=path.resolve(fileURLToPath(new URL('..',import.meta.url)));
 const appSource=fs.readFileSync(path.join(root,'app.js'),'utf8');
 const paths=new Function(appSource.match(/const PATHS = \[[\s\S]*?\n\];/)[0]+';return PATHS;')();
 const appsecCount=paths.find(p=>p.id==='22-devsecops-appsec').subs.length;
+const networkingCount=paths.find(p=>p.id==='02-networking').subs.length;
 const overrides=new Map(),requests=new Map();
 const asset='/downloads/appsec_invoice_lab.py',lesson='/course/22-devsecops-appsec/appsec-fix-verify-lab.md';
 const server=http.createServer((req,res)=>{
@@ -81,6 +82,13 @@ try{
     assert.match(files.get('00-index.md'),/Your learning route/);assert.match(files.get('00-index.md'),/CSSLP/);assert.match(files.get('00-index.md'),/Python 3.10/);
     assert.ok([...files.keys()].every(name=>!name.includes('..')&&!name.startsWith('/')));
   });
+  await test('networking ZIP includes the new DNS troubleshooting lesson',async page=>{
+    await page.goto(BASE+'/lesson/02-networking/',{waitUntil:'domcontentloaded'});await page.locator('#downloadPackBtn').waitFor();
+    const pending=page.waitForEvent('download');await page.locator('#downloadPackBtn').click();const download=await pending;
+    const files=entries(fs.readFileSync(await download.path()));
+    const dns=[...files].find(([name])=>name.endsWith('-dns-response-troubleshooting.md'));
+    assert.ok(dns && dns[1].includes('NODATA') && dns[1].includes('coderabbit-ai-generated:v1'));
+  });
   await test('AI path ZIP includes all new lessons and the exact expert policy exercise',async page=>{
     await page.goto(BASE+'/lesson/18-ai-security/',{waitUntil:'domcontentloaded'});await page.locator('#downloadPackBtn').waitFor();
     const pending=page.waitForEvent('download');await page.locator('#downloadPackBtn').click();const download=await pending;
@@ -130,6 +138,15 @@ try{
     overrides.delete(lesson);await page.locator('#retryLesson').click();await page.locator('#content[aria-busy="false"]').waitFor();assert.equal(await page.locator('#retryLesson').count(),0);
     assert.match(await page.locator('#content h1').innerText(),/Fix & Verify/);
     overrides.set(lesson,{body:'<!doctype html><html>Another error</html>'});await page.reload({waitUntil:'domcontentloaded'});await page.locator('#content[aria-busy="false"]').waitFor();assert.equal(await page.locator('#retryLesson').count(),0);
+  },'allow');
+  await test('the new DNS lesson opens after saving its path offline',async(page,context)=>{
+    await page.goto(BASE+'/lesson/02-networking/',{waitUntil:'domcontentloaded'});await workerReady(page);
+    await page.locator('#savePathOfflineBtn').click();
+    await page.waitForFunction(count=>document.getElementById('offlinePathStatus').textContent.startsWith(`All ${count} lessons saved`),networkingCount);
+    await context.setOffline(true);await page.goto(BASE+'/lesson/02-networking/dns-response-troubleshooting.html',{waitUntil:'domcontentloaded'});
+    await page.locator('#content[aria-busy="false"]').waitFor();
+    assert.match(await page.locator('#content').innerText(),/Read the response, not just the empty answer/);
+    assert.equal(await page.locator('#retryLesson').count(),0);
   },'allow');
   console.log(`Offline practice: ${passed} passed.`);
 }finally{await browser.close();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}

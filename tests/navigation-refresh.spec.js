@@ -72,12 +72,28 @@ try {
   check(await page.evaluate(()=>document.activeElement === document.getElementById('app')) &&
     page.url() === BASE + '/#/glossary' && documents === 1, 'skip link focuses content without navigating home');
 
+  let heldPopupScript;
+  let signalPopupScript;
+  const popupScriptRequested = new Promise(resolve=>{ signalPopupScript=resolve; });
+  const holdPopupScript = route=>{
+    if(route.request().frame().page() === page) return route.continue();
+    heldPopupScript=route; signalPopupScript();
+  };
+  await context.route('**/quizzes.js',holdPopupScript);
   const popupEvent = context.waitForEvent('page');
   await page.locator('a[href="/labs/"],a[href="#/labs"]').first().click({modifiers:['Control']});
   const popup = await popupEvent;
-  await popup.waitForLoadState();
+  await popup.waitForURL(BASE + '/labs/',{waitUntil:'commit'});
+  await popup.locator('main').waitFor({state:'attached'});
+  let timeout;
+  try{
+    await Promise.race([popupScriptRequested,new Promise((_,reject)=>{timeout=setTimeout(()=>reject(new Error('Popup script was not requested')),10000);})]);
+  }finally{clearTimeout(timeout);}
+  check(await popup.evaluate(()=>document.readyState) !== 'complete', 'Ctrl-click target is observable even when an unrelated script is slow');
   check(page.url() === BASE + '/#/glossary' && await page.evaluate(()=>window.__documentToken) === token,
     'Ctrl-click opens a separate tab without rerouting this one');
+  await heldPopupScript.abort();
+  await context.unroute('**/quizzes.js',holdPopupScript);
   await popup.close();
 
   let pendingTasks;

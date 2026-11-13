@@ -47,6 +47,7 @@ const LESSON_HASHES = {
  "02-networking/cloud-and-modern-networking": "03fa568758",
  "02-networking/network-certifications-careers": "ddbc2d3905",
  "02-networking/practical-packet-lab": "942b0b1e0d",
+ "02-networking/dns-response-troubleshooting": "944cc7e0a1",
  "03-linux/what-is-an-os": "a26ec4ad5c",
  "03-linux/windows-linux-mac": "409f25792e",
  "03-linux/why-linux": "fc0f8b145f",
