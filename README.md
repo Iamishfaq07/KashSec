@@ -53,6 +53,20 @@
 - **Expert Labs** — the Labs page now has a separate Expert Labs tab with four evidence-led AppSec and cloud cases: tenant isolation, webhook replay, release-artifact trust, and cloud permission scope. Each includes prerequisites, staged hints, a local Python repair exercise, reasoning review, and evidence/report downloads. Drafts stay in the browser separately from course progress. Open `/expert-labs/`; Python 3.10+ is required for coding, with no extra packages or cloud account. Run `npm run test:expert` and `npm run test:preview-expert` to verify both readers.
 - **Find paths and take practice offline** — search path topics, lesson titles, and relevant certifications, combine with level filters, and keep the selection when returning from a roadmap. AppSec ZIPs include the runnable Python exercise and local links. Downloads validate files, show progress, and can be cancelled; browser offline saving also includes the exercise and rejects HTML error pages.
 - **Path maps and AppSec practice** — every path now has four connected learning stages, suggested preparation, practical portfolio evidence, and relevant certification options with official provider links and eligibility notes. AppSec grows to 20 lessons with testable requirements, secure code review, and a downloadable, dependency-free Python Fix & Verify lab. Each AppSec lesson has its own optional question, explanation, retry, and review-section link in both readers. Certification plans are shared between each path and the filterable certification planner.
+
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:1378712e6592930392bfad5c3740831c317af7a02cb2d1b9e310abd2f8c35b3b -->
+
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:2004fa540cd1829fedbe981ef4c0d99ddabe5418c725e6a88de7641e6cd7bdb2 -->
+
+- **Networking checks** — every Networking lesson now has its own optional question, feedback, retry and a link to the relevant section in both readers.
+
+<!-- /coderabbit-ai-generated:v1 -->
+
+<!-- /coderabbit-ai-generated:v1 -->
 - **Smoother reading** — unfinished lessons offer an optional, device-local saved reading place. Progress follows the lesson text, unopened sidebar paths build their links only when expanded, mobile contents start collapsed, and section links move keyboard focus. Hovering or focusing the next-lesson control warms one Markdown file; data-saving and slow connections skip this. Clipboard failures select the code for manual copying, and notes explain when browser storage could not save them.
 - **Start-here learning routes** — choose your experience and interest to preview a short route through existing lessons, experiments, and investigations (`#/start`). Saved routes follow real completion and point to the next unfinished step. Choices are backed up and optionally synced; setting the study-planner focus is a separate action that keeps your daily goal. Return links connect the learning formats back to the route.
 - **Beginner Learning Playground** — three guided experiments teach web requests, UTF-8/Base64, and invoice access checks with immediate feedback and small goals. Use touch, mouse, or keyboard, with no timer or penalty for retrying. Open `#/playground` from Home, Course, My Progress, or search. Completed experiments sync with progress; typed messages and demo settings are never saved. Investigation cases also include optional hints, term explanations, and a quick-start guide.

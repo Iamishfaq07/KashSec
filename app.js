@@ -6222,6 +6222,139 @@ function wirePomodoro(){
    Each review target is a heading in the source lesson. The preview consumes
    the same questions through generate-preview-content.js. */
 const LESSON_CHECKS = {
+  '02-networking/what-is-a-network': {
+    q:"A video call feels delayed even though the connection can transfer large files quickly. Which measurement best describes that delay?",
+    options:["Latency","Bandwidth","The Wi-Fi network name","The number of open browser tabs"],
+    correct:0,
+    explain:"Latency measures how long data takes to travel; bandwidth describes how much data a connection can carry over time.",
+    review:"Bandwidth vs. latency — two different kinds of \"speed\""
+  },
+  '02-networking/routing-basics': {
+    q:"A device has no more specific route for an outside destination. Where does it usually send the packet?",
+    options:["To a DNS record","To its default gateway","To every device on the local network","Directly to the destination without using a router"],
+    correct:1,
+    explain:"A default route points to a gateway for destinations without a more specific matching route.",
+    review:"The default gateway: your network's exit door"
+  },
+  '02-networking/ip-addresses': {
+    q:"What can DHCP provide to a device joining a network?",
+    options:["A permanent domain name for every device","Encryption for every application","An automatically assigned IP configuration","A guarantee that its address can never change"],
+    correct:2,
+    explain:"DHCP can automatically assign network settings such as an IP address; an assigned address can change.",
+    review:"Static vs. dynamic IPs — and DHCP"
+  },
+  '02-networking/subnetting-and-cidr': {
+    q:"How many total IPv4 addresses are in a /24 block?",
+    options:["24","128","254","256"],
+    correct:3,
+    explain:"A /24 leaves eight address bits, giving 2⁸, or 256 total addresses. Usable host counts depend on the subnet and its use.",
+    review:"Reading CIDR notation"
+  },
+  '02-networking/nat-and-port-forwarding': {
+    q:"What does a port-forwarding rule generally do?",
+    options:["Sends matching incoming traffic to a chosen internal address and port","Encrypts all traffic on the network","Assigns a domain name to every device","Stops the chosen internal service from receiving traffic"],
+    correct:0,
+    explain:"Port forwarding maps selected incoming traffic to an internal service, potentially making that service reachable from outside.",
+    review:"Port forwarding: deliberately opening a door"
+  },
+  '02-networking/ports': {
+    q:"Why does a client typically use an ephemeral port when connecting to a server?",
+    options:["To replace the destination IP address","To identify the client side of a connection","To guarantee that the traffic is encrypted","To convert UDP traffic into TCP"],
+    correct:1,
+    explain:"The client typically selects a temporary source port; the server listens on its destination port.",
+    review:"Ephemeral ports — the other side of every connection"
+  },
+  '02-networking/packets': {
+    q:"What happens during encapsulation as data moves down a network stack?",
+    options:["The application removes all addressing information","Every device receives the same private key","Each layer adds its own protocol information around the data","The destination changes the source data into a domain name"],
+    correct:2,
+    explain:"Layers add protocol information to the data they carry. The receiver processes the corresponding layers in reverse.",
+    review:"Encapsulation — envelopes inside envelopes"
+  },
+  '02-networking/switches-and-vlans': {
+    q:"What does a VLAN allow an organization to do on compatible network equipment?",
+    options:["Make a cable carry unlimited bandwidth","Remove the need for IP addresses","Encrypt every application automatically","Separate devices into logical network segments"],
+    correct:3,
+    explain:"VLANs provide logical segmentation on compatible switching equipment. Traffic between segments still depends on routing and policy.",
+    review:"VLANs: one physical switch, several logical networks"
+  },
+  '02-networking/protocols': {
+    q:"Why do two systems need an agreed network protocol?",
+    options:["So they can interpret messages and follow compatible rules","So they always use the same operating system","So no network failure can occur","So every message remains secret by default"],
+    correct:0,
+    explain:"A protocol specifies rules for communication, such as message formats and expected behavior. Encryption depends on the protocol and its use.",
+    review:"Just an agreed set of rules"
+  },
+  '02-networking/tcp-vs-udp': {
+    q:"Which sequence describes a typical TCP connection handshake?",
+    options:["ACK, ACK, SYN","SYN, SYN-ACK, ACK","GET, POST, DELETE","DNS, HTTP, TLS"],
+    correct:1,
+    explain:"A client sends SYN, the server responds with SYN-ACK, and the client acknowledges with ACK.",
+    review:"The TCP three-way handshake"
+  },
+  '02-networking/wireless-networking-basics': {
+    q:"A nearby access point uses the same network name as a trusted café. What concern does this illustrate?",
+    options:["A VLAN automatically shares its passwords","A router has necessarily failed","A rogue access point may be impersonating the trusted network","A matching name proves the network is authentic"],
+    correct:2,
+    explain:"An evil twin can copy a legitimate network name. The name alone does not establish who operates the access point.",
+    review:"Evil twin attacks: a wireless-specific threat"
+  },
+  '02-networking/http-https': {
+    q:"What does HTTPS add to HTTP when the connection is correctly established?",
+    options:["A guarantee that the website content is truthful","A guarantee that the server has no vulnerabilities","A requirement that every page be public","TLS protection for the connection"],
+    correct:3,
+    explain:"HTTPS uses TLS to protect data in transit and authenticate the server when certificate validation succeeds. It does not make the site itself trustworthy.",
+    review:"The 'S' is for Secure"
+  },
+  '02-networking/firewalls-basics': {
+    q:"What distinguishes a stateful firewall from a stateless packet filter?",
+    options:["It can use connection state when evaluating traffic","It makes every allowed application safe","It replaces the need for authentication","It always reads encrypted application content"],
+    correct:0,
+    explain:"A stateful firewall can track connection context; a stateless filter evaluates packets without that connection history.",
+    review:"Stateful vs. stateless filtering"
+  },
+  '02-networking/common-network-attacks-overview': {
+    q:"What is a possible consequence of ARP spoofing on a local network?",
+    options:["A domain name is permanently deleted","Traffic may be sent to a device impersonating the gateway","Every encrypted message becomes readable automatically","A browser installs an operating system update"],
+    correct:1,
+    explain:"Forged ARP messages can associate an IP address with an attacker-controlled MAC address and redirect local traffic.",
+    review:"ARP spoofing: lying about who you are on the local network"
+  },
+  '02-networking/network-troubleshooting-tools': {
+    q:"Which tool is intended for asking a DNS resolver about a name?",
+    options:["A text editor","A file compression tool","nslookup or dig","A screen brightness control"],
+    correct:2,
+    explain:"nslookup and dig can request DNS records. Record the question and response before deciding what the result means.",
+    review:"nslookup / dig: asking DNS directly"
+  },
+  '02-networking/dns-lab': {
+    q:"Which DNS record type identifies authoritative name servers for a zone?",
+    options:["A","MX","AAAA","NS"],
+    correct:3,
+    explain:"NS records identify name servers for a zone; A and AAAA records provide addresses and MX records identify mail exchangers.",
+    review:"Tasks"
+  },
+  '02-networking/cloud-and-modern-networking': {
+    q:"What is an overlay network?",
+    options:["A logical network built over an underlying network","A replacement for all physical infrastructure","A guarantee that all workloads are isolated","A physical cable connecting every device directly"],
+    correct:0,
+    explain:"An overlay creates a logical network over underlying infrastructure. Its actual connectivity and isolation depend on configuration.",
+    review:"Virtual networks and overlay networking"
+  },
+  '02-networking/network-certifications-careers': {
+    q:"How can you demonstrate networking skills to a prospective employer?",
+    options:["Claim that a certificate guarantees a job","Document a project or home lab and explain the decisions and results","List every tool without describing how you used it","Share credentials to a production network"],
+    correct:1,
+    explain:"A documented project or lab gives you concrete evidence to discuss alongside relevant learning and certifications.",
+    review:"Building demonstrable networking experience"
+  },
+  '02-networking/practical-packet-lab': {
+    q:"In a packet capture, what does a TCP SYN followed by SYN-ACK suggest?",
+    options:["A DNS response has been cached forever","HTTP content is necessarily unencrypted","A TCP connection is being established","The capture contains every packet on the internet"],
+    correct:2,
+    explain:"SYN and SYN-ACK are the first two steps of the TCP handshake; the client normally follows with an ACK.",
+    review:"What to look for"
+  },
   '02-networking/dns': {
     q:'Which DNS record type names a mail exchanger for a domain?',
     options:['AAAA','MX','CNAME','PTR'],

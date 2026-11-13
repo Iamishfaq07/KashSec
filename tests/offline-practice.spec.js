@@ -147,6 +147,11 @@ try{
     await page.locator('#content[aria-busy="false"]').waitFor();
     assert.match(await page.locator('#content').innerText(),/Read the response, not just the empty answer/);
     assert.equal(await page.locator('#retryLesson').count(),0);
+    await page.goto(BASE+'/lesson/02-networking/subnetting-and-cidr.html',{waitUntil:'domcontentloaded'});
+    await page.locator('#mcOptions button').first().waitFor();
+    assert.match(await page.locator('#microCheck').innerText(),/How many total IPv4 addresses are in a \/24 block/);
+    await page.locator('#mcOptions button').first().click();
+    assert.match(await page.locator('#mcFeedback').innerText(),/Not quite.*256 total addresses/s);
   },'allow');
   console.log(`Offline practice: ${passed} passed.`);
 }finally{await browser.close();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}
