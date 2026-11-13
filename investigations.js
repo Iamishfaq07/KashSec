@@ -199,12 +199,63 @@ Retain the alert, commit references, and audit exports as evidence.`}
       conclusion:'A copied credential remains usable until its access is addressed. This case confirms unapproved API use and one successful object read, while wider impact remains unverified. Separate attempted actions from successful ones in the handover.',
       sources:[{title:'AWS: remediate potentially compromised credentials',url:'https://docs.aws.amazon.com/guardduty/latest/ug/compromised-creds.html'}],
       related:[{path:'08-cloud-basics',label:'Cloud fundamentals'}, {path:'22-devsecops-appsec',label:'DevSecOps & application security'}]
+    },
+    {
+      id:'patch-rollout',number:'04',title:'The fix that missed a region',
+      category:'AppSec',minutes:20,level:'Intermediate',icon:'shield',
+      intro:'A team merges a dependency fix after a fictional exploitation alert. Compare the release, deployment, and verification records before deciding what can be closed.',
+      mission:'Identify the still-exposed deployment, choose an immediate response, and separate evidence of a fixed build from evidence of an actual deployment.',
+      evidence:[
+        {id:'advisory',title:'Advisory & ticket',kind:'Fictional triage ticket',text:`CASE 04 / E1 — Training advisory and triage ticket (UTC)
+2026-10-20 10:00 — LAB-2026-07, fictional issue in map-renderer:
+affected versions 1.2.x; fixed in 1.3.0. Vendor reports exploitation
+in the wild against the affected request handler.
+
+The ticket names the public Atlas ordering service. Its owner is the
+applications team. The issue is a training scenario, not a real CVE.
+The advisory establishes a general exploitation signal; it does not
+establish that Atlas itself was attacked or that data was accessed.`},
+        {id:'inventory',title:'Deployment inventory',kind:'Service inventory snapshot',text:`CASE 04 / E2 — Atlas inventory (UTC)
+10:15 — Atlas is publicly reachable in two regions.
+Region east: image atlas:2026.10.20-b, map-renderer 1.3.0.
+Region west: image atlas:2026.10.18-a, map-renderer 1.2.4.
+Both route customer requests to the affected handler.
+
+The west entry was confirmed against the running image at 10:14.
+The inventory covers these two Atlas regions only. It is not a complete
+inventory of every service that may include this dependency.`},
+        {id:'release',title:'Release & validation',kind:'Deployment and test record',text:`CASE 04 / E3 — Release record (UTC)
+10:05 — Upgrade to 1.3.0 merged; CI tests passed for atlas:2026.10.20-b.
+10:12 — East rollout completed; running image and version checked.
+10:13 — West rollout failed; the previous image remains active.
+10:17 — Targeted allowed-request and exploit-regression checks passed
+against east. West has not yet received the fixed image or been retested.
+
+The supplied access log covers only the last 30 minutes and does not
+include application audit details. It cannot establish the full history
+of access or whether Atlas was exploited.`}
+      ],
+      questions:[
+        {id:'assessment',prompt:'What does the supplied evidence establish?',
+          options:['Both regions are fixed because CI passed.','West still runs an affected version on the reachable handler; Atlas exploitation is not established.','The advisory proves Atlas customer data was stolen.'],correct:1,
+          why:'E2 identifies the running west version and reachable handler; E3 records the failed rollout. E1 reports exploitation elsewhere, while the supplied logs do not establish exploitation of Atlas.',refs:['advisory','inventory','release']},
+        {id:'response',prompt:'What is the best next response for west?',
+          options:['Close the ticket because east is fixed.','Delete the deployment logs and wait for the next routine release.','Coordinate an immediate mitigation and the fixed rollout with the owner, preserve evidence, and track the remaining exposure.'],correct:2,
+          why:'The exposed west deployment remains affected. Work with the owner to reduce exposure and deploy the fix while preserving evidence; an east-only success does not resolve west.',refs:['inventory','release']},
+        {id:'closure',prompt:'What is needed before reporting this Atlas finding fixed?',
+          options:['Verify the fixed build on west, run targeted checks, and document remaining scope and evidence.','Rely only on the merged pull request.','Assume the limited log proves every service is unaffected.'],correct:0,
+          why:'A merged change and east tests do not prove west has the fixed build. Confirm deployment and behavior on the affected region and keep the incomplete inventory and log coverage visible.',refs:['inventory','release']}
+      ],
+      conclusion:'East has a verified fix in this fictional exercise; west remains exposed in the supplied snapshot. Treat the rollout, targeted verification, and incomplete scope as distinct handover items. No Atlas exploitation is established by these records.',
+      sources:[{title:'CISA: Known Exploited Vulnerabilities Catalog',url:'https://www.cisa.gov/known-exploited-vulnerabilities-catalog'},{title:'NIST: enterprise patch management planning',url:'https://csrc.nist.gov/pubs/sp/800/40/r4/final'}],
+      related:[{path:'22-devsecops-appsec',label:'DevSecOps & application security'}, {path:'10-fundamentals',label:'Security fundamentals'}]
     }
   ];
   const GUIDES = {
     'mailbox-takeover':{terms:[['Session','The signed-in context used for later actions. A session identifier can help connect events.'],['Audit log','A record of actions, such as creating a mailbox rule.'],['MFA','Multi-factor authentication: using more than one kind of proof to sign in.']],hints:['Compare the user’s report with the successful sign-in and the new rule. What is directly supported?','Look for access that would remain after deleting the email. Which evidence shows it?','Read the collection note in E3. What information has not been collected yet?']},
     'cross-tenant-api':{terms:[['Tenant','One customer or organisation’s space in a shared application.'],['Token','A value the application uses to recognise an authenticated caller.'],['Authorisation','Checking whether this caller is allowed to perform this action on this object.']],hints:['Compare the caller’s tenant with the returned invoice’s tenant. Is the login itself invalid?','Read the handler in E3. Where would you compare the caller’s allowed scope with the invoice owner?','Use one invoice the customer may read and one they may not. What should each request return?']},
-    'exposed-cloud-key':{terms:[['Access key','A credential used by software to make cloud requests. Removing a copy does not revoke the credential.'],['Principal','The user or software identity whose permissions are being used.'],['Access denied','The requested action was rejected. It is evidence of an attempt, not a successful action.']],hints:['Match the key identifier across E1 and E2. Separate events marked Success from AccessDenied.','Check the credential’s status after the cleanup commit. Did removing the file change its status?','Read the coverage gaps in E3. What cannot be ruled out from this excerpt alone?']}
+    'exposed-cloud-key':{terms:[['Access key','A credential used by software to make cloud requests. Removing a copy does not revoke the credential.'],['Principal','The user or software identity whose permissions are being used.'],['Access denied','The requested action was rejected. It is evidence of an attempt, not a successful action.']],hints:['Match the key identifier across E1 and E2. Separate events marked Success from AccessDenied.','Check the credential’s status after the cleanup commit. Did removing the file change its status?','Read the coverage gaps in E3. What cannot be ruled out from this excerpt alone?']},
+    'patch-rollout':{terms:[['Advisory','A notice describing an issue and affected versions. It does not establish that your own asset was exploited.'],['Running image','The deployed artifact actually executing in an environment.'],['Regression check','A repeatable test that checks the previously unsafe behavior and expected legitimate behavior.']],hints:['Compare the running versions in E2 with the affected range in E1. What does E3 say about the rollout?','Which region remains exposed, and what evidence should the team preserve while coordinating a fix?','What must be checked in west, and which records remain incomplete?']}
   };
   const fresh = ()=>({answers:{},reviewed:[],notes:'',updatedAt:0,submittedAt:0,bestScore:0,attempts:0});
   const recordFor = id=>STATE.investigations[id] || (STATE.investigations[id]=fresh());
@@ -222,7 +273,7 @@ Retain the alert, commit references, and audit exports as evidence.`}
     const complete=records.filter(record=>record.attempts > 0).length;
     const drafts=records.filter(record=>(record.updatedAt > 0 || record.reviewed.length) && !record.submittedAt).length;
     app.innerHTML=`<section class="sec iw-hub">
-      <div class="iw-hub-hero"><div class="sec-head"><div class="sec-eyebrow">Incident Workbench</div><h1>From alert to understanding.</h1><p class="sec-lead">Open the evidence, connect the events, and defend your decisions. Three self-paced investigations, entirely in your browser.</p><p class="iw-training">Fictional training cases · no account or live systems required</p></div>
+      <div class="iw-hub-hero"><div class="sec-head"><div class="sec-eyebrow">Incident Workbench</div><h1>From alert to understanding.</h1><p class="sec-lead">Open the evidence, connect the events, and defend your decisions. ${CASES.length} self-paced investigations, entirely in your browser.</p><p class="iw-training">Fictional training cases · no account or live systems required</p></div>
       <aside class="iw-board" aria-label="Your caseboard"><span class="sec-eyebrow">Your caseboard</span><strong>${complete}<span> / ${CASES.length}</span></strong><p>cases reviewed</p><div class="iw-board-foot"><span>${drafts} draft${drafts===1?'':'s'} in progress</span><a href="#/progress">Backups & progress →</a></div></aside></div>
       <p class="pg-course-link">Want to build the basics first? <a href="#/playground">Try three short, guided experiments →</a></p>
       <div class="iw-index-head"><h2>Choose your investigation</h2><label class="iw-filter-label">Focus<select id="iwCategory" aria-label="Focus"><option value="all">All disciplines</option>${[...new Set(CASES.map(item=>item.category))].map(category=>`<option>${category}</option>`).join('')}</select></label></div>

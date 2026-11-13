@@ -5452,7 +5452,11 @@ const LESSON_PRACTICE = [
   {kind:'investigations',id:'exposed-cloud-key',title:'The key that outlived the commit',minutes:20,icon:'cloud',
     why:'Follow an exposed credential through audit evidence. Separate attempted actions from confirmed actions.',
     prompt:'If a secret is removed from a commit, what else must change to stop it being used?',
-    lessons:['16-advanced/cloud-security','16-advanced/iam-deep-dive','21-api-security/api-key-and-secret-management']}
+    lessons:['16-advanced/cloud-security','16-advanced/iam-deep-dive','21-api-security/api-key-and-secret-management']},
+  {kind:'investigations',id:'patch-rollout',title:'The fix that missed a region',minutes:20,icon:'shield',
+    why:'Compare an advisory, deployed versions, and test evidence to decide what is still exposed.',
+    prompt:'What would show that a merged fix reached every affected deployment?',
+    lessons:['22-devsecops-appsec/vulnerability-management-and-prioritization','22-devsecops-appsec/vulnerability-triage-in-practice','22-devsecops-appsec/verify-vulnerability-remediation']}
 ];
 function lessonPracticeItems(ctx){
   return LESSON_PRACTICE.filter(item=>item.lessons.includes(`${ctx.path.id}/${ctx.sub.id}`));

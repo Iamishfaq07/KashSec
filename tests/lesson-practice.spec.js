@@ -36,6 +36,14 @@ try{
     check(data.title===item.title&&data.minutes===item.minutes,`${item.id} points to a real activity with a matching title and duration`);
     check((await page.locator('.practice-return a').getAttribute('href'))===`#/lesson/${item.lessons[0]}`,`${item.id} returns to its originating lesson`);
   }
+  await navigate(page,'#/lesson/22-devsecops-appsec/verify-vulnerability-remediation');
+  await page.locator('#content[aria-busy="false"]').waitFor();
+  const patchCase=page.locator('.lp-card').filter({hasText:'The fix that missed a region'});
+  await patchCase.getByRole('link',{name:'Open investigation →'}).click();
+  await page.locator('#iwDecisionForm').waitFor();
+  check(page.url().includes('#/investigations/patch-rollout') && (await page.locator('.practice-return a').getAttribute('href'))==='#/lesson/22-devsecops-appsec/verify-vulnerability-remediation','the verification lesson opens the new investigation with a return link');
+  await page.locator('.practice-return a').click();await page.locator('#content[aria-busy="false"]').waitFor();
+  check(page.url().includes('/lesson/22-devsecops-appsec/verify-vulnerability-remediation.html'),'the new investigation returns to the verification lesson');
   await navigate(page,'#/lesson/11-web-security/idor');await page.locator('#content[aria-busy="false"]').waitFor();
   await page.locator('#jumpLessonPractice').focus();await page.keyboard.press('Enter');
   check(await page.evaluate(()=>document.activeElement.id==='lessonPracticeHeading'&&document.getElementById('lessonPracticeHeading').getBoundingClientRect().top>0),'keyboard shortcut scrolls to practice and moves focus to its heading');
