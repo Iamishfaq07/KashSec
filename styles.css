@@ -2804,3 +2804,22 @@ label.tool-note{display:block}
   .cr-guide-grid{grid-template-columns:1fr}
   .cr-resources{margin-left:0}
 }
+
+/* Career roadmap: grouped picker, prices, tools, free certificates. */
+.cr-group-label{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin:1.2rem 0 .55rem}
+.cr-group-label:first-of-type{margin-top:0}
+.cr-branches + .cr-group-label{margin-top:1.3rem}
+.cr-extra{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem;margin:-1rem 0 2rem}
+.cr-cert-price{display:block;margin-top:.25rem;font-family:var(--font-mono);font-size:.74rem;font-weight:700;color:var(--text)}
+.cr-cert-price-note{font-weight:400;color:var(--muted2)}
+.cr-free{margin:0 0 2rem}
+.cr-free-title{display:flex;align-items:center;gap:.5rem;font-size:1rem;margin:0 0 .8rem}
+.cr-free-title .kico{width:17px;height:17px;color:var(--teal-ink)}
+.cr-res-free{position:relative;padding-top:1.9rem}
+.cr-free-badge{position:absolute;top:.6rem;left:.9rem;font-family:var(--font-mono);font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:#04120f;background:var(--teal);border-radius:5px;padding:.1rem .4rem}
+:root[data-theme="light"] .cr-free-badge{background:var(--teal-2);color:#fff}
+.cr-res-org{font-family:var(--font-mono);font-size:.68rem;color:var(--muted2)}
+.cr-sec-lead{color:var(--muted);font-size:.92rem;line-height:1.6;margin:-.4rem 0 1.1rem;max-width:52rem}
+.cr-free-all{margin-bottom:2.6rem}
+@media(max-width:760px){ .cr-extra{grid-template-columns:1fr} }

@@ -1967,6 +1967,52 @@ const RES = {
   pkt:{name:'Wireshark sample captures', url:'https://wiki.wireshark.org/SampleCaptures', what:'Real packet captures to practise on'},
   gcc:{name:'Google Cybersecurity Certificate', url:'https://www.coursera.org/professional-certificates/google-cybersecurity', what:'Beginner course series; audit free'}
 };
+/* Free certificates and badges worth having early. Terms change often (ISC2's
+   free CC programme closed in 2026), so each entry says what is free and the
+   page tells readers to confirm on the provider's site. Checked Nov 2026. */
+const FREE_CERTS = {
+  ciscoIntro:{name:'Introduction to Cybersecurity', org:'Cisco Networking Academy', url:'https://www.netacad.com/courses/introduction-to-cybersecurity', what:'Free course with a certificate and a verifiable Credly badge. The most recommended first credential.'},
+  ciscoNet:{name:'Networking Basics', org:'Cisco Networking Academy', url:'https://www.netacad.com/courses/networking-basics', what:'Free networking course with certificate and badge; a gentle lead-in to Network+ or CCNA.'},
+  fortinet:{name:'Fortinet Certified Fundamentals (FCF)', org:'Fortinet Training Institute', url:'https://training.fortinet.com/', what:'Free self-paced training and exams at the fundamentals level (formerly NSE 1–3).'},
+  googleAudit:{name:'Google Cybersecurity Certificate (audit)', org:'Google on Coursera', url:'https://www.coursera.org/professional-certificates/google-cybersecurity', what:'All course content free to audit; the certificate itself is paid unless Coursera financial aid is approved.'},
+  cs50:{name:'CS50 Cybersecurity', org:'Harvard University', url:'https://cs50.harvard.edu/cybersecurity/', what:'Free university course with a free CS50 certificate of completion (the edX verified certificate is paid).'},
+  msApplied:{name:'Microsoft Applied Skills', org:'Microsoft Learn', url:'https://learn.microsoft.com/en-us/credentials/applied-skills/', what:'Free, lab-based credentials for specific skills, including some security and Azure scenarios.'},
+  awsBadges:{name:'AWS Skill Builder digital badges', org:'Amazon Web Services', url:'https://skillbuilder.aws/', what:'Free courses and badges, including cloud security fundamentals.'},
+  gcpBadges:{name:'Google Cloud skill badges', org:'Google Cloud Skills Boost', url:'https://www.cloudskillsboost.google/', what:'Hands-on lab badges; introductory content is free, advanced labs need a subscription.'},
+  ibm:{name:'IBM SkillsBuild cybersecurity badges', org:'IBM SkillsBuild', url:'https://skillsbuild.org/', what:'Free courses and badges; some programmes require registering through a partner organisation.'},
+  qualys:{name:'Qualys training and certification', org:'Qualys', url:'https://www.qualys.com/training/', what:'Free self-paced courses with certificates on vulnerability management with Qualys tools.'},
+  owaspLLM:{name:'OWASP GenAI Security Project resources', org:'OWASP', url:'https://genai.owasp.org/', what:'Free LLM and agentic-AI security guidance (no certificate, but the reference employers expect you to know).'},
+  ms900:{name:'Microsoft security learning paths', org:'Microsoft Learn', url:'https://learn.microsoft.com/en-us/training/browse/?subjects=security', what:'Free training for SC-900, SC-200 and SC-300; the exams themselves are paid (Microsoft sometimes offers free exam vouchers at Virtual Training Days).'}
+};
+/* Extra detail per field: picker group, tools to learn, portfolio projects,
+   and which free credentials to start with. */
+const ROADMAP_GROUPS = [
+  ['defend','Defend & respond'], ['attack','Attack & test'], ['build','Build & engineer'], ['ai','AI security'], ['govern','Govern & protect'], ['industry','Industrial']
+];
+const ROADMAP_EXTRAS = {
+  soc:{group:'defend', tools:['Splunk or Elastic (SIEM)','Wireshark','Microsoft Sentinel / Defender','Sysmon','CyberChef'], projects:['Home SOC lab: forward Windows and Sysmon logs to a free SIEM and write 5 detections','Investigate 3 free phishing samples and publish the write-ups','A weekly "alert of the week" LinkedIn post'], freeCerts:['ciscoIntro','googleAudit','fortinet','ms900']},
+  dfir:{group:'defend', tools:['Volatility (memory forensics)','Autopsy / FTK Imager','KAPE and Eric Zimmerman tools','Wireshark','Velociraptor'], projects:['Solve and write up 3 CyberDefenders challenges','Build an incident timeline from a public image','Run a tabletop exercise with friends and publish the after-action report'], freeCerts:['ciscoIntro','cs50','fortinet']},
+  detection:{group:'defend', tools:['Sigma','KQL / SPL query languages','Elastic Security or Splunk','Atomic Red Team','Git for detection-as-code'], projects:['A public repo of 10 Sigma rules with test data','Detect an Atomic Red Team technique end to end','Measure false positives on a rule and tune it'], freeCerts:['ms900','ciscoIntro','googleAudit']},
+  threatintel:{group:'defend', tools:['MITRE ATT&CK Navigator','MISP / OpenCTI','VirusTotal','Maltego CE','Shodan'], projects:['Write a threat report on a real, recent campaign','Map a ransomware group to ATT&CK','Build a small indicator feed with documented sources'], freeCerts:['ciscoIntro','cs50','fortinet']},
+  malware:{group:'defend', tools:['Ghidra','x64dbg','FLARE-VM / REMnux','YARA','Process Monitor'], projects:['Full analysis write-up of one public malware sample','Publish YARA rules for a malware family','A small Python unpacker or config extractor'], freeCerts:['cs50','ciscoIntro']},
+  vulnmgmt:{group:'defend', tools:['Nessus / OpenVAS','Qualys','CVSS and EPSS scoring','CISA KEV catalogue','Jira or a ticketing tool'], projects:['Scan a home lab, prioritise findings with CVSS + EPSS + KEV','Write a patch SLA policy','A dashboard of remediation progress over a month'], freeCerts:['qualys','fortinet','ciscoIntro']},
+  pentest:{group:'attack', tools:['Nmap','Burp Suite','Metasploit','BloodHound / NetExec','Kali Linux'], projects:['Full pentest report on a lab network (HTB / TryHackMe)','10 retired-box write-ups on a blog','A small Python recon script on GitHub'], freeCerts:['ciscoIntro','ciscoNet','cs50']},
+  redteam:{group:'attack', tools:['Cobalt Strike concepts / Sliver (C2)','BloodHound','Impacket','Evasion basics (AMSI, EDR)','Phishing frameworks (authorised)'], projects:['Build an AD lab and run a full kill chain','Write up a purple-team exercise with detections','A custom C2 profile or tooling on GitHub'], freeCerts:['ciscoIntro','cs50']},
+  bugbounty:{group:'attack', tools:['Burp Suite','ffuf / feroxbuster','Subfinder / httpx','Caido','Browser DevTools'], projects:['First valid report on HackerOne, Bugcrowd or Intigriti','Write-ups of 20 PortSwigger labs','A recon automation script'], freeCerts:['cs50','ciscoIntro']},
+  mobile:{group:'attack', tools:['MobSF','Frida','Objection','jadx / apktool','Burp Suite (mobile proxy)'], projects:['Test an intentionally vulnerable app (e.g. DIVA, InsecureBankv2) and report it','Bypass SSL pinning in a lab app with Frida','Map findings to the OWASP MASVS'], freeCerts:['ciscoIntro','cs50']},
+  appsec:{group:'build', tools:['Burp Suite','Semgrep (SAST)','OWASP ZAP (DAST)','Dependency scanners (Trivy, Dependabot)','Threat-modeling tools'], projects:['Secure-code review of an open-source app with fixes','A threat model for a real app','Contribute a Semgrep rule'], freeCerts:['cs50','ciscoIntro']},
+  devsecops:{group:'build', tools:['GitHub Actions / GitLab CI','Trivy, Grype','Terraform + Checkov','Kubernetes + Kyverno/OPA','HashiCorp Vault'], projects:['A CI pipeline with SAST, SCA, secrets and IaC scanning','Signed container images with an SBOM','A Kubernetes cluster hardened against CIS benchmarks'], freeCerts:['awsBadges','gcpBadges','msApplied']},
+  cloud:{group:'build', tools:['AWS IAM + CloudTrail','Azure Entra ID + Defender for Cloud','Prowler / ScoutSuite','Terraform','Kubernetes'], projects:['Break and fix flAWS / flAWS2 with write-ups','A least-privilege IAM design for a sample app','Automated cloud misconfiguration checks in CI'], freeCerts:['awsBadges','gcpBadges','msApplied','fortinet']},
+  netsec:{group:'build', tools:['pfSense / OPNsense','Wireshark','Suricata / Snort','Cisco Packet Tracer','WireGuard'], projects:['A segmented home lab with VLANs and firewall rules','IDS alerts on lab traffic with tuned rules','A site-to-site VPN write-up'], freeCerts:['ciscoNet','ciscoIntro','fortinet']},
+  iam:{group:'build', tools:['Microsoft Entra ID','Okta','Keycloak','SAML / OAuth / OIDC','Privileged access tools (PAM)'], projects:['Set up SSO + MFA for a demo app with Keycloak','Design role-based access for a sample company','Audit an AD lab for risky permissions'], freeCerts:['ms900','msApplied','ciscoIntro']},
+  architect:{group:'build', tools:['Threat modeling (STRIDE)','Zero-trust reference architectures','Cloud well-architected frameworks','Diagramming (draw.io)','SABSA / TOGAF concepts'], projects:['A zero-trust architecture for a fictional company','Security review of a public system design','Architecture decision records for a cloud migration'], freeCerts:['msApplied','awsBadges','gcpBadges']},
+  ai:{group:'ai', tools:['Garak / PyRIT (LLM red teaming)','Promptfoo','Burp Suite','Python + LLM APIs','OWASP LLM Top 10'], projects:['Red-team a local LLM app and report findings','Build a prompt-injection test suite','Write up an agent tool-abuse scenario with mitigations'], freeCerts:['owaspLLM','cs50']},
+  aisec:{group:'ai', tools:['Guardrail frameworks (e.g. NeMo Guardrails, Llama Guard)','Model Context Protocol (MCP) security','Evals (Promptfoo, Inspect)','Vector databases','Cloud AI services (Bedrock, Azure AI)'], projects:['Secure a RAG chatbot: access control on documents + output filtering','Threat model an AI agent with tools (MCP) and least privilege','An evaluation suite that runs in CI for an LLM feature'], freeCerts:['owaspLLM','awsBadges','msApplied']},
+  grc:{group:'govern', tools:['ISO 27001 / NIST CSF','Risk registers (spreadsheets, GRC tools)','SOC 2 control sets','Vanta / Drata concepts','Policy writing'], projects:['A risk register for a fictional startup','An information security policy set','A NIST CSF gap assessment of a small organisation'], freeCerts:['ciscoIntro','ms900','fortinet']},
+  privacy:{group:'govern', tools:['GDPR and India\'s DPDP Act','Data mapping and DPIAs','Consent and cookie tools','Data classification','Privacy-enhancing technologies'], projects:['A data map and DPIA for a sample app','A privacy notice written in plain language','Compare GDPR and DPDP Act requirements in one table'], freeCerts:['ciscoIntro','ms900']},
+  ot:{group:'industry', tools:['Wireshark with industrial dissectors','Purdue model','IEC 62443','Asset discovery tools','ICS simulators (e.g. OpenPLC)'], projects:['An OpenPLC lab with segmentation','An OT risk assessment of a sample plant','Analyse a Modbus capture and explain the risks'], freeCerts:['ciscoIntro','ciscoNet','fortinet']}
+};
+
 const CAREER_ROADMAPS = [
   {
     id:'soc', role:'SOC Analyst', ico:'radio', trackId:'soc-analyst', entry:'Most common first job',
@@ -2135,8 +2181,136 @@ const CAREER_ROADMAPS = [
       specialise:{paths:['23-grc-compliance','24-zero-trust'], skills:['IEC 62443 and regulatory frameworks','Segmentation and secure remote access','OT incident response','Working with plant engineers'], certs:['gicsp'], practice:['irtabletop','cvss']},
       job:{paths:['20-career-prep'], skills:['Document a small ICS lab you built','Write an OT risk assessment','Explain safety vs security trade-offs'], certs:[], practice:['portfoliogen','resumehelper']}
     }
+  },
+  {
+    id:'detection', role:'Detection Engineer', ico:'filter', trackId:null, entry:'Usually after SOC',
+    summary:'Write and maintain the rules that turn raw logs into alerts worth waking someone for. Part analyst, part software engineer: detections are code, tested and version-controlled.',
+    day:['Write and tune detection rules','Test rules against attack simulations','Reduce false positives','Map coverage to MITRE ATT&CK'],
+    titles:['Detection Engineer','SIEM Engineer','Security Content Engineer'],
+    next:['Senior Detection Engineer','Threat Hunter','Security Engineering Lead'],
+    resources:['attack','cyberdef','letsdefend','mslearn'],
+    stages:{
+      foundations:{paths:[...SHARED_FOUNDATION_PATHS,'04-python','07-windows-security'], skills:['Windows and Linux logging','Networking basics','Python scripting','Security basics'], certs:['google-cyber','isc2-cc'], practice:['terminal','loganalysis']},
+      core:{paths:['10-fundamentals','12-network-security'], skills:['SIEM query languages (KQL, SPL)','Sigma rule writing','Alert triage and tuning','ATT&CK technique mapping'], certs:['security-plus','sc-200','btl1'], practice:['logparser','attckmap','pcap']},
+      specialise:{paths:['16-advanced','22-devsecops-appsec'], skills:['Detection-as-code with Git and CI','Attack simulation (Atomic Red Team)','Coverage measurement','Behavioural vs indicator detections'], certs:['cysa-plus','gcih'], practice:['yarabuilder','yaratester','irtabletop']},
+      job:{paths:['20-career-prep'], skills:['Publish a detection rule repo','Explain a rule\'s logic and blind spots','Show before/after false-positive tuning'], certs:[], practice:['portfoliogen','resumehelper']}
+    }
+  },
+  {
+    id:'vulnmgmt', role:'Vulnerability Management Analyst', ico:'target', trackId:null, entry:'Good entry route',
+    summary:'Find, prioritise and drive the fixing of vulnerabilities across an organisation. Less hacking, more risk judgement and persuasion: a realistic first or second security job.',
+    day:['Run and review vulnerability scans','Prioritise with CVSS, EPSS and known-exploited lists','Track remediation with IT teams','Report risk trends'],
+    titles:['Vulnerability Management Analyst','Vulnerability Analyst','Security Analyst (VM)'],
+    next:['Pentester','Security Engineer','GRC / Risk Analyst'],
+    resources:['thm','nist','cisa','attack'],
+    stages:{
+      foundations:{paths:[...SHARED_FOUNDATION_PATHS,'07-windows-security'], skills:['Operating systems and patching','Networking and services','How vulnerabilities are disclosed (CVE)','Security basics'], certs:['isc2-cc','google-cyber'], practice:['terminal','subnet']},
+      core:{paths:['10-fundamentals','12-network-security'], skills:['Scanner operation and tuning','CVSS and EPSS scoring','Using the CISA KEV catalogue','Writing remediation tickets'], certs:['security-plus','network-plus'], practice:['cvss','hashid','dnsrecon','headers']},
+      specialise:{paths:['14-ethical-hacking','23-grc-compliance','08-cloud-basics'], skills:['Validating findings (is it exploitable?)','Cloud and container scanning','Patch SLAs and exceptions','Risk reporting to leadership'], certs:['cysa-plus','ejpt'], practice:['riskregister','sbomcheck','slacalc']},
+      job:{paths:['20-career-prep'], skills:['Show a prioritised findings report','Explain why a CVSS 9.8 might wait','Present a remediation dashboard'], certs:[], practice:['vulnreport','portfoliogen']}
+    }
+  },
+  {
+    id:'redteam', role:'Red Team Operator', ico:'mask', trackId:null, entry:'Senior offensive role',
+    summary:'Emulate real attackers end to end, quietly, to test whether a company can detect and respond. Usually reached after a few years of pentesting.',
+    day:['Plan adversary-emulation campaigns','Gain and keep access quietly','Abuse Active Directory and cloud identity','Work with the blue team afterwards (purple teaming)'],
+    titles:['Red Team Operator','Adversary Emulation Specialist','Offensive Security Engineer'],
+    next:['Red Team Lead','Offensive Tooling Developer','Security Researcher'],
+    resources:['htb','attack','thm','pswa'],
+    stages:{
+      foundations:{paths:[...SHARED_FOUNDATION_PATHS,'04-python','07-windows-security'], skills:['Windows internals and AD','Networking and Linux fluency','Scripting (Python, PowerShell)','Security basics'], certs:['network-plus','isc2-cc'], practice:['terminal','subnet']},
+      core:{paths:['11-web-security','14-ethical-hacking','12-network-security'], skills:['Full pentest methodology','Active Directory attack paths','Privilege escalation','Report writing'], certs:['ejpt','pnpt','crtp'], practice:['ad-attack','kerberoast','linuxprivesc','winprivesc']},
+      specialise:{paths:['16-advanced','17-malware-re','19-ctf-challenges'], skills:['Command-and-control (C2) operations','Defence evasion concepts','Cloud identity attacks','Operational security'], certs:['oscp','gcih'], practice:['passwordcrack','dockerescape','iammisconfig']},
+      job:{paths:['20-career-prep'], skills:['Run a purple-team exercise and report it','Show custom tooling on GitHub','Explain rules of engagement and safety'], certs:[], practice:['vulnreport','portfoliogen']}
+    }
+  },
+  {
+    id:'mobile', role:'Mobile Security Tester', ico:'phone', trackId:null, entry:'Specialist, growing',
+    summary:'Test Android and iOS apps for insecure storage, broken authentication and weak APIs. A useful speciality inside pentesting and AppSec teams.',
+    day:['Reverse and test mobile apps','Intercept and test app APIs','Review storage, crypto and auth','Report against OWASP MASVS'],
+    titles:['Mobile Application Security Tester','Mobile Pentester','AppSec Engineer (mobile)'],
+    next:['Senior Pentester','AppSec Engineer','Mobile Security Researcher'],
+    resources:['pswa','owasp','htb','thm'],
+    stages:{
+      foundations:{paths:[...SHARED_FOUNDATION_PATHS,'04-python','05-web-basics'], skills:['How mobile apps and APIs work','Java/Kotlin or Swift basics','HTTP and proxies','Security basics'], certs:['isc2-cc','pcep'], practice:['httpbuilder','terminal']},
+      core:{paths:['11-web-security','13-mobile-security','21-api-security'], skills:['Android and iOS app structure','Static analysis (jadx, MobSF)','Dynamic analysis with Frida','API testing behind the app'], certs:['ejpt','bscp'], practice:['jwt','bola-bfla','idor']},
+      specialise:{paths:['06-crypto-fundamentals','14-ethical-hacking'], skills:['SSL pinning and root-detection bypass','Secure storage and keychains','Mobile malware basics','OWASP MASVS / MASTG'], certs:['gmob','pt1'], practice:['malwarestrings','hash','encoder']},
+      job:{paths:['20-career-prep'], skills:['Publish a mobile app test report','Show Frida scripts on GitHub','Explain fixes to app developers'], certs:[], practice:['vulnreport','portfoliogen']}
+    }
+  },
+  {
+    id:'devsecops', role:'DevSecOps Engineer', ico:'package', trackId:null, entry:'Great route from DevOps',
+    summary:'Build security into how software is built and shipped: pipelines, containers, infrastructure as code and the supply chain. Strong demand, and a natural move for DevOps engineers.',
+    day:['Add security scans to CI/CD','Harden containers and Kubernetes','Scan infrastructure as code','Manage secrets and the software supply chain'],
+    titles:['DevSecOps Engineer','Platform Security Engineer','Cloud/DevOps Engineer (security)'],
+    next:['Security Architect','Staff Security Engineer','Platform Security Lead'],
+    resources:['owasp','awssb','htb','mslearn'],
+    stages:{
+      foundations:{paths:[...SHARED_FOUNDATION_PATHS,'04-python','08-cloud-basics'], skills:['Linux and shell scripting','Git and CI basics','Containers and cloud basics','Security basics'], certs:['isc2-cc','lfcs'], practice:['terminal','cidroverlap']},
+      core:{paths:['11-web-security','22-devsecops-appsec'], skills:['SAST, SCA and secret scanning','Container image security','IaC scanning (Terraform)','Software bill of materials (SBOM)'], certs:['security-plus','ccsk'], practice:['sbomcheck','codereview','dockerescape']},
+      specialise:{paths:['16-advanced','24-zero-trust'], skills:['Kubernetes security and policies','Supply-chain signing (SLSA, Sigstore)','Cloud guardrails as code','Runtime detection'], certs:['cks','aws-security','csslp'], practice:['clouddockersecrets','iammisconfig','stride']},
+      job:{paths:['20-career-prep'], skills:['Show a secured pipeline repo','Explain a supply-chain attack and your controls','Demo a hardened cluster'], certs:[], practice:['portfoliogen','resumehelper']}
+    }
+  },
+  {
+    id:'iam', role:'IAM Engineer', ico:'idcard', trackId:null, entry:'Steady demand, good entry',
+    summary:'Control who can access what: single sign-on, MFA, privileged access and identity lifecycle. Identity is now the main attack surface, so this field keeps growing.',
+    day:['Run SSO and MFA platforms','Design roles and access reviews','Manage privileged accounts','Investigate identity-based attacks'],
+    titles:['IAM Engineer','Identity Analyst','Entra ID / Okta Administrator','PAM Engineer'],
+    next:['Identity Architect','Zero Trust Architect','Security Architect'],
+    resources:['mslearn','nist','thm','awssb'],
+    stages:{
+      foundations:{paths:[...SHARED_FOUNDATION_PATHS,'07-windows-security'], skills:['Active Directory basics','Authentication vs authorisation','Networking basics','Security basics'], certs:['isc2-cc','sc-900'], practice:['passpolicy','terminal']},
+      core:{paths:['10-fundamentals','24-zero-trust'], skills:['SSO protocols: SAML, OAuth 2.0, OIDC','MFA and conditional access','Role-based access and reviews','Joiner-mover-leaver processes'], certs:['sc-300','security-plus'], practice:['jwt','oauthredirect','iammisconfig']},
+      specialise:{paths:['08-cloud-basics','16-advanced'], skills:['Privileged access management','Cloud IAM (AWS, Azure, GCP)','Identity threat detection','Workload and machine identities'], certs:['aws-security','ccsp'], practice:['kerberoast','ad-attack','controlmapper']},
+      job:{paths:['20-career-prep'], skills:['Demo SSO + MFA you configured','Write an access-review procedure','Explain a token-theft attack and defences'], certs:[], practice:['portfoliogen','resumehelper']}
+    }
+  },
+  {
+    id:'architect', role:'Security Architect', ico:'building', trackId:null, entry:'Senior role, 5+ years',
+    summary:'Design systems so they are secure by default: cloud, network, identity and application architecture. A destination role, reached after hands-on years in engineering or operations.',
+    day:['Review designs for new systems','Define security standards and patterns','Lead threat modeling','Advise leadership on trade-offs'],
+    titles:['Security Architect','Cloud Security Architect','Enterprise Security Architect'],
+    next:['Principal Architect','Head of Security','CISO'],
+    resources:['nist','owasp','awssb','mslearn'],
+    stages:{
+      foundations:{paths:[...SHARED_FOUNDATION_PATHS,'05-web-basics','08-cloud-basics'], skills:['Networks, systems and cloud fundamentals','How applications are built','Security principles','Clear diagrams and writing'], certs:['security-plus','network-plus'], practice:['subnet','cidroverlap']},
+      core:{paths:['10-fundamentals','24-zero-trust','22-devsecops-appsec'], skills:['Threat modeling','Zero-trust design','Identity and network architecture','Secure SDLC'], certs:['ccsk','sc-300'], practice:['stride','controlmapper','iammisconfig']},
+      specialise:{paths:['16-advanced','23-grc-compliance','18-ai-security'], skills:['Cloud reference architectures','Risk-based trade-offs','Securing AI features','Standards and governance'], certs:['cissp','ccsp','aws-security'], practice:['riskregister','sbomcheck','agentic-risk']},
+      job:{paths:['20-career-prep'], skills:['Publish an architecture case study','Write architecture decision records','Defend a design in a review'], certs:[], practice:['portfoliogen','resumehelper']}
+    }
+  },
+  {
+    id:'aisec', role:'AI Security Engineer (Agentic AI)', ico:'lockKey', trackId:null, entry:'Newest, fastest-growing',
+    summary:'Build and defend AI systems in production: LLM apps, RAG pipelines and autonomous agents with tools (including MCP servers). The defensive twin of AI red teaming, and one of the fastest-growing roles in security.',
+    day:['Threat-model AI features and agents','Design guardrails and tool permissions','Secure RAG data and model access','Monitor and respond to AI misuse'],
+    titles:['AI Security Engineer','LLM / GenAI Security Engineer','AI Platform Security Engineer'],
+    next:['AI Security Architect','Head of AI Security','AI Governance Lead'],
+    resources:['owaspllm','pswa','awssb','mslearn'],
+    stages:{
+      foundations:{paths:[...SHARED_FOUNDATION_PATHS,'04-python','05-web-basics'], skills:['Python and APIs','How LLMs, embeddings and RAG work','Web and cloud basics','Security basics'], certs:['isc2-cc','pcep'], practice:['terminal','httpbuilder']},
+      core:{paths:['11-web-security','18-ai-security','21-api-security'], skills:['OWASP Top 10 for LLM apps','Prompt injection and data exfiltration','Securing RAG and vector stores','AI supply-chain risks (models, plugins)'], certs:['secai-plus','security-plus'], practice:['prompt-injection','indirect-injection','jailbreak','agentic-risk']},
+      specialise:{paths:['22-devsecops-appsec','24-zero-trust','08-cloud-basics'], skills:['Agent tool-use and MCP permissions','Guardrails and output filtering','AI evaluations in CI','Identity and least privilege for agents'], certs:['giac-ai','aigp','aaism'], practice:['stride','codereview','iammisconfig']},
+      job:{paths:['20-career-prep'], skills:['Show a secured RAG or agent project','Write a threat model for an AI agent','Explain AI risks to product teams'], certs:[], practice:['portfoliogen','resumehelper']}
+    }
+  },
+  {
+    id:'privacy', role:'Privacy & Data Protection', ico:'fingerprint', trackId:null, entry:'Non-coding, growing',
+    summary:'Make sure personal data is collected, used and protected lawfully: GDPR, India\'s DPDP Act and similar laws. Suits law, management and GRC-minded people as well as engineers.',
+    day:['Map how personal data flows','Run privacy impact assessments (DPIAs)','Write notices and policies','Handle data-subject requests and breaches'],
+    titles:['Privacy Analyst','Data Protection Officer (later)','Privacy Engineer','Compliance Analyst (privacy)'],
+    next:['Privacy Manager','DPO','AI Governance Lead'],
+    resources:['nist','gcc','cs50','mslearn'],
+    stages:{
+      foundations:{paths:['00-fresher-basics','01-introduction','09-digital-privacy'], skills:['What personal data is','Security basics','How organisations use data','Clear writing'], certs:['isc2-cc','sc-900'], practice:['passpolicy']},
+      core:{paths:['10-fundamentals','23-grc-compliance'], skills:['GDPR and India\'s DPDP Act basics','Data mapping and records of processing','DPIAs','Consent and retention'], certs:['security-plus'], practice:['riskregister','controlmapper']},
+      specialise:{paths:['18-ai-security','24-zero-trust','06-crypto-fundamentals'], skills:['Privacy engineering (minimisation, pseudonymisation)','AI governance','Breach response and notification','Vendor and transfer assessments'], certs:['aigp','cisa'], practice:['vendortiering','irtabletop']},
+      job:{paths:['20-career-prep'], skills:['A sample DPIA and data map','A plain-language privacy notice','Explain a regulation to a product team'], certs:[], practice:['portfoliogen','resumehelper']}
+    }
   }
 ];
+CAREER_ROADMAPS.forEach(r => Object.assign(r, ROADMAP_EXTRAS[r.id]));
+
 
 const FAQS = [
   {q:"I have zero experience. Can I really do this?", a:"Yes — the course is built exactly for you. Start at path 1 and go in order. Every term is explained in plain words with everyday examples, and nothing is assumed."},
@@ -4801,8 +4975,13 @@ const CERTS = [
     "url": "https://www.comptia.org/en-us/certifications/security/",
     "readiness": "Build broad security knowledge and use the current exam objectives; a single KashSec path covers only part of them.",
     "reviewed": "2026-11-15",
-    "cost": "Mid",
-    "note": "The exam moves from SY0-701 to SY0-801 on 17 November 2026; the older version stays bookable into 2027. Study for the version you will sit."
+    "note": "The exam moves from SY0-701 to SY0-801 on 17 November 2026; the older version stays bookable into 2027. Study for the version you will sit.",
+    "priceUSD": [
+      400,
+      439
+    ],
+    "priceNote": "Exam voucher",
+    "cost": "Mid"
   },
   {
     "id": "ejpt",
@@ -4815,6 +4994,10 @@ const CERTS = [
     "url": "https://ine.com/security/certifications/ejpt-certification",
     "readiness": "Practice network enumeration, web testing, and reporting in authorized labs; review the provider preparation.",
     "reviewed": "2026-10-28",
+    "priceUSD": [
+      249
+    ],
+    "priceNote": "Exam voucher",
     "cost": "Low"
   },
   {
@@ -4828,8 +5011,12 @@ const CERTS = [
     "url": "https://www.isc2.org/certifications/cc",
     "readiness": "No work experience is required. Study the full current outline beyond these course foundations.",
     "reviewed": "2026-11-15",
-    "cost": "Low",
-    "note": "ISC2's free \"One Million Certified in Cybersecurity\" programme closed to new candidates in May 2026; the exam is now paid, plus a yearly maintenance fee."
+    "note": "ISC2's free \"One Million Certified in Cybersecurity\" programme closed to new candidates in May 2026; the exam is now paid, plus a yearly maintenance fee.",
+    "priceUSD": [
+      199
+    ],
+    "priceNote": "Exam, plus $50/year maintenance",
+    "cost": "Low"
   },
   {
     "id": "pcep",
@@ -4854,6 +5041,10 @@ const CERTS = [
     "url": "https://www.coursera.org/professional-certificates/google-cybersecurity",
     "readiness": "Paid by monthly subscription; the courses can be audited free and Coursera offers financial aid.",
     "reviewed": "2026-11-15",
+    "priceUSD": [
+      49
+    ],
+    "priceNote": "Per month on Coursera (~6 months); audit free or financial aid",
     "cost": "Low"
   },
   {
@@ -4867,6 +5058,11 @@ const CERTS = [
     "url": "https://www.comptia.org/en-us/certifications/network/",
     "readiness": "Practise subnetting and troubleshooting until they are routine; the performance-based questions test doing, not recall.",
     "reviewed": "2026-11-15",
+    "priceUSD": [
+      369,
+      399
+    ],
+    "priceNote": "Exam voucher",
     "cost": "Mid"
   },
   {
@@ -4880,6 +5076,10 @@ const CERTS = [
     "url": "https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/",
     "readiness": "The free Microsoft Learn path covers the objectives; a fundamentals exam, not proof of hands-on skill.",
     "reviewed": "2026-11-15",
+    "priceUSD": [
+      99
+    ],
+    "priceNote": "Exam",
     "cost": "Low"
   },
   {
@@ -4890,6 +5090,11 @@ const CERTS = [
     "desc": "A SOC analyst certification scored mostly on simulated shift work: a short multiple-choice section for the theory, then two separate SOC simulations where you triage and close real alerts. The simulations carry the large majority of the marks, which is the right way round. Valid three years.",
     "format": "80 MCQs (60 min) + two 2-hour SOC simulations",
     "prep": "Paths 02, 07, 10, 12",
+    "priceUSD": [
+      299,
+      349
+    ],
+    "priceNote": "Exam, 2 attempts",
     "cost": "Low"
   },
   {
@@ -4900,6 +5105,11 @@ const CERTS = [
     "desc": "Blue-team focused: SOC analysis, threat detection, incident response fundamentals.",
     "format": "Multiple choice + performance-based",
     "prep": "Paths 12–15, 22",
+    "priceUSD": [
+      392,
+      439
+    ],
+    "priceNote": "Exam voucher",
     "cost": "Mid"
   },
   {
@@ -4910,8 +5120,13 @@ const CERTS = [
     "desc": "Broad, theory-heavy overview of hacking tools and methodology — widely known, though many employers weight practical certs higher.",
     "format": "Multiple choice (practical variant sold separately)",
     "prep": "Paths 10–13, 19",
-    "cost": "High",
-    "note": "Expensive for an entry-level multiple-choice exam. Many hiring managers weight practical certifications (eJPT, PNPT, OSCP) higher for hands-on roles."
+    "note": "Expensive for an entry-level multiple-choice exam. Many hiring managers weight practical certifications (eJPT, PNPT, OSCP) higher for hands-on roles.",
+    "priceUSD": [
+      950,
+      1199
+    ],
+    "priceNote": "Exam only; training extra",
+    "cost": "High"
   },
   {
     "id": "ccna",
@@ -4924,6 +5139,10 @@ const CERTS = [
     "url": "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/enterprise/ccna/index.html",
     "readiness": "Add routing, switching, device configuration, and troubleshooting practice beyond these paths.",
     "reviewed": "2026-10-28",
+    "priceUSD": [
+      300
+    ],
+    "priceNote": "Exam",
     "cost": "Low"
   },
   {
@@ -4936,7 +5155,12 @@ const CERTS = [
     "prep": "Paths 08, 24",
     "url": "https://cloudsecurityalliance.org/education/ccsk",
     "readiness": "Use the full CSA study material. This knowledge certificate is separate from professional experience-based credentials.",
-    "reviewed": "2026-10-28"
+    "reviewed": "2026-10-28",
+    "priceUSD": [
+      395
+    ],
+    "priceNote": "Exam",
+    "cost": "Mid"
   },
   {
     "id": "btl1",
@@ -4949,6 +5173,11 @@ const CERTS = [
     "url": "https://www.securityblue.team/",
     "readiness": "Comfort with log analysis, phishing triage and basic forensics; the training bundle includes lab time.",
     "reviewed": "2026-11-15",
+    "priceUSD": [
+      490,
+      499
+    ],
+    "priceNote": "Course + labs + exam",
     "cost": "Mid"
   },
   {
@@ -4959,6 +5188,11 @@ const CERTS = [
     "desc": "Sat inside a pentest simulator against web, network and Active Directory targets, and finished by writing a professional report. The report is not an afterthought — being unable to write up a finding is what actually stops people getting hired.",
     "format": "Practical engagement + written report",
     "prep": "Paths 05, 07, 11–12, 14",
+    "priceUSD": [
+      299,
+      349
+    ],
+    "priceNote": "Exam, 2 attempts",
     "cost": "Low"
   },
   {
@@ -4969,6 +5203,11 @@ const CERTS = [
     "desc": "A middle ground between Security+ and OSCP — pentesting methodology, tools, and reporting, mixed multiple-choice and performance-based questions.",
     "format": "Multiple choice + performance-based",
     "prep": "Paths 11–13, 19",
+    "priceUSD": [
+      392,
+      439
+    ],
+    "priceNote": "Exam voucher",
     "cost": "Mid"
   },
   {
@@ -4982,6 +5221,10 @@ const CERTS = [
     "url": "https://certifications.tcm-sec.com/pnpt/",
     "readiness": "Build practical network and Active Directory assessment skills, including a report and debrief.",
     "reviewed": "2026-10-28",
+    "priceUSD": [
+      499
+    ],
+    "priceNote": "Exam with training, 1 free retake",
     "cost": "Mid"
   },
   {
@@ -4995,8 +5238,12 @@ const CERTS = [
     "url": "https://www.offsec.com/courses/pen-200/",
     "readiness": "Advanced practical preparation is needed beyond this course. Check the current OSCP/OSCP+ exam and designation policies.",
     "reviewed": "2026-11-15",
-    "cost": "Premium",
-    "note": "Passing now awards OSCP+, which expires after three years unless you recertify or earn CPE credits; the underlying OSCP does not expire."
+    "note": "Passing now awards OSCP+, which expires after three years unless you recertify or earn CPE credits; the underlying OSCP does not expire.",
+    "priceUSD": [
+      1749
+    ],
+    "priceNote": "Course + 90-day lab + exam bundle",
+    "cost": "Premium"
   },
   {
     "id": "lfcs",
@@ -5009,6 +5256,10 @@ const CERTS = [
     "url": "https://training.linuxfoundation.org/certification/linux-foundation-certified-sysadmin-lfcs/",
     "readiness": "Practice on real Linux systems and follow the current administration objectives, not only security commands.",
     "reviewed": "2026-10-28",
+    "priceUSD": [
+      445
+    ],
+    "priceNote": "Exam",
     "cost": "Mid"
   },
   {
@@ -5022,6 +5273,10 @@ const CERTS = [
     "url": "https://learn.microsoft.com/en-us/credentials/certifications/identity-and-access-administrator/",
     "readiness": "Requires additional hands-on Microsoft Entra administration and study of the current SC-300 objectives.",
     "reviewed": "2026-10-28",
+    "priceUSD": [
+      165
+    ],
+    "priceNote": "Exam",
     "cost": "Low"
   },
   {
@@ -5035,6 +5290,10 @@ const CERTS = [
     "url": "https://portswigger.net/web-security/certification",
     "readiness": "Work through the provider preparation steps and labs. An active Burp Suite Professional subscription is needed for the exam.",
     "reviewed": "2026-10-28",
+    "priceUSD": [
+      99
+    ],
+    "priceNote": "Exam; also needs a Burp Suite Pro licence",
     "cost": "Low"
   },
   {
@@ -5048,6 +5307,10 @@ const CERTS = [
     "url": "https://learn.microsoft.com/en-us/credentials/certifications/security-operations-analyst/",
     "readiness": "Hands-on practice writing KQL and investigating incidents in a Sentinel/Defender trial tenant.",
     "reviewed": "2026-11-15",
+    "priceUSD": [
+      165
+    ],
+    "priceNote": "Exam",
     "cost": "Low"
   },
   {
@@ -5060,8 +5323,37 @@ const CERTS = [
     "prep": "Paths 07, 14",
     "url": "https://www.alteredsecurity.com/adlab",
     "readiness": "Comfort with Windows, PowerShell and the AD basics in Path 07 before buying lab time.",
+    "reviewed": "2026-11-15"
+  },
+  {
+    "id": "secai-plus",
+    "name": "CompTIA SecAI+",
+    "org": "CompTIA",
+    "level": "Intermediate",
+    "desc": "CompTIA's AI security certification (launched February 2026): securing AI systems, defending against AI-enabled attacks and using AI in security operations. Vendor-neutral.",
+    "format": "Multiple choice + performance-based",
+    "prep": "Paths 10, 18, 22",
+    "url": "https://www.comptia.org/en-us/certifications/secai/",
+    "readiness": "Best after Security+ or equivalent experience; check the current exam objectives.",
     "reviewed": "2026-11-15",
-    "cost": "Low"
+    "priceUSD": [
+      298,
+      359
+    ],
+    "priceNote": "Exam voucher (sources differ)",
+    "cost": "Mid"
+  },
+  {
+    "id": "aigp",
+    "name": "IAPP Artificial Intelligence Governance Professional (AIGP)",
+    "org": "IAPP",
+    "level": "Intermediate",
+    "desc": "AI governance: laws such as the EU AI Act, risk frameworks and how to run responsible-AI programmes. Popular with privacy, legal and GRC professionals.",
+    "format": "Computer-based multiple-choice exam",
+    "prep": "Paths 18, 23",
+    "url": "https://iapp.org/certify/aigp/",
+    "readiness": "No prerequisites; suits GRC and privacy roles moving into AI governance. Check IAPP for the current fee.",
+    "reviewed": "2026-11-15"
   },
   {
     "id": "giac-ai",
@@ -5071,6 +5363,10 @@ const CERTS = [
     "desc": "Separate GIAC credentials covering offensive AI, AI security, and security automation. Compare the individual outlines and exam formats; this group is not one certification.",
     "format": "Separate exams; check each current GIAC guide",
     "prep": "Paths 18, 22–23",
+    "priceUSD": [
+      999
+    ],
+    "priceNote": "Per exam attempt",
     "cost": "High"
   },
   {
@@ -5084,6 +5380,10 @@ const CERTS = [
     "url": "https://www.giac.org/certifications/cloud-security-automation-gcsa",
     "readiness": "Build practical cloud, pipeline, and automation skills. Compare the complete outline and funding options before booking.",
     "reviewed": "2026-10-28",
+    "priceUSD": [
+      999
+    ],
+    "priceNote": "Exam attempt",
     "cost": "High"
   },
   {
@@ -5097,6 +5397,10 @@ const CERTS = [
     "url": "https://www.giac.org/certifications/mobile-device-security-analyst-gmob",
     "readiness": "Add platform, device, and mobile assessment practice. This path is a starting point rather than a full exam course.",
     "reviewed": "2026-10-28",
+    "priceUSD": [
+      999
+    ],
+    "priceNote": "Exam attempt",
     "cost": "High"
   },
   {
@@ -5110,6 +5414,10 @@ const CERTS = [
     "url": "https://www.giac.org/certifications/global-industrial-cyber-security-professional-gicsp",
     "readiness": "Study the complete industrial security outline and operational context. Course simulations do not establish competence to test live OT.",
     "reviewed": "2026-10-28",
+    "priceUSD": [
+      999
+    ],
+    "priceNote": "Exam attempt",
     "cost": "High"
   },
   {
@@ -5123,6 +5431,10 @@ const CERTS = [
     "url": "https://www.giac.org/certifications/certified-incident-handler-gcih/",
     "readiness": "Often employer-sponsored; build real incident-handling experience first.",
     "reviewed": "2026-11-15",
+    "priceUSD": [
+      999
+    ],
+    "priceNote": "Exam attempt; SANS course extra",
     "cost": "High"
   },
   {
@@ -5136,6 +5448,10 @@ const CERTS = [
     "url": "https://www.giac.org/certifications/cyber-threat-intelligence-gcti/",
     "readiness": "Usually taken after a few years in SOC or IR work; often employer-sponsored.",
     "reviewed": "2026-11-15",
+    "priceUSD": [
+      999
+    ],
+    "priceNote": "Exam attempt; SANS course extra",
     "cost": "High"
   },
   {
@@ -5170,8 +5486,12 @@ const CERTS = [
     "url": "https://aws.amazon.com/certification/certified-security-specialty/",
     "readiness": "A later goal for people with substantial practical AWS security experience; check the provider candidate profile.",
     "reviewed": "2026-11-15",
-    "cost": "Low",
-    "note": "The current exam is SCS-C03 (it replaced SCS-C02 in December 2025), with identity and GenAI guardrails now weighted more heavily."
+    "note": "The current exam is SCS-C03 (it replaced SCS-C02 in December 2025), with identity and GenAI guardrails now weighted more heavily.",
+    "priceUSD": [
+      300
+    ],
+    "priceNote": "Exam",
+    "cost": "Low"
   },
   {
     "id": "csslp",
@@ -5184,6 +5504,10 @@ const CERTS = [
     "url": "https://www.isc2.org/certifications/csslp",
     "readiness": "Certification requires four years of relevant experience, subject to eligible waivers, and endorsement. The Associate of ISC2 route is available after passing without the required experience; check the current rules.",
     "reviewed": "2026-10-28",
+    "priceUSD": [
+      599
+    ],
+    "priceNote": "Exam",
     "cost": "Mid"
   },
   {
@@ -5197,6 +5521,10 @@ const CERTS = [
     "url": "https://training.linuxfoundation.org/certification/certified-kubernetes-security-specialist/",
     "readiness": "You must already have passed the CKA exam; it does not need to remain active. Add substantial cluster administration and hardening practice.",
     "reviewed": "2026-10-28",
+    "priceUSD": [
+      445
+    ],
+    "priceNote": "Exam",
     "cost": "Mid"
   },
   {
@@ -5210,6 +5538,10 @@ const CERTS = [
     "url": "https://www.giac.org/certifications/reverse-engineering-malware-grem",
     "readiness": "Build substantial disassembly and isolated analysis experience before considering this specialist exam.",
     "reviewed": "2026-10-28",
+    "priceUSD": [
+      999
+    ],
+    "priceNote": "Exam attempt; SANS course extra",
     "cost": "High"
   },
   {
@@ -5223,7 +5555,12 @@ const CERTS = [
     "url": "https://www.isaca.org/credentialing/cisa",
     "readiness": "Certification normally requires five years of qualifying experience, subject to allowed substitutions. The exam can be taken earlier; passing alone does not confer CISA.",
     "reviewed": "2026-10-28",
-    "cost": "Mid"
+    "priceUSD": [
+      575,
+      760
+    ],
+    "priceNote": "Exam (ISACA member / non-member)",
+    "cost": "High"
   },
   {
     "id": "oswe",
@@ -5236,6 +5573,10 @@ const CERTS = [
     "url": "https://www.offsec.com/courses/web-300/",
     "readiness": "Strong scripting and code-reading skills; take it after BSCP or equivalent web-testing experience.",
     "reviewed": "2026-11-15",
+    "priceUSD": [
+      1749
+    ],
+    "priceNote": "Course + 90-day lab + exam bundle",
     "cost": "Premium"
   },
   {
@@ -5249,6 +5590,10 @@ const CERTS = [
     "url": "https://www.isc2.org/certifications/cissp",
     "readiness": "Requires five years of paid experience across two of its eight domains (a degree can waive one). Passing earlier makes you an Associate of ISC2 while you gain the experience.",
     "reviewed": "2026-11-15",
+    "priceUSD": [
+      749
+    ],
+    "priceNote": "Exam; $135/year once certified",
     "cost": "High"
   },
   {
@@ -5262,6 +5607,10 @@ const CERTS = [
     "url": "https://www.isc2.org/certifications/ccsp",
     "readiness": "Requires five years of IT experience including security and cloud security; check ISC2's current requirements.",
     "reviewed": "2026-11-15",
+    "priceUSD": [
+      599
+    ],
+    "priceNote": "Exam",
     "cost": "Mid"
   },
   {
@@ -5275,9 +5624,33 @@ const CERTS = [
     "url": "https://www.isaca.org/credentialing/cism",
     "readiness": "Certification requires five years of security work experience, three of them in management; you can pass the exam first.",
     "reviewed": "2026-11-15",
+    "priceUSD": [
+      575,
+      760
+    ],
+    "priceNote": "Exam (ISACA member / non-member)",
+    "cost": "High"
+  },
+  {
+    "id": "aaism",
+    "name": "ISACA Advanced in AI Security Management (AAISM)",
+    "org": "ISACA",
+    "level": "Advanced",
+    "desc": "AI security management for experienced security managers: AI governance, risk, controls and programme oversight.",
+    "format": "Computer-based multiple-choice exam",
+    "prep": "Paths 18, 23",
+    "url": "https://www.isaca.org/credentialing/aaism",
+    "readiness": "Requires holding CISM or CISSP; aimed at security managers taking on AI risk.",
+    "reviewed": "2026-11-15",
+    "priceUSD": [
+      459,
+      599
+    ],
+    "priceNote": "Exam (member / non-member)",
     "cost": "Mid"
   }
 ];
+
 
 
 
@@ -5313,6 +5686,7 @@ function renderCertTracker(){
             <p>${escapeHtml(c.desc)}</p>
             <div class="lab-related">${escapeHtml(c.org)} · ${escapeHtml(c.level)}${c.cost?` · <span class="cr-cost" data-cost="${c.cost}" title="${escapeHtml(CERT_COST_HINT[c.cost]||'')}">${c.cost} cost</span>`:''}</div>
             ${c.format?`<div class="lab-related">Exam: <b>${escapeHtml(c.format)}</b></div>`:''}
+            <div class="lab-related">Approx. price: <b>${certPriceText(c).replace(/^≈ /, '')}</b>${c.priceNote?` <span class="cr-cert-price-note">(${escapeHtml(c.priceNote)})</span>`:''}</div>
             ${c.note?`<p class="cr-cert-note">${escapeHtml(c.note)}</p>`:''}
             <div class="lab-related">Related foundations: <b>${escapeHtml(c.prep)}</b></div>
             ${c.readiness?`<p class="path-cert-readiness"><strong>Before you book:</strong> ${escapeHtml(c.readiness)}</p>`:''}
@@ -13818,6 +14192,20 @@ const CERT_COST_HINT = {
   Premium:'Over about $1,500 including the required course (USD, Nov 2026). Often employer-sponsored.'
 };
 
+/* Approximate prices: USD list price from the providers and resellers checked
+   in November 2026, converted to rupees at about ₹94 per dollar. Indian
+   prices can differ (local taxes, regional pricing, resellers), so these are
+   for planning, not quotes. */
+const USD_TO_INR = 94;
+const fmtINR = n => '₹' + (Math.round(n * USD_TO_INR / 100) * 100).toLocaleString('en-IN');
+function certPriceText(c){
+  if(!c.priceUSD) return 'Price: check provider';
+  const [a, b] = c.priceUSD;
+  const usd = b ? `$${a.toLocaleString('en-US')}–${b.toLocaleString('en-US')}` : `$${a.toLocaleString('en-US')}`;
+  const inr = b ? `${fmtINR(a)}–${fmtINR(b).slice(1)}` : fmtINR(a);
+  return `≈ ${usd} · ≈ ${inr}`;
+}
+
 function roadmapStagePct(stage){
   const ps = stage.paths.filter(id => findPath(id));
   if(!ps.length) return 0;
@@ -13844,9 +14232,19 @@ function roadmapCertHTML(id){
     <span class="cr-cert-body">
       <span class="cr-cert-name">${c.url ? `<a href="${escapeHtml(c.url)}" target="_blank" rel="noopener noreferrer">${name}</a>` : name}</span>
       <span class="cr-cert-meta">${escapeHtml(c.org)} · ${escapeHtml(c.level)}${c.cost ? ` · <span class="cr-cost" data-cost="${c.cost}" title="${escapeHtml(CERT_COST_HINT[c.cost] || '')}">${c.cost} cost</span>` : ''}${status && CERT_STATUS_LABEL[status] ? ` · <b>${CERT_STATUS_LABEL[status]}</b>` : ''}</span>
+      <span class="cr-cert-price">${certPriceText(c)}${c.priceNote ? `<span class="cr-cert-price-note"> · ${escapeHtml(c.priceNote)}</span>` : ''}</span>
       ${c.note ? `<span class="cr-cert-note">${escapeHtml(c.note)}</span>` : ''}
     </span>
   </div>`;
+}
+
+function freeCertCardHTML(f){
+  return `<a class="cr-res cr-res-free" href="${f.url}" target="_blank" rel="noopener noreferrer">
+    <span class="cr-free-badge">Free</span>
+    <span class="cr-res-name">${escapeHtml(f.name)} <span aria-hidden="true">↗</span></span>
+    <span class="cr-res-org">${escapeHtml(f.org)}</span>
+    <span class="cr-res-what">${escapeHtml(f.what)}</span>
+  </a>`;
 }
 
 function roadmapRoleHTML(r){
@@ -13865,9 +14263,17 @@ function roadmapRoleHTML(r){
       <div class="cr-fact"><h3>Job titles to search for</h3><div class="cr-tags">${r.titles.map(t => `<span class="cr-tag">${escapeHtml(t)}</span>`).join('')}</div></div>
       <div class="cr-fact"><h3>Where it leads next</h3><div class="cr-tags">${r.next.map(t => `<span class="cr-tag is-next">${escapeHtml(t)}</span>`).join('')}</div></div>
     </div>
+    <div class="cr-extra">
+      <div class="cr-fact"><h3>Tools you'll learn</h3><div class="cr-tags">${(r.tools || []).map(t => `<span class="cr-tag">${escapeHtml(t)}</span>`).join('')}</div></div>
+      <div class="cr-fact"><h3>Portfolio projects that get interviews</h3><ul>${(r.projects || []).map(x => `<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
+    </div>
+    ${(r.freeCerts || []).length ? `<div class="cr-free">
+      <h3 class="cr-free-title">${cardIco('award')}Free certificates to start with</h3>
+      <div class="cr-res-grid">${r.freeCerts.map(k => FREE_CERTS[k]).filter(Boolean).map(freeCertCardHTML).join('')}</div>
+    </div>` : ''}
     <div class="cr-ladder" aria-label="Certification path for ${escapeHtml(r.role)}">
       <h3 class="cr-ladder-title">${cardIco('award')}Your certification path</h3>
-      <p class="cr-ladder-sub">Pick one or two per stage, not all of them. Skills and projects get you hired; certifications get your CV past filters. Cost bands are rough USD list prices (Low &lt; $350, Mid $350–700, High $700–1,500, Premium &gt; $1,500), checked November 2026.</p>
+      <p class="cr-ladder-sub">Pick one or two per stage, not all of them. Skills and projects get you hired; certifications get your CV past filters. Prices are approximate (USD list price, converted at about ₹94/$, checked November 2026) and vary by country, taxes and reseller, so confirm before you pay. Start with the free certificates further down.</p>
       <ol class="cr-ladder-steps">
         ${ROADMAP_STAGES.map((st, i) => {
           const certs = r.stages[st.key].certs.map(id => CERTS.find(c => c.id === id)).filter(Boolean);
@@ -13960,7 +14366,8 @@ const ROADMAP_FAQ = [
   ['Do I need to know programming?','To start, no. Basic scripting (Python or Bash) becomes important by the Core stage for most fields, and it is essential for AppSec, malware analysis and AI red teaming. GRC needs very little.'],
   ['Which certification should I do first?','None until you finish the Foundations stage. Then one broad entry certification: ISC2 CC or CompTIA Security+ for most fields, or a practical one (eJPT, BTL1, SAL1) if you are heading for offensive or SOC work. Avoid buying expensive certifications before you know which field you want.'],
   ['How long until I can get a job?','For most people with no IT background, 12–18 months of steady study, practice and portfolio building before an entry-level role, and less if you already work in IT or are doing a related degree. Your first job may be SOC, IT support with security duties or an internship, and that is a normal start.'],
-  ['Can I learn all of this for free?','Almost all of the learning, yes: KashSec, TryHackMe free rooms, PortSwigger Academy, OverTheWire, Microsoft Learn and CS50 are free. Certifications cost money; plan for one or two, and look for student discounts and vouchers.'],
+  ['Can I learn all of this for free?','Almost all of the learning, yes: KashSec, TryHackMe free rooms, PortSwigger Academy, OverTheWire, Microsoft Learn and CS50 are free, and the free certificates listed above (Cisco, Fortinet, Microsoft Applied Skills, CS50) cost nothing. Industry certifications cost money; plan for one or two, and look for student discounts and vouchers.'],
+  ['How much should I budget for certifications in India?','For a first year, roughly ₹0–45,000: start with the free certificates, then one entry certification such as ISC2 CC (about ₹19,000) or Security+ (about ₹38,000–41,000). Practical certifications like eJPT (about ₹23,000) or PNPT (about ₹47,000) come next. OSCP and GIAC exams cost roughly ₹94,000 to ₹1.6 lakh, which is why many people get them sponsored by an employer later. These are approximate conversions; check the provider.'],
   ['Do I need an expensive laptop?','No. Any laptop with 8 GB of RAM can run KashSec, browser labs and one small virtual machine. 16 GB is comfortable for a home lab with several VMs.'],
   ['Is hacking legal?','Only with written permission, on systems you own, or on platforms built for it (labs, CTFs, bug bounty programmes within scope). Testing anything else is a crime in most countries, even "just to look". Path 01 covers the rules.'],
   ['Am I too young or too old to start?','Neither. Students start at school, and people switch into security in their 30s, 40s and later. Employers care what you can do and how you communicate.']
@@ -14024,6 +14431,9 @@ function roadmapGuideBottomHTML(){
           </ul>
         </div>
       </div>
+      <h2 class="cr-sec-title" id="free-certs">${cardIco('award')}Free certifications &amp; badges</h2>
+      <p class="cr-sec-lead">Real, verifiable credentials you can earn at no cost. They won't replace Security+ or a practical certification, but they show initiative on a fresher CV and LinkedIn. Free offers change often (ISC2's free CC exam ended in 2026), so check each provider's current terms.</p>
+      <div class="cr-res-grid cr-free-all">${Object.values(FREE_CERTS).map(freeCertCardHTML).join('')}</div>
       <h2 class="cr-sec-title cr-faq-title">${cardIco('chat')}Questions students ask</h2>
       <div class="cr-faq">
         ${ROADMAP_FAQ.map(([q, a]) => `<details class="cr-faq-item"><summary>${escapeHtml(q)}</summary><p>${escapeHtml(a)}</p></details>`).join('')}
@@ -14114,8 +14524,10 @@ function renderCareerRoadmap(){
           ${xs.map(x => `<path d="M500 0 C 500 45, ${x} 35, ${x} 80" />`).join('')}
         </svg>
         <div class="cr-branches-label">${cardIco('compass')}Then choose your field</div>
-        <div class="cr-branches" role="tablist" aria-label="Choose a career field">
-          ${CAREER_ROADMAPS.map(r => {
+        ${ROADMAP_GROUPS.map(([gk, gl]) => `
+        <div class="cr-group-label" id="crGroup-${gk}">${gl}</div>
+        <div class="cr-branches" role="tablist" aria-labelledby="crGroup-${gk}">
+          ${CAREER_ROADMAPS.filter(r => r.group === gk).map(r => {
             const sel = r.id === chosen.id;
             return `
             <button class="cr-branch" type="button" role="tab" id="crTab-${r.id}" data-role="${r.id}"
@@ -14125,7 +14537,7 @@ function renderCareerRoadmap(){
               <span class="cr-branch-meta">${escapeHtml(r.entry)}</span>
             </button>`;
           }).join('')}
-        </div>
+        </div>`).join('')}
       </div>
 
       <div class="cr-detail" id="crDetail" role="tabpanel" aria-labelledby="crTab-${chosen.id}" tabindex="-1">

@@ -542,6 +542,25 @@ if (roadmapSrc) {
   });
   check(`every career roadmap reference resolves (${ROADMAPS.length} fields)`, badRefs.length === 0, badRefs.join(', '));
   check('career roadmap ids unique', new Set(ROADMAPS.map(r => r.id)).size === ROADMAPS.length);
+
+  /* Tools, projects, group and free certificates live in ROADMAP_EXTRAS and
+     are merged in at load. A field missing there would vanish from the
+     grouped picker; a mistyped free-cert key would silently drop a card. */
+  const [GROUPS, EXTRAS, FREE] = new Function(roadmapSrc[0] + '; return [ROADMAP_GROUPS, ROADMAP_EXTRAS, FREE_CERTS];')();
+  const groupKeys = new Set(GROUPS.map(g => g[0]));
+  const extraBad = [];
+  ROADMAPS.forEach(r => {
+    const x = EXTRAS[r.id];
+    if (!x) return extraBad.push(`${r.id} has no extras`);
+    if (!groupKeys.has(x.group)) extraBad.push(`${r.id} group ${x.group}`);
+    if (!(x.tools || []).length || !(x.projects || []).length) extraBad.push(`${r.id} lacks tools or projects`);
+    (x.freeCerts || []).forEach(k => FREE[k] || extraBad.push(`${r.id} free cert ${k}`));
+  });
+  Object.keys(EXTRAS).forEach(id => ROADMAPS.some(r => r.id === id) || extraBad.push(`extras for unknown field ${id}`));
+  GROUPS.forEach(([k]) => ROADMAPS.some(r => EXTRAS[r.id] && EXTRAS[r.id].group === k) || extraBad.push(`group ${k} is empty`));
+  check('every roadmap field has extras in a known group', extraBad.length === 0, extraBad.join(', '));
+  const freeBad = Object.entries(FREE).filter(([, f]) => !/^https:\/\//.test(f.url) || !f.name || !f.org || !f.what).map(([k]) => k);
+  check(`free certificates have https links and text (${Object.keys(FREE).length})`, freeBad.length === 0, freeBad.join(', '));
 }
 
 /* ---- AI crawler access ---- */
