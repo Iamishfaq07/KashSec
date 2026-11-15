@@ -295,10 +295,17 @@ if (fs.existsSync(path.join(ROOT, 'sitemap.xml'))) {
    The generator throws if an item has no entry in prerender-content.js;
    this catches the subtler regression where an entry exists but is a stub. */
 const MIN_UNIQUE_WORDS = 180;
-const stripTags = h => h
-  .replace(/<script[\s\S]*?<\/script>/g, '')
-  .replace(/<style[\s\S]*?<\/style>/g, '')
-  .replace(/<[^>]+>/g, ' ');
+// Repeat until stable and match tags in any case, so nested or oddly cased
+// script/style blocks can't leave fragments behind (CodeQL: incomplete
+// multi-character sanitization). Only counts words; never renders HTML.
+const stripTags = h => {
+  let prev;
+  do {
+    prev = h;
+    h = h.replace(/<script\b[\s\S]*?<\/script\s*>/gi, '').replace(/<style\b[\s\S]*?<\/style\s*>/gi, '');
+  } while (h !== prev);
+  return h.replace(/<[^>]*>/g, ' ').replace(/</g, ' ');
+};
 const thinPages = [];
 for (const dir of ['tools', 'labs']) {
   if (!fs.existsSync(path.join(ROOT, dir))) continue;
@@ -509,6 +516,31 @@ check('certification ids unique', new Set(certIds).size === certIds.length);
 check('every certification states an exam format',
   CERTS.every(c => c.format && c.format.length > 3),
   CERTS.filter(c => !c.format).map(c => c.id).join(', '));
+
+/* ---- career roadmap ---- */
+/* Each field's plan names paths, certifications, labs and tools by id. A
+   renamed or removed one would silently drop out of the page (the render
+   skips ids it can't resolve), leaving a stage with a gap nobody notices. */
+const roadmapSrc = appJs.match(/const SHARED_FOUNDATION_PATHS = [\s\S]*?\nconst CAREER_ROADMAPS = \[[\s\S]*?\n\];/);
+check('career roadmap data found in app.js', !!roadmapSrc);
+if (roadmapSrc) {
+  const ROADMAPS = new Function(roadmapSrc[0] + '; return CAREER_ROADMAPS;')();
+  const pathIdSet = new Set(PATHS.map(p => p.id)), certIdSet = new Set(certIds);
+  const practiceIds = new Set([...toolIds, ...labIds]);
+  const badRefs = [];
+  ROADMAPS.forEach(r => {
+    const stages = Object.keys(r.stages);
+    if (stages.join() !== 'foundations,core,specialise,job') badRefs.push(`${r.id}: stages ${stages.join()}`);
+    Object.entries(r.stages).forEach(([k, st]) => {
+      st.paths.forEach(id => pathIdSet.has(id) || badRefs.push(`${r.id}.${k} path ${id}`));
+      st.certs.forEach(id => certIdSet.has(id) || badRefs.push(`${r.id}.${k} cert ${id}`));
+      st.practice.forEach(id => practiceIds.has(id) || badRefs.push(`${r.id}.${k} practice ${id}`));
+      if (!st.paths.length || !st.skills.length || !st.practice.length) badRefs.push(`${r.id}.${k} has an empty list`);
+    });
+  });
+  check(`every career roadmap reference resolves (${ROADMAPS.length} fields)`, badRefs.length === 0, badRefs.join(', '));
+  check('career roadmap ids unique', new Set(ROADMAPS.map(r => r.id)).size === ROADMAPS.length);
+}
 
 /* ---- AI crawler access ---- */
 /* robots.txt has one trap worth pinning: a crawler obeys only the most

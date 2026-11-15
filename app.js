@@ -1910,6 +1910,130 @@ const CAREERS = [
   {role:"Security / GRC Analyst",  desc:"Manage risk, policy, and compliance.",             follow:"01 → 10 → 23"}
 ];
 
+/* ============================================================
+   Career roadmap: one plan per security field, in four stages.
+   ============================================================
+   Every field starts from the same foundations, then branches. Each stage
+   says what to study (KashSec paths), which skills that stage is really
+   about, the certifications that fit that point in a career, and the labs
+   and tools to practise on. Certifications are referenced by id from CERTS,
+   so their facts (provider, level, format, links) live in one place, and
+   paths/labs/tools are looked up at render time, so a renamed lesson can't
+   leave a stale title here. */
+const ROADMAP_STAGES = [
+  {key:'foundations', label:'Foundations', blurb:'How computers, networks and the internet actually work, plus the security basics every role is built on.'},
+  {key:'core',        label:'Core skills', blurb:'The day-to-day craft of the field, practised until it feels routine.'},
+  {key:'specialise',  label:'Specialise',  blurb:'Depth that sets you apart from other applicants, and the harder certifications.'},
+  {key:'job',         label:'Job ready',   blurb:'Turn what you know into evidence: a portfolio, a CV that shows it, and interview practice.'}
+];
+const SHARED_FOUNDATION_PATHS = ['00-fresher-basics','01-introduction','02-networking','03-linux'];
+const CAREER_ROADMAPS = [
+  {
+    id:'soc', role:'SOC Analyst', ico:'radio', trackId:'soc-analyst',
+    summary:'Watch the alerts, decide what is real, and raise the alarm before an incident turns into a breach. The most common first job in security.',
+    day:['Triage alerts in a SIEM','Investigate phishing reports','Read logs and network traffic','Escalate and document incidents'],
+    titles:['SOC Analyst (Tier 1)','Security Operations Analyst','Junior Incident Responder'],
+    next:['Incident Responder','Threat Hunter','Detection Engineer'],
+    stages:{
+      foundations:{paths:[...SHARED_FOUNDATION_PATHS,'07-windows-security'], skills:['TCP/IP, ports and common protocols','Linux and Windows command line','How Windows logs events','The CIA triad and common attack types'], certs:['isc2-cc','sec1'], practice:['terminal','phishing']},
+      core:{paths:['10-fundamentals','12-network-security'], skills:['Alert triage and false-positive tuning','Log analysis and SIEM-style queries','Packet capture reading','Mapping activity to MITRE ATT&CK'], certs:['security-plus','sal1'], practice:['loganalysis','pcap','logparser','emailheaders','attckmap']},
+      specialise:{paths:['16-advanced','17-malware-re'], skills:['Incident response process','Threat hunting with hypotheses','Basic malware triage','Writing detection rules'], certs:['cysa-plus','grem'], practice:['irtabletop','malwarestrings','yarabuilder','yaratester']},
+      job:{paths:['20-career-prep'], skills:['Write an incident report','Build a home SOC lab','Talk through an investigation in interviews'], certs:[], practice:['vulnreport','resumehelper','portfoliogen']}
+    }
+  },
+  {
+    id:'pentest', role:'Penetration Tester', ico:'keyhole', trackId:'pentester',
+    summary:'Break into systems with permission, then write the report that gets them fixed. Hands-on, offensive and evidence-driven.',
+    day:['Scope and plan tests','Enumerate networks and web apps','Exploit and escalate privileges','Write clear findings and fixes'],
+    titles:['Junior Penetration Tester','Security Consultant','Vulnerability Assessor'],
+    next:['Senior Pentester','Red Team Operator','AppSec Engineer'],
+    stages:{
+      foundations:{paths:[...SHARED_FOUNDATION_PATHS,'04-python','05-web-basics'], skills:['Networking and subnetting','Linux fluency','Reading and writing small scripts','How HTTP and web apps work'], certs:['isc2-cc','pcep'], practice:['terminal','subnet','httpbuilder']},
+      core:{paths:['10-fundamentals','11-web-security','14-ethical-hacking'], skills:['Recon and enumeration','Web vulnerabilities (OWASP Top 10)','Exploitation basics','Rules of engagement and scope'], certs:['ejpt','pt1'], practice:['sqli','webapp','dnsrecon','osint','hashid']},
+      specialise:{paths:['07-windows-security','12-network-security','19-ctf-challenges'], skills:['Active Directory attacks','Linux and Windows privilege escalation','Pivoting through networks','Password attacks'], certs:['pnpt','security-plus-adv','oscp'], practice:['ad-attack','kerberoast','linuxprivesc','winprivesc','passwordcrack']},
+      job:{paths:['20-career-prep'], skills:['Write a professional pentest report','Score findings with CVSS','Publish CTF write-ups'], certs:[], practice:['vulnreport','cvss','portfoliogen']}
+    }
+  },
+  {
+    id:'appsec', role:'AppSec Engineer', ico:'code', trackId:'appsec',
+    summary:'Help developers ship safe software: review code, threat-model features and build security into the pipeline.',
+    day:['Review code for vulnerabilities','Threat-model new features','Run SAST/DAST and triage results','Teach developers secure patterns'],
+    titles:['Application Security Engineer','Product Security Engineer','DevSecOps Engineer'],
+    next:['Security Architect','AppSec Lead','Staff Security Engineer'],
+    stages:{
+      foundations:{paths:[...SHARED_FOUNDATION_PATHS,'04-python','05-web-basics'], skills:['Programming fundamentals','HTTP, cookies and APIs','Git and how software ships','Security basics'], certs:['isc2-cc','pcep'], practice:['terminal','httpbuilder','headers']},
+      core:{paths:['06-crypto-fundamentals','11-web-security','21-api-security'], skills:['OWASP Top 10 and API Top 10','Authentication and session flaws','Crypto done right (and wrong)','Secure code review'], certs:['security-plus','bscp'], practice:['sqli','jwt','csrf','bola-bfla','codereview']},
+      specialise:{paths:['22-devsecops-appsec','16-advanced'], skills:['Threat modeling with STRIDE','CI/CD and supply-chain security','Secrets and dependency management','Container and Kubernetes security'], certs:['csslp','cks'], practice:['stride','sbomcheck','deserialization','racecondition','oauthredirect']},
+      job:{paths:['20-career-prep'], skills:['Show a secure-code review sample','Write a threat model for a real app','Explain fixes developers will accept'], certs:[], practice:['portfoliogen','resumehelper']}
+    }
+  },
+  {
+    id:'bugbounty', role:'Bug Bounty Hunter', ico:'bug', trackId:'bug-hunter',
+    summary:'Find real bugs in real companies through public programmes and get paid per valid report. Self-directed and results-based.',
+    day:['Pick programmes and read scope','Map an app\'s attack surface','Hunt for logic and access-control bugs','Write reproducible reports'],
+    titles:['Independent researcher','Bug bounty hunter (part- or full-time)','Junior AppSec / pentest roles'],
+    next:['Pentester','AppSec Engineer','Security Researcher'],
+    stages:{
+      foundations:{paths:[...SHARED_FOUNDATION_PATHS,'05-web-basics'], skills:['How browsers, HTTP and cookies work','Reading HTML and JavaScript','Using a proxy to inspect traffic','Encoding and decoding data'], certs:['isc2-cc'], practice:['httpbuilder','encoder','regex']},
+      core:{paths:['11-web-security','21-api-security'], skills:['IDOR and broken access control','SSRF, XSS and injection','API and GraphQL testing','Authentication and JWT flaws'], certs:['bscp'], practice:['idor','bola-bfla','ssrf','graphql-introspection','mass-assignment','jwt']},
+      specialise:{paths:['15-bug-bounty','19-ctf-challenges'], skills:['Recon at scale','Business-logic and race-condition bugs','Chaining low-impact bugs','Programme strategy'], certs:['ejpt','pt1'], practice:['subdomaintakeover','racecondition','openredirect','oauthredirect']},
+      job:{paths:['20-career-prep'], skills:['Write reports triagers love','Build a public track record','Know the legal and disclosure rules'], certs:[], practice:['vulnreport','cvss']}
+    }
+  },
+  {
+    id:'cloud', role:'Cloud Security Engineer', ico:'cloud', trackId:'cloud-sec',
+    summary:'Secure workloads on AWS, Azure and Google Cloud: identity, networking, containers and the guardrails around them.',
+    day:['Review IAM policies and roles','Design secure cloud networks','Harden containers and Kubernetes','Automate guardrails and alerts'],
+    titles:['Cloud Security Engineer','Cloud Security Analyst','DevSecOps Engineer'],
+    next:['Cloud Security Architect','Platform Security Lead','Security Architect'],
+    stages:{
+      foundations:{paths:[...SHARED_FOUNDATION_PATHS,'08-cloud-basics'], skills:['Linux and networking','Virtualisation and containers','How cloud services and regions work','Shared-responsibility model'], certs:['isc2-cc','security-plus'], practice:['terminal','subnet','cidroverlap']},
+      core:{paths:['10-fundamentals','24-zero-trust'], skills:['Identity and access management','Network segmentation and zero trust','Logging and monitoring in the cloud','Encryption and key management'], certs:['ccsk','sc-300'], practice:['iammisconfig','ssrf','controlmapper']},
+      specialise:{paths:['16-advanced','22-devsecops-appsec'], skills:['Container and Kubernetes security','Infrastructure as code scanning','Cloud incident response','Automating security checks'], certs:['aws-security','gcsa','cks'], practice:['dockerescape','clouddockersecrets','sbomcheck']},
+      job:{paths:['20-career-prep'], skills:['Document a secure reference architecture','Show IaC you hardened','Explain a cloud breach and its fix'], certs:[], practice:['portfoliogen','resumehelper']}
+    }
+  },
+  {
+    id:'dfir', role:'Digital Forensics & IR', ico:'microscope', trackId:null,
+    summary:'Investigate incidents after the alarm: work out what happened, how far it spread, and how to get the attacker out.',
+    day:['Collect and preserve evidence','Build incident timelines','Analyse malware and artefacts','Write findings for leadership'],
+    titles:['Incident Responder','DFIR Analyst','Forensic Investigator'],
+    next:['IR Lead','Threat Intelligence Analyst','Malware Analyst'],
+    stages:{
+      foundations:{paths:[...SHARED_FOUNDATION_PATHS,'07-windows-security'], skills:['File systems and operating systems','Windows internals and event logs','Networking basics','Hashing and evidence integrity'], certs:['isc2-cc','sec1'], practice:['terminal','hash']},
+      core:{paths:['10-fundamentals','12-network-security'], skills:['Log and timeline analysis','Network forensics','Email and phishing investigation','Incident response lifecycle'], certs:['security-plus','sal1'], practice:['loganalysis','pcap','logparser','emailheaders']},
+      specialise:{paths:['16-advanced','17-malware-re'], skills:['Memory and disk forensics','Malware static and dynamic analysis','YARA and indicator writing','Threat intelligence'], certs:['cysa-plus','grem'], practice:['malwarestrings','yarabuilder','yaratester','irtabletop','entropy']},
+      job:{paths:['20-career-prep'], skills:['Publish an investigation write-up','Run a tabletop exercise','Explain chain of custody'], certs:[], practice:['vulnreport','portfoliogen']}
+    }
+  },
+  {
+    id:'ai', role:'AI Red Teamer', ico:'robot', trackId:'ai-red-team',
+    summary:'Attack AI systems before someone else does: prompt injection, jailbreaks, unsafe agents and the data they can reach.',
+    day:['Probe models with adversarial prompts','Test agents and tool permissions','Assess RAG and data leakage','Report risks and mitigations'],
+    titles:['AI Red Teamer','AI Security Engineer','ML Security Researcher'],
+    next:['AI Security Lead','AppSec Engineer (AI)','Security Researcher'],
+    stages:{
+      foundations:{paths:[...SHARED_FOUNDATION_PATHS,'04-python','05-web-basics'], skills:['Python programming','How web apps and APIs work','How large language models work','Security basics'], certs:['isc2-cc','pcep'], practice:['terminal','httpbuilder']},
+      core:{paths:['11-web-security','18-ai-security'], skills:['Prompt injection (direct and indirect)','Jailbreak techniques','OWASP Top 10 for LLM apps','Data leakage and privacy risks'], certs:['giac-ai'], practice:['prompt-injection','jailbreak','indirect-injection']},
+      specialise:{paths:['21-api-security','22-devsecops-appsec'], skills:['Agent and tool-use abuse','RAG and supply-chain risks','Guardrail and eval design','Threat modeling AI features'], certs:['osai','htb-coae'], practice:['agentic-risk','stride','codereview']},
+      job:{paths:['20-career-prep'], skills:['Publish red-team findings responsibly','Show an eval or guardrail you built','Explain AI risk to non-experts'], certs:[], practice:['portfoliogen','vulnreport']}
+    }
+  },
+  {
+    id:'grc', role:'GRC Analyst', ico:'scale', trackId:'grc-analyst',
+    summary:'Manage risk, policy and compliance: the non-coding route into security, close to the business and leadership.',
+    day:['Run risk assessments','Map controls to frameworks','Assess vendors and third parties','Prepare for audits'],
+    titles:['GRC Analyst','Risk Analyst','Compliance Analyst'],
+    next:['GRC Manager','IT Auditor','Security Manager / CISO track'],
+    stages:{
+      foundations:{paths:['00-fresher-basics','01-introduction','02-networking','09-digital-privacy'], skills:['Security fundamentals and terminology','How organisations use IT','Privacy basics','Clear business writing'], certs:['isc2-cc'], practice:['passpolicy']},
+      core:{paths:['10-fundamentals','23-grc-compliance'], skills:['Risk assessment and registers','Frameworks: ISO 27001, NIST CSF, SOC 2','Policies and control mapping','Third-party risk'], certs:['security-plus'], practice:['riskregister','controlmapper','vendortiering']},
+      specialise:{paths:['24-zero-trust','25-ot-ics-security'], skills:['Audit evidence and testing','Security architecture for non-engineers','Incident response governance','Regulated and critical-infrastructure risk'], certs:['cisa','ccsk'], practice:['irtabletop','slacalc','cvss']},
+      job:{paths:['20-career-prep'], skills:['Produce a sample risk register','Write a policy from scratch','Present risk to leadership'], certs:[], practice:['portfoliogen','resumehelper']}
+    }
+  }
+];
+
 const FAQS = [
   {q:"I have zero experience. Can I really do this?", a:"Yes — the course is built exactly for you. Start at path 1 and go in order. Every term is explained in plain words with everyday examples, and nothing is assumed."},
   {q:"Is it really free?", a:"Completely. Every lesson stays free forever. No card, no paywall, no upsell."},
@@ -2256,13 +2380,13 @@ function route(){
   window.scrollTo({top:0, left:0, behavior:'instant'});
   if(hash === '#/' || hash === '#') renderHome();
   else if(hash === '#/course') renderCourseIndex();
-  else if(hash === '#/careers') renderCareers();
+  else if(hash === '#/careers' || hash.startsWith('#/careers/')) renderCareerRoadmap();
   else if(hash === '#/faq') renderFAQ();
   else if(hash === '#/about') renderLegal('about');
   else if(hash === '#/contact') renderLegal('contact');
   else if(hash === '#/privacy') renderLegal('privacy');
   else if(hash === '#/terms') renderLegal('terms');
-  else if(hash === '#/roadmap') renderRoadmap();
+  else if(hash === '#/roadmap' || hash.startsWith('#/roadmap/')) renderCareerRoadmap();
   else if(hash === '#/glossary') renderGlossary();
   else if(hash === '#/review' || hash.startsWith('#/review?')) renderReview();
   else if(hash === '#/tracks') renderTracks();
@@ -2401,8 +2525,8 @@ const ROUTE_TITLES = {
   '#/expert-labs':'Expert Labs',
   '#/start':'Your starting route',
   '#/progress':'My progress', '#/glossary':'Cybersecurity glossary', '#/tracks':'Career tracks',
-  '#/careers':'Cybersecurity careers', '#/certs':'Certification roadmap', '#/career-quiz':'Career-fit quiz',
-  '#/roadmap':'Learning roadmap', '#/review':'Flashcard review', '#/changelog':"What's new",
+  '#/careers':'Career roadmap', '#/certs':'Certification roadmap', '#/career-quiz':'Career-fit quiz',
+  '#/roadmap':'Career roadmap', '#/review':'Flashcard review', '#/changelog':"What's new",
   '#/interview':'Mock interview practice', '#/daily':'Daily challenge', '#/certificate':'Your certificate',
   '#/capstone':'Capstone attack chain', '#/quiz/final':'Final exam', '#/quiz/shuffle':'Shuffle quiz',
   '#/quiz/missed':'Review missed questions', '#/about':'About', '#/contact':'Contact',
@@ -2417,7 +2541,9 @@ function syncDocTitle(){
   const lesson = r.match(/^#\/lesson\/([^/]+)(?:\/([^/]+))?$/);
   const path = lesson && findPath(lesson[1]);
   const lessonTitle = path && (lesson[2] ? path.subs.find(s=>s.id === lesson[2])?.title : path.title);
-  const name = ROUTE_TITLES[r] || lessonTitle || h1?.dataset.pageTitle || (h1?.textContent || '').replace(/\s+/g, ' ').trim();
+  const roadmapRole = (r.match(/^#\/(?:roadmap|careers)\/([a-z]+)/) || [])[1];
+  const roleName = roadmapRole ? CAREER_ROADMAPS.find(x => x.id === roadmapRole)?.role : null;
+  const name = (roleName && `${roleName} career roadmap`) || ROUTE_TITLES[r] || lessonTitle || h1?.dataset.pageTitle || (h1?.textContent || '').replace(/\s+/g, ' ').trim();
   if(!name) return;
   const full = `${name} · KashSec Academy`;
   document.title = full.length <= 65 ? full : `${name} · KashSec`;
@@ -2580,7 +2706,7 @@ function updateActiveNav(){
     const raw = a.getAttribute('href') || '';
     const href = raw.startsWith('#') ? raw : raw.startsWith('/') ? hashRouteForPath(new URL(raw,location.origin).pathname) : null;
     if(!href) return;
-    const active = href === hash || (href === '#/course' && hash.startsWith('#/lesson')) || (href === '#/labs' && (hash.startsWith('#/labs/') || hash.startsWith('#/expert-labs')));
+    const active = href === hash || (href === '#/course' && hash.startsWith('#/lesson')) || (href === '#/labs' && (hash.startsWith('#/labs/') || hash.startsWith('#/expert-labs'))) || (href === '#/roadmap' && (hash.startsWith('#/roadmap') || hash.startsWith('#/careers')));
     a.classList.toggle('active', active);
     if(active) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
   });
@@ -2857,7 +2983,7 @@ ${pathCardHTML(p,i)}
           </div>
         `).join('')}
       </div>
-      <div class="sec-cta" data-reveal><a class="btn-ghost" href="#/careers">See all careers →</a></div>
+      <div class="sec-cta" data-reveal><a class="btn-ghost" href="#/roadmap">See the full career roadmap →</a></div>
     </section>
     <section class="sec">
       <div class="sec-head" data-reveal>
@@ -5005,7 +5131,7 @@ function renderCareerQuiz(){
           <p class="sec-lead">${escapeHtml(result.desc)}</p>
           <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
             <a class="btn-amber" href="#/track/${result.trackId}">See the ${escapeHtml(result.role)} track →</a>
-            <a class="btn-ghost" href="#/careers">Compare all careers</a>
+            <a class="btn-ghost" href="#/roadmap">Compare all career roadmaps</a>
             <button class="btn-ghost" id="cqRetake" type="button">Retake quiz</button>
           </div>
         </div>
@@ -5040,29 +5166,6 @@ function renderCareerQuiz(){
   });
 }
 
-function renderCareers(){
-  app.innerHTML = `
-    <section class="sec">
-      <div class="sec-head" data-reveal>
-        <div class="sec-eyebrow">Careers</div>
-        <h1>Where this course leads</h1>
-        <p class="sec-lead">Security has many careers. Here's what each does and which paths get you there.</p>
-        <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
-          <a class="btn-amber sm career-quiz-cta" href="#/career-quiz">${cardIco('compass')}Not sure? Take the 2-minute career-fit quiz →</a>
-        </div>
-      </div>
-      <h2 class="sr-only">Career roles</h2>
-      <div class="careers">
-        ${CAREERS.map((c,i)=>`
-          <div class="career-card" data-spotlight data-reveal style="--i:${i%4}">
-            <h3>${c.role}</h3><p>${c.desc}</p>
-            <div class="career-follow"><span>Follow paths:</span> ${careerFollowHTML(c.follow)}</div>
-          </div>
-        `).join('')}
-      </div>
-    </section>
-  `;
-}
 
 /* ============================================================
    About, Contact, Privacy and Terms.
@@ -13400,61 +13503,263 @@ function daysToFinishPath(pathId, pace){
   return Math.max(1, Math.ceil(remaining / pace));
 }
 
-function renderRoadmap(){
+/* ============================================================
+   Career roadmap page (#/roadmap, also #/careers).
+   ============================================================
+   One page that answers "I want to work in security: what do I study,
+   in what order, and which certifications do I take?" A graphical map
+   shows the shared foundations branching into eight fields; picking a
+   field shows its four-stage plan; the full 26-path course order sits
+   underneath for anyone who simply wants to go front to back. */
+const CERT_STATUS_LABEL = {'studying':'Studying','scheduled':'Exam booked','passed':'Passed'};
+
+function roadmapStagePct(stage){
+  const ps = stage.paths.filter(id => findPath(id));
+  if(!ps.length) return 0;
+  return Math.round(ps.reduce((sum, id) => sum + pathProgress(id).pct, 0) / ps.length);
+}
+
+function roadmapPracticeHTML(ids){
+  return ids.map(id => {
+    const lab = LABS.find(l => l.id === id);
+    if(lab) return `<a class="cr-chip" href="#/labs/${lab.id}"><span class="cr-chip-ico">${cardIco(lab.ico)}</span>${escapeHtml(lab.title)}<span class="cr-chip-kind">Lab</span></a>`;
+    const tool = TOOLS.find(t => t.id === id);
+    if(tool) return `<a class="cr-chip" href="#/tools/${tool.id}"><span class="cr-chip-ico">${cardIco(tool.ico)}</span>${escapeHtml(tool.title)}<span class="cr-chip-kind">Tool</span></a>`;
+    return '';
+  }).join('');
+}
+
+function roadmapCertHTML(id){
+  const c = CERTS.find(x => x.id === id);
+  if(!c) return '';
+  const status = STATE.certTracker && STATE.certTracker[c.id];
+  const name = escapeHtml(c.name);
+  return `<div class="cr-cert" data-tier="${certTier(c.level)}">
+    <span class="cr-cert-ico">${cardIco('award')}</span>
+    <span class="cr-cert-body">
+      <span class="cr-cert-name">${c.url ? `<a href="${escapeHtml(c.url)}" target="_blank" rel="noopener noreferrer">${name}</a>` : name}</span>
+      <span class="cr-cert-meta">${escapeHtml(c.org)} · ${escapeHtml(c.level)}${status && CERT_STATUS_LABEL[status] ? ` · <b>${CERT_STATUS_LABEL[status]}</b>` : ''}</span>
+    </span>
+  </div>`;
+}
+
+function roadmapRoleHTML(r){
+  const track = r.trackId && typeof TRACKS !== 'undefined' ? TRACKS.find(t => t.id === r.trackId) : null;
+  return `
+    <div class="cr-role-head">
+      <span class="cr-role-ico">${cardIco(r.ico)}</span>
+      <div>
+        <h2 class="cr-role-title">${escapeHtml(r.role)} roadmap</h2>
+        <p class="cr-role-sum">${escapeHtml(r.summary)}</p>
+      </div>
+    </div>
+    <div class="cr-facts">
+      <div class="cr-fact"><h3>What you'll do</h3><ul>${r.day.map(d => `<li>${escapeHtml(d)}</li>`).join('')}</ul></div>
+      <div class="cr-fact"><h3>Job titles to search for</h3><div class="cr-tags">${r.titles.map(t => `<span class="cr-tag">${escapeHtml(t)}</span>`).join('')}</div></div>
+      <div class="cr-fact"><h3>Where it leads next</h3><div class="cr-tags">${r.next.map(t => `<span class="cr-tag is-next">${escapeHtml(t)}</span>`).join('')}</div></div>
+    </div>
+    <div class="cr-ladder" aria-label="Certification path for ${escapeHtml(r.role)}">
+      <h3 class="cr-ladder-title">${cardIco('award')}Your certification path</h3>
+      <ol class="cr-ladder-steps">
+        ${ROADMAP_STAGES.map((st, i) => {
+          const certs = r.stages[st.key].certs.map(id => CERTS.find(c => c.id === id)).filter(Boolean);
+          return `<li class="cr-ladder-step">
+            <span class="cr-ladder-stage">Stage ${i + 1} · ${st.label}</span>
+            ${certs.length ? certs.map(c => `<span class="cr-ladder-cert" data-tier="${certTier(c.level)}">${escapeHtml(c.name.replace(/\s*\(.*\)$/, ''))}</span>`).join('')
+              : `<span class="cr-ladder-cert is-portfolio">Portfolio &amp; interviews</span>`}
+          </li>`;
+        }).join('')}
+      </ol>
+    </div>
+    <ol class="cr-stages">
+      ${ROADMAP_STAGES.map((st, i) => {
+        const stage = r.stages[st.key];
+        const pct = roadmapStagePct(stage);
+        const paths = stage.paths.map(findPath).filter(Boolean);
+        return `
+        <li class="cr-stage${pct >= 100 ? ' is-done' : ''}" style="--pct:${pct}">
+          <div class="cr-stage-marker" aria-hidden="true"><span>${pct >= 100 ? cardIco('check') : i + 1}</span></div>
+          <div class="cr-stage-card">
+            <div class="cr-stage-head">
+              <h3><span class="cr-stage-n">Stage ${i + 1}</span>${st.label}</h3>
+              <span class="cr-stage-pct">${pct}% done</span>
+            </div>
+            <p class="cr-stage-blurb">${st.blurb}</p>
+            <div class="cr-stage-grid">
+              <div class="cr-block">
+                <h4>${cardIco('book')}Study these paths</h4>
+                ${paths.map(p => { const pr = pathProgress(p.id); return `
+                  <a class="cr-path" href="#/lesson/${p.id}">
+                    <span class="cr-path-ico">${pathIco(p.id)}</span>
+                    <span class="cr-path-body"><span class="cr-path-title">Path ${p.n} · ${escapeHtml(p.title)}</span>
+                      <span class="cr-path-bar"><span style="width:${pr.pct}%"></span></span></span>
+                    <span class="cr-path-pct">${pr.pct}%</span>
+                  </a>`; }).join('')}
+              </div>
+              <div class="cr-block">
+                <h4>${cardIco('target')}Skills to build</h4>
+                <ul class="cr-skills">${stage.skills.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ul>
+              </div>
+              <div class="cr-block">
+                <h4>${cardIco('award')}Certifications</h4>
+                ${stage.certs.length ? stage.certs.map(roadmapCertHTML).join('')
+                  : `<p class="cr-none">No exam at this stage. Your portfolio, write-ups and lab work are the proof employers look for.</p>`}
+              </div>
+              <div class="cr-block">
+                <h4>${cardIco('monitor')}Practise hands-on</h4>
+                <div class="cr-chips">${roadmapPracticeHTML(stage.practice)}</div>
+              </div>
+            </div>
+          </div>
+        </li>`;
+      }).join('')}
+    </ol>
+    <div class="cr-cta">
+      ${track ? `<a class="btn-amber" href="#/track/${track.id}">Follow the guided ${escapeHtml(r.role)} track →</a>` : ''}
+      <a class="btn-ghost" href="#/certs">Track your certifications</a>
+      <a class="btn-ghost" href="#/career-quiz">Not sure? Take the career-fit quiz</a>
+    </div>
+    <p class="tool-note cr-disclaimer">Certifications change: always check the provider's current exam objectives and price before you book. Nothing here is endorsed by any certification body.</p>`;
+}
+
+function courseTimelineHTML(){
   const overall = overallProgress();
   const activePathId = STATE.lastVisited ? STATE.lastVisited.pathId : (PATHS.find(p=>pathProgress(p.id).pct<100)||PATHS[0]).id;
   const pace = learnerPace();
-
-  app.innerHTML = `
-    <section class="sec">
-      <div class="sec-head" data-reveal>
-        <div class="sec-eyebrow">Roadmap</div>
-        <h1>Your journey through KashSec</h1>
-        <p class="sec-lead">Every path, in order. Click any node to jump straight in — your progress is tracked automatically.</p>
-        <div class="mini-progress" style="max-width:26rem;margin-top:1.3rem">
-          <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${overall.pct}"></div></div>
-          <div class="mini-progress-label"><span>${overall.done}/${overall.total} lessons complete</span><span>${overall.pct}%</span></div>
+  const doneSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+  return `
+    <div class="sec-head cr-course-head" data-reveal>
+      <div class="sec-eyebrow">The full course</div>
+      <h2>All ${PATHS.length} paths, in order</h2>
+      <p class="sec-lead">Prefer to go front to back? This is the whole course in the order it was written to be read.</p>
+      <div class="mini-progress" style="max-width:26rem;margin-top:1.3rem">
+        <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${overall.pct}"></div></div>
+        <div class="mini-progress-label"><span>${overall.done}/${overall.total} lessons complete</span><span>${overall.pct}%</span></div>
+      </div>
+      ${pace ? `<p class="tool-note" style="margin-top:.8rem">At your current pace (~${pace.toFixed(1)} lessons/day), the whole course is about ${Math.ceil((overall.total-overall.done)/pace)} days out.</p>` : ''}
+      <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
+        <a class="btn-ghost sm" href="#/skilltree">${cardIco('layers')}Skill tree view →</a>
+      </div>
+    </div>
+    <div class="roadmap-wrap">
+      <div class="roadmap-line"></div>
+      ${PATHS.map((p,i)=>{
+        const prog = pathProgress(p.id);
+        const done = prog.pct >= 100;
+        const active = !done && p.id === activePathId;
+        return `
+          <a class="roadmap-node ${done?'done':active?'active':''}" href="#/lesson/${p.id}" data-reveal style="--i:${i%6}">
+            <div class="roadmap-dot">${done ? doneSvg : p.n}</div>
+            <div class="roadmap-card">
+              <div class="roadmap-card-title">${p.title}</div>
+              <div class="roadmap-card-desc">${p.desc}</div>
+              <div class="mini-progress" style="margin-top:.6rem">
+                <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${prog.pct}"></div></div>
+                <div class="mini-progress-label"><span>${prog.done}/${prog.total} done</span><span>${p.level}</span></div>
+              </div>
+              ${!done && prog.done>0 ? (()=>{ const d = daysToFinishPath(p.id, pace); return d ? `<div class="roadmap-eta">~${d} day${d>1?'s':''} at your pace</div>` : ''; })() : ''}
+            </div>
+          </a>`;
+      }).join('')}
+      <a class="roadmap-node ${STATE.finalQuiz && STATE.finalQuiz.passed ? 'done':''}" href="#/quiz/final" data-reveal style="--i:0">
+        <div class="roadmap-dot">${STATE.finalQuiz && STATE.finalQuiz.passed ? doneSvg : cardIco('award')}</div>
+        <div class="roadmap-card">
+          <div class="roadmap-card-title">Final Exam</div>
+          <div class="roadmap-card-desc">20 questions across every path. Pass it to unlock your certificate.</div>
         </div>
-        ${pace ? `<p class="tool-note" style="margin-top:.8rem">At your current pace (~${pace.toFixed(1)} lessons/day), the whole course is about ${Math.ceil((overall.total-overall.done)/pace)} days out.</p>` : ''}
-        <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
-          <a class="btn-ghost sm" href="#/skilltree">🌳 Skill tree view →</a>
+      </a>
+    </div>`;
+}
+
+function renderCareerRoadmap(){
+  const fromHash = (activeRoute().match(/^#\/(?:roadmap|careers)\/([a-z]+)/) || [])[1];
+  const chosen = CAREER_ROADMAPS.find(r => r.id === fromHash)
+    || CAREER_ROADMAPS.find(r => r.id === STATE.roadmapRole)
+    || CAREER_ROADMAPS[0];
+  const foundation = SHARED_FOUNDATION_PATHS.map(findPath).filter(Boolean);
+  const cols = 4, xs = Array.from({length: cols}, (_, i) => (i + .5) * 1000 / cols);
+  app.innerHTML = `
+    <section class="sec cr-page">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">Career roadmap</div>
+        <h1>Your cybersecurity career roadmap</h1>
+        <p class="sec-lead">Every security career starts from the same foundations, then branches. Pick the field you want: you'll get what to study at each stage, the skills that matter, the certifications to take and when, and the labs to practise on.</p>
+      </div>
+
+      <div class="cr-map" data-reveal style="--i:1">
+        <div class="cr-trunk">
+          <div class="cr-trunk-label">${cardIco('flag')}Everyone starts here</div>
+          <ol class="cr-stations">
+            ${foundation.map(p => { const pr = pathProgress(p.id); return `
+              <li class="cr-station${pr.pct >= 100 ? ' is-done' : pr.pct > 0 ? ' is-started' : ''}">
+                <a href="#/lesson/${p.id}">
+                  <span class="cr-station-dot">${pathIco(p.id)}</span>
+                  <span class="cr-station-name">${escapeHtml(p.title)}</span>
+                  <span class="cr-station-pct">${pr.pct}%</span>
+                </a>
+              </li>`; }).join('')}
+          </ol>
+        </div>
+        <svg class="cr-fork" viewBox="0 0 1000 80" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          ${xs.map(x => `<path d="M500 0 C 500 45, ${x} 35, ${x} 80" />`).join('')}
+        </svg>
+        <div class="cr-branches-label">${cardIco('compass')}Then choose your field</div>
+        <div class="cr-branches" role="tablist" aria-label="Choose a career field">
+          ${CAREER_ROADMAPS.map(r => {
+            const certs = new Set(Object.values(r.stages).flatMap(s => s.certs)).size;
+            const sel = r.id === chosen.id;
+            return `
+            <button class="cr-branch" type="button" role="tab" id="crTab-${r.id}" data-role="${r.id}"
+              aria-selected="${sel}" aria-controls="crDetail" tabindex="${sel ? 0 : -1}">
+              <span class="cr-branch-ico">${cardIco(r.ico)}</span>
+              <span class="cr-branch-name">${escapeHtml(r.role)}</span>
+              <span class="cr-branch-meta">4 stages · ${certs} certs</span>
+            </button>`;
+          }).join('')}
         </div>
       </div>
-      <div class="roadmap-wrap">
-        <div class="roadmap-line"></div>
-        ${PATHS.map((p,i)=>{
-          const prog = pathProgress(p.id);
-          const done = prog.pct >= 100;
-          const active = !done && p.id === activePathId;
-          return `
-            <a class="roadmap-node ${done?'done':active?'active':''}" href="#/lesson/${p.id}" data-reveal style="--i:${i%6}">
-              <div class="roadmap-dot">${done
-                ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
-                : p.n}</div>
-              <div class="roadmap-card">
-                <div class="roadmap-card-title">${p.title}</div>
-                <div class="roadmap-card-desc">${p.desc}</div>
-                <div class="mini-progress" style="margin-top:.6rem">
-                  <div class="mini-progress-track"><div class="mini-progress-fill" style="width:0%" data-pct="${prog.pct}"></div></div>
-                  <div class="mini-progress-label"><span>${prog.done}/${prog.total} done</span><span>${p.level}</span></div>
-                </div>
-                ${!done && prog.done>0 ? (()=>{ const d = daysToFinishPath(p.id, pace); return d ? `<div class="roadmap-eta">~${d} day${d>1?'s':''} at your pace</div>` : ''; })() : ''}
-              </div>
-            </a>
-          `;
-        }).join('')}
-        <a class="roadmap-node ${STATE.finalQuiz && STATE.finalQuiz.passed ? 'done':''}" href="#/quiz/final" data-reveal style="--i:0">
-          <div class="roadmap-dot">${STATE.finalQuiz && STATE.finalQuiz.passed
-            ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
-            : '🎓'}</div>
-          <div class="roadmap-card">
-            <div class="roadmap-card-title">Final Exam</div>
-            <div class="roadmap-card-desc">20 questions across every path — pass it to unlock your certificate.</div>
-          </div>
-        </a>
+
+      <div class="cr-detail" id="crDetail" role="tabpanel" aria-labelledby="crTab-${chosen.id}" tabindex="-1">
+        ${roadmapRoleHTML(chosen)}
       </div>
     </section>
+    <section class="sec cr-course">
+      ${courseTimelineHTML()}
+    </section>
   `;
+
+  const tabs = [...app.querySelectorAll('.cr-branch')];
+  const detail = document.getElementById('crDetail');
+  const select = (id, focus) => {
+    const r = CAREER_ROADMAPS.find(x => x.id === id);
+    if(!r) return;
+    tabs.forEach(t => {
+      const on = t.dataset.role === id;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      if(on && focus) t.focus();
+    });
+    detail.setAttribute('aria-labelledby', `crTab-${id}`);
+    detail.innerHTML = roadmapRoleHTML(r);
+    detail.classList.remove('is-swapping'); void detail.offsetWidth; detail.classList.add('is-swapping');
+    STATE.roadmapRole = id; saveState();
+    // Deep link without a hashchange, which would re-render and jump to the top.
+    history.replaceState(null, '', `#/roadmap/${id}`);
+    syncDocTitle();
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => {
+      select(t.dataset.role);
+      const top = detail.getBoundingClientRect().top + window.scrollY - 90;
+      if(window.scrollY < top - 200) window.scrollTo({top, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+    });
+    t.addEventListener('keydown', e => {
+      const step = {ArrowRight:1, ArrowDown:1, ArrowLeft:-1, ArrowUp:-1}[e.key];
+      if(step){ e.preventDefault(); select(tabs[(i + step + tabs.length) % tabs.length].dataset.role, true); }
+      else if(e.key === 'Home'){ e.preventDefault(); select(tabs[0].dataset.role, true); }
+      else if(e.key === 'End'){ e.preventDefault(); select(tabs[tabs.length - 1].dataset.role, true); }
+    });
+  });
 }
 
 async function refreshLeaderboardList(){
@@ -14542,11 +14847,11 @@ function getCommands(){
      palette showed SVG for tools and labs and raw emoji for navigation, in
      the same list. Finishing the migration is what makes it one set. */
   const nav = [
-    ['Home','#/','house'],['Start here','#/start','compass'],['Course','#/course','doc'],['Learning Playground','#/playground','compass'],['Study planner','#/planner','calendar'],['Incident Workbench','#/investigations','microscope'],['Roadmap','#/roadmap','mapPin'],
+    ['Home','#/','house'],['Start here','#/start','compass'],['Course','#/course','doc'],['Learning Playground','#/playground','compass'],['Study planner','#/planner','calendar'],['Incident Workbench','#/investigations','microscope'],['Career roadmap','#/roadmap','mapPin'],
     ['Practice tracks','#/tracks','layers'],['Labs','#/labs','microscope'],['Expert Labs','#/expert-labs','microscope'],['Tools','#/tools','toolbox'],
     ['Practice tasks','#/tasks','check'],['Timed mock exam','#/exam','timer'],['Search','#/search','search'],
     ['Glossary','#/glossary','scroll'],['Flashcards','#/review','folders'],['Daily challenge','#/daily','clock'],
-    ['Interview bank','#/interview','idcard'],['Careers','#/careers','building'],['FAQ','#/faq','chat'],
+    ['Interview bank','#/interview','idcard'],['FAQ','#/faq','chat'],
     ['About KashSec','#/about','info'],['Contact','#/contact','mail'],
     ['Privacy policy','#/privacy','shield'],['Terms of use','#/terms','scale'],
     ['My Progress','#/progress','gauge'],['Changelog','#/changelog','ledger'],['Take the Final Exam','#/quiz/final','flag'],
