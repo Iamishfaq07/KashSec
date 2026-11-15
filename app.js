@@ -6183,6 +6183,8 @@ function practiceReturnHTML(lesson){
 async function renderSubLesson(pathId, subId){
   const ctx = findSubContext(pathId, subId);
   if(!ctx) return renderNotFound();
+  // From here on use the ids from our own data, not the URL strings.
+  pathId = ctx.path.id; subId = ctx.sub.id;
   currentLessonNotesFlush?.();
   currentLessonNotesFlush = null;
   currentLessonLoadController?.abort();
@@ -7556,7 +7558,7 @@ async function renderReview(){
     cards.forEach(card=>{const r=review(card);if(!r)unseen++;else if(r.due<=today())due++;});
     document.getElementById('fcStats').innerHTML=`<span class="fc-stat"><b>${cards.length}</b> terms in this deck</span><span class="fc-stat"><b>${due}</b> due today</span><span class="fc-stat"><b>${unseen}</b> unseen</span><span class="fc-stat"><b>${cards.length-due-unseen}</b> scheduled for later</span>`;
     const ctx=lessonFilter!=='all'&&findSubContext(pathFilter,lessonFilter);
-    document.getElementById('fcScope').innerHTML=ctx?`Practising: <strong>${escapeHtml(ctx.sub.title)}</strong> · <a href="#/lesson/${pathFilter}/${lessonFilter}">Back to this lesson →</a>`:`${pathFilter==='all'?'Choose any path or lesson to focus your practice.':`Practising Path ${escapeHtml(findPath(pathFilter).n)} · <a href="#/lesson/${pathFilter}">Back to path overview →</a>`} Due + new starts with due terms, then adds up to 20 unseen terms.`;
+    document.getElementById('fcScope').innerHTML=ctx?`Practising: <strong>${escapeHtml(ctx.sub.title)}</strong> · <a href="#/lesson/${escapeHtml(ctx.path.id)}/${escapeHtml(ctx.sub.id)}">Back to this lesson →</a>`:`${pathFilter==='all'?'Choose any path or lesson to focus your practice.':`Practising Path ${escapeHtml(findPath(pathFilter).n)} · <a href="#/lesson/${escapeHtml(pathFilter)}">Back to path overview →</a>`} Due + new starts with due terms, then adds up to 20 unseen terms.`;
     app.querySelectorAll('.fc-mode').forEach(button=>{const selected=button.dataset.mode===mode;button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));});
     document.getElementById('ankiExportBtn').disabled=cards.length===0;
     if(studiedOnly)document.getElementById('fcScope').insertAdjacentText('beforeend',' Only terms from lessons you have marked complete are included.');
@@ -7914,7 +7916,7 @@ function renderLabTerminal(){
     }
     let node = fs;
     for(const p of stack){
-      if(node && typeof node === 'object' && p in node) node = node[p];
+      if(node && typeof node === 'object' && Object.hasOwn(node, p)) node = node[p];
       else return {found:false, parts:stack};
     }
     return {found:true, node, parts:stack};
@@ -7924,36 +7926,36 @@ function renderLabTerminal(){
 
   const OUTPUT_ID = 'termOut';
   function print(html){ const out = document.getElementById(OUTPUT_ID); out.insertAdjacentHTML('beforeend', html); out.scrollTop = out.scrollHeight; }
-  function prompt(){ return `<span class="tp-user">user@kashsec</span>:<span class="tp-path">${pathStr(cwd) || '/'}</span>$ `; }
+  function prompt(){ return `<span class="tp-user">user@kashsec</span>:<span class="tp-path">${escapeHtml(pathStr(cwd) || '/')}</span>$ `; }
 
   const cmds = {
     help: ()=>`Available: help, ls [path], cd [path], pwd, cat &lt;file&gt;, echo &lt;text&gt;, grep &lt;str&gt; &lt;file&gt;, find [path] [-name PATTERN], whoami, hostname, history, clear\n`,
-    pwd:  ()=>pathStr(cwd) + '\n',
+    pwd:  ()=>escapeHtml(pathStr(cwd)) + '\n',
     whoami: ()=>'user\n',
     hostname: ()=>'kashsec-sandbox\n',
     clear: ()=>{ document.getElementById(OUTPUT_ID).innerHTML = ''; return ''; },
-    history: ()=>history.map((h,i)=>`  ${i+1}  ${h}`).join('\n') + '\n',
-    echo: (args)=>args.join(' ') + '\n',
+    history: ()=>history.map((h,i)=>`  ${i+1}  ${escapeHtml(h)}`).join('\n') + '\n',
+    echo: (args)=>escapeHtml(args.join(' ')) + '\n',
     ls: (args)=>{
       const target = args.filter(a=>!a.startsWith('-'))[0];
       const {found, node} = resolveNode(target);
-      if(!found) return `ls: cannot access '${target}': No such file or directory\n`;
-      if(!isDir(node)) return (target||'') + '\n';
+      if(!found) return `ls: cannot access '${escapeHtml(target)}': No such file or directory\n`;
+      if(!isDir(node)) return escapeHtml(target||'') + '\n';
       const keys = Object.keys(node).sort();
-      return keys.map(k => isDir(node[k]) ? `<span class="tp-dir">${k}/</span>` : k).join('  ') + (keys.length?'\n':'');
+      return keys.map(k => isDir(node[k]) ? `<span class="tp-dir">${escapeHtml(k)}/</span>` : escapeHtml(k)).join('  ') + (keys.length?'\n':'');
     },
     cd: (args)=>{
       const target = args[0] === undefined ? '~' : args[0]; // bare cd → home
       const {found, node, parts} = resolveNode(target);
-      if(!found || !isDir(node)) return `cd: ${target}: No such directory\n`;
+      if(!found || !isDir(node)) return `cd: ${escapeHtml(target)}: No such directory\n`;
       cwd = parts;
       return '';
     },
     cat: (args)=>{
       if(!args[0]) return 'cat: missing file operand\n';
       const {found, node} = resolveNode(args[0]);
-      if(!found) return `cat: ${args[0]}: No such file or directory\n`;
-      if(isDir(node)) return `cat: ${args[0]}: Is a directory\n`;
+      if(!found) return `cat: ${escapeHtml(args[0])}: No such file or directory\n`;
+      if(isDir(node)) return `cat: ${escapeHtml(args[0])}: Is a directory\n`;
       return escapeHtml(node);
     },
     grep: (args)=>{
@@ -7962,7 +7964,7 @@ function renderLabTerminal(){
       if(args[0] === '-i'){ insensitive = true; args = args.slice(1); }
       const [pat, file] = args;
       const {found, node} = resolveNode(file);
-      if(!found || isDir(node)) return `grep: ${file}: No such file\n`;
+      if(!found || isDir(node)) return `grep: ${escapeHtml(String(file))}: No such file\n`;
       const re = new RegExp(pat.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), insensitive?'i':'');
       return node.split('\n').filter(l => re.test(l)).map(l=>escapeHtml(l)).join('\n') + '\n';
     },
@@ -7980,9 +7982,9 @@ function renderLabTerminal(){
         if(isDir(node)) for(const k of Object.keys(node)) walk(node[k], parts.concat(k));
       }
       const {found, node, parts} = resolveNode(start === '.' ? '' : start);
-      if(!found) return `find: '${start}': No such file or directory\n`;
+      if(!found) return `find: '${escapeHtml(start)}': No such file or directory\n`;
       walk(node, parts);
-      return (re ? results.filter(p => re.test(p.split('/').pop())) : results).join('\n') + '\n';
+      return escapeHtml((re ? results.filter(p => re.test(p.split('/').pop())) : results).join('\n')) + '\n';
     }
   };
   function run(line){
@@ -8312,7 +8314,7 @@ function renderLabIdor(){
   `;
   const idEl = document.getElementById('idorId'), resEl = document.getElementById('idorResult');
   function fetchInvoice(id){
-    const inv = INVOICES[id];
+    const inv = Object.hasOwn(INVOICES, id) ? INVOICES[id] : null;
     if(!inv){
       resEl.innerHTML = `<div class="sqli-bad">❌ 404 — no invoice #${escapeHtml(String(id))}.</div>`;
       return;
@@ -8320,7 +8322,7 @@ function renderLabIdor(){
     const isMine = MINE.includes(Number(id));
     resEl.innerHTML = `
       <div class="${isMine?'sqli-ok':'sqli-bad'}">
-        ${isMine ? '✅' : '⚠️ IDOR!'} Invoice #${id} — <b>${escapeHtml(inv.owner)}</b> — ${inv.item} — ${inv.total}
+        ${isMine ? '✅' : '⚠️ IDOR!'} Invoice #${escapeHtml(String(id))} — <b>${escapeHtml(inv.owner)}</b> — ${escapeHtml(inv.item)} — ${escapeHtml(inv.total)}
         ${isMine ? '' : '<br><small>This isn\'t your invoice. A real API should have returned 403 Forbidden here.</small>'}
       </div>`;
     if(!isMine){ fireConfetti({count:70}); markLabComplete('idor'); }
@@ -10972,10 +10974,11 @@ function renderTool(id){
     </section>
   `;
   const body = document.getElementById('toolBody');
-  ({encoder:toolEncoder, hash:toolHash, jwt:toolJwt, cvss:toolCvss, subnet:toolSubnet, password:toolPassword, cipher:toolCipher, regex:toolRegex, hashid:toolHashId, headers:toolHeaders, vulnreport:toolVulnReport,
+  const toolRenderers = ({encoder:toolEncoder, hash:toolHash, jwt:toolJwt, cvss:toolCvss, subnet:toolSubnet, password:toolPassword, cipher:toolCipher, regex:toolRegex, hashid:toolHashId, headers:toolHeaders, vulnreport:toolVulnReport,
     resumehelper:toolResumeHelper, portfoliogen:toolPortfolioGen, codereview:toolCodeReview, attckmap:toolAttckMap, stride:toolStride,
     cidroverlap:toolCidrOverlap, useragent:toolUserAgent, entropy:toolEntropy, httpbuilder:toolHttpBuilder, logparser:toolLogParser, riskregister:toolRiskRegister, sbomcheck:toolSbomCheck, emailheaders:toolEmailHeaders,
-    passpolicy:toolPassPolicy, vlsm:toolVlsm, yaratester:toolYaraTester, slacalc:toolSlaCalc, controlmapper:toolControlMapper, dhvisualizer:toolDhVisualizer, base32:toolBase32, timingviz:toolTimingViz}[id])(body);
+    passpolicy:toolPassPolicy, vlsm:toolVlsm, yaratester:toolYaraTester, slacalc:toolSlaCalc, controlmapper:toolControlMapper, dhvisualizer:toolDhVisualizer, base32:toolBase32, timingviz:toolTimingViz});
+  if(Object.hasOwn(toolRenderers, id)) toolRenderers[id](body);
   setupReveal();
 }
 
@@ -13311,9 +13314,10 @@ function paintExamResult(a){
 
 function renderQuiz(id){
   const isFinal = id === 'final';
-  const quiz = isFinal ? FINAL_QUIZ : QUIZZES[id];
+  const quiz = isFinal ? FINAL_QUIZ : (Object.hasOwn(QUIZZES, id) ? QUIZZES[id] : null);
   const path = isFinal ? null : findPath(id);
   if(!quiz || (!isFinal && !path)) return renderNotFound();
+  if(!isFinal) id = path.id;
 
   let qi = 0;
   let answers = new Array(quiz.questions.length).fill(null);
