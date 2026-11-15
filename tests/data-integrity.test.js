@@ -205,7 +205,7 @@ const missingLabFns = labFns.filter(fn => !definedFns.has(fn));
 check('every lab route points at a defined render function', missingLabFns.length === 0,
   `undefined: ${missingLabFns.join(', ')}`);
 
-const toolDispatch = appJs.match(/\(\{encoder:toolEncoder[\s\S]*?\}\[id\]\)\(body\)/);
+const toolDispatch = appJs.match(/const toolRenderers = \(\{encoder:toolEncoder[\s\S]*?\}\);/);
 const dispatchIds = toolDispatch
   ? new Set([...toolDispatch[0].matchAll(/([a-z0-9]+)\s*:\s*tool\w+/gi)].map(m => m[1]))
   : new Set();
