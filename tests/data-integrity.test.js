@@ -524,13 +524,15 @@ check('every certification states an exam format',
 const roadmapSrc = appJs.match(/const SHARED_FOUNDATION_PATHS = [\s\S]*?\nconst CAREER_ROADMAPS = \[[\s\S]*?\n\];/);
 check('career roadmap data found in app.js', !!roadmapSrc);
 if (roadmapSrc) {
-  const ROADMAPS = new Function(roadmapSrc[0] + '; return CAREER_ROADMAPS;')();
+  const [ROADMAPS, RES] = new Function(roadmapSrc[0] + '; return [CAREER_ROADMAPS, RES];')();
   const pathIdSet = new Set(PATHS.map(p => p.id)), certIdSet = new Set(certIds);
   const practiceIds = new Set([...toolIds, ...labIds]);
   const badRefs = [];
   ROADMAPS.forEach(r => {
     const stages = Object.keys(r.stages);
     if (stages.join() !== 'foundations,core,specialise,job') badRefs.push(`${r.id}: stages ${stages.join()}`);
+    (r.resources || []).forEach(k => RES[k] && /^https?:\/\//.test(RES[k].url) || badRefs.push(`${r.id} resource ${k}`));
+    if (!(r.resources || []).length) badRefs.push(`${r.id} lists no free resources`);
     Object.entries(r.stages).forEach(([k, st]) => {
       st.paths.forEach(id => pathIdSet.has(id) || badRefs.push(`${r.id}.${k} path ${id}`));
       st.certs.forEach(id => certIdSet.has(id) || badRefs.push(`${r.id}.${k} cert ${id}`));
