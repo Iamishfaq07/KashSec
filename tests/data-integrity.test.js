@@ -295,10 +295,17 @@ if (fs.existsSync(path.join(ROOT, 'sitemap.xml'))) {
    The generator throws if an item has no entry in prerender-content.js;
    this catches the subtler regression where an entry exists but is a stub. */
 const MIN_UNIQUE_WORDS = 180;
-const stripTags = h => h
-  .replace(/<script[\s\S]*?<\/script>/g, '')
-  .replace(/<style[\s\S]*?<\/style>/g, '')
-  .replace(/<[^>]+>/g, ' ');
+// Repeat until stable and match tags in any case, so nested or oddly cased
+// script/style blocks can't leave fragments behind (CodeQL: incomplete
+// multi-character sanitization). Only counts words; never renders HTML.
+const stripTags = h => {
+  let prev;
+  do {
+    prev = h;
+    h = h.replace(/<script\b[\s\S]*?<\/script\s*>/gi, '').replace(/<style\b[\s\S]*?<\/style\s*>/gi, '');
+  } while (h !== prev);
+  return h.replace(/<[^>]*>/g, ' ').replace(/</g, ' ');
+};
 const thinPages = [];
 for (const dir of ['tools', 'labs']) {
   if (!fs.existsSync(path.join(ROOT, dir))) continue;
