@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { validatePractice, gradeLab, labById, practiceEvidence } from '../studio/practice.js';
+import { validatePractice, gradeLab, labById, practiceEvidence, foundationFor } from '../studio/practice.js';
 import {
   CERT_TRACKS, PENTEST_EXCHANGE, RESEARCH, SECURE_AGENT_POLICY, SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, SKILLS, SOC_EVENTS, VULNERABLE_AGENT_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
-  buildStudyPlan, coachAnswer, esc, explainNext, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage, northbridgeReport, passportEntries, passportJson, reviewQueue, scoreTrack, validateStudio
+  buildStudyPlan, coachAnswer, esc, explainNext, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage, northbridgeReport, passportEntries, passportJson, reviewQueue, scoreTrack, shiftQueue, validateStudio
 } from '../studio/model.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -98,6 +98,15 @@ assert.equal(gradeLab(oauth, oauth.secureInput).passed, true);
 assert.equal(practiceEvidence({ oauth: { ran: true, input: oauth.vulnerableInput } })[0].level, 'practiced');
 assert.equal(practiceEvidence({ oauth: { ran: true, input: oauth.secureInput } })[0].level, 'auto-verified');
 assert.match(JSON.parse(passportJson({})).limitation, /Not a certificate/);
+assert.equal(foundationFor('10-fundamentals', 'cia-triad').title, 'The CIA triad');
+assert.equal(foundationFor('10-fundamentals', 'missing'), null);
+const shift = shiftQueue({});
+assert.equal(shift.length, 6);
+assert.equal(shift.every(item => item.level === 'not-started'), true);
+const verifiedShift = shiftQueue({ practice: { phish: { ran: true, input: labById('phish').secureInput } }, cybercity: { triageRan: true, triage: Object.fromEntries(SOC_EVENTS.map(event => [event.id, event.verdict])) } });
+assert.equal(verifiedShift.find(item => item.id === 'phish').level, 'verified');
+assert.equal(verifiedShift.find(item => item.id === 'invoice-api').level, 'verified');
+assert.equal(verifiedShift.find(item => item.id === 'ransom').level, 'not-started');
 
 assert.ok(RESEARCH.some(item => item.kind === 'original-kashsec'));
 assert.ok(RESEARCH.filter(item => item.kind === 'curated-external').every(item => item.url.startsWith('https://')));
@@ -110,7 +119,7 @@ const sc200 = CERT_TRACKS.find(item => item.id === 'sc-200');
 assert.match(sc200.versions[0].note, /does not show domain percentages/);
 
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
-for (const file of ['certlab/index.html', 'research/index.html', 'skills/index.html', 'fix-verify/index.html', 'cybercity/index.html', 'passport/index.html', 'coach/index.html', 'practice/index.html', 'foundations/index.html']) {
+for (const file of ['certlab/index.html', 'research/index.html', 'skills/index.html', 'fix-verify/index.html', 'cybercity/index.html', 'passport/index.html', 'coach/index.html', 'practice/index.html', 'foundations/index.html', 'shift/index.html']) {
   const html = fs.readFileSync(path.join(root, file), 'utf8');
   const canonical = html.match(/<link rel="canonical" href="([^"]+)">/)?.[1];
   assert.ok(canonical && sitemap.includes(`<loc>${canonical}</loc>`), file);

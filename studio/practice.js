@@ -327,6 +327,53 @@ export function labById(id) {
   return PRACTICE_LABS.find(lab => lab.id === id) || null;
 }
 
+export function foundationFor(path, id) {
+  return FOUNDATIONS.find(item => item.path === path && item.id === id) || null;
+}
+
+export const LAB_COACHING = {
+  http: {
+    hint: '200, 401, 403, and 404 are different claims. 401 is about identity. 403 is about permission.',
+    debrief: 'You can now say what the server claimed. You still have not proved the authorization check was correct.'
+  },
+  oauth: {
+    hint: 'Compare state and nonce exactly. A lookalike host can start with the real host name and still be a different site. Do not grant a scope the app was never allowed.',
+    debrief: 'The fixture accepted a matching login and rejected the swapped values. A real identity provider still has to do this on the server.'
+  },
+  k8s: {
+    hint: 'This worker only needs to run the billing process. Privileged, the node network, root, a moving tag, and a token in the environment are all extra.',
+    debrief: 'The manifest meets this fixture. It was not applied to a cluster.'
+  },
+  cicd: {
+    hint: 'pull_request_target plus the pull request head runs untrusted code where the base repository’s secrets can be visible. Pin the action to a commit, not a moving tag.',
+    debrief: 'The workflow shape is safer for this fixture. You did not run GitHub Actions.'
+  },
+  phish: {
+    hint: 'Read the from-address, not the display name. SPF fail is its own problem. A password request stays a password request even when the domain matches.',
+    debrief: 'You separated sender, authentication, and the ask. A real mailbox has more headers than these four lines.'
+  },
+  ransom: {
+    hint: 'Put the events in time. A successful backup is not the attack. Deleting shadow copies happens before the rename.',
+    debrief: 'The timeline matches the fixture. It is not a malware sample and not an incident report for a real company.'
+  },
+  sigma: {
+    hint: 'The useful line is a 200 where the session tenant and the query tenant differ. A filter on status alone also keeps the 404.',
+    debrief: 'The filter returns one line in this fixture. It is not a Sigma rule and not a SIEM.'
+  },
+  rag: {
+    hint: 'Keep Birch’s document out of Bob’s prompt. A sentence inside a document does not become an instruction, and the model does not get a tenant switch.',
+    debrief: 'The boundary matches the fixture. No model was called.'
+  },
+  memory: {
+    hint: 'The model must not write its own standing order. Memory can be shown as context for this user. It does not outrank the task, and another tenant does not read it.',
+    debrief: 'The memory rule matches the fixture. Nothing was stored on a server.'
+  }
+};
+
+export function labCoaching(id) {
+  return LAB_COACHING[id] || { hint: '', debrief: '' };
+}
+
 export function glossaryById(id) {
   return GLOSSARY.find(entry => entry.id === id) || null;
 }
@@ -353,7 +400,8 @@ export function validatePractice() {
     ids.add(lab.id);
     if (!gradeLab(lab, lab.secureInput).passed) errors.push(`practice lab ${lab.id} secure input does not pass`);
     if (gradeLab(lab, lab.vulnerableInput).passed) errors.push(`practice lab ${lab.id} vulnerable input unexpectedly passes`);
-    if (lab.mode === 'choices' && gradeLab(lab, {}).passed) errors.push(`practice lab ${lab.id} passes with no answers`);
+    if (gradeLab(lab, {}).passed) errors.push(`practice lab ${lab.id} passes with no answers`);
+    if (!LAB_COACHING[lab.id]?.hint || !LAB_COACHING[lab.id]?.debrief) errors.push(`practice lab ${lab.id} is missing a hint or debrief`);
   }
   const roadmapIds = new Set(LAB_ROADMAP.map(item => item.n));
   if (roadmapIds.size !== 18) errors.push('lab roadmap is not 18 items');

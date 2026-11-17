@@ -96,6 +96,14 @@ try {
   await page.locator('#ksPractice select[name="scope"]').selectOption('intersection');
   await page.getByRole('button', { name: 'Run checks' }).click();
   await page.getByText('All 5 checks passed').waitFor();
+  await page.getByText('A real identity provider still has to do this on the server.').waitFor();
+  await page.getByRole('button', { name: 'Reset this lab' }).click();
+  await page.getByText('Run the checks before the expected answers are shown.').waitFor();
+  await page.goto(BASE + '/shift/');
+  await page.getByRole('heading', { name: 'Analyst shift', level: 1 }).waitFor();
+  await page.getByRole('button', { name: 'Expert' }).click();
+  await page.goto(BASE + '/cybercity/');
+  await page.getByText('Expert hides the fixture story').waitFor();
   await page.goto(BASE + '/coach/');
   await page.getByRole('link', { name: 'BOLA', exact: true }).click();
   await page.getByText('Broken object-level authorization').waitFor();

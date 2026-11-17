@@ -1,7 +1,7 @@
 /* KashSec studio model: skills graph, CertLab, Research Vault, Fix & Verify.
    Pure data and functions. No DOM. Safe to import from Node tests and the browser. */
 
-import { FOUNDATIONS, GLOSSARY, LAB_ROADMAP, PRACTICE_LABS } from './practice.js';
+import { FOUNDATIONS, GLOSSARY, LAB_ROADMAP, PRACTICE_LABS, gradeLab, labById } from './practice.js';
 
 export const STUDIO_VERSION = 1;
 export const VERIFIED_ON = '2026-11-18';
@@ -177,6 +177,36 @@ export const SKILLS = [
     research: ['kashsec-northbridge-iam'],
     objectives: ['secplus.architecture', 'secplus.program'],
     careers: [{ id: 'cloud', title: 'Cloud Security Engineer' }]
+  },
+  {
+    id: 'web.xss.context',
+    title: 'See where untrusted text becomes HTML',
+    outcome: 'Point at the HTML context a caller controls, and name escaping or a safe API instead of a homemade word filter.',
+    minutes: 30,
+    difficulty: 'core',
+    prerequisites: ['web.http.status'],
+    lessons: [{ path: '11-web-security', id: 'xss', title: 'Cross-site scripting' }],
+    labs: [{ id: 'webapp', title: 'Vulnerable web app' }],
+    tools: [],
+    expertLabs: [],
+    research: ['owasp-top-ten'],
+    objectives: ['secplus.threats', 'oscp.web'],
+    careers: [{ id: 'appsec', title: 'AppSec Engineer' }]
+  },
+  {
+    id: 'appsec.supply.workflow',
+    title: 'Keep a pull request out of the secret context',
+    outcome: 'Refuse a workflow that checks out fork code in the base repository’s secret context, and pin the action you run.',
+    minutes: 35,
+    difficulty: 'core',
+    prerequisites: ['appsec.review.trust-boundary'],
+    lessons: [{ path: '10-fundamentals', id: 'supply-chain-security-basics', title: 'Supply-chain security basics' }],
+    labs: [],
+    tools: [],
+    expertLabs: [{ id: 'release-trust', title: 'Signed artifact from the wrong build' }],
+    research: ['github-actions-secure'],
+    objectives: ['secplus.program'],
+    careers: [{ id: 'appsec', title: 'AppSec Engineer' }]
   }
 ];
 
@@ -1543,6 +1573,26 @@ export function passportJson(state = {}) {
   }, null, 2);
 }
 
+export function shiftQueue(state = {}) {
+  const practice = state.practice || {};
+  const city = state.cybercity || {};
+  const fromPractice = (id, title, href) => {
+    const attempt = practice[id];
+    if (!attempt?.ran) return { id, title, href, level: 'not-started' };
+    const grade = gradeLab(labById(id), attempt.input || {});
+    return { id, title, href, level: grade.passed ? 'verified' : 'attempted' };
+  };
+  const fromDesk = (id, title, href, ran, passed) => ({ id, title, href, level: !ran ? 'not-started' : passed ? 'verified' : 'attempted' });
+  return [
+    fromDesk('invoice-api', 'Suspicious web API access', '#/cybercity/soc', !!city.triageRan, !!(city.triageRan && gradeTriage(city.triage || {}).passed)),
+    fromPractice('phish', 'Phishing mailbox', '#/practice/phish'),
+    fromPractice('ransom', 'Ransomware precursor', '#/practice/ransom'),
+    fromDesk('cloud-iam', 'Cloud role too wide', '#/cybercity/cloud', !!city.iamRan, !!(city.iamRan && gradeIamPolicy(city.iam || VULNERABLE_IAM_POLICY).passed)),
+    fromPractice('cicd', 'Workflow and dependency risk', '#/practice/cicd'),
+    fromDesk('agent', 'Assistant privilege', '#/cybercity/agent', !!city.agentRan, !!(city.agentRan && gradeAgentPolicy(city.agent || VULNERABLE_AGENT_POLICY).passed))
+  ];
+}
+
 export function coachAnswer(kind, state = {}) {
   if (kind === 'next') {
     const next = explainNext(state.mastered || []);
@@ -1748,7 +1798,15 @@ export function pageCopies() {
       title: 'Foundation bridges · KashSec Academy',
       description: 'Ten existing lessons with a why, two outcomes, a practice link, and a next step. The lesson text is unchanged.',
       heading: 'Foundation bridges',
-      body: `<p>These ten lessons already exist. This page does not replace them. It tells you why the lesson matters, what you should be able to do, where to practise, and what to open next.</p><p>${esc(FOUNDATIONS.map(item => `${item.title}. ${item.why}`).join(' '))}</p><p>Glossary terms you can ask the offline coach for: ${esc(GLOSSARY.map(entry => entry.term).join(', '))}.</p><p><a href="/coach/">Open the coach</a> · <a href="/practice/">Open practice labs</a></p>`
+      body: `<p>These ten lessons already exist. This page does not replace them. It tells you why the lesson matters, what you should be able to do, where to practise, and what to open next. Opening one of these lessons also shows the same bridge above the lesson text.</p><p>${esc(FOUNDATIONS.map(item => `${item.title}. ${item.why}`).join(' '))}</p><p>Glossary terms you can ask the offline coach for: ${esc(GLOSSARY.map(entry => entry.term).join(', '))}.</p><p><a href="/coach/">Open the coach</a> · <a href="/practice/">Open practice labs</a> · <a href="/shift/">Open the analyst shift</a></p>`
+    },
+    {
+      file: 'shift/index.html',
+      path: '/shift/',
+      title: 'Analyst shift · KashSec Academy',
+      description: 'Six synthetic cases in one queue: an invoice API, phishing, ransomware, a cloud role, a workflow, and an assistant. Fixture status only.',
+      heading: 'Analyst shift',
+      body: `<p>This is one practice shift, not a SOC product. Each row is a fixture you already have elsewhere on the site. The status is not-started, attempted, or verified in this browser. Nothing is a live alert.</p><p>Cases: suspicious web API access, phishing mailbox, ransomware precursor, a cloud role that is too wide, workflow and dependency risk, and assistant privilege.</p><p><a href="/cybercity/">Northbridge</a> · <a href="/practice/">Practice labs</a> · <a href="/passport/">Skill record</a></p>`
     }
   ];
 }

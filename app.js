@@ -2519,6 +2519,7 @@ function canonicalPathForHash(hash){
   if(hash === '#/coach') return '/coach/';
   if(hash === '#/practice') return '/practice/';
   if(hash === '#/foundations') return '/foundations/';
+  if(hash === '#/shift') return '/shift/';
   const legal = hash.match(/^#\/(about|contact|privacy|terms)$/);
   if(legal) return `/${legal[1]}.html`;
   const lesson = hash.match(/^#\/lesson\/([a-z0-9-]+)(?:\/([a-z0-9-]+))?$/);
@@ -2548,6 +2549,7 @@ function hashRouteForPath(pathname){
   if(pathname === '/coach/' || pathname === '/coach/index.html') return '#/coach';
   if(pathname === '/practice/' || pathname === '/practice/index.html') return '#/practice';
   if(pathname === '/foundations/' || pathname === '/foundations/index.html') return '#/foundations';
+  if(pathname === '/shift/' || pathname === '/shift/index.html') return '#/shift';
   const legal = pathname.match(/^\/(about|contact|privacy|terms)\.html$/);
   if(legal) return `#/${legal[1]}`;
   const lesson = pathname.match(/^\/lesson\/([a-z0-9-]+)\/(?:([a-z0-9-]+)\.html)?$/);
@@ -2787,6 +2789,7 @@ function route(){
   else if(hash === '#/coach' || hash.startsWith('#/coach/')) renderStudio(hash);
   else if(hash === '#/practice' || hash.startsWith('#/practice/')) renderStudio(hash);
   else if(hash === '#/foundations') renderStudio(hash);
+  else if(hash === '#/shift') renderStudio(hash);
   else if(hash === '#/skilltree') renderSkillTree();
   else {
     const partsQuiz = hash.match(/^#\/quiz\/([^/]+)$/);
@@ -6571,6 +6574,13 @@ async function renderSubLesson(pathId, subId){
       // that opened lesson once controlled so a practice trip can return offline.
       cacheOpenedAsset(`course/${pathId}/${subId}.md`);
       contentEl.innerHTML = enrichMarkdown(md);
+      try {
+        const { foundationFor } = await import('./studio/practice.js');
+        const bridge = foundationFor(pathId, subId);
+        if (bridge) {
+          contentEl.insertAdjacentHTML('afterbegin', `<aside class="ks-bridge" aria-label="Why this lesson is here"><p><strong>Why it matters.</strong> ${escapeHtml(bridge.why)}</p><ul>${bridge.outcomes.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul><p><a href="${escapeHtml(bridge.try)}">Practise this</a> · <a href="${escapeHtml(bridge.next)}">What to open next</a></p></aside>`);
+        }
+      } catch { /* the lesson text still stands if the bridge cannot load */ }
       // Keep a small reading fallback for return visits without retaining an
       // unbounded copy of the entire course in memory.
       lessonFallbacks.delete(lessonRoute);
@@ -15735,7 +15745,7 @@ function getCommands(){
     ['About KashSec','#/about','info'],['Contact','#/contact','mail'],
     ['Privacy policy','#/privacy','shield'],['Terms of use','#/terms','scale'],
     ['My Progress','#/progress','gauge'],['Changelog','#/changelog','ledger'],['Take the Final Exam','#/quiz/final','flag'],
-    ['Mock interview','#/interview/mock','timer'],['Certification roadmap','#/certs','ticket'],['Certification prep','#/certlab','ticket'],['Research vault','#/research','scroll'],['Skills graph','#/skills','layers'],['Fix and verify','#/fix-verify','shield'],['Northbridge case','#/cybercity','castle'],['Skill record','#/passport','idcard'],['Offline coach','#/coach','compass'],['Practice labs','#/practice','microscope'],['Foundation bridges','#/foundations','book'],['Skill tree','#/skilltree','layers'],
+    ['Mock interview','#/interview/mock','timer'],['Certification roadmap','#/certs','ticket'],['Certification prep','#/certlab','ticket'],['Research vault','#/research','scroll'],['Skills graph','#/skills','layers'],['Fix and verify','#/fix-verify','shield'],['Northbridge case','#/cybercity','castle'],['Skill record','#/passport','idcard'],['Offline coach','#/coach','compass'],['Practice labs','#/practice','microscope'],['Analyst shift','#/shift','radio'],['Foundation bridges','#/foundations','book'],['Skill tree','#/skilltree','layers'],
     ['Capstone attack chain','#/capstone','castle'],['Weekly challenge chains','#/weekly','clipboard'],
     ['Career-fit quiz','#/career-quiz','puzzle'],['Shuffle quiz','#/quiz/shuffle','dice'],
     ['Learning transcript','#/transcript','doc'],['Review missed questions','#/quiz/missed','refresh']

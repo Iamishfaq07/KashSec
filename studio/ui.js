@@ -4,9 +4,9 @@ import {
   CERT_TRACKS, HUNT_SOURCES, HUNT_TOKENS, PENTEST_EXCHANGE, RESEARCH, SKILLS, SOC_EVENTS, TIMELINE_ITEMS, TRIAGE_LABELS,
   SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, VULNERABLE_AGENT_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
   buildStudyPlan, coachAnswer, coverage, esc, explainNext, filterEvents, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage,
-  lessonHref, northbridgeReport, passportEntries, passportJson, passportMarkdown, readinessLabel, researchById, researchKindLabel, reviewQueue, scoreTrack, skillById, trackById
+  lessonHref, northbridgeReport, passportEntries, passportJson, passportMarkdown, readinessLabel, researchById, researchKindLabel, reviewQueue, scoreTrack, shiftQueue, skillById, trackById
 } from './model.js';
-import { FOUNDATIONS, GLOSSARY, LAB_ROADMAP, PRACTICE_LABS, glossaryById, gradeLab, labById, practiceEvidence } from './practice.js';
+import { FOUNDATIONS, GLOSSARY, LAB_ROADMAP, PRACTICE_LABS, glossaryById, gradeLab, labById, labCoaching, practiceEvidence } from './practice.js';
 
 const STORAGE_KEY = 'kashsec_studio_v1';
 
@@ -19,7 +19,8 @@ function emptyState() {
     researchRead: [],
     fix: { policy: { ...VULNERABLE_INVOICE_POLICY }, notes: '', ran: false },
     cybercity: { pentest: null, triage: {}, triageRan: false, huntSource: 'api', huntToken: 'status=200', huntRan: false, iam: { ...VULNERABLE_IAM_POLICY }, iamRan: false, agent: { ...VULNERABLE_AGENT_POLICY }, agentRan: false, timeline: {}, timelineRan: false },
-    practice: {}
+    practice: {},
+    studioMode: 'standard'
   };
 }
 
@@ -40,7 +41,8 @@ export function loadState() {
         agent: { ...base.cybercity.agent, ...((parsed.cybercity && parsed.cybercity.agent) || {}) },
         timeline: { ...((parsed.cybercity && parsed.cybercity.timeline) || {}) }
       },
-      practice: { ...(parsed.practice || {}) }
+      practice: { ...(parsed.practice || {}) },
+      studioMode: ['guided', 'standard', 'expert'].includes(parsed.studioMode) ? parsed.studioMode : 'standard'
     };
   } catch {
     return emptyState();
@@ -57,6 +59,22 @@ function todayISO() {
   return new Date().toISOString().slice(0, 10);
 }
 
+function modeSwitch(mode) {
+  const labels = { guided: 'Guided', standard: 'Standard', expert: 'Expert' };
+  return `<div class="ks-filters" role="group" aria-label="Help level">${['guided', 'standard', 'expert'].map(value => `<button type="button" data-mode="${value}" aria-pressed="${mode === value ? 'true' : 'false'}">${labels[value]}</button>`).join('')}</div>`;
+}
+
+function wireMode(root, hash) {
+  root.querySelectorAll('[data-mode]').forEach(button => {
+    button.addEventListener('click', () => {
+      const next = loadState();
+      next.studioMode = button.dataset.mode;
+      saveState(next);
+      renderStudio(root, hash);
+    });
+  });
+}
+
 function shell(title, lede, crumbs, body) {
   return `<section class="sec ks-studio">
     <nav class="ks-crumbs" aria-label="Breadcrumb"><a href="/">Home</a> · ${crumbs}</nav>
@@ -70,6 +88,7 @@ function shell(title, lede, crumbs, body) {
       <a href="#/fix-verify">Fix & verify</a>
       <a href="#/cybercity">Northbridge</a>
       <a href="#/practice">Practice</a>
+      <a href="#/shift">Shift</a>
       <a href="#/foundations">Foundations</a>
       <a href="#/passport">Skill record</a>
       <a href="#/coach">Coach</a>
@@ -272,7 +291,7 @@ function renderFix(state) {
     </div>`);
 }
 
-function renderCybercity() {
+function renderCybercity(state) {
   const desks = [
     ['Tester', 'Name the field the API should not have trusted.', '#/cybercity/pentest', 'Open the exchange'],
     ['AppSec', 'Repair the policy and run the allow and deny cases.', '#/fix-verify', 'Fix and verify'],
@@ -282,14 +301,16 @@ function renderCybercity() {
     ['Incident note', 'Choose what belongs in the first note, and what does not.', '#/cybercity/timeline', 'Write the timeline'],
     ['Case note', 'Export what you actually checked. Unrun desks stay blank.', '#/cybercity/report', 'Write the note']
   ].map(([role, text, href, label]) => `<article class="ks-card"><p class="ks-kicker">${esc(role)}</p><p>${esc(text)}</p><a class="btn-amber sm" href="${href}">${esc(label)}</a></article>`).join('');
-  return shell('Northbridge Billing', 'One fictional invoice, several jobs. The host billing.northbridge.test is not a live target.', '<span>Northbridge</span>', `
-    <div class="ks-grid">${desks}</div>
-    <section class="ks-card">
+  const story = state.studioMode === 'expert' ? '<p class="ks-note">Expert hides the fixture story. Use the request and the logs. Switch to Guided if you want the narrative first.</p>' : `<section class="ks-card">
       <h2>What happened in the fixture</h2>
       <p>Bob at Acme is signed in as a customer. A request to <span class="ks-log">billing.northbridge.test</span> asks for Birch invoice 42 and sends <span class="ks-log">role=billing-support</span>. The API returns 200. Alice’s invoice was never on a real network.</p>
       <p>This is not an OffSec machine, a Microsoft tenant, or a CompTIA performance-based item. The SC-200 plan links here so you can practise the habit, then read Microsoft’s own study guide for the real tools.</p>
-      <p><a href="#/research/kashsec-northbridge-soc">Read the case card</a> · <a href="#/certlab/sc-200">Open the SC-200 plan</a></p>
-    </section>`);
+      <p><a href="#/research/kashsec-northbridge-soc">Read the case card</a> · <a href="#/certlab/sc-200">Open the SC-200 plan</a> · <a href="#/shift">Work these as one shift</a></p>
+    </section>`;
+  return shell('Northbridge Billing', 'One fictional invoice, several jobs. The host billing.northbridge.test is not a live target.', '<span>Northbridge</span>', `
+    ${modeSwitch(state.studioMode)}
+    <div class="ks-grid">${desks}</div>
+    ${story}`);
 }
 
 function renderPentest(state) {
@@ -479,14 +500,32 @@ function renderPracticeLab(state, lab) {
     ? lab.items.map(item => `<label>${esc(item.prompt)} <select name="${esc(item.id)}">${item.options.map(([value, label]) => `<option value="${esc(value)}"${input[item.id] === value ? ' selected' : ''}>${esc(label)}</option>`).join('')}</select></label>`).join('')
     : lab.fields.map(field => `<label>${esc(field.label)} <select name="${esc(field.name)}">${field.options.map(([value, label]) => `<option value="${esc(value)}"${input[field.name] === value ? ' selected' : ''}>${esc(label)}</option>`).join('')}</select></label>`).join('');
   const grade = saved.ran ? gradeLab(lab, saved.input || {}) : null;
-  const results = grade ? `<p role="status">${grade.passed ? `All ${grade.total} checks passed. This fixture still is not a production system.` : `${grade.passedCount} of ${grade.total} checks match.`}</p><ul>${grade.results.filter(item => !item.pass).map(item => `<li>${esc(item.title)}. ${esc(item.why)}</li>`).join('')}</ul>` : '<p>Run the checks before the expected answers are shown.</p>';
+  const coaching = labCoaching(lab.id);
+  const showHint = state.studioMode === 'guided' || state.studioMode === 'standard' || (grade && !grade.passed);
+  const hint = showHint ? `<details class="ks-card"${state.studioMode === 'guided' ? ' open' : ''}><summary>Hint</summary><p>${esc(coaching.hint)}</p></details>` : '<p class="ks-note">Expert hides the hint until a check fails.</p>';
+  const debrief = grade?.passed ? `<p>${esc(coaching.debrief)}</p>` : '';
+  const results = grade ? `<p role="status">${grade.passed ? `All ${grade.total} checks passed. This fixture still is not a production system.` : `${grade.passedCount} of ${grade.total} checks match.`}</p>${debrief}<ul>${grade.results.filter(item => !item.pass).map(item => `<li>${esc(item.title)}. ${esc(item.why)}</li>`).join('')}</ul>` : '<p>Run the checks before the expected answers are shown.</p>';
   return shell(lab.title, lab.summary, `<a href="#/practice">Practice</a> · <span>${esc(lab.title)}</span>`, `
+    ${modeSwitch(state.studioMode)}
+    ${hint}
     <form class="ks-card" id="ksPractice" data-lab="${esc(lab.id)}">
       <h2>Your choices</h2>
       ${controls}
       <button class="btn-amber sm" type="submit">Run checks</button>
+      <button class="btn-ghost sm" type="button" id="ksPracticeReset">Reset this lab</button>
       <div id="ksPracticeResult">${results}</div>
     </form>`);
+}
+
+function renderShift(state) {
+  const rows = shiftQueue(state).map(item => `<li><a href="${esc(item.href)}">${esc(item.title)}</a> — ${esc(item.level)}</li>`).join('');
+  return shell('Analyst shift', 'Six synthetic cases. Status is whatever this browser has already checked. There is no live queue.', '<span>Shift</span>', `
+    ${modeSwitch(state.studioMode)}
+    <section class="ks-card">
+      <h2>Queue</h2>
+      <ul>${rows}</ul>
+      <p class="ks-note">Verified means the fixture passed. It does not mean a real alert was closed, and it does not page anyone.</p>
+    </section>`);
 }
 
 function renderFoundations() {
@@ -588,8 +627,9 @@ export function renderStudio(root, hash) {
     title = 'Case note · Northbridge';
     wireReport(root);
   } else if (section === 'cybercity' && !id) {
-    root.innerHTML = renderCybercity();
+    root.innerHTML = renderCybercity(state);
     title = 'Northbridge Billing · KashSec Academy';
+    wireMode(root, hash);
   } else if (section === 'cybercity') {
     root.innerHTML = shell('Desk not found', 'That Northbridge desk is not in this case.', `<a href="#/cybercity">Northbridge</a>`, '<p><a href="#/cybercity">Back to the desks</a></p>');
   } else if (section === 'passport') {
@@ -608,8 +648,13 @@ export function renderStudio(root, hash) {
     else {
       root.innerHTML = renderPracticeLab(state, lab);
       title = `${lab.title} · KashSec Academy`;
-      wirePractice(root, lab);
+      wirePractice(root, lab, hash);
+      wireMode(root, hash);
     }
+  } else if (section === 'shift') {
+    root.innerHTML = renderShift(state);
+    title = 'Analyst shift · KashSec Academy';
+    wireMode(root, hash);
   } else if (section === 'foundations') {
     root.innerHTML = renderFoundations();
     title = 'Foundation bridges · KashSec Academy';
@@ -766,7 +811,7 @@ function wirePassport(root) {
   });
 }
 
-function wirePractice(root, lab) {
+function wirePractice(root, lab, hash) {
   root.querySelector('#ksPractice')?.addEventListener('submit', event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -777,7 +822,13 @@ function wirePractice(root, lab) {
     next.practice[lab.id] = { ran: true, input };
     if (gradeLab(lab, input).passed && lab.skillId && !next.mastered.includes(lab.skillId)) next.mastered.push(lab.skillId);
     saveState(next);
-    renderStudio(root, `#/practice/${lab.id}`);
+    renderStudio(root, hash);
+  });
+  root.querySelector('#ksPracticeReset')?.addEventListener('click', () => {
+    const next = loadState();
+    delete next.practice[lab.id];
+    saveState(next);
+    renderStudio(root, hash);
   });
 }
 
