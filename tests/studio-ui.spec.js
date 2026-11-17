@@ -31,6 +31,85 @@ try {
   await page.getByRole('button', { name: 'Check answers' }).click();
   await page.getByText('3 of 4 correct').waitFor();
   assert.match(await page.locator('#ksQuizResult').innerText(), /trusted session/);
+  assert.match(await page.locator('#ksQuizResult').innerText(), /review due/);
+
+  await page.goto(BASE + '/cybercity/');
+  await page.getByRole('heading', { name: 'Northbridge Billing', level: 1 }).waitFor();
+  await page.getByRole('link', { name: 'Open the exchange' }).click();
+  await page.getByRole('heading', { name: 'Tester desk', level: 1 }).waitFor();
+  await page.getByLabel('The tenant and role in the query string').check();
+  await page.getByRole('button', { name: 'Check the field' }).click();
+  await page.getByText('That matches the fixture.').waitFor();
+
+  await page.goto(BASE + '/cybercity/');
+  await page.getByRole('link', { name: 'Open the log desk' }).click();
+  await page.locator('#ksTriage select[name="login"]').selectOption('not-enough');
+  await page.locator('#ksTriage select[name="cross"]').selectOption('suspicious');
+  await page.locator('#ksTriage select[name="own"]').selectOption('expected');
+  await page.locator('#ksTriage select[name="endpoint-gap"]').selectOption('not-enough');
+  await page.locator('#ksTriage select[name="reset"]').selectOption('not-enough');
+  await page.getByRole('button', { name: 'Check the lines' }).click();
+  await page.getByText('All 5 lines match').waitFor();
+  await page.locator('#ksHunt select[name="source"]').selectOption('api');
+  await page.locator('#ksHunt select[name="token"]').selectOption('tenant=birch');
+  await page.getByRole('button', { name: 'Run filter' }).click();
+  await page.getByText('only the cross-tenant 200').waitFor();
+
+  await page.goto(BASE + '/cybercity/');
+  await page.getByRole('link', { name: 'Open the role' }).click();
+  await page.locator('#ksIam select[name="actions"]').selectOption('invoices-read');
+  await page.locator('#ksIam select[name="tenants"]').selectOption('caller');
+  await page.locator('#ksIam select[name="principal"]').selectOption('billing-fn');
+  await page.getByRole('button', { name: 'Run role cases' }).click();
+  await page.getByText('All 4 role cases passed').waitFor();
+
+  await page.goto(BASE + '/cybercity/');
+  await page.getByRole('link', { name: 'Open the assistant' }).click();
+  await page.locator('#ksAgent select[name="toolSource"]').selectOption('task');
+  await page.locator('#ksAgent select[name="tenantSource"]').selectOption('task');
+  await page.locator('#ksAgent select[name="objectSource"]').selectOption('task');
+  await page.locator('#ksAgent select[name="honorApproved"]').selectOption('no');
+  await page.getByRole('button', { name: 'Run assistant calls' }).click();
+  await page.getByText('All 4 assistant calls matched').waitFor();
+
+  await page.goto(BASE + '/cybercity/');
+  await page.getByRole('link', { name: 'Write the timeline' }).click();
+  await page.locator('#ksTimeline select[name="login"]').selectOption('context');
+  await page.locator('#ksTimeline select[name="cross"]').selectOption('finding');
+  await page.locator('#ksTimeline select[name="gap"]').selectOption('exclude');
+  await page.locator('#ksTimeline select[name="reset"]').selectOption('exclude');
+  await page.getByRole('button', { name: 'Check the note' }).click();
+  await page.getByText('The note matches this fixture').waitFor();
+
+  await page.goto(BASE + '/passport/');
+  await page.getByRole('heading', { name: 'Skill record', level: 1 }).waitFor();
+  await page.getByText('Cloud desk: billing role').waitFor();
+  await page.goto(BASE + '/coach/');
+  await page.getByRole('link', { name: 'What should I do next?' }).click();
+  await page.getByText('starting skill').waitFor();
+
+  await page.goto(BASE + '/practice/');
+  await page.getByRole('link', { name: 'OAuth and OIDC debugger' }).click();
+  await page.locator('#ksPractice select[name="stateCheck"]').selectOption('exact');
+  await page.locator('#ksPractice select[name="nonceCheck"]').selectOption('exact');
+  await page.locator('#ksPractice select[name="redirect"]').selectOption('exact');
+  await page.locator('#ksPractice select[name="scope"]').selectOption('intersection');
+  await page.getByRole('button', { name: 'Run checks' }).click();
+  await page.getByText('All 5 checks passed').waitFor();
+  await page.getByText('A real identity provider still has to do this on the server.').waitFor();
+  await page.getByRole('button', { name: 'Reset this lab' }).click();
+  await page.getByText('Run the checks before the expected answers are shown.').waitFor();
+  await page.goto(BASE + '/shift/');
+  await page.getByRole('heading', { name: 'Analyst shift', level: 1 }).waitFor();
+  await page.getByRole('button', { name: 'Expert' }).click();
+  await page.goto(BASE + '/cybercity/');
+  await page.getByText('Expert hides the fixture story').waitFor();
+  await page.goto(BASE + '/coach/');
+  await page.getByRole('link', { name: 'BOLA', exact: true }).click();
+  await page.getByText('Broken object-level authorization').waitFor();
+  await page.goto(BASE + '/foundations/');
+  await page.getByRole('heading', { name: 'The CIA triad', level: 2 }).waitFor();
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
 
   await page.goto(BASE + '/fix-verify/');
   await page.getByRole('button', { name: 'Run cases' }).click();

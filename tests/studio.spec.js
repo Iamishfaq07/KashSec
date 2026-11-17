@@ -3,14 +3,16 @@ import assert from 'node:assert/strict';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { validatePractice, gradeLab, labById, practiceEvidence, foundationFor } from '../studio/practice.js';
 import {
-  CERT_TRACKS, RESEARCH, SECURE_INVOICE_POLICY, SKILLS, VULNERABLE_INVOICE_POLICY,
-  buildStudyPlan, explainNext, gradeInvoicePolicy, scoreTrack, validateStudio
+  CERT_TRACKS, PENTEST_EXCHANGE, RESEARCH, SECURE_AGENT_POLICY, SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, SKILLS, SOC_EVENTS, VULNERABLE_AGENT_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
+  buildStudyPlan, coachAnswer, esc, explainNext, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage, northbridgeReport, passportEntries, passportJson, reviewQueue, scoreTrack, shiftQueue, validateStudio
 } from '../studio/model.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const errors = validateStudio();
+const errors = validateStudio().concat(validatePractice());
 assert.deepEqual(errors, [], errors.join('\n'));
+assert.equal(esc('<script>"&"</script>'), '&lt;script&gt;&quot;&amp;&quot;&lt;/script&gt;');
 
 for (const skill of SKILLS) {
   for (const lesson of skill.lessons) {
@@ -55,6 +57,57 @@ const second = explainNext(['foundations.cia']);
 assert.equal(second.skill.id, 'networking.dns.resolution');
 assert.match(second.reason, /Confidentiality, integrity, and availability/);
 
+const triage = gradeTriage(Object.fromEntries(SOC_EVENTS.map(event => [event.id, event.verdict])));
+assert.equal(triage.passed, true);
+assert.equal(triage.total, 5);
+assert.equal(gradeTriage({ cross: 'expected' }).passed, false);
+const precise = gradeHunt('api', 'tenant=birch');
+assert.deepEqual(precise.ids, ['cross']);
+assert.equal(precise.precise, true);
+assert.equal(gradeHunt('api', 'status=200').precise, false);
+assert.equal(gradePentest(PENTEST_EXCHANGE.answer).pass, true);
+assert.equal(gradePentest(0).pass, false);
+const review = reviewQueue(track, { 'secplus.q1': 0 });
+assert.equal(review[0].objectiveId, 'secplus.architecture');
+assert.equal(reviewQueue(track, perfect).length, 0);
+assert.equal(gradeIamPolicy(SECURE_IAM_POLICY).passed, true);
+assert.equal(gradeIamPolicy(VULNERABLE_IAM_POLICY).passed, false);
+assert.equal(gradeAgentPolicy(SECURE_AGENT_POLICY).passed, true);
+assert.equal(gradeAgentPolicy(VULNERABLE_AGENT_POLICY).passed, false);
+assert.equal(gradeTimeline({ login: 'context', cross: 'finding', gap: 'exclude', reset: 'exclude' }).passed, true);
+assert.equal(gradeTimeline({ cross: 'context' }).passed, false);
+assert.match(northbridgeReport({}), /Assistant boundary not checked/);
+const emptyReport = northbridgeReport({});
+assert.match(emptyReport, /billing\.northbridge\.test/);
+assert.match(emptyReport, /Not checked/);
+assert.equal(emptyReport.includes('All invoice fixture cases passed'), false);
+const passedReport = northbridgeReport({ fix: { ran: true, policy: SECURE_INVOICE_POLICY, notes: '' }, cybercity: { iamRan: true, iam: SECURE_IAM_POLICY } });
+assert.match(passedReport, /All invoice fixture cases passed/);
+assert.match(passedReport, /billing function only/);
+const record = passportEntries({ fix: { ran: true, policy: VULNERABLE_INVOICE_POLICY }, cybercity: { iamRan: true, iam: SECURE_IAM_POLICY }, researchRead: ['owasp-api'], mastered: ['foundations.cia'] });
+assert.equal(record.find(item => item.id === 'northbridge.policy').level, 'practiced');
+assert.equal(passportEntries({ fix: { ran: true, policy: SECURE_INVOICE_POLICY } }).find(item => item.id === 'northbridge.policy').level, 'auto-verified');
+assert.equal(record.find(item => item.id === 'northbridge.iam').level, 'auto-verified');
+assert.equal(record.find(item => item.id === 'read.owasp-api').level, 'read');
+assert.equal(record.find(item => item.id === 'skill.foundations.cia').level, 'self-reported');
+assert.match(coachAnswer('next', { mastered: [] }).body, /starting skill/);
+assert.match(coachAnswer('invoice', {}).body, /have not run/);
+assert.equal(SKILLS.length > 7, true);
+const oauth = labById('oauth');
+assert.equal(gradeLab(oauth, oauth.secureInput).passed, true);
+assert.equal(practiceEvidence({ oauth: { ran: true, input: oauth.vulnerableInput } })[0].level, 'practiced');
+assert.equal(practiceEvidence({ oauth: { ran: true, input: oauth.secureInput } })[0].level, 'auto-verified');
+assert.match(JSON.parse(passportJson({})).limitation, /Not a certificate/);
+assert.equal(foundationFor('10-fundamentals', 'cia-triad').title, 'The CIA triad');
+assert.equal(foundationFor('10-fundamentals', 'missing'), null);
+const shift = shiftQueue({});
+assert.equal(shift.length, 6);
+assert.equal(shift.every(item => item.level === 'not-started'), true);
+const verifiedShift = shiftQueue({ practice: { phish: { ran: true, input: labById('phish').secureInput } }, cybercity: { triageRan: true, triage: Object.fromEntries(SOC_EVENTS.map(event => [event.id, event.verdict])) } });
+assert.equal(verifiedShift.find(item => item.id === 'phish').level, 'verified');
+assert.equal(verifiedShift.find(item => item.id === 'invoice-api').level, 'verified');
+assert.equal(verifiedShift.find(item => item.id === 'ransom').level, 'not-started');
+
 assert.ok(RESEARCH.some(item => item.kind === 'original-kashsec'));
 assert.ok(RESEARCH.filter(item => item.kind === 'curated-external').every(item => item.url.startsWith('https://')));
 assert.equal(new Set(RESEARCH.map(item => item.id)).size, RESEARCH.length);
@@ -66,7 +119,7 @@ const sc200 = CERT_TRACKS.find(item => item.id === 'sc-200');
 assert.match(sc200.versions[0].note, /does not show domain percentages/);
 
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
-for (const file of ['certlab/index.html', 'research/index.html', 'skills/index.html', 'fix-verify/index.html']) {
+for (const file of ['certlab/index.html', 'research/index.html', 'skills/index.html', 'fix-verify/index.html', 'cybercity/index.html', 'passport/index.html', 'coach/index.html', 'practice/index.html', 'foundations/index.html', 'shift/index.html']) {
   const html = fs.readFileSync(path.join(root, file), 'utf8');
   const canonical = html.match(/<link rel="canonical" href="([^"]+)">/)?.[1];
   assert.ok(canonical && sitemap.includes(`<loc>${canonical}</loc>`), file);

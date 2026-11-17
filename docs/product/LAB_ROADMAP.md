@@ -1,14 +1,9 @@
 # Lab roadmap
 
-Status key: `implemented` means a learner can finish it in the browser and a test locks the rule. `deferred` means it is not built.
+The 18 labs from the product brief are listed in `studio/practice.js` (`LAB_ROADMAP`).
 
-| Lab | Status | Note |
-|---|---|---|
-| API authorization repair (invoice policy) | implemented | `/fix-verify/`, seven synthetic cases, link to expert lab `tenant-boundary` |
-| HTTP request inspector | deferred | Use the existing HTTP lesson and header tool |
-| OAuth/OIDC debugger | deferred | Existing OAuth lab remains |
-| Kubernetes, cloud IAM, CI/CD, CodeQL, SIEM, phishing, ransomware, Sigma, PCAP, MCP, RAG, agent memory, mobile storage | deferred | Several already exist as separate labs or expert cases (`agent-tool-boundary`, RAG lab). They are not rebuilt here |
-| Threat modeling studio | deferred | Existing STRIDE tool stays |
-| Pentest reporting capstone | deferred | Expert labs already export notes |
+- **shipped** — graded in `/practice/`. A pass is a fixture, not a production test.
+- **existing** — an older KashSec lab or tool already covers it. The catalog links there.
+- **specified** — not interactive. Item 16, mobile storage, stays here because this static site has no phone runtime.
 
-The other seventeen labs in the product brief are specified only. They are not shipped.
+Classrooms, public writeup review, and a live model are not labs and are not built. There is no account system and no moderation service to attach them to.

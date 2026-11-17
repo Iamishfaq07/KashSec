@@ -11,7 +11,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)));
 const SITE = 'https://kashsec.vercel.app';
 
 function escapeAttr(value) {
-  return String(value).replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>').replace(/"/g, '"');
+  return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 function studioLastmod() {
@@ -109,7 +109,7 @@ ${scripts}
   }
   const sitemapPath = path.join(ROOT, 'sitemap.xml');
   let sitemap = fs.readFileSync(sitemapPath, 'utf8');
-  sitemap = sitemap.replace(/\n?  <url><loc>https:\/\/kashsec\.vercel\.app\/(?:certlab|research|skills|fix-verify)\/<\/loc>[\s\S]*?<\/url>/g, '');
+  sitemap = sitemap.replace(/\n?  <url><loc>https:\/\/kashsec\.vercel\.app\/(?:certlab|research|skills|fix-verify|cybercity|passport|coach|practice|foundations|shift)\/<\/loc>[\s\S]*?<\/url>/g, '');
   if (!sitemap.includes('</urlset>')) throw new Error('sitemap.xml has no urlset');
   sitemap = sitemap.replace('</urlset>', `${entries.join('\n')}\n</urlset>`);
   fs.writeFileSync(sitemapPath, sitemap);

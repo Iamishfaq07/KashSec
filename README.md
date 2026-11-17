@@ -8,7 +8,7 @@
 
 ## What's new
 
-- **Certification prep, research vault, and a skills graph** — open `/certlab/` for Security+, OSCP+, and SC-200 starter plans with official links checked 18 Nov 2026, `/research/` for attributed source cards, `/skills/` for seven connected skills, and `/fix-verify/` to repair a fictional invoice authorization policy. Plans and notes stay in this browser. These pages do not replace the existing course, labs, or career roadmap, and they are not vendor exams.
+- **Certification prep, research vault, skills graph, Northbridge, practice labs, and a local skill record** — open `/certlab/` for Security+, OSCP+, and SC-200 starter plans, `/research/` for attributed source cards, `/skills/` for the connected skills, `/practice/` for graded fixtures, `/foundations/` for ten lesson bridges, `/cybercity/` for one fictional invoice, `/passport/` for a private evidence note, and `/coach/` for offline questions and a glossary. Nothing here is a vendor exam, a public profile, or a live model.
 
 - **Resume expert casework** — Expert Labs shows saved answer/report-draft status, provides keyboard-accessible section and next-case links, and detects when another tab has changed the same saved case. Auto-save pauses in that situation so you can download your current report before inspecting or loading the latest saved version.
 

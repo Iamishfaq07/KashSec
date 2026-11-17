@@ -14,7 +14,10 @@ Also run `npm run test:data` after `node generate-studio.js` so the new sitemap 
 
 Browser pass, done manually or with Playwright when a server is up:
 
-- `/certlab/` lists three plans. Opening Security+ rebuilds a plan and stores it after reload.
+- `/certlab/` lists three plans. Opening Security+ rebuilds a plan and stores it after reload. A wrong formative answer marks that objective review due.
+- `/cybercity/` opens the tester desk, the analyst desk, and the cloud desk. The analyst filter can be narrowed to the single cross-tenant line. The host is `billing.northbridge.test` only. The case note says "Not checked" for a desk you have not run.
+- `/practice/` grades the OAuth fixture, and `/foundations/` lists ten existing lessons without rewriting them.
+- `/passport/` offers Markdown and JSON. Neither file is uploaded.
 - A wrong answer shows the explanation. The page says the score is formative.
 - `/research/` hides cards when a topic filter is pressed. “Not re-fetched” stays visible on those cards.
 - `/skills/` explains the next skill from the marks in `kashsec_studio_v1` only.
