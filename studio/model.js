@@ -6,7 +6,7 @@ export const VERIFIED_ON = '2026-11-18';
 
 export function esc(value) {
   return String(value ?? '').replace(/[&<>"']/g, ch => ({
-    '&': '&', '<': '<', '>': '>', '"': '"', "'": '&#39;'
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   }[ch]));
 }
 
@@ -97,7 +97,7 @@ export const SKILLS = [
     labs: [{ id: 'loganalysis', title: 'Log analysis lab' }],
     tools: [{ id: 'logparser', title: 'Log filter playground' }, { id: 'cvss', title: 'CVSS calculator' }],
     expertLabs: [],
-    research: ['mitre-attack', 'cisa-advisories'],
+    research: ['mitre-attack', 'cisa-advisories', 'kashsec-northbridge-soc'],
     objectives: ['sc200.respond', 'secplus.operations'],
     careers: [{ id: 'soc', title: 'SOC Analyst' }]
   },
@@ -125,6 +125,7 @@ export const CERT_TRACKS = [
     name: 'CompTIA Security+',
     vendor: 'CompTIA',
     level: 'Entry',
+    purpose: 'Entry-level control vocabulary: goals, threats, architecture, operations, and what a written policy does not prove.',
     status: 'Two versions can overlap. Confirm which code you will sit before you book.',
     verifiedOn: VERIFIED_ON,
     official: [
@@ -265,6 +266,7 @@ export const CERT_TRACKS = [
     name: 'OffSec OSCP+',
     vendor: 'OffSec',
     level: 'Intermediate practical',
+    purpose: 'Practical habits: enumerate, stay in scope, separate login from object access, and write a finding a stranger can retest.',
     status: 'This is a lab-and-report exam. A multiple-choice quiz is not a substitute.',
     verifiedOn: VERIFIED_ON,
     official: [
@@ -379,6 +381,7 @@ export const CERT_TRACKS = [
     name: 'Microsoft Security Operations Analyst (SC-200)',
     vendor: 'Microsoft',
     level: 'Intermediate',
+    purpose: 'Analyst habits on synthetic logs: separate a lead from a conclusion, and say what a filter cannot see.',
     status: 'Conceptual practice only. A real Sentinel or Defender tenant is a separate, optional lab.',
     verifiedOn: VERIFIED_ON,
     official: [
@@ -424,7 +427,7 @@ export const CERT_TRACKS = [
         minutes: 35,
         skills: ['soc.triage.logs'],
         lesson: { path: '12-network-security', id: 'ids-ips-siem' },
-        practice: { kind: 'research', href: '#/research/mitre-attack', label: 'Read the ATT&CK source card' }
+        practice: { kind: 'soc', href: '#/cybercity/soc', label: 'Triage the Northbridge logs' }
       }
     ],
     questions: [
@@ -691,6 +694,29 @@ export const RESEARCH = [
     defensive: 'Check tool name, tenant, object, and actor against the trusted task. Ignore approval flags that arrive inside the call.',
     check: 'What is the trusted source of the invoice id the tool is allowed to read?',
     portfolio: 'Export the expert-lab notes and label them as a simulation.'
+  },
+  {
+    id: 'kashsec-northbridge-soc',
+    title: 'Case: Northbridge Billing, one invoice and three jobs',
+    kind: 'original-kashsec',
+    author: 'KashSec',
+    publisher: 'KashSec Academy',
+    url: '#/cybercity',
+    published: VERIFIED_ON,
+    checked: VERIFIED_ON,
+    license: 'Original KashSec explanation. Northbridge, Acme, and Birch are fictional. The host uses the reserved .test domain.',
+    topics: ['soc', 'api', 'appsec'],
+    minutes: 25,
+    difficulty: 'core',
+    skills: ['soc.triage.logs', 'web.authz.object-level'],
+    objectives: ['sc200.hunt', 'sc200.respond', 'secplus.architecture', 'oscp.web'],
+    summary: 'The same fictional invoice bug, seen by a tester, an AppSec engineer, and a SOC analyst. No system outside this browser is involved.',
+    happened: 'Bob at Acme was signed in. A request asked billing.northbridge.test for Birch invoice 42 and the API returned 200. The log line is a fixture, not a capture from a real company.',
+    evidence: 'The request, the five log lines, and the policy cases are all in the Northbridge pages. They were written for this course.',
+    uncertainty: 'A matching log line in a real tenant would still need the application’s session code and a change ticket. This fixture does not include either.',
+    defensive: 'Alert when the query tenant and the session tenant differ and the status is 200. Do not treat a missing endpoint log as proof the laptop is clean.',
+    check: 'Which single log line supports the cross-tenant read, and which lines are only context?',
+    portfolio: 'Write three short notes: what the tester showed, what the policy change denies, and what the analyst can and cannot claim.'
   }
 ];
 
@@ -798,6 +824,102 @@ export function researchById(id) {
   return RESEARCH.find(item => item.id === id) || null;
 }
 
+export const SOC_EVENTS = [
+  {
+    id: 'login',
+    time: '09:14:02',
+    source: 'identity',
+    text: 'bob@acme.northbridge.test signed in. Result success. MFA satisfied. Client 203.0.113.10.',
+    verdict: 'not-enough',
+    why: 'A successful login shows Bob authenticated. It does not show which invoice was read.'
+  },
+  {
+    id: 'cross',
+    time: '09:14:11',
+    source: 'api',
+    text: 'GET /invoices/42?tenant=birch&role=billing-support actor=bob@acme.northbridge.test sessionTenant=acme status=200',
+    verdict: 'suspicious',
+    why: 'The session tenant is acme and the query tenant is birch, and the API still returned 200.'
+  },
+  {
+    id: 'own',
+    time: '09:14:12',
+    source: 'api',
+    text: 'GET /invoices/7?tenant=acme actor=bob@acme.northbridge.test sessionTenant=acme status=200',
+    verdict: 'expected',
+    why: 'The query tenant matches the session tenant. This line fits Bob reading an Acme invoice.'
+  },
+  {
+    id: 'endpoint-gap',
+    time: '09:15:01',
+    source: 'endpoint',
+    text: 'No process events for bob-laptop.northbridge.test between 09:14 and 09:16.',
+    verdict: 'not-enough',
+    why: 'Missing endpoint data is a gap. It does not clear the API line and it does not prove malware.'
+  },
+  {
+    id: 'reset',
+    time: '09:16:40',
+    source: 'identity',
+    text: 'sam@acme.northbridge.test password reset failed. Reason: unknown recovery address.',
+    verdict: 'not-enough',
+    why: 'A failed reset for a different user is a separate lead. Do not attach it to the invoice finding without more evidence.'
+  }
+];
+
+export const TRIAGE_LABELS = [
+  ['expected', 'Expected for this user’s own work'],
+  ['suspicious', 'Supports a cross-tenant read'],
+  ['not-enough', 'Not enough to decide']
+];
+
+export const HUNT_SOURCES = ['any', 'identity', 'api', 'endpoint'];
+export const HUNT_TOKENS = ['status=200', 'tenant=birch', 'sessionTenant=acme', 'password reset failed'];
+
+export const PENTEST_EXCHANGE = {
+  request: 'GET /invoices/42?tenant=birch&role=billing-support HTTP/1.1\nHost: billing.northbridge.test\nCookie: session=bob-acme',
+  response: 'HTTP/1.1 200 OK\nContent-Type: application/json\n\n{"id":"42","tenant":"birch","owner":"alice","total":"1840.00"}',
+  session: 'Bob · tenant acme · role customer · active',
+  prompt: 'Which part of this exchange is unsafe to use as the authorization decision?',
+  choices: [
+    'The session that says Bob is an Acme customer',
+    'The tenant and role in the query string',
+    'The fact that the response is JSON',
+    'The reserved .test hostname'
+  ],
+  answer: 1,
+  explanation: 'The session already names the tenant and the role. The query repeats them, and the service believed the query. The hostname only marks the fixture as fictional.'
+};
+
+export function gradeTriage(answers = {}) {
+  const results = SOC_EVENTS.map(event => {
+    const got = answers[event.id] || '';
+    return { id: event.id, expect: event.verdict, got, pass: got === event.verdict, why: event.why, time: event.time };
+  });
+  return { results, passed: results.every(result => result.pass), passedCount: results.filter(result => result.pass).length, total: results.length };
+}
+
+export function filterEvents(source, token) {
+  return SOC_EVENTS.filter(event => {
+    const sourceOk = !source || source === 'any' || event.source === source;
+    const tokenOk = !token || event.text.includes(token);
+    return sourceOk && tokenOk;
+  }).map(event => event.id);
+}
+
+export function gradeHunt(source, token) {
+  const ids = filterEvents(source, token);
+  const precise = ids.length === 1 && ids[0] === 'cross';
+  let note = 'This filter missed the cross-tenant 200. It cannot be the hunt for this incident.';
+  if (precise) note = 'This filter returns only the cross-tenant 200. That is a usable hunt for this fixture.';
+  else if (ids.includes('cross')) note = 'The cross-tenant line is in the result, but so is other activity. Narrow the source or the token.';
+  return { ids, precise, note };
+}
+
+export function gradePentest(selected) {
+  return { pass: selected === PENTEST_EXCHANGE.answer, explanation: PENTEST_EXCHANGE.explanation };
+}
+
 export function validateStudio() {
   const errors = [];
   const skillIds = new Set();
@@ -867,6 +989,9 @@ export function validateStudio() {
     for (const skillId of item.skills) {
       if (!skillById(skillId)) errors.push(`research ${item.id} cites unknown skill ${skillId}`);
     }
+    for (const objectiveId of item.objectives || []) {
+      if (!objectiveIds.has(objectiveId)) errors.push(`research ${item.id} cites unknown objective ${objectiveId}`);
+    }
   }
   const seenCases = new Set();
   for (const item of INVOICE_CASES) {
@@ -878,6 +1003,20 @@ export function validateStudio() {
   if (!secure.passed) errors.push('secure invoice policy does not pass its own cases');
   const vulnerable = gradeInvoicePolicy(VULNERABLE_INVOICE_POLICY);
   if (vulnerable.passed) errors.push('vulnerable invoice policy unexpectedly passes');
+  const triageKey = Object.fromEntries(SOC_EVENTS.map(event => [event.id, event.verdict]));
+  if (!gradeTriage(triageKey).passed) errors.push('Northbridge triage key does not pass');
+  const hunt = gradeHunt('api', 'tenant=birch');
+  if (!hunt.precise) errors.push('Northbridge hunt fixture is not precise');
+  if (gradeHunt('api', 'status=200').precise) errors.push('status=200 hunt should be too wide');
+  if (!gradePentest(PENTEST_EXCHANGE.answer).pass) errors.push('pentest answer key does not pass');
+  if (gradePentest(0).pass) errors.push('wrong pentest choice unexpectedly passes');
+  const eventIds = new Set();
+  for (const event of SOC_EVENTS) {
+    if (eventIds.has(event.id)) errors.push(`duplicate soc event ${event.id}`);
+    eventIds.add(event.id);
+    if (!TRIAGE_LABELS.some(([value]) => value === event.verdict)) errors.push(`soc event ${event.id} has a bad verdict`);
+    if (!event.text.includes('northbridge.test') && !event.text.includes('.test')) errors.push(`soc event ${event.id} left the reserved test namespace`);
+  }
   return errors;
 }
 
@@ -912,6 +1051,25 @@ export function scoreTrack(track, answers) {
     else missed.push({ id: question.id, objective: question.objective, explanation: question.explanation, selected: Number.isInteger(selected) ? selected : null });
   }
   return { correct, total: track.questions.length, missed };
+}
+
+export function reviewQueue(track, answers = {}, statusMap = {}) {
+  const items = [];
+  const seen = new Set();
+  for (const question of track.questions) {
+    const selected = answers[question.id];
+    if (Number.isInteger(selected) && selected !== question.answer && !seen.has(question.objective)) {
+      seen.add(question.objective);
+      items.push({ objectiveId: question.objective, questionId: question.id, reason: 'A formative answer on this objective was wrong.' });
+    }
+  }
+  for (const objective of track.objectives) {
+    if (statusMap[objective.id] === 'review-due' && !seen.has(objective.id)) {
+      seen.add(objective.id);
+      items.push({ objectiveId: objective.id, questionId: null, reason: 'You marked this objective review due.' });
+    }
+  }
+  return items;
 }
 
 export function coverage(track, statusMap = {}) {
@@ -1020,7 +1178,7 @@ export function pageCopies() {
       title: 'Certification prep hub · KashSec Academy',
       description: 'Free Security+, OSCP+, and SC-200 study plans mapped to KashSec lessons. Official links, original questions, and no vendor pass guarantee.',
       heading: 'Certification prep',
-      body: `<p>Prepare for CompTIA Security+, OffSec OSCP+, or Microsoft SC-200 without leaving the course. Each plan uses lessons and labs that already exist, plus a short formative check. Passing a check is not an official score.</p><p>${esc(certText)}</p><p><a href="/skills/">See the skills behind the plans</a> · <a href="/fix-verify/">Fix an authorization bug</a> · <a href="/research/">Read the source notes</a></p>`
+      body: `<p>Prepare for CompTIA Security+, OffSec OSCP+, or Microsoft SC-200 without leaving the course. Each plan uses lessons and labs that already exist, plus a short formative check. Passing a check is not an official score.</p><p>${esc(certText)}</p><p><a href="/skills/">See the skills behind the plans</a> · <a href="/cybercity/">Open the Northbridge case</a> · <a href="/fix-verify/">Fix an authorization bug</a> · <a href="/research/">Read the source notes</a></p>`
     },
     {
       file: 'research/index.html',
@@ -1028,7 +1186,7 @@ export function pageCopies() {
       title: 'Research vault · KashSec Academy',
       description: 'Original KashSec case notes and curated links to OWASP, PortSwigger, MITRE ATT&CK, NIST, and CISA. Sources stay attributed.',
       heading: 'Research vault',
-      body: `<p>These cards either link out or tell an original fictional case. KashSec does not copy paid writeups or exam material. A card marked “not re-fetched” still needs you to open the source.</p><p>${esc(researchText)}</p><p><a href="/certlab/">Use a source inside a certification plan</a> · <a href="/lesson/21-api-security/bola-and-bfla.html">Read the BOLA lesson</a></p>`
+      body: `<p>These cards either link out or tell an original fictional case. KashSec does not copy paid writeups or exam material. A card marked “not re-fetched” still needs you to open the source.</p><p>${esc(researchText)}</p><p><a href="/certlab/">Use a source inside a certification plan</a> · <a href="/cybercity/">Follow one case across three jobs</a> · <a href="/lesson/21-api-security/bola-and-bfla.html">Read the BOLA lesson</a></p>`
     },
     {
       file: 'skills/index.html',
@@ -1036,7 +1194,7 @@ export function pageCopies() {
       title: 'Skills graph · KashSec Academy',
       description: 'A small connected map from lessons and labs to certification objectives and job skills. Recommendations explain why they are next.',
       heading: 'Skills graph',
-      body: `<p>This starter graph connects seven skills. It does not replace the 26 learning paths. Mark a skill only after you can do the outcome, not after you open the page.</p><p>${esc(skillText)}</p><p><a href="/certlab/">Open certification prep</a> · <a href="/labs/">Browse labs</a></p>`
+      body: `<p>This starter graph connects seven skills. It does not replace the 26 learning paths. Mark a skill only after you can do the outcome, not after you open the page.</p><p>${esc(skillText)}</p><p><a href="/certlab/">Open certification prep</a> · <a href="/cybercity/">Practise the Northbridge case</a> · <a href="/labs/">Browse labs</a></p>`
     },
     {
       file: 'fix-verify/index.html',
@@ -1044,7 +1202,15 @@ export function pageCopies() {
       title: 'Fix and verify an invoice API · KashSec Academy',
       description: 'Repair a fictional invoice authorization policy and run allow and deny cases in the browser. No network calls and no real customer data.',
       heading: 'Fix and verify: invoice access',
-      body: `<p>Bob at fictional Acme can read Alice’s invoice at fictional Birch because the handler trusts the query string. Choose where tenant and role come from, then run the cases. The reference solution is not shown until your policy passes. This does not prove a production API is safe.</p><p>A customer may read only their own invoice. Billing support may read invoices in the same trusted tenant. A role or tenant supplied by the browser is not authority. Inactive sessions are denied.</p><p><a href="/expert-labs/tenant-boundary.html">Continue in the expert lab</a> · <a href="/lesson/21-api-security/bola-and-bfla.html">Read the lesson</a> · <a href="/research/">Read the case note</a></p>`
+      body: `<p>Bob at fictional Acme can read Alice’s invoice at fictional Birch because the handler trusts the query string. Choose where tenant and role come from, then run the cases. The reference solution is not shown until your policy passes. This does not prove a production API is safe.</p><p>A customer may read only their own invoice. Billing support may read invoices in the same trusted tenant. A role or tenant supplied by the browser is not authority. Inactive sessions are denied.</p><p><a href="/cybercity/">See the same bug as a tester and as an analyst</a> · <a href="/expert-labs/tenant-boundary.html">Continue in the expert lab</a> · <a href="/lesson/21-api-security/bola-and-bfla.html">Read the lesson</a></p>`
+    },
+    {
+      file: 'cybercity/index.html',
+      path: '/cybercity/',
+      title: 'Northbridge Billing case · KashSec Academy',
+      description: 'One fictional invoice bug, practised as a tester, an AppSec engineer, and a SOC analyst. Synthetic logs only. No live target.',
+      heading: 'Northbridge Billing',
+      body: `<p>Northbridge Billing is not a company you can reach. The host name billing.northbridge.test is reserved for documentation and teaching. Bob at Acme reads Alice’s Birch invoice because the API trusts the query string.</p><p>Use three desks on the same evidence. The tester names the unsafe field. The engineer repairs the policy and runs allow and deny cases. The analyst marks five log lines and narrows a filter until only the cross-tenant response remains. None of this is a vendor lab, a Microsoft KQL hunt, or a production incident.</p><p><a href="/fix-verify/">Repair the policy</a> · <a href="/certlab/">Open a certification plan</a> · <a href="/research/">Read the case card</a></p>`
     }
   ];
 }

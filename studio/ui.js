@@ -1,15 +1,24 @@
 /* Browser UI for CertLab, the Research Vault, the skills graph, and Fix & Verify.
    Loaded on demand from app.js. Progress stays in localStorage under its own key. */
 import {
-  CERT_TRACKS, RESEARCH, SKILLS, SECURE_INVOICE_POLICY, VULNERABLE_INVOICE_POLICY,
-  buildStudyPlan, coverage, esc, explainNext, gradeInvoicePolicy, lessonHref,
-  readinessLabel, researchById, researchKindLabel, scoreTrack, skillById, trackById
+  CERT_TRACKS, HUNT_SOURCES, HUNT_TOKENS, PENTEST_EXCHANGE, RESEARCH, SKILLS, SOC_EVENTS, TRIAGE_LABELS,
+  SECURE_INVOICE_POLICY, VULNERABLE_INVOICE_POLICY,
+  buildStudyPlan, coverage, esc, explainNext, filterEvents, gradeHunt, gradeInvoicePolicy, gradePentest, gradeTriage,
+  lessonHref, readinessLabel, researchById, researchKindLabel, reviewQueue, scoreTrack, skillById, trackById
 } from './model.js';
 
 const STORAGE_KEY = 'kashsec_studio_v1';
 
 function emptyState() {
-  return { mastered: [], plans: {}, answers: {}, objectiveStatus: {}, researchRead: [], fix: { policy: { ...VULNERABLE_INVOICE_POLICY }, notes: '', ran: false } };
+  return {
+    mastered: [],
+    plans: {},
+    answers: {},
+    objectiveStatus: {},
+    researchRead: [],
+    fix: { policy: { ...VULNERABLE_INVOICE_POLICY }, notes: '', ran: false },
+    cybercity: { pentest: null, triage: {}, triageRan: false, huntSource: 'api', huntToken: 'status=200', huntRan: false }
+  };
 }
 
 export function loadState() {
@@ -20,7 +29,12 @@ export function loadState() {
     return {
       ...base,
       ...parsed,
-      fix: { ...base.fix, ...(parsed.fix || {}), policy: { ...base.fix.policy, ...((parsed.fix && parsed.fix.policy) || {}) } }
+      fix: { ...base.fix, ...(parsed.fix || {}), policy: { ...base.fix.policy, ...((parsed.fix && parsed.fix.policy) || {}) } },
+      cybercity: {
+        ...base.cybercity,
+        ...(parsed.cybercity || {}),
+        triage: { ...((parsed.cybercity && parsed.cybercity.triage) || {}) }
+      }
     };
   } catch {
     return emptyState();
@@ -48,6 +62,7 @@ function shell(title, lede, crumbs, body) {
       <a href="#/research">Research</a>
       <a href="#/skills">Skills</a>
       <a href="#/fix-verify">Fix & verify</a>
+      <a href="#/cybercity">Northbridge</a>
     </div>
     ${body}
   </section>`;
@@ -64,11 +79,29 @@ function renderCertHome() {
   const cards = CERT_TRACKS.map(track => `<article class="ks-card">
       <p class="ks-kicker">${esc(track.vendor)} · ${esc(track.level)}</p>
       <h2><a href="#/certlab/${track.id}">${esc(track.name)}</a></h2>
-      <p>${esc(track.status)}</p>
+      <p>${esc(track.purpose || track.status)}</p>
       <p class="ks-meta">Official pages checked ${esc(track.verifiedOn)}. ${track.objectives.length} starter objectives · ${track.questions.length} original questions.</p>
       <a class="btn-amber sm" href="#/certlab/${track.id}">Open plan</a>
     </article>`).join('');
-  return shell('Certification prep', 'Three starter plans. They reuse KashSec lessons and labs. They are not official exams, vouchers, or pass predictions.', '<span>Cert prep</span>', `<div class="ks-grid">${cards}</div><p class="ks-note">Prices, languages, and booking rules change. Use the vendor link on the plan before you pay. Formative answers ship in the public source, so this is practice, not a sealed exam.</p>`);
+  const rows = CERT_TRACKS.map(track => `<tr>
+      <th scope="row">${esc(track.name)}</th>
+      <td>${esc(track.vendor)}</td>
+      <td>${esc(track.purpose || '')}</td>
+      <td>${esc(track.notClaimed)}</td>
+    </tr>`).join('');
+  return shell('Certification prep', 'Three starter plans. They reuse KashSec lessons and labs. They are not official exams, vouchers, or pass predictions.', '<span>Cert prep</span>', `
+    <div class="ks-grid">${cards}</div>
+    <section class="ks-card">
+      <h2>Compare the three plans</h2>
+      <div class="ks-table-wrap">
+        <table class="ks-compare">
+          <caption>What each plan is for, and what KashSec will not claim.</caption>
+          <thead><tr><th scope="col">Plan</th><th scope="col">Vendor</th><th scope="col">Use it for</th><th scope="col">Limitation</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </section>
+    <p class="ks-note">Prices, languages, and booking rules change. Use the vendor link on the plan before you pay. Formative answers ship in the public source, so this is practice, not a sealed exam. The <a href="#/cybercity">Northbridge case</a> is the shared practical for the invoice bug.</p>`);
 }
 
 function renderCertTrack(track, state) {
@@ -95,6 +128,11 @@ function renderCertTrack(track, state) {
   const versions = track.versions.map(version => `<li><strong>${esc(version.code)}</strong> — ${esc(version.note)}</li>`).join('');
   const domains = track.domains.map(domain => `<li>${esc(domain.version)}: ${esc(domain.name)} — ${esc(domain.weight)}</li>`).join('');
   const links = track.official.map(link => `<li><a href="${esc(link.url)}" rel="noopener noreferrer">${esc(link.label)}</a></li>`).join('');
+  const due = reviewQueue(track, answers, statuses);
+  const review = due.length ? `<section class="ks-card" aria-labelledby="ks-review"><h2 id="ks-review">Review these first</h2><ul>${due.map(item => {
+    const objective = track.objectives.find(entry => entry.id === item.objectiveId);
+    return `<li><a href="${objective ? lessonHref(objective.lesson) : '#/skills'}">${esc(objective?.title || item.objectiveId)}</a> — ${esc(item.reason)}</li>`;
+  }).join('')}</ul></section>` : '';
   return shell(esc(track.name), esc(track.status), `<a href="#/certlab">Cert prep</a> · <span>${esc(track.name)}</span>`, `
     <div class="ks-split">
       <section class="ks-card" aria-labelledby="ks-official">
@@ -121,6 +159,7 @@ function renderCertTrack(track, state) {
       <p class="ks-note">${esc(ready.limitation)}</p>
       <ul class="ks-objectives">${objectives}</ul>
     </section>
+    ${review}
     <form class="ks-card" id="ksQuiz" aria-labelledby="ks-quiz-title">
       <h2 id="ks-quiz-title">Formative check</h2>
       <p>Original questions. Explanations appear after you check them. They are not timed and they are not sealed.</p>
@@ -219,11 +258,88 @@ function renderFix(state) {
         <label>Notes <textarea name="notes" rows="8">${esc(state.fix.notes || '')}</textarea></label>
         <button class="btn-ghost sm" type="submit">Save note</button>
         <p id="ksNoteStatus" role="status"></p>
+        <p><a href="#/cybercity">See the same bug as a tester and as an analyst</a></p>
         <p><a href="#/expert-labs/tenant-boundary">Open the expert case with the downloadable Python exercise</a></p>
         <p><a href="#/lesson/21-api-security/bola-and-bfla">Read object-level authorization</a></p>
         <p><a href="#/research/kashsec-invoice-boundary">Read the case card</a></p>
       </form>
     </div>`);
+}
+
+function renderCybercity() {
+  const desks = [
+    ['Tester', 'Name the field the API should not have trusted.', '#/cybercity/pentest', 'Open the exchange'],
+    ['AppSec', 'Repair the policy and run the allow and deny cases.', '#/fix-verify', 'Fix and verify'],
+    ['SOC analyst', 'Mark five synthetic log lines, then narrow a filter.', '#/cybercity/soc', 'Open the log desk']
+  ].map(([role, text, href, label]) => `<article class="ks-card"><p class="ks-kicker">${esc(role)}</p><p>${esc(text)}</p><a class="btn-amber sm" href="${href}">${esc(label)}</a></article>`).join('');
+  return shell('Northbridge Billing', 'One fictional invoice. Three jobs. The host billing.northbridge.test is not a live target.', '<span>Northbridge</span>', `
+    <div class="ks-grid">${desks}</div>
+    <section class="ks-card">
+      <h2>What happened in the fixture</h2>
+      <p>Bob at Acme is signed in as a customer. A request to <span class="ks-log">billing.northbridge.test</span> asks for Birch invoice 42 and sends <span class="ks-log">role=billing-support</span>. The API returns 200. Alice’s invoice was never on a real network.</p>
+      <p>This is not an OffSec machine, a Microsoft tenant, or a CompTIA performance-based item. The SC-200 plan links here so you can practise the habit, then read Microsoft’s own study guide for the real tools.</p>
+      <p><a href="#/research/kashsec-northbridge-soc">Read the case card</a> · <a href="#/certlab/sc-200">Open the SC-200 plan</a></p>
+    </section>`);
+}
+
+function renderPentest(state) {
+  const picked = state.cybercity.pentest;
+  const grade = Number.isInteger(picked) ? gradePentest(picked) : null;
+  const choices = PENTEST_EXCHANGE.choices.map((choice, index) => `<label><input type="radio" name="pentestChoice" value="${index}"${picked === index ? ' checked' : ''}> ${esc(choice)}</label>`).join('');
+  const result = grade ? `<p role="status">${grade.pass ? 'That matches the fixture.' : 'Not that part.'} ${esc(grade.explanation)}</p>` : '<p>The answer stays hidden until you check.</p>';
+  return shell('Tester desk', 'Read one request and one response. Say which part must not decide access.', `<a href="#/cybercity">Northbridge</a> · <span>Tester</span>`, `
+    <form class="ks-card" id="ksPentest">
+      <h2>Session the server already has</h2>
+      <p class="ks-log">${esc(PENTEST_EXCHANGE.session)}</p>
+      <h2>Request</h2>
+      <pre class="ks-log">${esc(PENTEST_EXCHANGE.request)}</pre>
+      <h2>Response</h2>
+      <pre class="ks-log">${esc(PENTEST_EXCHANGE.response)}</pre>
+      <fieldset class="ks-question">
+        <legend>${esc(PENTEST_EXCHANGE.prompt)}</legend>
+        ${choices}
+      </fieldset>
+      <button class="btn-amber sm" type="submit">Check the field</button>
+      <div id="ksPentestResult">${result}</div>
+      <p><a href="#/fix-verify">Take this to the AppSec desk</a></p>
+    </form>`);
+}
+
+function renderSoc(state) {
+  const city = state.cybercity;
+  const triage = city.triageRan ? gradeTriage(city.triage) : null;
+  const rows = SOC_EVENTS.map(event => `<tr>
+      <td>${esc(event.time)}</td>
+      <td>${esc(event.source)}</td>
+      <td class="ks-log">${esc(event.text)}</td>
+      <td><label class="ks-sr">Verdict for ${esc(event.time)}<select name="${esc(event.id)}">${TRIAGE_LABELS.map(([value, label]) => `<option value="${value}"${city.triage[event.id] === value ? ' selected' : ''}>${esc(label)}</option>`).join('')}</select></label></td>
+    </tr>`).join('');
+  const triageResult = triage ? `<p role="status">${triage.passed ? `All ${triage.total} lines match the teaching key.` : `${triage.passedCount} of ${triage.total} lines match.`} ${triage.passed ? 'You can still be wrong in a real queue. This key only fits these five lines.' : ''}</p><ul>${triage.results.filter(result => !result.pass).map(result => `<li>${esc(result.time)} — ${esc(result.why)}</li>`).join('')}</ul>` : '<p>Choose a verdict for every line, then check. The key stays hidden until you do.</p>';
+  const hunt = city.huntRan ? gradeHunt(city.huntSource, city.huntToken) : null;
+  const matched = hunt ? filterEvents(city.huntSource, city.huntToken).map(id => SOC_EVENTS.find(event => event.id === id)).filter(Boolean) : [];
+  const huntResult = hunt ? `<p role="status">${esc(hunt.note)}</p><ul>${matched.map(event => `<li>${esc(event.time)} · ${esc(event.text)}</li>`).join('') || '<li>No lines.</li>'}</ul>` : '<p>Run the filter to see which fixture lines it returns. This is not Microsoft KQL and it does not query a tenant.</p>';
+  return shell('Analyst desk', 'Five synthetic lines from the Northbridge fixture. Mark what each line supports, then isolate the cross-tenant response.', `<a href="#/cybercity">Northbridge</a> · <span>Analyst</span>`, `
+    <form class="ks-card" id="ksTriage">
+      <h2>Triage</h2>
+      <div class="ks-table-wrap">
+        <table class="ks-compare">
+          <caption>Synthetic Northbridge logs. Nothing here was collected from a customer.</caption>
+          <thead><tr><th scope="col">Time</th><th scope="col">Source</th><th scope="col">Line</th><th scope="col">Verdict</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <button class="btn-amber sm" type="submit">Check the lines</button>
+      <div id="ksTriageResult">${triageResult}</div>
+    </form>
+    <form class="ks-card" id="ksHunt">
+      <h2>Narrow the filter</h2>
+      <p>A precise hunt for this fixture returns only the 09:14:11 line. A wide filter that also returns Bob’s own invoice is not finished.</p>
+      <label>Source <select name="source">${HUNT_SOURCES.map(source => `<option value="${esc(source)}"${city.huntSource === source ? ' selected' : ''}>${esc(source)}</option>`).join('')}</select></label>
+      <label>Line must contain <select name="token">${HUNT_TOKENS.map(token => `<option value="${esc(token)}"${city.huntToken === token ? ' selected' : ''}>${esc(token)}</option>`).join('')}</select></label>
+      <button class="btn-amber sm" type="submit">Run filter</button>
+      <div id="ksHuntResult">${huntResult}</div>
+      <p class="ks-note">KashSec estimated practice only. Do not paste this filter into a production workspace and call it a detection.</p>
+    </form>`);
 }
 
 export function renderStudio(root, hash) {
@@ -278,6 +394,19 @@ export function renderStudio(root, hash) {
     root.innerHTML = renderFix(state);
     title = 'Fix and verify · KashSec Academy';
     wireFix(root);
+  } else if (section === 'cybercity' && id === 'pentest') {
+    root.innerHTML = renderPentest(state);
+    title = 'Tester desk · Northbridge';
+    wirePentest(root);
+  } else if (section === 'cybercity' && id === 'soc') {
+    root.innerHTML = renderSoc(state);
+    title = 'Analyst desk · Northbridge';
+    wireSoc(root);
+  } else if (section === 'cybercity' && !id) {
+    root.innerHTML = renderCybercity();
+    title = 'Northbridge Billing · KashSec Academy';
+  } else if (section === 'cybercity') {
+    root.innerHTML = shell('Desk not found', 'That Northbridge desk is not in this case.', `<a href="#/cybercity">Northbridge</a>`, '<p><a href="#/cybercity">Back to the three desks</a></p>');
   } else {
     root.innerHTML = shell('Studio', 'Choose a section.', '<span>Studio</span>', '<p><a href="#/certlab">Cert prep</a></p>');
   }
@@ -320,18 +449,28 @@ function wireCert(root, track) {
     const next = loadState();
     next.answers[track.id] = { ...(next.answers[track.id] || {}), ...answers };
     const result = scoreTrack(track, next.answers[track.id]);
+    next.objectiveStatus[track.id] = { ...(next.objectiveStatus[track.id] || {}) };
     if (result.missed.length === 0) {
-      next.objectiveStatus[track.id] = { ...(next.objectiveStatus[track.id] || {}) };
       for (const objective of track.objectives) {
         if ((next.objectiveStatus[track.id][objective.id] || 'not-started') === 'not-started') {
           next.objectiveStatus[track.id][objective.id] = 'practiced';
         }
       }
+    } else {
+      for (const item of result.missed) {
+        if (item.selected === null) continue;
+        const current = next.objectiveStatus[track.id][item.objective] || 'not-started';
+        if (current !== 'demonstrated') next.objectiveStatus[track.id][item.objective] = 'review-due';
+      }
     }
     saveState(next);
     const host = root.querySelector('#ksQuizResult');
     const details = result.missed.map(item => `<li>${esc(track.questions.find(question => question.id === item.id)?.prompt || item.id)} — ${esc(item.explanation)}</li>`).join('');
-    host.innerHTML = `<p><strong>${result.correct} of ${result.total} correct.</strong> This is a formative score stored in this browser.</p>${details ? `<ul>${details}</ul>` : '<p>Every answer matched. You can still reread the lessons. This is not a vendor score.</p>'}`;
+    const due = reviewQueue(track, next.answers[track.id], next.objectiveStatus[track.id]);
+    host.innerHTML = `<p><strong>${result.correct} of ${result.total} correct.</strong> This is a formative score stored in this browser.</p>${details ? `<ul>${details}</ul>` : '<p>Every answer matched. You can still reread the lessons. This is not a vendor score.</p>'}${due.length ? `<p>${due.length} objective${due.length === 1 ? '' : 's'} marked review due. Reload the plan to see them listed above the questions.</p>` : ''}`;
+    const ready = readinessLabel(track, next.objectiveStatus[track.id], next.answers[track.id]);
+    const node = root.querySelector('#ksReady');
+    if (node) node.textContent = `${ready.label}. ${ready.summary}.`;
   });
 }
 
@@ -344,6 +483,42 @@ function wireResearchFilters(root) {
       card.hidden = topic !== 'all' && !card.dataset.topics.split(' ').includes(topic);
     });
   }));
+}
+
+function wirePentest(root) {
+  root.querySelector('#ksPentest')?.addEventListener('submit', event => {
+    event.preventDefault();
+    const value = new FormData(event.currentTarget).get('pentestChoice');
+    const next = loadState();
+    next.cybercity.pentest = value === null ? null : Number(value);
+    saveState(next);
+    renderStudio(root, '#/cybercity/pentest');
+  });
+}
+
+function wireSoc(root) {
+  root.querySelector('#ksTriage')?.addEventListener('submit', event => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const next = loadState();
+    const triage = {};
+    for (const item of SOC_EVENTS) triage[item.id] = String(data.get(item.id) || '');
+    next.cybercity.triage = triage;
+    next.cybercity.triageRan = true;
+    if (gradeTriage(triage).passed && !next.mastered.includes('soc.triage.logs')) next.mastered.push('soc.triage.logs');
+    saveState(next);
+    renderStudio(root, '#/cybercity/soc');
+  });
+  root.querySelector('#ksHunt')?.addEventListener('submit', event => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const next = loadState();
+    next.cybercity.huntSource = String(data.get('source') || 'any');
+    next.cybercity.huntToken = String(data.get('token') || '');
+    next.cybercity.huntRan = true;
+    saveState(next);
+    renderStudio(root, '#/cybercity/soc');
+  });
 }
 
 function wireFix(root) {

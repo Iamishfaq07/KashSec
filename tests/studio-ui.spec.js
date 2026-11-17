@@ -31,6 +31,30 @@ try {
   await page.getByRole('button', { name: 'Check answers' }).click();
   await page.getByText('3 of 4 correct').waitFor();
   assert.match(await page.locator('#ksQuizResult').innerText(), /trusted session/);
+  assert.match(await page.locator('#ksQuizResult').innerText(), /review due/);
+
+  await page.goto(BASE + '/cybercity/');
+  await page.getByRole('heading', { name: 'Northbridge Billing', level: 1 }).waitFor();
+  await page.getByRole('link', { name: 'Open the exchange' }).click();
+  await page.getByRole('heading', { name: 'Tester desk', level: 1 }).waitFor();
+  await page.getByLabel('The tenant and role in the query string').check();
+  await page.getByRole('button', { name: 'Check the field' }).click();
+  await page.getByText('That matches the fixture.').waitFor();
+
+  await page.goto(BASE + '/cybercity/');
+  await page.getByRole('link', { name: 'Open the log desk' }).click();
+  await page.locator('#ksTriage select[name="login"]').selectOption('not-enough');
+  await page.locator('#ksTriage select[name="cross"]').selectOption('suspicious');
+  await page.locator('#ksTriage select[name="own"]').selectOption('expected');
+  await page.locator('#ksTriage select[name="endpoint-gap"]').selectOption('not-enough');
+  await page.locator('#ksTriage select[name="reset"]').selectOption('not-enough');
+  await page.getByRole('button', { name: 'Check the lines' }).click();
+  await page.getByText('All 5 lines match').waitFor();
+  await page.locator('#ksHunt select[name="source"]').selectOption('api');
+  await page.locator('#ksHunt select[name="token"]').selectOption('tenant=birch');
+  await page.getByRole('button', { name: 'Run filter' }).click();
+  await page.getByText('only the cross-tenant 200').waitFor();
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
 
   await page.goto(BASE + '/fix-verify/');
   await page.getByRole('button', { name: 'Run cases' }).click();

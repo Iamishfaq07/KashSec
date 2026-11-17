@@ -2514,6 +2514,7 @@ function canonicalPathForHash(hash){
   if(hash === '#/research') return '/research/';
   if(hash === '#/skills') return '/skills/';
   if(hash === '#/fix-verify') return '/fix-verify/';
+  if(hash === '#/cybercity') return '/cybercity/';
   const legal = hash.match(/^#\/(about|contact|privacy|terms)$/);
   if(legal) return `/${legal[1]}.html`;
   const lesson = hash.match(/^#\/lesson\/([a-z0-9-]+)(?:\/([a-z0-9-]+))?$/);
@@ -2538,6 +2539,7 @@ function hashRouteForPath(pathname){
   if(pathname === '/research/' || pathname === '/research/index.html') return '#/research';
   if(pathname === '/skills/' || pathname === '/skills/index.html') return '#/skills';
   if(pathname === '/fix-verify/' || pathname === '/fix-verify/index.html') return '#/fix-verify';
+  if(pathname === '/cybercity/' || pathname === '/cybercity/index.html') return '#/cybercity';
   const legal = pathname.match(/^\/(about|contact|privacy|terms)\.html$/);
   if(legal) return `#/${legal[1]}`;
   const lesson = pathname.match(/^\/lesson\/([a-z0-9-]+)\/(?:([a-z0-9-]+)\.html)?$/);
@@ -2772,6 +2774,7 @@ function route(){
   else if(hash === '#/research' || hash.startsWith('#/research/')) renderStudio(hash);
   else if(hash === '#/skills' || hash.startsWith('#/skills/')) renderStudio(hash);
   else if(hash === '#/fix-verify') renderStudio(hash);
+  else if(hash === '#/cybercity' || hash.startsWith('#/cybercity/')) renderStudio(hash);
   else if(hash === '#/skilltree') renderSkillTree();
   else {
     const partsQuiz = hash.match(/^#\/quiz\/([^/]+)$/);
@@ -3247,6 +3250,18 @@ function renderHome(){
         <a class="lab-card" href="/expert-labs/agent-tool-boundary.html"><h3>AI tool authorization</h3><p>Keep an invoice assistant inside its trusted task. Reject another tenant, object or tool while preserving legitimate access.</p><span class="lab-related">Expert lab · about 60 min</span></a>
         <a class="lab-card" href="/expert-labs/rag-document-scope.html"><h3>RAG document isolation</h3><p>Decide which documents may reach model context. Test unauthorized, revoked and missing-metadata cases.</p><span class="lab-related">Expert lab · about 60 min</span></a>
         <a class="lab-card" href="/lesson/18-ai-security/mcp-tool-authorization.html"><h3>Start with the lessons</h3><p>Learn the boundaries in plain language, then keep a report of your own fix, test results and remaining risks.</p><span class="lab-related">Read → repair → verify → explain</span></a>
+      </div>
+    </section>
+    <section class="sec" aria-labelledby="homeNorthbridge">
+      <div class="sec-head" data-reveal>
+        <div class="sec-eyebrow">One case, three jobs</div>
+        <h2 id="homeNorthbridge">Follow a fictional invoice from the bug to the log line</h2>
+        <p class="sec-lead">Northbridge Billing does not exist. The same synthetic evidence is a tester question, an authorization fix, and a five-line triage. Certification plans stay separate from the vendor exams.</p>
+      </div>
+      <div class="labs-grid" data-reveal>
+        <a class="lab-card" href="#/cybercity"><h3>Northbridge case</h3><p>Open the tester, AppSec, and analyst desks. Nothing leaves the browser.</p><span class="lab-related">Fictional · .test only</span></a>
+        <a class="lab-card" href="#/certlab"><h3>Certification prep</h3><p>Security+, OSCP+, and SC-200 starter plans with official links and original questions.</p><span class="lab-related">Not a pass prediction</span></a>
+        <a class="lab-card" href="#/skills"><h3>Skills graph</h3><p>Seven connected skills. The next recommendation says why it is next.</p><span class="lab-related">Mark a skill only after you can do it</span></a>
       </div>
     </section>
     <section class="sec">
@@ -15706,7 +15721,7 @@ function getCommands(){
     ['About KashSec','#/about','info'],['Contact','#/contact','mail'],
     ['Privacy policy','#/privacy','shield'],['Terms of use','#/terms','scale'],
     ['My Progress','#/progress','gauge'],['Changelog','#/changelog','ledger'],['Take the Final Exam','#/quiz/final','flag'],
-    ['Mock interview','#/interview/mock','timer'],['Certification roadmap','#/certs','ticket'],['Certification prep','#/certlab','ticket'],['Research vault','#/research','scroll'],['Skills graph','#/skills','layers'],['Fix and verify','#/fix-verify','shield'],['Skill tree','#/skilltree','layers'],
+    ['Mock interview','#/interview/mock','timer'],['Certification roadmap','#/certs','ticket'],['Certification prep','#/certlab','ticket'],['Research vault','#/research','scroll'],['Skills graph','#/skills','layers'],['Fix and verify','#/fix-verify','shield'],['Northbridge case','#/cybercity','castle'],['Skill tree','#/skilltree','layers'],
     ['Capstone attack chain','#/capstone','castle'],['Weekly challenge chains','#/weekly','clipboard'],
     ['Career-fit quiz','#/career-quiz','puzzle'],['Shuffle quiz','#/quiz/shuffle','dice'],
     ['Learning transcript','#/transcript','doc'],['Review missed questions','#/quiz/missed','refresh']

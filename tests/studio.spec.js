@@ -4,13 +4,14 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import {
-  CERT_TRACKS, RESEARCH, SECURE_INVOICE_POLICY, SKILLS, VULNERABLE_INVOICE_POLICY,
-  buildStudyPlan, explainNext, gradeInvoicePolicy, scoreTrack, validateStudio
+  CERT_TRACKS, PENTEST_EXCHANGE, RESEARCH, SECURE_INVOICE_POLICY, SKILLS, SOC_EVENTS, VULNERABLE_INVOICE_POLICY,
+  buildStudyPlan, esc, explainNext, gradeHunt, gradeInvoicePolicy, gradePentest, gradeTriage, reviewQueue, scoreTrack, validateStudio
 } from '../studio/model.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const errors = validateStudio();
 assert.deepEqual(errors, [], errors.join('\n'));
+assert.equal(esc('<script>"&"</script>'), '&lt;script&gt;&quot;&amp;&quot;&lt;/script&gt;');
 
 for (const skill of SKILLS) {
   for (const lesson of skill.lessons) {
@@ -55,6 +56,20 @@ const second = explainNext(['foundations.cia']);
 assert.equal(second.skill.id, 'networking.dns.resolution');
 assert.match(second.reason, /Confidentiality, integrity, and availability/);
 
+const triage = gradeTriage(Object.fromEntries(SOC_EVENTS.map(event => [event.id, event.verdict])));
+assert.equal(triage.passed, true);
+assert.equal(triage.total, 5);
+assert.equal(gradeTriage({ cross: 'expected' }).passed, false);
+const precise = gradeHunt('api', 'tenant=birch');
+assert.deepEqual(precise.ids, ['cross']);
+assert.equal(precise.precise, true);
+assert.equal(gradeHunt('api', 'status=200').precise, false);
+assert.equal(gradePentest(PENTEST_EXCHANGE.answer).pass, true);
+assert.equal(gradePentest(0).pass, false);
+const review = reviewQueue(track, { 'secplus.q1': 0 });
+assert.equal(review[0].objectiveId, 'secplus.architecture');
+assert.equal(reviewQueue(track, perfect).length, 0);
+
 assert.ok(RESEARCH.some(item => item.kind === 'original-kashsec'));
 assert.ok(RESEARCH.filter(item => item.kind === 'curated-external').every(item => item.url.startsWith('https://')));
 assert.equal(new Set(RESEARCH.map(item => item.id)).size, RESEARCH.length);
@@ -66,7 +81,7 @@ const sc200 = CERT_TRACKS.find(item => item.id === 'sc-200');
 assert.match(sc200.versions[0].note, /does not show domain percentages/);
 
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
-for (const file of ['certlab/index.html', 'research/index.html', 'skills/index.html', 'fix-verify/index.html']) {
+for (const file of ['certlab/index.html', 'research/index.html', 'skills/index.html', 'fix-verify/index.html', 'cybercity/index.html']) {
   const html = fs.readFileSync(path.join(root, file), 'utf8');
   const canonical = html.match(/<link rel="canonical" href="([^"]+)">/)?.[1];
   assert.ok(canonical && sitemap.includes(`<loc>${canonical}</loc>`), file);
