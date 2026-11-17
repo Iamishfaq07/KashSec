@@ -62,6 +62,30 @@ try{
   check(await page.locator('.sg-steps>li').count()===3 && await page.evaluate(()=>STATE.learningGuide.focus)==='basics' && await page.evaluate(()=>STATE.studyPlan.pathId)==='03-linux','previewing choices leaves saved preferences and the planner unchanged');
   await save(page);
   check(await page.evaluate(()=>STATE.learningGuide.focus==='web'&&STATE.learningGuide.experience==='some'&&STATE.learningGuide.updatedAt>0&&renderGeneration)===generation,'saving a route persists it without rerouting');
+  await page.locator('input[name="goal"][value="soc"]').check();
+  const goalBox=page.locator('#sgStudio');
+  await goalBox.getByRole('heading',{name:'Today',exact:true}).waitFor();
+  const {buildStartRoute}=await import('../studio/model.js');
+  for(const minutes of [15,30,60]){
+    await page.locator(`input[name="minutes"][value="${minutes}"]`).check();
+    const expected=buildStartRoute({experience:'some',goal:'soc',minutes});
+    await page.waitForFunction(count=>document.querySelector('#sgStudio section section ol')?.children.length===count,expected.today.length);
+    for(const [title,items] of [['Today',expected.today],['Later',expected.later]]){
+      const group=goalBox.locator('section').filter({has:page.getByRole('heading',{name:title,exact:true})}).last();
+      assert.equal(await group.locator('li').count(),items.length);
+      for(const item of items){
+        assert.ok((await group.innerText()).includes(item.title));
+        assert.ok((await group.innerText()).includes(`${item.minutes} minutes`));
+        assert.ok((await group.innerText()).includes(item.why));
+      }
+    }
+  }
+  check(true,'goal steps retain content and durations in Today and Later groups for each time budget');
+  await page.getByRole('radio',{name:'No additional goal',exact:true}).check();
+  await save(page);
+  check(await goalBox.innerText()==='' && await page.evaluate(()=>STATE.learningGuide.goal)==='', 'clearing an optional goal removes its route and saves an empty goal');
+  await page.reload();await page.locator('#sgForm').waitFor();
+  check(await page.getByRole('radio',{name:'No additional goal',exact:true}).isChecked() && await page.locator('#sgStudio').innerText()==='', 'a cleared goal stays cleared after reload');
   await choose(page,'practice','defense');
   await page.reload();await page.locator('#sgForm').waitFor();
   check(await page.locator('input[name="focus"][value="web"]').isChecked() && await page.locator('input[name="experience"][value="some"]').isChecked(),'reloading restores saved choices rather than an unsaved preview');
@@ -115,7 +139,7 @@ try{
       check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${theme} starting guide fits ${width}px`);
     }
   }
-  check(documents===2,'route previews, save actions, and activity links do not reload the document');
+  check(documents===3,'route previews, save actions, and activity links do not reload the document');
   check(errors.length===0,'starting-guide flows produce no JavaScript errors');
   await context.close();
 
@@ -159,7 +183,8 @@ try{
   await offlinePage.goto(BASE+'/#/start');await offlinePage.locator('#sgForm').waitFor();
   await offlinePage.evaluate(async()=>{await navigator.serviceWorker.ready;});
   await offlinePage.waitForFunction(async()=>!!(await caches.match(new URL('learning-guide.js',location.origin).href)));
-  await offline.setOffline(true);await offlinePage.reload();await offlinePage.locator('#sgForm').waitFor();
+  check(!await offlinePage.evaluate(async()=>!!(await caches.match(location.origin+'/start/'))),'the canonical start route has never been cached online');
+  await offline.setOffline(true);await offlinePage.goto(BASE+'/start/');await offlinePage.locator('#sgForm').waitFor();
   await choose(offlinePage,'some','web');await save(offlinePage);
   check(await offlinePage.evaluate(()=>JSON.parse(localStorage.getItem('kashsec_state_v1')).learningGuide.focus)==='web' && await offlinePage.locator('.sg-steps>li').count()===3,'the guide reloads, previews routes, and saves choices offline');
   await offline.close();

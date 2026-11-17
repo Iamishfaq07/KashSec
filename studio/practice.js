@@ -317,7 +317,7 @@ export const GLOSSARY = [
   { id: 'dkim', term: 'DKIM', body: 'A signature on selected message headers and body. A pass means those bytes were signed by a key the domain published. It does not make a password request legitimate.' },
   { id: 'oauth-state', term: 'OAuth state', body: 'A value your app creates before the login redirect and checks when the browser comes back. It is there to recognise your own request, not to identify the user.' },
   { id: 'nonce', term: 'OIDC nonce', body: 'A value you send with the login request and expect inside the ID token. It binds that token to this attempt.' },
-  { id: 'least-privilege', term: 'Least privilege', body: 'Give a principal the actions and resources the job needs, and no standing extra. A wildcard fails that test even when today’s caller is honest.' },
+  { id: 'least-privilege', term: 'Least privilege', body: 'Give a principal the actions and resources the job needs, and no standing extra. A wildcard Resource is excess scope when the action supports resource-level permissions; actions without that support require Resource "*".' },
   { id: 'pr-target', term: 'pull_request_target', body: 'A GitHub Actions trigger that runs in the base repository’s context. Combined with a checkout of the pull request head, it can execute fork code where secrets are available.' },
   { id: 'prompt-injection', term: 'Prompt injection', body: 'Untrusted text, often in a document or a web page, written to change what a model does. Treat it as data. Do not give it a new tool permission.' },
   { id: 'digest', term: 'Image digest', body: 'A hash of container bytes. A tag such as latest can move to new bytes. A digest stays on the bytes you reviewed until you change it.' }

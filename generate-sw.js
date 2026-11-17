@@ -275,7 +275,7 @@ self.addEventListener('fetch', event => {
       ((url.pathname.endsWith('.html') &&
         (['/lesson/', '/labs/', '/tools/', '/expert-labs/'].some(prefix => url.pathname.startsWith(prefix)) ||
          ['/faq.html', '/practice.html', '/exam.html'].includes(url.pathname))) ||
-       ['/lesson/', '/labs/', '/tools/', '/expert-labs/'].includes(url.pathname) ||
+       ['/lesson/', '/labs/', '/tools/', '/expert-labs/', '/start/'].includes(url.pathname) ||
        (url.pathname.startsWith('/lesson/') && url.pathname.endsWith('/')));
     event.respondWith(isCanonicalPage ? canonicalNavigation(request, event) :
       staleWhileRevalidate(request, isLesson || resource ? CONTENT_CACHE : SHELL_CACHE, event, isLesson ? {lesson:true} : resource));

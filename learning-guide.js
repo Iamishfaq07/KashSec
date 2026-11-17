@@ -50,7 +50,7 @@ window.KashLearningGuide = (()=>{
       <div class="sg-layout"><section class="sg-choices" aria-labelledby="sgChoicesHeading"><h2 id="sgChoicesHeading">Choose your starting point</h2><p class="pg-hint">Your choices shape the suggested order. You can open any step and change direction whenever you like.</p><form id="sgForm">
         <fieldset><legend><span>1</span> What feels closest to you?</legend>${EXPERIENCES.map(item=>`<label class="sg-option"><input type="radio" name="experience" value="${item.id}" required><span><strong>${item.title}</strong><span>${item.desc}</span></span></label>`).join('')}</fieldset>
         <fieldset><legend><span>2</span> What would you like to explore?</legend>${FOCUSES.map(item=>`<label class="sg-option"><input type="radio" name="focus" value="${item.id}" required><span><strong>${item.title}</strong><span>${item.desc}</span></span></label>`).join('')}</fieldset>
-        <fieldset><legend><span>3</span> Optional: a goal and a time</legend><p class="pg-hint">Leave this blank to keep only the route above. A beginner goal starts with an existing lesson, not an expert lab.</p>${[['unsure','Not sure yet'],['pentest','Pentest'],['soc','SOC'],['appsec','AppSec'],['cloud','Cloud'],['ai','AI security'],['cert','A certification'],['grc','GRC']].map(([value,label])=>`<label class="sg-option"><input type="radio" name="goal" value="${value}"><span><strong>${label}</strong></span></label>`).join('')}${[15,30,60].map(value=>`<label class="sg-option"><input type="radio" name="minutes" value="${value}"><span><strong>${value===60?'60 minutes or more':value+' minutes'}</strong></span></label>`).join('')}</fieldset>
+        <fieldset><legend><span>3</span> Optional: a goal and a time</legend><p class="pg-hint">Leave this blank to keep only the route above. A beginner goal starts with an existing lesson, not an expert lab.</p>${[['','No additional goal'],['unsure','Not sure yet'],['pentest','Pentest'],['soc','SOC'],['appsec','AppSec'],['cloud','Cloud'],['ai','AI security'],['cert','A certification'],['grc','GRC']].map(([value,label])=>`<label class="sg-option"><input type="radio" name="goal" value="${value}"${value===''?' checked':''}><span><strong>${label}</strong></span></label>`).join('')}${[15,30,60].map(value=>`<label class="sg-option"><input type="radio" name="minutes" value="${value}"><span><strong>${value===60?'60 minutes or more':value+' minutes'}</strong></span></label>`).join('')}</fieldset>
         <div class="sg-form-actions"><button type="submit" class="btn-amber" id="sgSave">Save my route</button><button type="button" class="btn-ghost" id="sgJump">See my route ↓</button></div><p id="sgStatus" class="pg-hint" role="status"></p></form><p class="pg-hint">Saved choices are included in progress backups and optional account sync.</p></section>
         <section class="sg-result" aria-labelledby="sgRouteHeading" id="sgResult"></section></div>
       <p class="sg-footer"><a class="pg-link" href="#/course">Browse every course path →</a><a class="pg-link" href="#/career-quiz">Explore career interests →</a></p><p class="pg-hint">This guide works offline after your first visit. Open or save the linked activities in advance to use those offline too.</p></section>`;
@@ -61,7 +61,7 @@ window.KashLearningGuide = (()=>{
     function readSaved(){
       form.elements.experience.value=STATE.learningGuide.experience;
       form.elements.focus.value=STATE.learningGuide.focus;
-      if(STATE.learningGuide.goal) form.elements.goal.value=STATE.learningGuide.goal;
+      form.elements.goal.value=STATE.learningGuide.goal || '';
       if([15,30,60].includes(STATE.learningGuide.minutes)) form.elements.minutes.value=String(STATE.learningGuide.minutes);
     }
     function choices(){return {experience:form.elements.experience.value,focus:form.elements.focus.value};}
@@ -89,11 +89,11 @@ window.KashLearningGuide = (()=>{
       const minutes=Number(form.elements.minutes.value || STATE.learningGuide.minutes || 15);
       const experience=form.elements.experience.value;
       import('./studio/model.js').then(({buildStartRoute})=>{
-        if(form.elements.goal.value!==goal) return;
+        if(!box.isConnected || form.elements.goal.value!==goal || form.elements.experience.value!==experience || Number(form.elements.minutes.value || STATE.learningGuide.minutes || 15)!==minutes) return;
         const mapped=experience==='new'?'beginner':experience==='some'?'some':'experienced';
         const route=buildStartRoute({experience:mapped,goal,minutes});
-        const items=route.today.concat(route.later);
-        box.innerHTML=`<section class="sg-planner"><h3>Also fits this goal</h3><p>${escapeHtml(route.reason)}</p><p><a class="btn-amber" href="${route.first.href}">${escapeHtml(route.first.title)}</a></p><ol class="sg-steps">${items.map(item=>`<li><div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.why)}</p><a href="${item.href}">Open this step →</a></div></li>`).join('')}</ol></section>`;
+        const group=(title,items)=>`<section><h4>${title}</h4>${items.length?`<ol class="sg-steps">${items.map(item=>`<li><div><h3>${escapeHtml(item.title)}</h3><p>${item.minutes} minutes</p><p>${escapeHtml(item.why)}</p><a href="${item.href}">Open this step →</a></div></li>`).join('')}</ol>`:'<p>No steps remaining.</p>'}</section>`;
+        box.innerHTML=`<section class="sg-planner"><h3>Also fits this goal</h3><p>${escapeHtml(route.reason)}</p><p><a class="btn-amber" href="${route.first.href}">${escapeHtml(route.first.title)}</a></p>${group('Today',route.today)}${group('Later',route.later)}</section>`;
       }).catch(()=>{ box.textContent='The goal route could not load. The route above still works.'; });
     }
     readSaved();paint();
