@@ -28,7 +28,7 @@ Status codes come in five families, each starting with a different digit:
 
 ## The 401 vs. 403 distinction — genuinely worth knowing precisely
 
-A common point of confusion, and a genuinely useful one to get right: **401 Unauthorized** actually means "you're not authenticated at all — who are you?", while **403 Forbidden** means "I know who you are, but you're not allowed to do this." This distinction matters directly for security assessment: a 403 on an endpoint you're not logged into at all can be a meaningful signal that the endpoint exists and is doing *some* kind of access check, even before you've authenticated — genuinely useful reconnaissance information.
+**401 Unauthorized** means the request lacks valid authentication credentials; they may be missing or invalid. The response includes a `WWW-Authenticate` challenge. **403 Forbidden** means the server understood the request but refuses to fulfill it. A 403 alone does not prove that the server identified the requester or reveal whether a particular resource exists. A server can also use 404 when it is unwilling to disclose a representation.
 
 ## Why status codes leak information, sometimes unintentionally
 
@@ -36,8 +36,18 @@ A server returning a different status code depending on whether a specific usern
 
 :::challenge Test yourself
 Why might a security-conscious application deliberately return the *same* status code and error message for "wrong password" and "username doesn't exist," rather than distinguishing between them?
-<details><summary>Show answer</summary>Returning different responses for these two cases — even something as subtle as a different status code, a different error message, or a different response time — creates a <strong>username enumeration</strong> vulnerability: an attacker can systematically try many usernames and use the response difference alone to determine which ones correspond to real accounts on the system, entirely without needing to guess a correct password at all. Once an attacker has confirmed a real username this way, they can focus password-guessing or credential-stuffing efforts (from Path 00) specifically on known-valid accounts rather than wasting effort on nonexistent ones. Returning an identical, generic response ("invalid username or password") regardless of which specific thing was actually wrong closes this information leak entirely.</details>
+<details><summary>Show answer</summary>Returning different responses for these two cases — even something as subtle as a different status code, a different error message, or a different response time — creates a <strong>username enumeration</strong> vulnerability: an attacker can systematically try many usernames and use the response difference alone to determine which ones correspond to real accounts on the system, entirely without needing to guess a correct password at all. Once an attacker has confirmed a real username this way, they can focus password-guessing or credential-stuffing efforts (from Path 00) specifically on known-valid accounts rather than wasting effort on nonexistent ones. A consistent, generic response can reduce this leak; also test timing and other response differences.</details>
 :::
+
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:fd494fe7576ab1507cdd732d8423efdcddf73579682a996d94b026bbeadd0c9b -->
+
+## Practice with fictional responses
+
+Try [HTTP Response Practice](/tools/httpstatus.html) to compare 401, 403, 404, and 429 without sending requests. Use the [HTTP semantics specification](https://www.rfc-editor.org/rfc/rfc9110.html) and [RFC 6585](https://www.rfc-editor.org/rfc/rfc6585.html#section-4) to check the status meanings and rate-limit guidance.
+
+<!-- /coderabbit-ai-generated:v1 -->
 
 ## Key terms
 
@@ -48,7 +58,7 @@ Why might a security-conscious application deliberately return the *same* status
 ## Recap
 
 - GET should never change server state — a genuinely important distinction, since GET requests are cached, logged, and prefetched in ways state-changing requests shouldn't be.
-- Status codes fall into five families (2xx success, 3xx redirect, 4xx client error, 5xx server error), and the 401-vs-403 distinction ("who are you" vs. "you can't do that") carries real reconnaissance value.
+- Status codes fall into five families (2xx success, 3xx redirect, 4xx client error, 5xx server error), and 401 indicates missing or invalid credentials; 403 indicates refusal and does not by itself prove identity.
 - Subtle differences in server responses — including status codes — can accidentally enable username enumeration, a genuine, common real-world finding covered properly in Path 11.
 
 **Next up →** [Cookies, sessions, logins](#/lesson/05-web-basics/cookies-sessions)

@@ -33,6 +33,13 @@ test("HTML fallback pages never count as lessons", async () => {
   );
 });
 
+test("generated lesson markers are accepted without masking HTML fallback pages", async () => {
+  globalThis.fetch = async () => new Response("<!-- coderabbit-ai-generated:v1 -->\n\n# Lesson\n\nText.");
+  assert.match(await loadLessonSource("test-path", "marked-lesson", new AbortController().signal), /# Lesson/);
+  globalThis.fetch = async () => new Response("<!-- coderabbit-ai-generated:v1 -->\n<html>\n# Fake lesson\n</html>");
+  await assert.rejects(loadLessonSource("test-path", "marked-html", new AbortController().signal), /did not return a lesson/);
+});
+
 test("aborting navigation cancels a pending lesson request", async () => {
   globalThis.fetch = async (_url, init) =>
     new Promise((_resolve, reject) => {

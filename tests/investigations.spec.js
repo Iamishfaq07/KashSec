@@ -37,7 +37,7 @@ async function answer(page,item,correct=true){
   await page.locator('#iwResultHeading').waitFor();
 }
 try{
-  check(cases.length===3 && new Set(cases.map(item=>item.id)).size===3,'three distinct investigation cases are available');
+  check(cases.length===4 && new Set(cases.map(item=>item.id)).size===cases.length,'four distinct investigation cases are available');
   for(const item of cases){
     check(item.evidence.length===3 && new Set(item.evidence.map(file=>file.id)).size===3 && item.evidence.every(file=>file.text.length>300),`${item.id}: evidence files are complete and distinct`);
     check(item.questions.length===3 && new Set(item.questions.map(q=>q.id)).size===3 &&
@@ -56,7 +56,7 @@ try{
   await page.evaluate(()=>navigateTo('#/labs'));
   await page.getByRole('link',{name:'Open the workbench →'}).click();
   await page.locator('.iw-card').first().waitFor();
-  check(bundles===1 && await page.locator('.iw-card').count()===3,'Labs opens the lazily loaded caseboard');
+  check(bundles===1 && await page.locator('.iw-card').count()===cases.length,'Labs opens the lazily loaded caseboard');
   await page.getByLabel('Focus',{exact:true}).selectOption('Cloud');
   check(await page.locator('.iw-card:visible').count()===1 && /outlived/.test(await page.locator('.iw-card:visible').innerText()),'the caseboard focus filter shows the matching discipline');
   await page.getByLabel('Focus',{exact:true}).selectOption('all');
@@ -107,23 +107,33 @@ try{
   check(await page.locator('input:checked').count()===0 && await page.locator('#iwNotes').inputValue()==='Saved immediately before refresh.' && await page.locator('#iwDebrief').innerText()==='', 'new attempts reset decisions while keeping notes');
   for(const item of cases){
     if(item!==cases[0])await openCase(page,item.id);
+    if(item.id==='patch-rollout'){
+      check((await page.locator('#iwEvidenceText').innerText()).replace(/\s+/g,' ').includes('not establish that Atlas itself was attacked'),'the advisory distinguishes outside exploitation from local evidence');
+      await page.locator('#iwTab-inventory').click();
+      check((await page.locator('#iwEvidenceText').innerText()).includes('Region west') && (await page.locator('#iwEvidenceText').innerText()).includes('1.2.4'),'the inventory identifies the still-affected region');
+    }
     await answer(page,item);
     check(await page.locator('#iwResultHeading').innerText()==='3 of 3 decisions matched',`${item.id}: supported decisions produce a complete review`);
+    if(item.id==='patch-rollout'){
+      const reportReady=page.waitForEvent('download');await page.locator('#iwDownloadReport').click();
+      const report=await readFile(await (await reportReady).path(),'utf8');
+      check(report.includes('west remains exposed') && report.includes('No Atlas exploitation is established'),'the case report retains the exposure and investigation limits');
+    }
   }
   check(await page.evaluate(()=>STATE.investigations['mailbox-takeover'].bestScore)===100 &&
     await page.evaluate(()=>STATE.investigations['mailbox-takeover'].attempts)===2,'best review and attempt count survive retries');
   await page.evaluate(()=>navigateTo('#/investigations'));
   await page.locator('.iw-board').waitFor();
-  check(/3\s*\/\s*3/.test(await page.locator('.iw-board>strong').innerText()) && await page.getByRole('link',{name:'Review debrief →'}).count()===3,'the caseboard summarises reviewed cases');
+  check(new RegExp(`${cases.length}\\s*\\/\\s*${cases.length}`).test(await page.locator('.iw-board>strong').innerText()) && await page.getByRole('link',{name:'Review debrief →'}).count()===cases.length,'the caseboard summarises reviewed cases');
   await page.evaluate(()=>navigateTo('#/progress'));
   const backupReady=page.waitForEvent('download');
   await page.locator('#exportProgressBtn').click();
   const backup=await readFile(await (await backupReady).path());
-  check(Object.keys(JSON.parse(backup).investigations).length===3,'progress backups include all casework');
+  check(Object.keys(JSON.parse(backup).investigations).length===cases.length,'progress backups include all casework');
   await page.evaluate(()=>{STATE.investigations={};saveState();});
   page.once('dialog',dialog=>dialog.accept());
   await page.locator('#importProgressFile').setInputFiles({name:'casework.json',mimeType:'application/json',buffer:backup});
-  await page.waitForFunction(()=>Object.keys(STATE.investigations).length===3);
+  await page.waitForFunction(count=>Object.keys(STATE.investigations).length===count,cases.length);
   await openCase(page,'mailbox-takeover');
   check(await page.locator('#iwResultHeading').innerText()==='3 of 3 decisions matched','imported casework restores a completed review');
   for(const theme of ['dark','light']){
@@ -182,7 +192,7 @@ try{
   await failedPage.goto(BASE+'/#/investigations');
   await failedPage.locator('#iwLoadRetry').click();
   await failedPage.locator('.iw-card').first().waitFor();
-  check(await failedPage.locator('.iw-card').count()===3,'a failed bundle has a working in-page retry');
+  check(await failedPage.locator('.iw-card').count()===cases.length,'a failed bundle has a working in-page retry');
   await failedPage.evaluate(()=>navigateTo('#/investigations/unknown'));
   await failedPage.waitForFunction(()=>!document.querySelector('.loading'));
   check(await failedPage.locator('#iwDecisionForm').count()===0 && await failedPage.locator('#app h1').count()===1,'unknown cases show a safe not-found page');
@@ -211,7 +221,7 @@ try{
     await syncedPage.waitForFunction(()=>window.__writes>0);
     await syncedPage.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));
     if(mode==='hub'){
-      check(/2\s*\/\s*3/.test(await syncedPage.locator('.iw-board>strong').innerText()) &&
+      check(new RegExp(`2\\s*\\/\\s*${cases.length}`).test(await syncedPage.locator('.iw-board>strong').innerText()) &&
         await syncedPage.locator('.iw-card:visible').count()===1 && await syncedPage.getByLabel('Focus',{exact:true}).inputValue()==='Cloud',
         'late sync updates caseboard progress while preserving the selected filter');
     }else{
@@ -235,6 +245,12 @@ try{
   check(await offlinePage.locator('#iwNotes').inputValue()==='Offline notebook','opened cases and notes reload offline');
   await answer(offlinePage,cases[0]);
   check(await offlinePage.locator('#iwResultHeading').innerText()==='3 of 3 decisions matched','evidence and decision review work offline');
+  await openCase(offlinePage,'patch-rollout');
+  await offlinePage.locator('#iwNotes').fill('Confirm west deployment');
+  await offlinePage.reload();await offlinePage.locator('#iwDecisionForm').waitFor();
+  check(await offlinePage.locator('#iwNotes').inputValue()==='Confirm west deployment','new case notes reload offline');
+  await answer(offlinePage,cases.find(item=>item.id==='patch-rollout'));
+  check(await offlinePage.locator('#iwResultHeading').innerText()==='3 of 3 decisions matched','new case evidence and decisions work offline');
   await offline.close();
   console.log(`\n  Incident Workbench: ${checks} checks passed\n`);
 }finally{await browser.close();}

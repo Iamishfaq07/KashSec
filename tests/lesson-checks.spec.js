@@ -10,6 +10,8 @@ const pathId = '22-devsecops-appsec';
 const path = paths.find(p=>p.id===pathId);
 assert.equal(Object.keys(checks).filter(key=>key.startsWith(pathId+'/')).length,path.subs.length);
 assert.equal(Object.keys(checks).filter(key=>key.startsWith('18-ai-security/')).length,3);
+const networking=paths.find(p=>p.id==='02-networking');
+assert.equal(networking.subs.filter(sub=>checks[`02-networking/${sub.id}`]).length,networking.subs.length,'every Networking lesson has its own check');
 assert.deepEqual(checks,JSON.parse(read('preview/src/data/lesson-checks.json')));
 for(const [key,q] of Object.entries(checks)){
   const [checkPath,checkSub]=key.split('/');
@@ -22,7 +24,7 @@ for(const [key,q] of Object.entries(checks)){
   const headings=read(`course/${key}.md`).split('\n').filter(line=>/^#{2,3} /.test(line)).map(line=>line.replace(/^#+ /,''));
   assert.ok(headings.includes(q.review),`${key}: review target exists in the source lesson`);
 }
-console.log('PASS: 18 AppSec and three new AI lessons have dedicated checks, real review targets, and identical preview data.');
+console.log(`PASS: ${path.subs.length} AppSec, three AI and ${networking.subs.length} Networking lessons have dedicated checks, real review targets, and identical preview data.`);
 const preview=process.env.CHECK_FRONTEND==='preview';
 const BASE=preview?(process.env.PREVIEW_BASE||'http://127.0.0.1:8080'):(process.env.BASE||'http://127.0.0.1:8000');
 const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefined});
@@ -44,6 +46,17 @@ try{
   for(const [key,q] of Object.entries(checks)){
     const [activePath,subId]=key.split('/');
     const sub=paths.find(p=>p.id===activePath).subs.find(s=>s.id===subId);await open(sub,activePath);
+    if(preview && ['vulnerability-triage-in-practice','verify-vulnerability-remediation'].includes(subId)){
+      assert.equal(await page.locator('.prose-lesson h1').count(),0,'the page heading is not duplicated inside the lesson');
+      assert.equal(await page.locator('.prose-lesson a[href="https://kashsec.vercel.app/tools/vulntriage.html"]').count(),1,'practice link opens the main-site tool');
+      const target=subId==='vulnerability-triage-in-practice'?'verify-vulnerability-remediation':'vulnerability-triage-in-practice';
+      assert.equal(await page.locator(`.prose-lesson a[href="/lesson/22-devsecops-appsec/${target}"]`).count(),1,'related lesson uses the preview route');
+    }
+    if(preview && subId==='dns-response-troubleshooting'){
+      assert.equal(await page.locator('.prose-lesson h1').count(),0,'the lesson does not duplicate the page heading');
+      assert.equal(await page.locator('.prose-lesson a[href="https://kashsec.vercel.app/tools/dnsrecords.html"]').count(),1,'DNS practice opens the main-site tool');
+      assert.equal(await page.locator('.prose-lesson a[href="https://kashsec.vercel.app/#/playground/network"]').count(),1,'the network experiment opens on the main site');
+    }
     assert.ok((await host().innerText()).includes(q.q));
     assert.equal(await buttons().count(),4);
     assert.equal(await buttons().evaluateAll(items=>items.some(b=>b.disabled)),false);
@@ -69,7 +82,7 @@ try{
     }
     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`${sub.id}: no horizontal overflow`);
   }
-  console.log(`PASS: ${preview?'preview':'main'} all 21 checks, wrong/correct answers, feedback focus, real review targets, keyboard retries, and mobile fit.`);
+  console.log(`PASS: ${preview?'preview':'main'} all ${Object.keys(checks).length} checks, wrong/correct answers, feedback focus, real review targets, keyboard retries, and mobile fit.`);
   // Returning to an answered lesson starts a new optional check; scores do not
   // leak between lessons or survive a refresh as an implied assessment result.
   await open(path.subs[0]);assert.equal((await feedback().innerText()).trim(),'');

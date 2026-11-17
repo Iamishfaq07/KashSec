@@ -48,6 +48,16 @@ DNS stores different kinds of entries. Knowing a few helps in recon:
 | **PTR** | Reverse lookup — IP → name |
 | **SOA** | Administrative info about the zone |
 
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:c86fee50ed072ff3466304052f31e33f10f1e610408987c547bccc876e182d90 -->
+
+## Practice with sample records
+
+Try [DNS Record Practice](/tools/dnsrecords.html) to choose A, AAAA, MX, CNAME and TXT records for fictional tasks. The activity uses fixed examples and sends no DNS queries. The [DNS specification](https://www.rfc-editor.org/rfc/rfc1035.html) describes resource records and TTLs; [RFC 3596](https://www.rfc-editor.org/rfc/rfc3596.html) defines the AAAA record.
+
+<!-- /coderabbit-ai-generated:v1 -->
+
 ## Try it yourself
 
 ```bash
@@ -79,7 +89,7 @@ dog google.com
 
 ## TTL — how long a lookup gets remembered
 
-Every DNS record has a **TTL (Time To Live)** — a number, in seconds, telling resolvers how long they're allowed to cache (remember) that answer before asking again. A low TTL (like 60 seconds) means changes propagate to the world quickly, but generates more repeated lookup traffic; a high TTL (like 86400, a full day) means better caching efficiency, but changes take longer to take effect everywhere. This matters practically: administrators often deliberately lower a record's TTL shortly *before* making a planned change (like moving to a new server), specifically to shrink the window where some users see the old answer and others see the new one — and it matters for reconnaissance too, since historical DNS data (referenced in this path's earlier hands-on lab) exists precisely because some resolvers and services log every answer they've ever cached, TTL or not.
+A DNS record has a **TTL (Time To Live)**, in seconds, that describes how long an answer may be cached. Lower TTLs can reduce caching time but increase repeated lookups. Administrators sometimes lower a TTL before a change; previously cached answers may retain their earlier TTL, and resolver policies or stale serving can affect results. A low TTL therefore does not guarantee that every resolver will show the change by a particular deadline. Historical DNS services may retain observations independently of the TTL.
 
 ## Why hackers care about DNS
 

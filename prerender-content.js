@@ -26,6 +26,54 @@
  */
 
 export const TOOL_CONTENT = {
+  dnsrecords: {
+    intent:'dns record types A AAAA MX CNAME TXT practice',
+    intro:'Practice choosing DNS record types with fictional, fixed examples. This exercise runs locally and does not query a resolver or report information about a live domain. After each correct answer it shows an example record and explains what it represents.',
+    steps:['Choose one of the practice tasks.', 'Read the question and select a record type.', 'Check your answer and use the hint if needed.', 'Read the example record, then try another task.'],
+    notes:[
+      {h:'Addresses and names',p:'A and AAAA records carry IPv4 and IPv6 addresses. CNAME records name an alias target; following the target may require another lookup before an address is available.'},
+      {h:'Mail and text',p:'MX records specify a mail exchanger and preference value. TXT records carry text that applications can interpret for different purposes; a TXT record is not inherently an email-security policy.'},
+      {h:'Understand the TTL',p:'The numeric TTL in an answer describes a caching duration in seconds. It is useful when planning changes, but does not guarantee that every resolver will display the same change by a particular deadline.'}
+    ],
+    faq:[
+      {q:'Does this tool perform DNS lookups?',a:'No. The names and addresses are fixed examples and the activity makes no DNS requests.'},
+      {q:'What is the difference between A and AAAA?',a:'An A record contains an IPv4 address, while an AAAA record contains an IPv6 address.'},
+      {q:'Does a low TTL guarantee instant propagation?',a:'No. TTLs describe caching and different resolver behavior can affect when an answer changes.'}
+    ],
+    related:['subnet','cidroverlap','httpstatus','httpbuilder']
+  },
+  httpstatus: {
+    intent:'http status code practice 401 403 404 429',
+    intro:'Practice interpreting four fictional HTTP responses and choosing an appropriate next step. The cases run in your browser without contacting a server. They focus on authentication, refused requests, missing or undisclosed resources, and rate limits.',
+    steps:['Choose a sample response.', 'Read the status and any sample header.', 'Choose a next step and check the explanation.', 'Try each case, then compare it with the linked HTTP lesson.'],
+    notes:[
+      {h:'Authentication and refusal differ',p:'A 401 response indicates that valid authentication credentials are missing. A 403 means the server understood but refused the request; it does not prove the requester was identified.'},
+      {h:'A missing page may be undisclosed',p:'A 404 can mean a current representation was not found or that the server is unwilling to disclose one. Check the URL and your authorized context rather than drawing conclusions from the status alone.'},
+      {h:'Respect rate limits',p:'A 429 indicates too many requests. Retry-After may describe a delay, but a client should also consider whether a request is safe to repeat and follow the service’s documented limits.'}
+    ],
+    faq:[
+      {q:'Does this tool send requests?',a:'No. It uses fictional responses built into the page; you do not need an account or a network service to work through them.'},
+      {q:'Does 403 always mean I am authenticated?',a:'No. The server refuses the request, but the status alone does not establish whether it identified the requester.'},
+      {q:'Does a 404 prove that a resource never existed?',a:'No. It can also indicate that the server is unwilling to disclose a current representation.'}
+    ],
+    related:['httpbuilder','headers','jwt','vulntriage']
+  },
+  vulntriage: {
+    intent: 'vulnerability triage practice applicability mitigation verification',
+    intro: 'Practice making defensible vulnerability decisions using fictional cases. The exercise separates evidence that a vulnerability is exploited from evidence that your own deployed service is affected. It does not query a live vulnerability database or calculate risk for a real organization.',
+    steps: ['Choose one of the three fictional cases.', 'Read the evidence and choose the next action.', 'Check your reasoning and compare it with the explanation.', 'Read the linked lessons and repeat with a different case.'],
+    notes: [
+      {h:'Confirm applicability', p:'Find the version and configuration actually deployed on the affected asset. An inventory record or a catalog entry is a starting point, not proof that a particular service is vulnerable.'},
+      {h:'Look beyond severity', p:'Consider exposure, reachability, observed exploitation, operational impact and uncertainty. A score is a useful input, but it does not make the decision for the asset owner.'},
+      {h:'Verify closure', p:'A merged change is not necessarily deployed everywhere. Check the running build and relevant behavior, record what was tested, and identify remaining risk.'}
+    ],
+    faq: [
+      {q:'Does this tool look up real CVEs?', a:'No. The cases are fictional and run locally. Consult current vendor advisories and authoritative catalogs for real findings.'},
+      {q:'Does known exploitation prove my asset is affected?', a:'No. It is an important signal to investigate; verify the version, configuration and exposure on the relevant asset.'},
+      {q:'Does a passing CI build prove remediation?', a:'It is useful evidence but does not prove that the fix was deployed to every affected asset. Verify the deployed change and relevant behavior.'}
+    ],
+    related: ['cvss', 'sbomcheck', 'riskregister', 'vulnreport']
+  },
   encoder: {
     intent: 'base64 decode online privately',
     intro: 'Base64, URL and hex encoding are not encryption. They are ways of rewriting data so it survives being sent through systems that only cope with plain text. Attackers lean on that confusion constantly: an encoded payload looks scrambled enough to slip past a bored reviewer while being trivially readable by anyone who recognises the format.',

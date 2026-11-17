@@ -7024,6 +7024,15 @@ const GLOSSARY = [
   "subTitle": "Scan networks with Nmap"
  },
  {
+  "term": "NODATA",
+  "def": "a negative result for a requested type at an existing name, not a separate DNS response code.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "dns-response-troubleshooting",
+  "subTitle": "DNS Response Troubleshooting"
+ },
+ {
   "term": "Node metadata service",
   "def": "the underlying cloud instance's metadata endpoint, reachable from a compromised pod and potentially exposing the node's own cloud credentials.",
   "pathId": "16-advanced",
@@ -7139,6 +7148,15 @@ const GLOSSARY = [
   "pathTitle": "Bug Bounty",
   "subId": "automation-nuclei",
   "subTitle": "Automation & nuclei"
+ },
+ {
+  "term": "NXDOMAIN",
+  "def": "a DNS name-error response code; inspect the response chain to identify which name failed.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "dns-response-troubleshooting",
+  "subTitle": "DNS Response Troubleshooting"
  },
  {
   "term": "OAuth 2.0",
@@ -9005,6 +9023,15 @@ const GLOSSARY = [
  },
  {
   "term": "Referral",
+  "def": "a response directing a resolver toward other name servers for further resolution.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "dns-response-troubleshooting",
+  "subTitle": "DNS Response Troubleshooting"
+ },
+ {
+  "term": "Referral",
   "def": "an internal employee vouching for or forwarding a candidate, which meaningfully increases interview odds.",
   "pathId": "20-career-prep",
   "pathN": "20",
@@ -10163,6 +10190,15 @@ const GLOSSARY = [
   "pathTitle": "API Security",
   "subId": "grpc-and-protobuf-security",
   "subTitle": "gRPC & Protobuf Security"
+ },
+ {
+  "term": "SERVFAIL",
+  "def": "a response indicating that a server could not complete the request successfully; it does not identify one specific cause.",
+  "pathId": "02-networking",
+  "pathN": "02",
+  "pathTitle": "Networking Fundamentals",
+  "subId": "dns-response-troubleshooting",
+  "subTitle": "DNS Response Troubleshooting"
  },
  {
   "term": "Service",

@@ -25,8 +25,9 @@ export async function loadLessonSource(
     if (!response.ok)
       throw new Error(`Lesson request failed (${response.status})`);
     const markdown = await response.text();
+    const checked = markdown.replace(/^\s*<!-- coderabbit-ai-generated:v1 -->\s*/, "");
     if (
-      /^\s*(?:<!doctype\s+html|<html\b)/i.test(markdown) ||
+      /^\s*(?:<!doctype\s+html|<html\b)/i.test(checked) ||
       !/^#\s+\S/m.test(markdown)
     ) {
       throw new Error("The server did not return a lesson");
