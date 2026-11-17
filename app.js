@@ -2515,6 +2515,8 @@ function canonicalPathForHash(hash){
   if(hash === '#/skills') return '/skills/';
   if(hash === '#/fix-verify') return '/fix-verify/';
   if(hash === '#/cybercity') return '/cybercity/';
+  if(hash === '#/passport') return '/passport/';
+  if(hash === '#/coach') return '/coach/';
   const legal = hash.match(/^#\/(about|contact|privacy|terms)$/);
   if(legal) return `/${legal[1]}.html`;
   const lesson = hash.match(/^#\/lesson\/([a-z0-9-]+)(?:\/([a-z0-9-]+))?$/);
@@ -2540,6 +2542,8 @@ function hashRouteForPath(pathname){
   if(pathname === '/skills/' || pathname === '/skills/index.html') return '#/skills';
   if(pathname === '/fix-verify/' || pathname === '/fix-verify/index.html') return '#/fix-verify';
   if(pathname === '/cybercity/' || pathname === '/cybercity/index.html') return '#/cybercity';
+  if(pathname === '/passport/' || pathname === '/passport/index.html') return '#/passport';
+  if(pathname === '/coach/' || pathname === '/coach/index.html') return '#/coach';
   const legal = pathname.match(/^\/(about|contact|privacy|terms)\.html$/);
   if(legal) return `#/${legal[1]}`;
   const lesson = pathname.match(/^\/lesson\/([a-z0-9-]+)\/(?:([a-z0-9-]+)\.html)?$/);
@@ -2775,6 +2779,8 @@ function route(){
   else if(hash === '#/skills' || hash.startsWith('#/skills/')) renderStudio(hash);
   else if(hash === '#/fix-verify') renderStudio(hash);
   else if(hash === '#/cybercity' || hash.startsWith('#/cybercity/')) renderStudio(hash);
+  else if(hash === '#/passport') renderStudio(hash);
+  else if(hash === '#/coach' || hash.startsWith('#/coach/')) renderStudio(hash);
   else if(hash === '#/skilltree') renderSkillTree();
   else {
     const partsQuiz = hash.match(/^#\/quiz\/([^/]+)$/);
@@ -3259,9 +3265,10 @@ function renderHome(){
         <p class="sec-lead">Northbridge Billing does not exist. The same synthetic evidence is a tester question, an authorization fix, and a five-line triage. Certification plans stay separate from the vendor exams.</p>
       </div>
       <div class="labs-grid" data-reveal>
-        <a class="lab-card" href="#/cybercity"><h3>Northbridge case</h3><p>Open the tester, AppSec, and analyst desks. Nothing leaves the browser.</p><span class="lab-related">Fictional · .test only</span></a>
+        <a class="lab-card" href="#/cybercity"><h3>Northbridge case</h3><p>Tester, AppSec, analyst, and cloud desks on one fictional invoice. Nothing leaves the browser.</p><span class="lab-related">Fictional · .test only</span></a>
         <a class="lab-card" href="#/certlab"><h3>Certification prep</h3><p>Security+, OSCP+, and SC-200 starter plans with official links and original questions.</p><span class="lab-related">Not a pass prediction</span></a>
-        <a class="lab-card" href="#/skills"><h3>Skills graph</h3><p>Seven connected skills. The next recommendation says why it is next.</p><span class="lab-related">Mark a skill only after you can do it</span></a>
+        <a class="lab-card" href="#/skills"><h3>Skills graph</h3><p>Connected skills from lessons and labs. The next recommendation says why it is next.</p><span class="lab-related">Mark a skill only after you can do it</span></a>
+        <a class="lab-card" href="#/passport"><h3>Skill record</h3><p>A private note of what this browser verified. Not a certificate.</p><span class="lab-related">Stays on this device</span></a>
       </div>
     </section>
     <section class="sec">
@@ -15721,7 +15728,7 @@ function getCommands(){
     ['About KashSec','#/about','info'],['Contact','#/contact','mail'],
     ['Privacy policy','#/privacy','shield'],['Terms of use','#/terms','scale'],
     ['My Progress','#/progress','gauge'],['Changelog','#/changelog','ledger'],['Take the Final Exam','#/quiz/final','flag'],
-    ['Mock interview','#/interview/mock','timer'],['Certification roadmap','#/certs','ticket'],['Certification prep','#/certlab','ticket'],['Research vault','#/research','scroll'],['Skills graph','#/skills','layers'],['Fix and verify','#/fix-verify','shield'],['Northbridge case','#/cybercity','castle'],['Skill tree','#/skilltree','layers'],
+    ['Mock interview','#/interview/mock','timer'],['Certification roadmap','#/certs','ticket'],['Certification prep','#/certlab','ticket'],['Research vault','#/research','scroll'],['Skills graph','#/skills','layers'],['Fix and verify','#/fix-verify','shield'],['Northbridge case','#/cybercity','castle'],['Skill record','#/passport','idcard'],['Offline coach','#/coach','compass'],['Skill tree','#/skilltree','layers'],
     ['Capstone attack chain','#/capstone','castle'],['Weekly challenge chains','#/weekly','clipboard'],
     ['Career-fit quiz','#/career-quiz','puzzle'],['Shuffle quiz','#/quiz/shuffle','dice'],
     ['Learning transcript','#/transcript','doc'],['Review missed questions','#/quiz/missed','refresh']

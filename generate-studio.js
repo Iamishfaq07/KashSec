@@ -109,7 +109,7 @@ ${scripts}
   }
   const sitemapPath = path.join(ROOT, 'sitemap.xml');
   let sitemap = fs.readFileSync(sitemapPath, 'utf8');
-  sitemap = sitemap.replace(/\n?  <url><loc>https:\/\/kashsec\.vercel\.app\/(?:certlab|research|skills|fix-verify|cybercity)\/<\/loc>[\s\S]*?<\/url>/g, '');
+  sitemap = sitemap.replace(/\n?  <url><loc>https:\/\/kashsec\.vercel\.app\/(?:certlab|research|skills|fix-verify|cybercity|passport|coach)\/<\/loc>[\s\S]*?<\/url>/g, '');
   if (!sitemap.includes('</urlset>')) throw new Error('sitemap.xml has no urlset');
   sitemap = sitemap.replace('</urlset>', `${entries.join('\n')}\n</urlset>`);
   fs.writeFileSync(sitemapPath, sitemap);

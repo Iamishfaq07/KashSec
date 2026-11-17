@@ -54,6 +54,21 @@ try {
   await page.locator('#ksHunt select[name="token"]').selectOption('tenant=birch');
   await page.getByRole('button', { name: 'Run filter' }).click();
   await page.getByText('only the cross-tenant 200').waitFor();
+
+  await page.goto(BASE + '/cybercity/');
+  await page.getByRole('link', { name: 'Open the role' }).click();
+  await page.locator('#ksIam select[name="actions"]').selectOption('invoices-read');
+  await page.locator('#ksIam select[name="tenants"]').selectOption('caller');
+  await page.locator('#ksIam select[name="principal"]').selectOption('billing-fn');
+  await page.getByRole('button', { name: 'Run role cases' }).click();
+  await page.getByText('All 4 role cases passed').waitFor();
+
+  await page.goto(BASE + '/passport/');
+  await page.getByRole('heading', { name: 'Skill record', level: 1 }).waitFor();
+  await page.getByText('Cloud desk: billing role').waitFor();
+  await page.goto(BASE + '/coach/');
+  await page.getByRole('link', { name: 'What should I do next?' }).click();
+  await page.getByText('starting skill').waitFor();
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
 
   await page.goto(BASE + '/fix-verify/');

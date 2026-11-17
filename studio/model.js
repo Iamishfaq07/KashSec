@@ -115,6 +115,66 @@ export const SKILLS = [
     research: ['owasp-llm', 'kashsec-agent-boundary'],
     objectives: ['secplus.threats'],
     careers: [{ id: 'aisec', title: 'AI Security Engineer' }]
+  },
+  {
+    id: 'web.injection.sql',
+    title: 'See a query change because of input',
+    outcome: 'Show a request that changes a database query, and name the fix as parameter binding rather than a longer password.',
+    minutes: 40,
+    difficulty: 'core',
+    prerequisites: ['web.http.status'],
+    lessons: [{ path: '11-web-security', id: 'sqli', title: 'SQL injection' }],
+    labs: [{ id: 'sqli', title: 'SQL injection sandbox' }],
+    tools: [],
+    expertLabs: [],
+    research: ['portswigger-academy'],
+    objectives: ['oscp.web', 'secplus.threats'],
+    careers: [{ id: 'appsec', title: 'AppSec Engineer' }]
+  },
+  {
+    id: 'web.authn.jwt',
+    title: 'Read a token before you trust a claim',
+    outcome: 'Point at a claim inside a token and say why the signature, not the claim text, is what a verifier must check.',
+    minutes: 35,
+    difficulty: 'core',
+    prerequisites: ['web.http.status'],
+    lessons: [{ path: '11-web-security', id: 'jwt-advanced-lab', title: 'JWT advanced lab' }],
+    labs: [{ id: 'jwt', title: 'JWT forgery lab' }],
+    tools: [{ id: 'jwt', title: 'JWT decoder' }],
+    expertLabs: [],
+    research: ['owasp-api'],
+    objectives: ['secplus.architecture', 'oscp.web'],
+    careers: [{ id: 'appsec', title: 'AppSec Engineer' }]
+  },
+  {
+    id: 'soc.phishing.signals',
+    title: 'Name the signal in a suspicious message',
+    outcome: 'Separate a display name from the actual sender, and say what the message alone does not prove.',
+    minutes: 30,
+    difficulty: 'foundation',
+    prerequisites: ['foundations.cia'],
+    lessons: [{ path: '10-fundamentals', id: 'phishing', title: 'Phishing' }],
+    labs: [{ id: 'phishing', title: 'Phishing spotter' }],
+    tools: [],
+    expertLabs: [],
+    research: ['cisa-advisories'],
+    objectives: ['secplus.threats', 'sc200.respond'],
+    careers: [{ id: 'soc', title: 'SOC Analyst' }]
+  },
+  {
+    id: 'cloud.iam.least-privilege',
+    title: 'Keep a cloud role to one action and one tenant',
+    outcome: 'Deny a wildcard action, a wildcard tenant, and a principal the role was not written for.',
+    minutes: 40,
+    difficulty: 'core',
+    prerequisites: ['web.authz.object-level'],
+    lessons: [{ path: '08-cloud-basics', id: 'cloud-identity-access', title: 'Cloud identity and access' }],
+    labs: [],
+    tools: [],
+    expertLabs: [],
+    research: ['kashsec-northbridge-iam'],
+    objectives: ['secplus.architecture', 'secplus.program'],
+    careers: [{ id: 'cloud', title: 'Cloud Security Engineer' }]
   }
 ];
 
@@ -717,6 +777,29 @@ export const RESEARCH = [
     defensive: 'Alert when the query tenant and the session tenant differ and the status is 200. Do not treat a missing endpoint log as proof the laptop is clean.',
     check: 'Which single log line supports the cross-tenant read, and which lines are only context?',
     portfolio: 'Write three short notes: what the tester showed, what the policy change denies, and what the analyst can and cannot claim.'
+  },
+  {
+    id: 'kashsec-northbridge-iam',
+    title: 'Case: the billing role that could do anything',
+    kind: 'original-kashsec',
+    author: 'KashSec',
+    publisher: 'KashSec Academy',
+    url: '#/cybercity/cloud',
+    published: VERIFIED_ON,
+    checked: VERIFIED_ON,
+    license: 'Original KashSec explanation. The account and role are fictional.',
+    topics: ['cloud', 'appsec'],
+    minutes: 20,
+    difficulty: 'core',
+    skills: ['cloud.iam.least-privilege'],
+    objectives: ['secplus.architecture', 'secplus.program'],
+    summary: 'Northbridge’s fictional billing function started with a role that allowed every action, in every tenant, for every principal. The cloud desk asks you to shrink it.',
+    happened: 'The same made-up company as the invoice bug. No cloud account is created and nothing is deployed.',
+    evidence: 'Four fixture cases in the cloud desk. A wildcard fails them. A role limited to invoices:Read, the caller’s tenant, and the billing function passes them.',
+    uncertainty: 'A real account still has identity providers, resource ARNs, and permission boundaries this fixture does not model.',
+    defensive: 'Name the principal, the action, and the tenant. Deny the rest, including a second function that copied the policy.',
+    check: 'Which of the three stars, action, tenant, or principal, would still let analytics-fn read an invoice?',
+    portfolio: 'Export the case note after the role cases pass, and label it as a fixture.'
   }
 ];
 
@@ -920,6 +1003,63 @@ export function gradePentest(selected) {
   return { pass: selected === PENTEST_EXCHANGE.answer, explanation: PENTEST_EXCHANGE.explanation };
 }
 
+export const IAM_CASES = [
+  {
+    id: 'own-read',
+    title: 'Billing function reads an Acme invoice',
+    actor: { principal: 'billing-fn', tenant: 'acme' },
+    action: 'invoices:Read',
+    targetTenant: 'acme',
+    expect: 'allow',
+    why: 'The function, the action, and the caller tenant all match the invoice.'
+  },
+  {
+    id: 'other-tenant',
+    title: 'Billing function asks for a Birch invoice',
+    actor: { principal: 'billing-fn', tenant: 'acme' },
+    action: 'invoices:Read',
+    targetTenant: 'birch',
+    expect: 'deny',
+    why: 'The caller tenant is Acme. A request that names Birch must not widen the role.'
+  },
+  {
+    id: 'other-principal',
+    title: 'A different function uses the same role',
+    actor: { principal: 'analytics-fn', tenant: 'acme' },
+    action: 'invoices:Read',
+    targetTenant: 'acme',
+    expect: 'deny',
+    why: 'The role was written for billing-fn. Another principal does not inherit it.'
+  },
+  {
+    id: 'admin-action',
+    title: 'Billing function tries to create a user',
+    actor: { principal: 'billing-fn', tenant: 'acme' },
+    action: 'iam:CreateUser',
+    targetTenant: 'acme',
+    expect: 'deny',
+    why: 'Reading an invoice is not permission to change identities.'
+  }
+];
+
+export const VULNERABLE_IAM_POLICY = { actions: 'star', tenants: 'star', principal: 'star' };
+export const SECURE_IAM_POLICY = { actions: 'invoices-read', tenants: 'caller', principal: 'billing-fn' };
+
+export function iamDecision(policy, item) {
+  const principalOk = policy.principal === 'star' || policy.principal === item.actor.principal;
+  const actionOk = policy.actions === 'star' || (policy.actions === 'invoices-read' && item.action === 'invoices:Read');
+  const tenant = policy.tenants === 'star' ? item.targetTenant : item.actor.tenant;
+  return principalOk && actionOk && tenant === item.targetTenant ? 'allow' : 'deny';
+}
+
+export function gradeIamPolicy(policy) {
+  const results = IAM_CASES.map(item => {
+    const got = iamDecision(policy, item);
+    return { id: item.id, title: item.title, expect: item.expect, got, pass: got === item.expect, why: item.why };
+  });
+  return { results, passed: results.every(result => result.pass), passedCount: results.filter(result => result.pass).length, total: results.length };
+}
+
 export function validateStudio() {
   const errors = [];
   const skillIds = new Set();
@@ -1010,6 +1150,14 @@ export function validateStudio() {
   if (gradeHunt('api', 'status=200').precise) errors.push('status=200 hunt should be too wide');
   if (!gradePentest(PENTEST_EXCHANGE.answer).pass) errors.push('pentest answer key does not pass');
   if (gradePentest(0).pass) errors.push('wrong pentest choice unexpectedly passes');
+  const iamSecure = gradeIamPolicy(SECURE_IAM_POLICY);
+  if (!iamSecure.passed) errors.push('secure IAM policy does not pass its own cases');
+  if (gradeIamPolicy(VULNERABLE_IAM_POLICY).passed) errors.push('vulnerable IAM policy unexpectedly passes');
+  const iamIds = new Set();
+  for (const item of IAM_CASES) {
+    if (iamIds.has(item.id)) errors.push(`duplicate iam case ${item.id}`);
+    iamIds.add(item.id);
+  }
   const eventIds = new Set();
   for (const event of SOC_EVENTS) {
     if (eventIds.has(event.id)) errors.push(`duplicate soc event ${event.id}`);
@@ -1070,6 +1218,125 @@ export function reviewQueue(track, answers = {}, statusMap = {}) {
     }
   }
   return items;
+}
+
+export function northbridgeReport(state = {}) {
+  const city = state.cybercity || {};
+  const lines = [
+    '# Northbridge Billing case note',
+    '',
+    'Fictional organization. Host billing.northbridge.test. This note is not evidence about a real company and it is not a vendor report.',
+    '',
+    '## Tester'
+  ];
+  if (!Number.isInteger(city.pentest)) lines.push('Not checked.');
+  else lines.push(gradePentest(city.pentest).pass ? 'Named the query tenant and role as the unsafe authorization input.' : 'Checked a field. It did not match the fixture.');
+  lines.push('', '## AppSec');
+  if (!state.fix?.ran) lines.push('Policy cases not run.');
+  else {
+    const grade = gradeInvoicePolicy(state.fix.policy);
+    lines.push(grade.passed ? 'All invoice fixture cases passed.' : `${grade.passedCount} of ${grade.total} invoice cases passed.`);
+    if (state.fix.notes) lines.push('', 'Student note:', String(state.fix.notes).slice(0, 2000));
+  }
+  lines.push('', '## Analyst');
+  if (!city.triageRan) lines.push('Log lines not checked.');
+  else {
+    const grade = gradeTriage(city.triage || {});
+    lines.push(grade.passed ? 'All five log verdicts matched the fixture.' : `${grade.passedCount} of ${grade.total} log verdicts matched.`);
+  }
+  if (!city.huntRan) lines.push('Filter not run.');
+  else lines.push(gradeHunt(city.huntSource, city.huntToken).note);
+  lines.push('', '## Cloud');
+  if (!city.iamRan) lines.push('Billing role not checked.');
+  else {
+    const grade = gradeIamPolicy(city.iam || VULNERABLE_IAM_POLICY);
+    lines.push(grade.passed ? 'The billing role allows invoice reads for the caller tenant and the billing function only.' : `${grade.passedCount} of ${grade.total} role cases passed.`);
+  }
+  lines.push('', 'Residual risk: this browser fixture does not include a real session store, a cloud account, or an endpoint agent.');
+  return lines.join('\n');
+}
+
+export function passportEntries(state = {}) {
+  const items = [];
+  const city = state.cybercity || {};
+  if (Number.isInteger(city.pentest)) {
+    const grade = gradePentest(city.pentest);
+    items.push({ id: 'northbridge.field', title: 'Tester desk: unsafe field', level: grade.pass ? 'auto-verified' : 'practiced', note: grade.pass ? 'Matched the fixture.' : 'Checked and did not match.' });
+  }
+  if (state.fix?.ran) {
+    const grade = gradeInvoicePolicy(state.fix.policy);
+    items.push({ id: 'northbridge.policy', title: 'AppSec desk: invoice policy', level: grade.passed ? 'auto-verified' : 'practiced', note: `${grade.passedCount} of ${grade.total} fixture cases.` });
+  }
+  if (city.triageRan) {
+    const grade = gradeTriage(city.triage || {});
+    items.push({ id: 'northbridge.triage', title: 'Analyst desk: five log lines', level: grade.passed ? 'auto-verified' : 'practiced', note: `${grade.passedCount} of ${grade.total} lines.` });
+  }
+  if (city.huntRan) {
+    const hunt = gradeHunt(city.huntSource, city.huntToken);
+    items.push({ id: 'northbridge.hunt', title: 'Analyst desk: filter', level: hunt.precise ? 'auto-verified' : 'practiced', note: hunt.note });
+  }
+  if (city.iamRan) {
+    const grade = gradeIamPolicy(city.iam || VULNERABLE_IAM_POLICY);
+    items.push({ id: 'northbridge.iam', title: 'Cloud desk: billing role', level: grade.passed ? 'auto-verified' : 'practiced', note: `${grade.passedCount} of ${grade.total} role cases.` });
+  }
+  for (const id of state.researchRead || []) {
+    const item = researchById(id);
+    if (item) items.push({ id: `read.${id}`, title: item.title, level: 'read', note: 'Marked read in this browser. The source was not re-graded.' });
+  }
+  for (const id of state.mastered || []) {
+    const skill = skillById(id);
+    if (skill) items.push({ id: `skill.${id}`, title: skill.title, level: 'self-reported', note: 'You marked this skill, or a desk recorded it. This is not an instructor review.' });
+  }
+  return items;
+}
+
+export function passportMarkdown(state = {}) {
+  const items = passportEntries(state);
+  const lines = [
+    '# KashSec skill record',
+    '',
+    'Stored only in this browser. Not a certificate, not a vendor credential, and not instructor reviewed.',
+    ''
+  ];
+  if (!items.length) lines.push('Nothing recorded yet.');
+  for (const item of items) lines.push(`- ${item.level}: ${item.title}. ${item.note}`);
+  lines.push('', northbridgeReport(state));
+  return lines.join('\n');
+}
+
+export function coachAnswer(kind, state = {}) {
+  if (kind === 'next') {
+    const next = explainNext(state.mastered || []);
+    return {
+      title: 'What to do next',
+      body: next.reason,
+      href: next.skill ? `#/skills/${next.skill.id}` : '#/skills',
+      label: next.skill ? `Open ${next.skill.title}` : 'Open the skills graph'
+    };
+  }
+  if (kind === 'invoice') {
+    if (!state.fix?.ran) {
+      return { title: 'Invoice policy', body: 'You have not run the cases yet. The starting policy trusts the tenant and the role in the query string.', href: '#/fix-verify', label: 'Open Fix and verify' };
+    }
+    const grade = gradeInvoicePolicy(state.fix.policy);
+    if (grade.passed) {
+      return { title: 'Invoice policy', body: 'The fixture cases passed. That does not prove a production API is safe. A reviewer would still read the session code.', href: '#/cybercity/report', label: 'Add it to the case note' };
+    }
+    const miss = grade.results.find(result => !result.pass);
+    return { title: 'Invoice policy', body: `${miss.title}. ${miss.why}`, href: '#/fix-verify', label: 'Change the policy' };
+  }
+  if (kind === 'logs') {
+    if (!state.cybercity?.triageRan) {
+      return { title: 'Log lines', body: 'A successful login is not the incident. The line that matters has sessionTenant=acme, tenant=birch, and status 200.', href: '#/cybercity/soc', label: 'Open the analyst desk' };
+    }
+    const grade = gradeTriage(state.cybercity.triage || {});
+    if (grade.passed) {
+      return { title: 'Log lines', body: 'Your marks match this fixture. Missing endpoint data is still a gap, not a clean bill of health.', href: '#/cybercity/report', label: 'Write the case note' };
+    }
+    const miss = grade.results.find(result => !result.pass);
+    return { title: 'Log lines', body: miss.why, href: '#/cybercity/soc', label: 'Reread that line' };
+  }
+  return { title: 'Coach', body: 'Pick one of the three questions. This coach does not call a model and it cannot see anything outside this browser.', href: '#/coach', label: 'Stay on this page' };
 }
 
 export function coverage(track, statusMap = {}) {
@@ -1194,7 +1461,7 @@ export function pageCopies() {
       title: 'Skills graph · KashSec Academy',
       description: 'A small connected map from lessons and labs to certification objectives and job skills. Recommendations explain why they are next.',
       heading: 'Skills graph',
-      body: `<p>This starter graph connects seven skills. It does not replace the 26 learning paths. Mark a skill only after you can do the outcome, not after you open the page.</p><p>${esc(skillText)}</p><p><a href="/certlab/">Open certification prep</a> · <a href="/cybercity/">Practise the Northbridge case</a> · <a href="/labs/">Browse labs</a></p>`
+      body: `<p>This starter graph connects ${SKILLS.length} skills. It does not replace the 26 learning paths. Mark a skill only after you can do the outcome, not after you open the page.</p><p>${esc(skillText)}</p><p><a href="/certlab/">Open certification prep</a> · <a href="/cybercity/">Practise the Northbridge case</a> · <a href="/passport/">Open the skill record</a> · <a href="/labs/">Browse labs</a></p>`
     },
     {
       file: 'fix-verify/index.html',
@@ -1208,9 +1475,25 @@ export function pageCopies() {
       file: 'cybercity/index.html',
       path: '/cybercity/',
       title: 'Northbridge Billing case · KashSec Academy',
-      description: 'One fictional invoice bug, practised as a tester, an AppSec engineer, and a SOC analyst. Synthetic logs only. No live target.',
+      description: 'One fictional invoice bug and a wildcard cloud role, practised as a tester, an AppSec engineer, an analyst, and a cloud defender. No live target.',
       heading: 'Northbridge Billing',
-      body: `<p>Northbridge Billing is not a company you can reach. The host name billing.northbridge.test is reserved for documentation and teaching. Bob at Acme reads Alice’s Birch invoice because the API trusts the query string.</p><p>Use three desks on the same evidence. The tester names the unsafe field. The engineer repairs the policy and runs allow and deny cases. The analyst marks five log lines and narrows a filter until only the cross-tenant response remains. None of this is a vendor lab, a Microsoft KQL hunt, or a production incident.</p><p><a href="/fix-verify/">Repair the policy</a> · <a href="/certlab/">Open a certification plan</a> · <a href="/research/">Read the case card</a></p>`
+      body: `<p>Northbridge Billing is not a company you can reach. The host name billing.northbridge.test is reserved for documentation and teaching. Bob at Acme reads Alice’s Birch invoice because the API trusts the query string. A second fixture gives the billing function a wildcard cloud role.</p><p>Use the desks on the same evidence. The tester names the unsafe field. The engineer repairs the API policy. The analyst marks five log lines. The cloud desk shrinks the role. The case note exports only what you have actually checked. None of this is a vendor lab, a Microsoft KQL hunt, or a production incident.</p><p><a href="/fix-verify/">Repair the policy</a> · <a href="/passport/">Open the skill record</a> · <a href="/coach/">Ask the offline coach</a> · <a href="/research/">Read the case card</a></p>`
+    },
+    {
+      file: 'passport/index.html',
+      path: '/passport/',
+      title: 'Skill record · KashSec Academy',
+      description: 'A private browser record of KashSec practice. Auto-verified only when a fixture passes. Not a certificate.',
+      heading: 'Skill record',
+      body: `<p>This page lists what this browser has recorded: a source you marked read, a desk you attempted, or a fixture you passed. Self-marked skills stay labeled self-reported. Nothing here is instructor reviewed, and nothing is sent to a server.</p><p>You can download a Markdown note. It includes the Northbridge case note, and unrun desks stay marked as not checked.</p><p><a href="/cybercity/">Work the Northbridge case</a> · <a href="/skills/">Open the skills graph</a> · <a href="/coach/">Ask what is next</a></p>`
+    },
+    {
+      file: 'coach/index.html',
+      path: '/coach/',
+      title: 'Offline coach · KashSec Academy',
+      description: 'Three fixed questions answered from your local skill graph and Northbridge results. No model and no account.',
+      heading: 'Offline coach',
+      body: `<p>Ask what to do next, why the invoice policy failed, or why a log line failed. The answer comes from the skills graph and from desks you have already run in this browser. There is no chat model behind it.</p><p>If a desk has not been run, the coach says so and links to it. It will not invent a score.</p><p><a href="/skills/">See the graph</a> · <a href="/cybercity/">Open Northbridge</a> · <a href="/passport/">See the skill record</a></p>`
     }
   ];
 }

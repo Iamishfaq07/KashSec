@@ -2,9 +2,9 @@
    Loaded on demand from app.js. Progress stays in localStorage under its own key. */
 import {
   CERT_TRACKS, HUNT_SOURCES, HUNT_TOKENS, PENTEST_EXCHANGE, RESEARCH, SKILLS, SOC_EVENTS, TRIAGE_LABELS,
-  SECURE_INVOICE_POLICY, VULNERABLE_INVOICE_POLICY,
-  buildStudyPlan, coverage, esc, explainNext, filterEvents, gradeHunt, gradeInvoicePolicy, gradePentest, gradeTriage,
-  lessonHref, readinessLabel, researchById, researchKindLabel, reviewQueue, scoreTrack, skillById, trackById
+  SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
+  buildStudyPlan, coachAnswer, coverage, esc, explainNext, filterEvents, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTriage,
+  lessonHref, northbridgeReport, passportEntries, passportMarkdown, readinessLabel, researchById, researchKindLabel, reviewQueue, scoreTrack, skillById, trackById
 } from './model.js';
 
 const STORAGE_KEY = 'kashsec_studio_v1';
@@ -17,7 +17,7 @@ function emptyState() {
     objectiveStatus: {},
     researchRead: [],
     fix: { policy: { ...VULNERABLE_INVOICE_POLICY }, notes: '', ran: false },
-    cybercity: { pentest: null, triage: {}, triageRan: false, huntSource: 'api', huntToken: 'status=200', huntRan: false }
+    cybercity: { pentest: null, triage: {}, triageRan: false, huntSource: 'api', huntToken: 'status=200', huntRan: false, iam: { ...VULNERABLE_IAM_POLICY }, iamRan: false }
   };
 }
 
@@ -33,7 +33,8 @@ export function loadState() {
       cybercity: {
         ...base.cybercity,
         ...(parsed.cybercity || {}),
-        triage: { ...((parsed.cybercity && parsed.cybercity.triage) || {}) }
+        triage: { ...((parsed.cybercity && parsed.cybercity.triage) || {}) },
+        iam: { ...base.cybercity.iam, ...((parsed.cybercity && parsed.cybercity.iam) || {}) }
       }
     };
   } catch {
@@ -63,6 +64,8 @@ function shell(title, lede, crumbs, body) {
       <a href="#/skills">Skills</a>
       <a href="#/fix-verify">Fix & verify</a>
       <a href="#/cybercity">Northbridge</a>
+      <a href="#/passport">Skill record</a>
+      <a href="#/coach">Coach</a>
     </div>
     ${body}
   </section>`;
@@ -178,7 +181,7 @@ function renderResearchHome(state) {
       <p class="ks-meta">${item.checked ? `Source page checked ${esc(item.checked)}.` : 'Source page not re-fetched for this release.'} ${esc(item.license)}</p>
     </article>`).join('');
   const filters = topics.map((topic, index) => `<button type="button" data-topic="${esc(topic)}" aria-pressed="${index === 0 ? 'true' : 'false'}">${esc(topic)}</button>`).join('');
-  return shell('Research vault', 'Curated links and two original fictional cases. External articles stay on their own sites.', '<span>Research</span>', `
+  return shell('Research vault', 'Curated links and original fictional cases. External articles stay on their own sites.', '<span>Research</span>', `
     <div class="ks-filters" role="group" aria-label="Filter by topic">${filters}</div>
     <div class="ks-grid" id="ksResearchGrid">${cards}</div>`);
 }
@@ -227,7 +230,7 @@ function renderSkills(state, focusId) {
       <ul>${focus.research.map(id => `<li><a href="#/research/${id}">${esc(researchById(id)?.title || id)}</a></li>`).join('')}</ul>
       <button type="button" class="btn-amber sm" id="ksToggleSkill" aria-pressed="${state.mastered.includes(focus.id) ? 'true' : 'false'}">${state.mastered.includes(focus.id) ? 'Marked done' : 'Mark this skill done'}</button>
     </article>` : `<article class="ks-card"><h2>Pick a skill</h2><p>Open one to see the lesson, lab, tool, research note, and certification objective it supports.</p></article>`;
-  return shell('Skills graph', 'A starter map of seven skills. Completing a path still lives in the course. This graph only records what you explicitly mark.', '<span>Skills</span>', `
+  return shell('Skills graph', `A connected map of ${SKILLS.length} skills. Completing a path still lives in the course. This graph only records what you explicitly mark.`, '<span>Skills</span>', `
     <p class="ks-note" id="ksNext">${esc(next.reason)}${next.skill ? ` <a href="#/skills/${next.skill.id}">Open ${esc(next.skill.title)}</a>.` : ''}</p>
     <div class="ks-split">
       <ol class="ks-skill-list">${list}</ol>
@@ -270,7 +273,9 @@ function renderCybercity() {
   const desks = [
     ['Tester', 'Name the field the API should not have trusted.', '#/cybercity/pentest', 'Open the exchange'],
     ['AppSec', 'Repair the policy and run the allow and deny cases.', '#/fix-verify', 'Fix and verify'],
-    ['SOC analyst', 'Mark five synthetic log lines, then narrow a filter.', '#/cybercity/soc', 'Open the log desk']
+    ['SOC analyst', 'Mark five synthetic log lines, then narrow a filter.', '#/cybercity/soc', 'Open the log desk'],
+    ['Cloud', 'Shrink a wildcard billing role to one action and one tenant.', '#/cybercity/cloud', 'Open the role'],
+    ['Case note', 'Export what you actually checked. Unrun desks stay blank.', '#/cybercity/report', 'Write the note']
   ].map(([role, text, href, label]) => `<article class="ks-card"><p class="ks-kicker">${esc(role)}</p><p>${esc(text)}</p><a class="btn-amber sm" href="${href}">${esc(label)}</a></article>`).join('');
   return shell('Northbridge Billing', 'One fictional invoice. Three jobs. The host billing.northbridge.test is not a live target.', '<span>Northbridge</span>', `
     <div class="ks-grid">${desks}</div>
@@ -342,6 +347,73 @@ function renderSoc(state) {
     </form>`);
 }
 
+function renderCloud(state) {
+  const policy = state.cybercity.iam || VULNERABLE_IAM_POLICY;
+  const select = (name, options) => `<label>${esc(name)} <select name="${esc(name)}">${options.map(([value, label]) => `<option value="${value}"${policy[name] === value ? ' selected' : ''}>${esc(label)}</option>`).join('')}</select></label>`;
+  const grade = state.cybercity.iamRan ? gradeIamPolicy(policy) : null;
+  const results = grade ? `<ol>${grade.results.map(result => `<li>${result.pass ? 'Pass' : 'Not yet'} · ${esc(result.title)}. Expected ${esc(result.expect)}, role returned ${esc(result.got)}. ${esc(result.why)}</li>`).join('')}</ol><p role="status">${grade.passed ? 'All 4 role cases passed. A passing fixture still does not create a cloud account or prove a production role is safe.' : `${grade.passedCount} of ${grade.total} role cases match.`}</p>` : '<p>Run the cases before the expected answers are shown.</p>';
+  return shell('Cloud desk', 'The billing function at Northbridge started with every action, every tenant, and every principal. Shrink the role.', `<a href="#/cybercity">Northbridge</a> · <span>Cloud</span>`, `
+    <form class="ks-card" id="ksIam">
+      <h2>Billing role</h2>
+      <p>The account is fictional. Nothing is deployed. The secure role reads invoices only, only in the caller’s tenant, and only as billing-fn.</p>
+      ${select('actions', [['star', 'Every action'], ['invoices-read', 'invoices:Read only']])}
+      ${select('tenants', [['star', 'Every tenant'], ['caller', 'Caller tenant only']])}
+      ${select('principal', [['star', 'Any principal'], ['billing-fn', 'billing-fn only']])}
+      <button class="btn-amber sm" type="submit">Run role cases</button>
+      <div id="ksIamResult">${results}</div>
+      <p><a href="#/lesson/08-cloud-basics/cloud-identity-access">Read cloud identity and access</a> · <a href="#/research/kashsec-northbridge-iam">Read the case card</a></p>
+    </form>`);
+}
+
+function renderReport(state) {
+  const text = northbridgeReport(state);
+  return shell('Case note', 'The note includes a desk only after you run it. Unrun desks stay marked as not checked.', `<a href="#/cybercity">Northbridge</a> · <span>Case note</span>`, `
+    <form class="ks-card" id="ksReport">
+      <h2>Markdown</h2>
+      <label>Case note <textarea name="report" rows="16" readonly>${esc(text)}</textarea></label>
+      <button class="btn-amber sm" type="submit">Download Markdown</button>
+      <p id="ksReportStatus" role="status">The file stays on this computer. KashSec does not upload it.</p>
+      <p><a href="#/passport">See the same evidence on the skill record</a></p>
+    </form>`);
+}
+
+function renderPassport(state) {
+  const items = passportEntries(state);
+  const list = items.length ? `<ul>${items.map(item => `<li><strong>${esc(item.level)}</strong> · ${esc(item.title)}. ${esc(item.note)}</li>`).join('')}</ul>` : '<p>Nothing recorded yet. Finish a Northbridge desk, mark a source read, or mark a skill.</p>';
+  return shell('Skill record', 'Private to this browser. Auto-verified means a fixture passed. It is not a certificate and not an instructor review.', '<span>Skill record</span>', `
+    <section class="ks-card">
+      <h2>Evidence</h2>
+      ${list}
+      <button class="btn-amber sm" type="button" id="ksPassportDownload">Download Markdown</button>
+      <p id="ksPassportStatus" role="status"></p>
+      <p class="ks-note">Levels used here: read, practiced, auto-verified, self-reported. Instructor reviewed is not offered, because nobody else has seen this work.</p>
+    </section>`);
+}
+
+function renderCoach(state, kind) {
+  const answer = kind ? coachAnswer(kind, state) : null;
+  const result = answer ? `<article class="ks-card"><h2>${esc(answer.title)}</h2><p>${esc(answer.body)}</p><p><a href="${esc(answer.href)}">${esc(answer.label)}</a></p></article>` : '';
+  return shell('Offline coach', 'Three questions. The answers come from the skills graph and from desks you already ran. No model is called.', '<span>Coach</span>', `
+    <div class="ks-filters" role="group" aria-label="Coach questions">
+      <a href="#/coach/next">What should I do next?</a>
+      <a href="#/coach/invoice">Why did the invoice policy fail?</a>
+      <a href="#/coach/logs">Why did a log line fail?</a>
+    </div>
+    ${result || '<p class="ks-note">Pick a question. If you have not run a desk, the coach will say that instead of inventing a score.</p>'}`);
+}
+
+function downloadText(filename, text) {
+  const blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
 export function renderStudio(root, hash) {
   const state = loadState();
   const parts = hash.replace(/^#\//, '').split('/');
@@ -402,11 +474,26 @@ export function renderStudio(root, hash) {
     root.innerHTML = renderSoc(state);
     title = 'Analyst desk · Northbridge';
     wireSoc(root);
+  } else if (section === 'cybercity' && id === 'cloud') {
+    root.innerHTML = renderCloud(state);
+    title = 'Cloud desk · Northbridge';
+    wireCloud(root);
+  } else if (section === 'cybercity' && id === 'report') {
+    root.innerHTML = renderReport(state);
+    title = 'Case note · Northbridge';
+    wireReport(root);
   } else if (section === 'cybercity' && !id) {
     root.innerHTML = renderCybercity();
     title = 'Northbridge Billing · KashSec Academy';
   } else if (section === 'cybercity') {
-    root.innerHTML = shell('Desk not found', 'That Northbridge desk is not in this case.', `<a href="#/cybercity">Northbridge</a>`, '<p><a href="#/cybercity">Back to the three desks</a></p>');
+    root.innerHTML = shell('Desk not found', 'That Northbridge desk is not in this case.', `<a href="#/cybercity">Northbridge</a>`, '<p><a href="#/cybercity">Back to the desks</a></p>');
+  } else if (section === 'passport') {
+    root.innerHTML = renderPassport(state);
+    title = 'Skill record · KashSec Academy';
+    wirePassport(root);
+  } else if (section === 'coach') {
+    root.innerHTML = renderCoach(state, id);
+    title = 'Offline coach · KashSec Academy';
   } else {
     root.innerHTML = shell('Studio', 'Choose a section.', '<span>Studio</span>', '<p><a href="#/certlab">Cert prep</a></p>');
   }
@@ -483,6 +570,42 @@ function wireResearchFilters(root) {
       card.hidden = topic !== 'all' && !card.dataset.topics.split(' ').includes(topic);
     });
   }));
+}
+
+function wireCloud(root) {
+  root.querySelector('#ksIam')?.addEventListener('submit', event => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const next = loadState();
+    next.cybercity.iam = {
+      actions: String(data.get('actions') || 'star'),
+      tenants: String(data.get('tenants') || 'star'),
+      principal: String(data.get('principal') || 'star')
+    };
+    next.cybercity.iamRan = true;
+    if (gradeIamPolicy(next.cybercity.iam).passed && !next.mastered.includes('cloud.iam.least-privilege')) {
+      next.mastered.push('cloud.iam.least-privilege');
+    }
+    saveState(next);
+    renderStudio(root, '#/cybercity/cloud');
+  });
+}
+
+function wireReport(root) {
+  root.querySelector('#ksReport')?.addEventListener('submit', event => {
+    event.preventDefault();
+    downloadText('northbridge-case-note.md', northbridgeReport(loadState()));
+    const status = root.querySelector('#ksReportStatus');
+    if (status) status.textContent = 'Download started. The note was not uploaded.';
+  });
+}
+
+function wirePassport(root) {
+  root.querySelector('#ksPassportDownload')?.addEventListener('click', () => {
+    downloadText('kashsec-skill-record.md', passportMarkdown(loadState()));
+    const status = root.querySelector('#ksPassportStatus');
+    if (status) status.textContent = 'Download started. This record was not uploaded.';
+  });
 }
 
 function wirePentest(root) {

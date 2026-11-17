@@ -4,8 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import {
-  CERT_TRACKS, PENTEST_EXCHANGE, RESEARCH, SECURE_INVOICE_POLICY, SKILLS, SOC_EVENTS, VULNERABLE_INVOICE_POLICY,
-  buildStudyPlan, esc, explainNext, gradeHunt, gradeInvoicePolicy, gradePentest, gradeTriage, reviewQueue, scoreTrack, validateStudio
+  CERT_TRACKS, PENTEST_EXCHANGE, RESEARCH, SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, SKILLS, SOC_EVENTS, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
+  buildStudyPlan, coachAnswer, esc, explainNext, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTriage, northbridgeReport, passportEntries, reviewQueue, scoreTrack, validateStudio
 } from '../studio/model.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -69,6 +69,24 @@ assert.equal(gradePentest(0).pass, false);
 const review = reviewQueue(track, { 'secplus.q1': 0 });
 assert.equal(review[0].objectiveId, 'secplus.architecture');
 assert.equal(reviewQueue(track, perfect).length, 0);
+assert.equal(gradeIamPolicy(SECURE_IAM_POLICY).passed, true);
+assert.equal(gradeIamPolicy(VULNERABLE_IAM_POLICY).passed, false);
+const emptyReport = northbridgeReport({});
+assert.match(emptyReport, /billing\.northbridge\.test/);
+assert.match(emptyReport, /Not checked/);
+assert.equal(emptyReport.includes('All invoice fixture cases passed'), false);
+const passedReport = northbridgeReport({ fix: { ran: true, policy: SECURE_INVOICE_POLICY, notes: '' }, cybercity: { iamRan: true, iam: SECURE_IAM_POLICY } });
+assert.match(passedReport, /All invoice fixture cases passed/);
+assert.match(passedReport, /billing function only/);
+const record = passportEntries({ fix: { ran: true, policy: VULNERABLE_INVOICE_POLICY }, cybercity: { iamRan: true, iam: SECURE_IAM_POLICY }, researchRead: ['owasp-api'], mastered: ['foundations.cia'] });
+assert.equal(record.find(item => item.id === 'northbridge.policy').level, 'practiced');
+assert.equal(passportEntries({ fix: { ran: true, policy: SECURE_INVOICE_POLICY } }).find(item => item.id === 'northbridge.policy').level, 'auto-verified');
+assert.equal(record.find(item => item.id === 'northbridge.iam').level, 'auto-verified');
+assert.equal(record.find(item => item.id === 'read.owasp-api').level, 'read');
+assert.equal(record.find(item => item.id === 'skill.foundations.cia').level, 'self-reported');
+assert.match(coachAnswer('next', { mastered: [] }).body, /starting skill/);
+assert.match(coachAnswer('invoice', {}).body, /have not run/);
+assert.equal(SKILLS.length > 7, true);
 
 assert.ok(RESEARCH.some(item => item.kind === 'original-kashsec'));
 assert.ok(RESEARCH.filter(item => item.kind === 'curated-external').every(item => item.url.startsWith('https://')));
@@ -81,7 +99,7 @@ const sc200 = CERT_TRACKS.find(item => item.id === 'sc-200');
 assert.match(sc200.versions[0].note, /does not show domain percentages/);
 
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
-for (const file of ['certlab/index.html', 'research/index.html', 'skills/index.html', 'fix-verify/index.html', 'cybercity/index.html']) {
+for (const file of ['certlab/index.html', 'research/index.html', 'skills/index.html', 'fix-verify/index.html', 'cybercity/index.html', 'passport/index.html', 'coach/index.html']) {
   const html = fs.readFileSync(path.join(root, file), 'utf8');
   const canonical = html.match(/<link rel="canonical" href="([^"]+)">/)?.[1];
   assert.ok(canonical && sitemap.includes(`<loc>${canonical}</loc>`), file);
