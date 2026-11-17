@@ -454,7 +454,7 @@ function defaultState(){
     studyPlan:{pathId:'all', dailyGoal:2, updatedAt:0},
     investigations:{}, // caseId: saved decisions, evidence opened, notes, review history
     playgroundCompleted:{}, // exerciseId: completion timestamp; demo inputs are never stored
-    learningGuide:{experience:'new',focus:'basics',updatedAt:0},
+    learningGuide:{experience:'new',focus:'basics',goal:'',minutes:15,updatedAt:0},
     daily:{}, // { "YYYY-MM-DD": { qi, chosen, correct } }
     leaderboardOptIn:false,
     leaderboardName:'',
@@ -547,6 +547,8 @@ function normalizeState(input){
   state.learningGuide = {
     experience:['new','some','practice'].includes(guide.experience) ? guide.experience : 'new',
     focus:['basics','web','defense'].includes(guide.focus) ? guide.focus : 'basics',
+    goal:['','unsure','pentest','soc','appsec','cloud','ai','cert','grc'].includes(guide.goal) ? guide.goal : '',
+    minutes:[15,30,60].includes(guide.minutes) ? guide.minutes : 15,
     updatedAt:Number.isFinite(guide.updatedAt) && guide.updatedAt >= 0 && guide.updatedAt <= 8.64e15 ? guide.updatedAt : 0
   };
   if(Object.keys(state.learningGuide).some(key=>Object.hasOwn(guide,key) && state.learningGuide[key] !== guide[key])) repaired = true;
@@ -2520,6 +2522,7 @@ function canonicalPathForHash(hash){
   if(hash === '#/practice') return '/practice/';
   if(hash === '#/foundations') return '/foundations/';
   if(hash === '#/shift') return '/shift/';
+  if(hash === '#/start') return '/start/';
   const skillPage = hash.match(/^#\/skills\/([a-z0-9.-]+)$/);
   if(skillPage) return `/skills/${skillPage[1]}/`;
   const studioPage = hash.match(/^#\/(certlab|research|practice|cybercity|coach)\/([a-z0-9-]+)$/);
@@ -2554,6 +2557,7 @@ function hashRouteForPath(pathname){
   if(pathname === '/practice/' || pathname === '/practice/index.html') return '#/practice';
   if(pathname === '/foundations/' || pathname === '/foundations/index.html') return '#/foundations';
   if(pathname === '/shift/' || pathname === '/shift/index.html') return '#/shift';
+  if(pathname === '/start/' || pathname === '/start/index.html') return '#/start';
   const skillPath = pathname.match(/^\/skills\/([a-z0-9.-]+)\/(?:index\.html)?$/);
   if(skillPath) return `#/skills/${skillPath[1]}`;
   const studioPath = pathname.match(/^\/(certlab|research|practice|cybercity|coach)\/([a-z0-9-]+)\/(?:index\.html)?$/);

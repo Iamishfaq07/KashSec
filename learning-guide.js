@@ -50,6 +50,7 @@ window.KashLearningGuide = (()=>{
       <div class="sg-layout"><section class="sg-choices" aria-labelledby="sgChoicesHeading"><h2 id="sgChoicesHeading">Choose your starting point</h2><p class="pg-hint">Your choices shape the suggested order. You can open any step and change direction whenever you like.</p><form id="sgForm">
         <fieldset><legend><span>1</span> What feels closest to you?</legend>${EXPERIENCES.map(item=>`<label class="sg-option"><input type="radio" name="experience" value="${item.id}" required><span><strong>${item.title}</strong><span>${item.desc}</span></span></label>`).join('')}</fieldset>
         <fieldset><legend><span>2</span> What would you like to explore?</legend>${FOCUSES.map(item=>`<label class="sg-option"><input type="radio" name="focus" value="${item.id}" required><span><strong>${item.title}</strong><span>${item.desc}</span></span></label>`).join('')}</fieldset>
+        <fieldset><legend><span>3</span> Optional: a goal and a time</legend><p class="pg-hint">Leave this blank to keep only the route above. A beginner goal starts with an existing lesson, not an expert lab.</p>${[['unsure','Not sure yet'],['pentest','Pentest'],['soc','SOC'],['appsec','AppSec'],['cloud','Cloud'],['ai','AI security'],['cert','A certification'],['grc','GRC']].map(([value,label])=>`<label class="sg-option"><input type="radio" name="goal" value="${value}"><span><strong>${label}</strong></span></label>`).join('')}${[15,30,60].map(value=>`<label class="sg-option"><input type="radio" name="minutes" value="${value}"><span><strong>${value===60?'60 minutes or more':value+' minutes'}</strong></span></label>`).join('')}</fieldset>
         <div class="sg-form-actions"><button type="submit" class="btn-amber" id="sgSave">Save my route</button><button type="button" class="btn-ghost" id="sgJump">See my route ↓</button></div><p id="sgStatus" class="pg-hint" role="status"></p></form><p class="pg-hint">Saved choices are included in progress backups and optional account sync.</p></section>
         <section class="sg-result" aria-labelledby="sgRouteHeading" id="sgResult"></section></div>
       <p class="sg-footer"><a class="pg-link" href="#/course">Browse every course path →</a><a class="pg-link" href="#/career-quiz">Explore career interests →</a></p><p class="pg-hint">This guide works offline after your first visit. Open or save the linked activities in advance to use those offline too.</p></section>`;
@@ -60,6 +61,8 @@ window.KashLearningGuide = (()=>{
     function readSaved(){
       form.elements.experience.value=STATE.learningGuide.experience;
       form.elements.focus.value=STATE.learningGuide.focus;
+      if(STATE.learningGuide.goal) form.elements.goal.value=STATE.learningGuide.goal;
+      if([15,30,60].includes(STATE.learningGuide.minutes)) form.elements.minutes.value=String(STATE.learningGuide.minutes);
     }
     function choices(){return {experience:form.elements.experience.value,focus:form.elements.focus.value};}
     function paint(){
@@ -74,8 +77,24 @@ window.KashLearningGuide = (()=>{
       result.innerHTML=`<div class="sg-result-head"><div class="sec-eyebrow">Your starting route · ${steps.length} steps</div><h2 id="sgRouteHeading" tabindex="-1">${focusInfo.title}</h2><p class="sg-context">${experienceInfo.title}</p><p>${route.reason}</p><div class="sg-progress-label"><strong id="sgProgressCount">${done} of ${steps.length} explored</strong><span>Follow your own pace</span></div><progress class="study-progress" max="${steps.length}" value="${done}" aria-label="Starting route progress"></progress></div>
         <div class="sg-next" id="sgNext">${next?`<span class="sec-eyebrow">Next unfinished step</span><h3>${escapeHtml(next.title)}</h3><a class="btn-amber" href="${next.href}" id="sgContinue">Continue with this ${kindLabel(next.kind).toLowerCase()} →</a>`:`<h3>You’ve explored every step in this route.</h3><p>Revisit anything below, choose another interest, or continue through the course.</p><a class="btn-amber" href="#/lesson/${route.path}">Continue through the course →</a>`}</div>
         <ol class="sg-steps">${steps.map((step,i)=>`<li class="${step.done?'is-done':''}" data-step="${step.kind}/${step.id}"><span class="sg-step-number" aria-hidden="true">${step.done?'✓':i+1}</span><div><span class="sg-step-kind">${kindLabel(step.kind)}${step.done?' · '+step.status:''}</span><h3>${escapeHtml(step.title)}</h3><p>${step.why}</p><a href="${step.href}" aria-label="${step.done?'Revisit':'Open'} ${escapeHtml(step.title)}">${step.done?'Revisit this step':'Open this step'} →</a></div></li>`).join('')}</ol>
-        <aside class="sg-planner"><h3>Keep going with a daily goal</h3><p>Suggested course path: <strong>${escapeHtml(findPath(route.path).title)}</strong>. You can use this focus in the study planner and keep your existing daily goal.</p><button type="button" class="btn-ghost" id="sgUsePlanner">Use this course path in my planner</button><p id="sgPlannerStatus" class="pg-hint" role="status"></p><a class="pg-link" href="#/planner">Open study planner →</a></aside>`;
+        <aside class="sg-planner"><h3>Keep going with a daily goal</h3><p>Suggested course path: <strong>${escapeHtml(findPath(route.path).title)}</strong>. You can use this focus in the study planner and keep your existing daily goal.</p><button type="button" class="btn-ghost" id="sgUsePlanner">Use this course path in my planner</button><p id="sgPlannerStatus" class="pg-hint" role="status"></p><a class="pg-link" href="#/planner">Open study planner →</a></aside><div id="sgStudio"></div>`;
       if(focusHref)[...result.querySelectorAll('a')].find(link=>link.getAttribute('href')===focusHref)?.focus({preventScroll:true});
+      paintStudio();
+    }
+    function paintStudio(){
+      const box=document.getElementById('sgStudio');
+      const goal=form.elements.goal.value;
+      if(!box) return;
+      if(!goal){ box.replaceChildren(); return; }
+      const minutes=Number(form.elements.minutes.value || STATE.learningGuide.minutes || 15);
+      const experience=form.elements.experience.value;
+      import('./studio/model.js').then(({buildStartRoute})=>{
+        if(form.elements.goal.value!==goal) return;
+        const mapped=experience==='new'?'beginner':experience==='some'?'some':'experienced';
+        const route=buildStartRoute({experience:mapped,goal,minutes});
+        const items=route.today.concat(route.later);
+        box.innerHTML=`<section class="sg-planner"><h3>Also fits this goal</h3><p>${escapeHtml(route.reason)}</p><p><a class="btn-amber" href="${route.first.href}">${escapeHtml(route.first.title)}</a></p><ol class="sg-steps">${items.map(item=>`<li><div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.why)}</p><a href="${item.href}">Open this step →</a></div></li>`).join('')}</ol></section>`;
+      }).catch(()=>{ box.textContent='The goal route could not load. The route above still works.'; });
     }
     readSaved();paint();
     status.textContent=STATE.learningGuide.updatedAt?'Your saved route is ready.':'Preview your choices, then save this route to return to it.';
@@ -85,7 +104,7 @@ window.KashLearningGuide = (()=>{
     });
     form.addEventListener('submit',event=>{
       event.preventDefault();if(!form.reportValidity())return;
-      STATE.learningGuide={...choices(),updatedAt:Date.now()};dirty=false;
+      STATE.learningGuide={...choices(),goal:form.elements.goal.value||'',minutes:[15,30,60].includes(Number(form.elements.minutes.value))?Number(form.elements.minutes.value):15,updatedAt:Date.now()};dirty=false;
       status.textContent=saveState()?'Your starting route is saved.':'This route is ready for this session. Choices could not be saved locally.';
     });
     result.addEventListener('click',event=>{

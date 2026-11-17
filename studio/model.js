@@ -1741,6 +1741,81 @@ export function careerGaps(masteredIds = []) {
   });
 }
 
+const startStep = (title, href, why, minutes) => ({ title, href, why, minutes });
+const CIA = startStep('Read what the three goals mean', '#/lesson/10-fundamentals/cia-triad', 'This lesson already exists. It does not assume Kali or Active Directory.', 15);
+const HTTP = startStep('Say what an HTTP status claims', '#/practice/http', 'Four fictional status codes. No request leaves this browser.', 15);
+const PHISH = startStep('Separate the sender from the display name', '#/practice/phish', 'Four synthetic messages. No mailbox is connected.', 20);
+const FIX = startStep('Repair one invoice policy', '#/fix-verify', 'Allow and deny cases for a fictional API. Nothing is deployed.', 25);
+const CLOUD = startStep('Shrink one cloud role', '#/cybercity/cloud', 'A wildcard billing role on billing.northbridge.test. Nothing is applied.', 20);
+const AGENT = startStep('Keep an assistant inside one task', '#/cybercity/agent', 'A browser fixture. No model is called.', 20);
+const CERT = startStep('Open the Security+ starter plan', '#/certlab/security-plus', 'Original questions and official links. Not a CompTIA exam.', 20);
+const GRC = startStep('Read what GRC is', '#/lesson/23-grc-compliance/what-is-grc', 'The existing GRC path. A policy name is not evidence the control works.', 15);
+const CAREERS = startStep('Look at the career map', '#/careers', 'The roadmap already on the site. It is not a job offer.', 15);
+const SHARED = startStep('Read who still patches the application', '#/lesson/08-cloud-basics/shared-responsibility-model', 'The existing shared-responsibility lesson.', 15);
+const SHIFT = startStep('Open the six-case shift', '#/shift', 'Synthetic cases only. Nothing pages a person.', 20);
+
+const START_ROUTES = {
+  beginner: {
+    unsure: [CIA, CAREERS],
+    pentest: [CIA, HTTP],
+    soc: [CIA, PHISH],
+    appsec: [CIA, HTTP],
+    cloud: [CIA, SHARED],
+    ai: [CIA, HTTP],
+    cert: [CIA, CERT],
+    grc: [CIA, GRC]
+  },
+  some: {
+    unsure: [CAREERS, CIA],
+    pentest: [HTTP, FIX],
+    soc: [PHISH, SHIFT],
+    appsec: [HTTP, FIX],
+    cloud: [SHARED, CLOUD],
+    ai: [HTTP, AGENT],
+    cert: [CERT, CIA],
+    grc: [GRC, CIA]
+  },
+  experienced: {
+    unsure: [CAREERS, CIA],
+    pentest: [FIX, HTTP],
+    soc: [SHIFT, PHISH],
+    appsec: [FIX, HTTP],
+    cloud: [CLOUD, SHARED],
+    ai: [AGENT, HTTP],
+    cert: [CERT, FIX],
+    grc: [GRC, CERT]
+  }
+};
+
+export function buildStartRoute(input = {}) {
+  const experience = ['beginner', 'some', 'experienced'].includes(input.experience) ? input.experience : 'beginner';
+  const goal = Object.prototype.hasOwnProperty.call(START_ROUTES.beginner, input.goal) ? input.goal : 'unsure';
+  const minutes = [15, 30, 60].includes(Number(input.minutes)) ? Number(input.minutes) : 15;
+  const steps = START_ROUTES[experience][goal].map(item => ({ ...item }));
+  const today = [];
+  let used = 0;
+  for (const item of steps) {
+    if (today.length && used + item.minutes > minutes) break;
+    today.push(item);
+    used += item.minutes;
+  }
+  const reasons = {
+    beginner: 'This is first because you said you are starting from zero. The first step is an existing lesson or a browser fixture, not an expert lab.',
+    some: 'This is first because you said you already have some foundations. The CIA lesson stays available as a refresh, and the route still avoids expert labs.',
+    experienced: 'This is first because you said you already practise. The step is still a local fixture or an existing lesson, not a live target.'
+  };
+  return {
+    experience,
+    goal,
+    minutes,
+    skipped: Boolean(input.skipped),
+    first: today[0],
+    today,
+    later: steps.filter(item => !today.includes(item)),
+    reason: reasons[experience]
+  };
+}
+
 export function pageCopies() {
   const certText = CERT_TRACKS.map(track => {
     const versions = track.versions.map(version => `${version.code}: ${version.note}`).join(' ');
@@ -1829,6 +1904,14 @@ export function pageCopies() {
       description: 'Six synthetic cases in one queue: an invoice API, phishing, ransomware, a cloud role, a workflow, and an assistant. Fixture status only.',
       heading: 'Analyst shift',
       body: `<p>This is one practice shift, not a SOC product. Each row is a fixture you already have elsewhere on the site. The status is not-started, attempted, or verified in this browser. Nothing is a live alert.</p><p>Cases: suspicious web API access, phishing mailbox, ransomware precursor, a cloud role that is too wide, workflow and dependency risk, and assistant privilege.</p><p><a href="/cybercity/">Northbridge</a> · <a href="/practice/">Practice labs</a> · <a href="/passport/">Skill record</a></p>`
+    },
+    {
+      file: 'start/index.html',
+      path: '/start/',
+      title: 'Start here · KashSec Academy',
+      description: 'Three questions, then a route made from lessons and labs that already exist. Beginners are not sent to an expert lab.',
+      heading: 'Start here',
+      body: '<p>The start page asks where you are and what you want to explore. You can also add a goal and a time. A complete beginner is sent to an existing lesson, not an expert lab. Choices stay in this browser.</p><p>Goals you can add: not sure, pentest, SOC, AppSec, cloud, AI security, a certification, or GRC.</p><p><a href="/lesson/10-fundamentals/cia-triad.html">Read the CIA lesson</a> · <a href="/lesson/00-fresher-basics/">Computer basics</a></p>'
     }
   ];
 }

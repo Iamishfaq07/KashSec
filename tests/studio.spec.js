@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import { validatePractice, gradeLab, labById, practiceEvidence, foundationFor } from '../studio/practice.js';
 import {
   CERT_TRACKS, PENTEST_EXCHANGE, RESEARCH, SECURE_AGENT_POLICY, SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, SKILLS, SOC_EVENTS, VULNERABLE_AGENT_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
-  buildStudyPlan, careerGaps, coachAnswer, esc, explainNext, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage, northbridgeReport, passportEntries, passportJson, reviewQueue, scoreTrack, shiftQueue, studioPages, validateStudio
+  buildStudyPlan, buildStartRoute, careerGaps, coachAnswer, esc, explainNext, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage, northbridgeReport, passportEntries, passportJson, reviewQueue, scoreTrack, shiftQueue, studioPages, validateStudio
 } from '../studio/model.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -130,5 +130,19 @@ for (const page of studioPages()) {
 const gaps = careerGaps(['foundations.cia']);
 assert.equal(gaps.find(item => item.id === 'soc').have, 1);
 assert.equal(gaps.find(item => item.id === 'aisec').have, 0);
+for (const experience of ['beginner', 'some', 'experienced']) {
+  for (const goal of ['unsure', 'pentest', 'soc', 'appsec', 'cloud', 'ai', 'cert', 'grc']) {
+    const route = buildStartRoute({ experience, goal, minutes: 15 });
+    const blob = JSON.stringify(route);
+    assert.equal(blob.includes('expert-labs') || blob.includes('ad-attack'), false, `${experience} ${goal}`);
+    assert.ok(route.first.href.startsWith('#/'));
+    assert.equal(route.today.length >= 1, true);
+  }
+}
+assert.equal(buildStartRoute({ experience: 'beginner', goal: 'pentest', minutes: 15 }).first.href, '#/lesson/10-fundamentals/cia-triad');
+assert.equal(buildStartRoute({ experience: 'experienced', goal: 'appsec', minutes: 30 }).first.href, '#/fix-verify');
+assert.equal(buildStartRoute({}).goal, 'unsure');
+assert.ok(fs.existsSync(path.join(root, 'course/23-grc-compliance/what-is-grc.md')));
+assert.ok(fs.existsSync(path.join(root, 'course/08-cloud-basics/shared-responsibility-model.md')));
 
 console.log(`PASS: studio graph, ${CERT_TRACKS.length} cert plans, ${RESEARCH.length} research cards, and invoice policy checks.`);

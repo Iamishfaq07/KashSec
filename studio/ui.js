@@ -82,6 +82,7 @@ function shell(title, lede, crumbs, body) {
     <h1 class="sec-title">${title}</h1>
     <p class="sec-sub">${lede}</p>
     <div class="ks-jumps" role="navigation" aria-label="Studio sections">
+      <a href="#/start">Start</a>
       <a href="#/certlab">Cert prep</a>
       <a href="#/research">Research</a>
       <a href="#/skills">Skills</a>
