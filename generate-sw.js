@@ -195,8 +195,7 @@ async function validPathContent(response, file) {
   if(!response?.ok || /text\\/html/i.test(response.headers.get('content-type') || '')) return false;
   try{
     const text = await response.clone().text();
-    const checked = file.lesson ? text.replace(/^\\s*<!-- coderabbit-ai-generated:v1 -->\\s*/, '') : text;
-    if(/^\\s*</.test(checked)) return false;
+    if(/^\\s*</.test(text)) return false;
     if(file.search){parseSearchIndex(text,file.search);return true;}
     return file.lesson ? /^#\\s+\\S/m.test(text) : text.startsWith(file.startsWith) && text.includes(file.marker);
   }catch(_){return false;}
