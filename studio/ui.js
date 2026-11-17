@@ -4,8 +4,9 @@ import {
   CERT_TRACKS, HUNT_SOURCES, HUNT_TOKENS, PENTEST_EXCHANGE, RESEARCH, SKILLS, SOC_EVENTS, TIMELINE_ITEMS, TRIAGE_LABELS,
   SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, VULNERABLE_AGENT_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
   buildStudyPlan, coachAnswer, coverage, esc, explainNext, filterEvents, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage,
-  lessonHref, northbridgeReport, passportEntries, passportMarkdown, readinessLabel, researchById, researchKindLabel, reviewQueue, scoreTrack, skillById, trackById
+  lessonHref, northbridgeReport, passportEntries, passportJson, passportMarkdown, readinessLabel, researchById, researchKindLabel, reviewQueue, scoreTrack, skillById, trackById
 } from './model.js';
+import { FOUNDATIONS, GLOSSARY, LAB_ROADMAP, PRACTICE_LABS, glossaryById, gradeLab, labById, practiceEvidence } from './practice.js';
 
 const STORAGE_KEY = 'kashsec_studio_v1';
 
@@ -17,7 +18,8 @@ function emptyState() {
     objectiveStatus: {},
     researchRead: [],
     fix: { policy: { ...VULNERABLE_INVOICE_POLICY }, notes: '', ran: false },
-    cybercity: { pentest: null, triage: {}, triageRan: false, huntSource: 'api', huntToken: 'status=200', huntRan: false, iam: { ...VULNERABLE_IAM_POLICY }, iamRan: false, agent: { ...VULNERABLE_AGENT_POLICY }, agentRan: false, timeline: {}, timelineRan: false }
+    cybercity: { pentest: null, triage: {}, triageRan: false, huntSource: 'api', huntToken: 'status=200', huntRan: false, iam: { ...VULNERABLE_IAM_POLICY }, iamRan: false, agent: { ...VULNERABLE_AGENT_POLICY }, agentRan: false, timeline: {}, timelineRan: false },
+    practice: {}
   };
 }
 
@@ -37,7 +39,8 @@ export function loadState() {
         iam: { ...base.cybercity.iam, ...((parsed.cybercity && parsed.cybercity.iam) || {}) },
         agent: { ...base.cybercity.agent, ...((parsed.cybercity && parsed.cybercity.agent) || {}) },
         timeline: { ...((parsed.cybercity && parsed.cybercity.timeline) || {}) }
-      }
+      },
+      practice: { ...(parsed.practice || {}) }
     };
   } catch {
     return emptyState();
@@ -66,6 +69,8 @@ function shell(title, lede, crumbs, body) {
       <a href="#/skills">Skills</a>
       <a href="#/fix-verify">Fix & verify</a>
       <a href="#/cybercity">Northbridge</a>
+      <a href="#/practice">Practice</a>
+      <a href="#/foundations">Foundations</a>
       <a href="#/passport">Skill record</a>
       <a href="#/coach">Coach</a>
     </div>
@@ -196,18 +201,14 @@ function renderResearchItem(item, state) {
       <p class="ks-meta">${esc(item.author)} · ${esc(item.publisher)}. ${item.checked ? `Checked ${esc(item.checked)}.` : 'Not re-fetched for this release.'}</p>
       <p>${esc(item.license)}</p>
       <h2>Why it is here</h2>
-      <p>${esc(item.happened)}</p>
-      <h2>What the source supports</h2>
-      <p>${esc(item.evidence)}</p>
-      <h2>What is uncertain</h2>
-      <p>${esc(item.uncertainty)}</p>
-      <h2>Defensive angle</h2>
-      <p>${esc(item.defensive)}</p>
-      <h2>Check yourself</h2>
-      <p>${esc(item.check)}</p>
-      <h2>Portfolio prompt</h2>
-      <p>${esc(item.portfolio)}</p>
+      <p>${esc(item.happened || item.summary)}</p>
+      ${item.evidence ? `<h2>What the source supports</h2><p>${esc(item.evidence)}</p>` : ''}
+      ${item.uncertainty ? `<h2>What is uncertain</h2><p>${esc(item.uncertainty)}</p>` : ''}
+      ${item.defensive ? `<h2>Defensive angle</h2><p>${esc(item.defensive)}</p>` : ''}
+      ${item.check ? `<h2>Check yourself</h2><p>${esc(item.check)}</p>` : ''}
+      ${item.portfolio ? `<h2>Portfolio prompt</h2><p>${esc(item.portfolio)}</p>` : ''}
       <p><a href="${esc(href)}"${external ? ' rel="noopener noreferrer"' : ''}>${external ? 'Open the source' : 'Open the related exercise'}</a></p>
+      <p><a href="#/contact">Request a correction</a> if a date, link, or summary is wrong.</p>
       <p>Related skills: ${item.skills.map(id => `<a href="#/skills/${id}">${esc(skillById(id)?.title || id)}</a>`).join(' · ')}</p>
       <button type="button" class="btn-ghost sm" id="ksMarkRead" aria-pressed="${state.researchRead.includes(item.id) ? 'true' : 'false'}">${state.researchRead.includes(item.id) ? 'Marked as read' : 'Mark as read'}</button>
     </article>`);
@@ -425,32 +426,81 @@ function renderReport(state) {
 }
 
 function renderPassport(state) {
-  const items = passportEntries(state);
-  const list = items.length ? `<ul>${items.map(item => `<li><strong>${esc(item.level)}</strong> · ${esc(item.title)}. ${esc(item.note)}</li>`).join('')}</ul>` : '<p>Nothing recorded yet. Finish a Northbridge desk, mark a source read, or mark a skill.</p>';
+  const items = passportEntries(state).concat(practiceEvidence(state.practice));
+  const list = items.length ? `<ul>${items.map(item => `<li><strong>${esc(item.level)}</strong> · ${esc(item.title)}. ${esc(item.note)}</li>`).join('')}</ul>` : '<p>Nothing recorded yet. Finish a Northbridge desk, a practice lab, mark a source read, or mark a skill.</p>';
   return shell('Skill record', 'Private to this browser. Auto-verified means a fixture passed. It is not a certificate and not an instructor review.', '<span>Skill record</span>', `
     <section class="ks-card">
       <h2>Evidence</h2>
       ${list}
       <button class="btn-amber sm" type="button" id="ksPassportDownload">Download Markdown</button>
+      <button class="btn-ghost sm" type="button" id="ksPassportJson">Download JSON</button>
       <p id="ksPassportStatus" role="status"></p>
-      <p class="ks-note">Levels used here: read, practiced, auto-verified, self-reported. Instructor reviewed is not offered, because nobody else has seen this work.</p>
+      <p class="ks-note">Levels used here: read, practiced, auto-verified, self-reported. Instructor reviewed is not offered, because nobody else has seen this work. There is no public profile and no account sync.</p>
     </section>`);
 }
 
-function renderCoach(state, kind) {
-  const answer = kind ? coachAnswer(kind, state) : null;
-  const result = answer ? `<article class="ks-card"><h2>${esc(answer.title)}</h2><p>${esc(answer.body)}</p><p><a href="${esc(answer.href)}">${esc(answer.label)}</a></p></article>` : '';
-  return shell('Offline coach', 'Three questions. The answers come from the skills graph and from desks you already ran. No model is called.', '<span>Coach</span>', `
+function renderCoach(state, kind, termId) {
+  let result = '';
+  if (kind === 'term') {
+    const entry = glossaryById(termId);
+    result = entry
+      ? `<article class="ks-card"><h2>${esc(entry.term)}</h2><p>${esc(entry.body)}</p><p class="ks-note">This is a KashSec definition for study. It is not a standard’s official wording.</p></article>`
+      : '<p>Choose a term. The coach does not invent a definition.</p>';
+  } else if (kind) {
+    const answer = coachAnswer(kind, state);
+    result = `<article class="ks-card"><h2>${esc(answer.title)}</h2><p>${esc(answer.body)}</p><p><a href="${esc(answer.href)}">${esc(answer.label)}</a></p></article>`;
+  }
+  const terms = GLOSSARY.map(entry => `<a href="#/coach/term/${esc(entry.id)}">${esc(entry.term)}</a>`).join('');
+  return shell('Offline coach', 'Fixed questions and a short glossary. No model is called.', '<span>Coach</span>', `
     <div class="ks-filters" role="group" aria-label="Coach questions">
       <a href="#/coach/next">What should I do next?</a>
       <a href="#/coach/invoice">Why did the invoice policy fail?</a>
       <a href="#/coach/logs">Why did a log line fail?</a>
     </div>
-    ${result || '<p class="ks-note">Pick a question. If you have not run a desk, the coach will say that instead of inventing a score.</p>'}`);
+    ${result || '<p class="ks-note">Pick a question. If you have not run a desk, the coach will say that instead of inventing a score.</p>'}
+    <section class="ks-card"><h2>Glossary</h2><div class="ks-filters" role="group" aria-label="Glossary">${terms}</div></section>`);
 }
 
-function downloadText(filename, text) {
-  const blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
+function renderPracticeHome() {
+  const labs = PRACTICE_LABS.map(lab => `<article class="ks-card"><h2><a href="#/practice/${lab.id}">${esc(lab.title)}</a></h2><p>${esc(lab.summary)}</p><p class="ks-meta">${lab.minutes} min</p></article>`).join('');
+  const roadmap = LAB_ROADMAP.map(item => `<li><a href="${esc(item.href)}">${esc(item.title)}</a> — ${esc(item.status)}. ${esc(item.note)}</li>`).join('');
+  return shell('Practice labs', 'Graded fixtures in the browser. A pass is not a production test and not a certificate.', '<span>Practice</span>', `
+    <div class="ks-grid">${labs}</div>
+    <section class="ks-card"><h2>The 18-lab set</h2><ol>${roadmap}</ol>
+      <p class="ks-note">Shipped means this page grades it. Existing means an older KashSec lab already does the job. Specified means it is not interactive here. Mobile storage stays specified because this site cannot review a phone keystore.</p>
+      <p class="ks-note">Classrooms, public writeups, and a live model are not built. This site has no account system for them, and no moderation service.</p>
+    </section>`);
+}
+
+function renderPracticeLab(state, lab) {
+  const saved = state.practice[lab.id] || {};
+  const input = saved.input || (lab.mode === 'policy' ? { ...lab.vulnerableInput } : {});
+  const controls = lab.mode === 'choices'
+    ? lab.items.map(item => `<label>${esc(item.prompt)} <select name="${esc(item.id)}">${item.options.map(([value, label]) => `<option value="${esc(value)}"${input[item.id] === value ? ' selected' : ''}>${esc(label)}</option>`).join('')}</select></label>`).join('')
+    : lab.fields.map(field => `<label>${esc(field.label)} <select name="${esc(field.name)}">${field.options.map(([value, label]) => `<option value="${esc(value)}"${input[field.name] === value ? ' selected' : ''}>${esc(label)}</option>`).join('')}</select></label>`).join('');
+  const grade = saved.ran ? gradeLab(lab, saved.input || {}) : null;
+  const results = grade ? `<p role="status">${grade.passed ? `All ${grade.total} checks passed. This fixture still is not a production system.` : `${grade.passedCount} of ${grade.total} checks match.`}</p><ul>${grade.results.filter(item => !item.pass).map(item => `<li>${esc(item.title)}. ${esc(item.why)}</li>`).join('')}</ul>` : '<p>Run the checks before the expected answers are shown.</p>';
+  return shell(lab.title, lab.summary, `<a href="#/practice">Practice</a> · <span>${esc(lab.title)}</span>`, `
+    <form class="ks-card" id="ksPractice" data-lab="${esc(lab.id)}">
+      <h2>Your choices</h2>
+      ${controls}
+      <button class="btn-amber sm" type="submit">Run checks</button>
+      <div id="ksPracticeResult">${results}</div>
+    </form>`);
+}
+
+function renderFoundations() {
+  const cards = FOUNDATIONS.map(item => `<article class="ks-card">
+      <h2><a href="#/lesson/${esc(item.path)}/${esc(item.id)}">${esc(item.title)}</a></h2>
+      <p>${esc(item.why)}</p>
+      <ul>${item.outcomes.map(outcome => `<li>${esc(outcome)}</li>`).join('')}</ul>
+      <p><a href="${esc(item.try)}">Practise</a> · <a href="${esc(item.next)}">Next</a></p>
+    </article>`).join('');
+  return shell('Foundation bridges', 'Ten lessons that already exist. The lesson pages are unchanged. This page only adds a why, two outcomes, and a next step.', '<span>Foundations</span>', `<div class="ks-grid">${cards}</div>`);
+}
+
+function downloadText(filename, text, type = 'text/markdown;charset=utf-8') {
+  const blob = new Blob([text], { type });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
@@ -547,8 +597,22 @@ export function renderStudio(root, hash) {
     title = 'Skill record · KashSec Academy';
     wirePassport(root);
   } else if (section === 'coach') {
-    root.innerHTML = renderCoach(state, id);
+    root.innerHTML = renderCoach(state, id, parts[2] ? decodeURIComponent(parts[2]) : '');
     title = 'Offline coach · KashSec Academy';
+  } else if (section === 'practice' && !id) {
+    root.innerHTML = renderPracticeHome();
+    title = 'Practice labs · KashSec Academy';
+  } else if (section === 'practice') {
+    const lab = labById(id);
+    if (!lab) root.innerHTML = shell('Lab not found', 'That practice lab is not in this set.', `<a href="#/practice">Practice</a>`, '<p><a href="#/practice">Back to practice</a></p>');
+    else {
+      root.innerHTML = renderPracticeLab(state, lab);
+      title = `${lab.title} · KashSec Academy`;
+      wirePractice(root, lab);
+    }
+  } else if (section === 'foundations') {
+    root.innerHTML = renderFoundations();
+    title = 'Foundation bridges · KashSec Academy';
   } else {
     root.innerHTML = shell('Studio', 'Choose a section.', '<span>Studio</span>', '<p><a href="#/certlab">Cert prep</a></p>');
   }
@@ -693,7 +757,27 @@ function wirePassport(root) {
   root.querySelector('#ksPassportDownload')?.addEventListener('click', () => {
     downloadText('kashsec-skill-record.md', passportMarkdown(loadState()));
     const status = root.querySelector('#ksPassportStatus');
-    if (status) status.textContent = 'Download started. This record was not uploaded.';
+    if (status) status.textContent = 'Markdown download started. This record was not uploaded.';
+  });
+  root.querySelector('#ksPassportJson')?.addEventListener('click', () => {
+    downloadText('kashsec-skill-record.json', passportJson(loadState()), 'application/json');
+    const status = root.querySelector('#ksPassportStatus');
+    if (status) status.textContent = 'JSON download started. This record was not uploaded.';
+  });
+}
+
+function wirePractice(root, lab) {
+  root.querySelector('#ksPractice')?.addEventListener('submit', event => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const names = lab.mode === 'choices' ? lab.items.map(item => item.id) : lab.fields.map(field => field.name);
+    const input = {};
+    for (const name of names) input[name] = String(data.get(name) || '');
+    const next = loadState();
+    next.practice[lab.id] = { ran: true, input };
+    if (gradeLab(lab, input).passed && lab.skillId && !next.mastered.includes(lab.skillId)) next.mastered.push(lab.skillId);
+    saveState(next);
+    renderStudio(root, `#/practice/${lab.id}`);
   });
 }
 

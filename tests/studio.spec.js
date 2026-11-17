@@ -3,13 +3,14 @@ import assert from 'node:assert/strict';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { validatePractice, gradeLab, labById, practiceEvidence } from '../studio/practice.js';
 import {
   CERT_TRACKS, PENTEST_EXCHANGE, RESEARCH, SECURE_AGENT_POLICY, SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, SKILLS, SOC_EVENTS, VULNERABLE_AGENT_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
-  buildStudyPlan, coachAnswer, esc, explainNext, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage, northbridgeReport, passportEntries, reviewQueue, scoreTrack, validateStudio
+  buildStudyPlan, coachAnswer, esc, explainNext, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage, northbridgeReport, passportEntries, passportJson, reviewQueue, scoreTrack, validateStudio
 } from '../studio/model.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const errors = validateStudio();
+const errors = validateStudio().concat(validatePractice());
 assert.deepEqual(errors, [], errors.join('\n'));
 assert.equal(esc('<script>"&"</script>'), '&lt;script&gt;&quot;&amp;&quot;&lt;/script&gt;');
 
@@ -92,6 +93,11 @@ assert.equal(record.find(item => item.id === 'skill.foundations.cia').level, 'se
 assert.match(coachAnswer('next', { mastered: [] }).body, /starting skill/);
 assert.match(coachAnswer('invoice', {}).body, /have not run/);
 assert.equal(SKILLS.length > 7, true);
+const oauth = labById('oauth');
+assert.equal(gradeLab(oauth, oauth.secureInput).passed, true);
+assert.equal(practiceEvidence({ oauth: { ran: true, input: oauth.vulnerableInput } })[0].level, 'practiced');
+assert.equal(practiceEvidence({ oauth: { ran: true, input: oauth.secureInput } })[0].level, 'auto-verified');
+assert.match(JSON.parse(passportJson({})).limitation, /Not a certificate/);
 
 assert.ok(RESEARCH.some(item => item.kind === 'original-kashsec'));
 assert.ok(RESEARCH.filter(item => item.kind === 'curated-external').every(item => item.url.startsWith('https://')));
@@ -104,7 +110,7 @@ const sc200 = CERT_TRACKS.find(item => item.id === 'sc-200');
 assert.match(sc200.versions[0].note, /does not show domain percentages/);
 
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
-for (const file of ['certlab/index.html', 'research/index.html', 'skills/index.html', 'fix-verify/index.html', 'cybercity/index.html', 'passport/index.html', 'coach/index.html']) {
+for (const file of ['certlab/index.html', 'research/index.html', 'skills/index.html', 'fix-verify/index.html', 'cybercity/index.html', 'passport/index.html', 'coach/index.html', 'practice/index.html', 'foundations/index.html']) {
   const html = fs.readFileSync(path.join(root, file), 'utf8');
   const canonical = html.match(/<link rel="canonical" href="([^"]+)">/)?.[1];
   assert.ok(canonical && sitemap.includes(`<loc>${canonical}</loc>`), file);

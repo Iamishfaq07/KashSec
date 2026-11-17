@@ -1,6 +1,8 @@
 /* KashSec studio model: skills graph, CertLab, Research Vault, Fix & Verify.
    Pure data and functions. No DOM. Safe to import from Node tests and the browser. */
 
+import { FOUNDATIONS, GLOSSARY, LAB_ROADMAP, PRACTICE_LABS } from './practice.js';
+
 export const STUDIO_VERSION = 1;
 export const VERIFIED_ON = '2026-11-18';
 
@@ -800,6 +802,142 @@ export const RESEARCH = [
     defensive: 'Name the principal, the action, and the tenant. Deny the rest, including a second function that copied the policy.',
     check: 'Which of the three stars, action, tenant, or principal, would still let analytics-fn read an invoice?',
     portfolio: 'Export the case note after the role cases pass, and label it as a fixture.'
+  },
+  {
+    id: 'k8s-pod-security',
+    title: 'Kubernetes Pod Security Standards',
+    kind: 'curated-external',
+    author: 'Kubernetes authors',
+    publisher: 'Kubernetes',
+    url: 'https://kubernetes.io/docs/concepts/security/pod-security-standards/',
+    published: '',
+    checked: VERIFIED_ON,
+    license: 'Kubernetes documentation. Open the page for its license. Summary is KashSec’s.',
+    topics: ['cloud'],
+    minutes: 25,
+    difficulty: 'core',
+    skills: ['cloud.iam.least-privilege'],
+    objectives: ['secplus.architecture'],
+    summary: 'Kubernetes documents three pod security profiles: privileged, baseline, and restricted. The practice lab is a smaller fixture, not that policy engine.'
+  },
+  {
+    id: 'github-actions-secure',
+    title: 'Secure use of GitHub Actions',
+    kind: 'curated-external',
+    author: 'GitHub',
+    publisher: 'GitHub Docs',
+    url: 'https://docs.github.com/en/actions/reference/security/secure-use',
+    published: '',
+    checked: VERIFIED_ON,
+    license: 'GitHub documentation. Open the page for its terms. Summary is KashSec’s.',
+    topics: ['appsec', 'cloud'],
+    minutes: 30,
+    difficulty: 'core',
+    skills: ['appsec.review.trust-boundary'],
+    objectives: ['secplus.program'],
+    summary: 'GitHub’s current secure-use page covers untrusted code from pull requests, token permissions, and pinning actions. The old hardening-guide URL redirected here on the check date.'
+  },
+  {
+    id: 'owasp-authz-cheatsheet',
+    title: 'OWASP Authorization Cheat Sheet',
+    kind: 'curated-external',
+    author: 'OWASP Cheat Sheet Series',
+    publisher: 'OWASP',
+    url: 'https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html',
+    published: '',
+    checked: VERIFIED_ON,
+    license: 'OWASP Cheat Sheet Series. Open the page for the license. Summary is KashSec’s.',
+    topics: ['appsec', 'web'],
+    minutes: 20,
+    difficulty: 'core',
+    skills: ['web.authz.object-level'],
+    objectives: ['secplus.architecture', 'oscp.web'],
+    summary: 'A short OWASP page on denying by default and checking authorization on the server for each object and function.'
+  },
+  {
+    id: 'rfc6749',
+    title: 'RFC 6749: The OAuth 2.0 Authorization Framework',
+    kind: 'curated-external',
+    author: 'IETF',
+    publisher: 'RFC Editor',
+    url: 'https://www.rfc-editor.org/rfc/rfc6749',
+    published: '2012-10',
+    checked: VERIFIED_ON,
+    license: 'IETF RFC. Open the RFC for the copyright notice. Summary is KashSec’s.',
+    topics: ['web', 'appsec'],
+    minutes: 40,
+    difficulty: 'core',
+    skills: ['web.authn.jwt'],
+    objectives: ['secplus.architecture'],
+    summary: 'The OAuth 2.0 spec. The practice debugger checks state, redirect, and scope behavior. It is not an implementation of the RFC, and OAuth is not the same thing as a JWT.'
+  },
+  {
+    id: 'rfc9110',
+    title: 'RFC 9110: HTTP Semantics',
+    kind: 'curated-external',
+    author: 'IETF',
+    publisher: 'RFC Editor',
+    url: 'https://www.rfc-editor.org/rfc/rfc9110',
+    published: '2022-06',
+    checked: VERIFIED_ON,
+    license: 'IETF RFC. Open the RFC for the copyright notice. Summary is KashSec’s.',
+    topics: ['web'],
+    minutes: 30,
+    difficulty: 'foundation',
+    skills: ['web.http.status'],
+    objectives: ['secplus.architecture'],
+    summary: 'The current HTTP semantics spec, including what status codes mean. The inspector lab uses only 200, 401, 403, and 404.'
+  },
+  {
+    id: 'owasp-top-ten',
+    title: 'OWASP Top Ten',
+    kind: 'curated-external',
+    author: 'OWASP',
+    publisher: 'OWASP',
+    url: 'https://owasp.org/projects/top-ten',
+    published: '',
+    checked: VERIFIED_ON,
+    license: 'OWASP project page. Open it for the current edition and license.',
+    topics: ['web', 'appsec'],
+    minutes: 20,
+    difficulty: 'foundation',
+    skills: ['web.injection.sql'],
+    objectives: ['secplus.threats', 'oscp.web'],
+    summary: 'OWASP’s Top Ten project index. Confirm the edition on the page. The older project path redirected here on 18 Nov 2026.'
+  },
+  {
+    id: 'owasp-wstg',
+    title: 'OWASP Web Security Testing Guide',
+    kind: 'curated-external',
+    author: 'OWASP',
+    publisher: 'OWASP',
+    url: 'https://owasp.org/projects/web-security-testing-guide',
+    published: '',
+    checked: VERIFIED_ON,
+    license: 'OWASP project page. The testing guide itself has its own license on the project site.',
+    topics: ['web', 'offsec'],
+    minutes: 30,
+    difficulty: 'core',
+    skills: ['appsec.review.trust-boundary'],
+    objectives: ['oscp.scope', 'oscp.web'],
+    summary: 'OWASP’s Web Security Testing Guide project. Use it as a method list for authorised tests. It is not a list of targets. The older project path redirected here on 18 Nov 2026.'
+  },
+  {
+    id: 'kusto-docs',
+    title: 'Kusto Query Language documentation',
+    kind: 'curated-external',
+    author: 'Microsoft',
+    publisher: 'Microsoft Learn',
+    url: 'https://learn.microsoft.com/en-us/kusto/query/',
+    published: '',
+    checked: VERIFIED_ON,
+    license: 'Microsoft Learn. Open the page for its terms. Summary is KashSec’s.',
+    topics: ['soc'],
+    minutes: 25,
+    difficulty: 'core',
+    skills: ['soc.triage.logs'],
+    objectives: ['sc200.hunt'],
+    summary: 'Microsoft’s Kusto language reference. The Northbridge filter is a few dropdowns, not KQL, and this page is not the SC-200 exam.'
   }
 ];
 
@@ -1396,6 +1534,15 @@ export function passportMarkdown(state = {}) {
   return lines.join('\n');
 }
 
+export function passportJson(state = {}) {
+  return JSON.stringify({
+    product: 'KashSec skill record',
+    stored: 'this browser only',
+    limitation: 'Not a certificate, not a vendor credential, and not instructor reviewed.',
+    entries: passportEntries(state)
+  }, null, 2);
+}
+
 export function coachAnswer(kind, state = {}) {
   if (kind === 'next') {
     const next = explainNext(state.mastered || []);
@@ -1586,6 +1733,22 @@ export function pageCopies() {
       description: 'Three fixed questions answered from your local skill graph and Northbridge results. No model and no account.',
       heading: 'Offline coach',
       body: `<p>Ask what to do next, why the invoice policy failed, or why a log line failed. The answer comes from the skills graph and from desks you have already run in this browser. There is no chat model behind it.</p><p>If a desk has not been run, the coach says so and links to it. It will not invent a score.</p><p><a href="/skills/">See the graph</a> · <a href="/cybercity/">Open Northbridge</a> · <a href="/passport/">See the skill record</a></p>`
+    },
+    {
+      file: 'practice/index.html',
+      path: '/practice/',
+      title: 'Practice labs · KashSec Academy',
+      description: 'Graded browser labs for HTTP, OAuth, Kubernetes, CI, phishing, a ransomware timeline, a detection filter, retrieval, and assistant memory. Fixtures only.',
+      heading: 'Practice labs',
+      body: `<p>Nine graded labs run in this browser. The other items in the set of 18 link to a lab that already existed, or say plainly that they are not interactive yet. Mobile storage is specified and not shipped, because this site has no phone runtime.</p><p>${esc(PRACTICE_LABS.map(lab => `${lab.title}. ${lab.summary}`).join(' '))}</p><p>${esc(LAB_ROADMAP.map(item => `${item.n}. ${item.title} (${item.status}).`).join(' '))}</p><p><a href="/cybercity/">Northbridge case</a> · <a href="/foundations/">Ten foundation bridges</a> · <a href="/labs/">Original browser labs</a></p>`
+    },
+    {
+      file: 'foundations/index.html',
+      path: '/foundations/',
+      title: 'Foundation bridges · KashSec Academy',
+      description: 'Ten existing lessons with a why, two outcomes, a practice link, and a next step. The lesson text is unchanged.',
+      heading: 'Foundation bridges',
+      body: `<p>These ten lessons already exist. This page does not replace them. It tells you why the lesson matters, what you should be able to do, where to practise, and what to open next.</p><p>${esc(FOUNDATIONS.map(item => `${item.title}. ${item.why}`).join(' '))}</p><p>Glossary terms you can ask the offline coach for: ${esc(GLOSSARY.map(entry => entry.term).join(', '))}.</p><p><a href="/coach/">Open the coach</a> · <a href="/practice/">Open practice labs</a></p>`
     }
   ];
 }

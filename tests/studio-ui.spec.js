@@ -87,6 +87,20 @@ try {
   await page.goto(BASE + '/coach/');
   await page.getByRole('link', { name: 'What should I do next?' }).click();
   await page.getByText('starting skill').waitFor();
+
+  await page.goto(BASE + '/practice/');
+  await page.getByRole('link', { name: 'OAuth and OIDC debugger' }).click();
+  await page.locator('#ksPractice select[name="stateCheck"]').selectOption('exact');
+  await page.locator('#ksPractice select[name="nonceCheck"]').selectOption('exact');
+  await page.locator('#ksPractice select[name="redirect"]').selectOption('exact');
+  await page.locator('#ksPractice select[name="scope"]').selectOption('intersection');
+  await page.getByRole('button', { name: 'Run checks' }).click();
+  await page.getByText('All 5 checks passed').waitFor();
+  await page.goto(BASE + '/coach/');
+  await page.getByRole('link', { name: 'BOLA', exact: true }).click();
+  await page.getByText('Broken object-level authorization').waitFor();
+  await page.goto(BASE + '/foundations/');
+  await page.getByRole('heading', { name: 'The CIA triad', level: 2 }).waitFor();
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
 
   await page.goto(BASE + '/fix-verify/');
