@@ -63,6 +63,24 @@ try {
   await page.getByRole('button', { name: 'Run role cases' }).click();
   await page.getByText('All 4 role cases passed').waitFor();
 
+  await page.goto(BASE + '/cybercity/');
+  await page.getByRole('link', { name: 'Open the assistant' }).click();
+  await page.locator('#ksAgent select[name="toolSource"]').selectOption('task');
+  await page.locator('#ksAgent select[name="tenantSource"]').selectOption('task');
+  await page.locator('#ksAgent select[name="objectSource"]').selectOption('task');
+  await page.locator('#ksAgent select[name="honorApproved"]').selectOption('no');
+  await page.getByRole('button', { name: 'Run assistant calls' }).click();
+  await page.getByText('All 4 assistant calls matched').waitFor();
+
+  await page.goto(BASE + '/cybercity/');
+  await page.getByRole('link', { name: 'Write the timeline' }).click();
+  await page.locator('#ksTimeline select[name="login"]').selectOption('context');
+  await page.locator('#ksTimeline select[name="cross"]').selectOption('finding');
+  await page.locator('#ksTimeline select[name="gap"]').selectOption('exclude');
+  await page.locator('#ksTimeline select[name="reset"]').selectOption('exclude');
+  await page.getByRole('button', { name: 'Check the note' }).click();
+  await page.getByText('The note matches this fixture').waitFor();
+
   await page.goto(BASE + '/passport/');
   await page.getByRole('heading', { name: 'Skill record', level: 1 }).waitFor();
   await page.getByText('Cloud desk: billing role').waitFor();

@@ -4,8 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import {
-  CERT_TRACKS, PENTEST_EXCHANGE, RESEARCH, SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, SKILLS, SOC_EVENTS, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
-  buildStudyPlan, coachAnswer, esc, explainNext, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTriage, northbridgeReport, passportEntries, reviewQueue, scoreTrack, validateStudio
+  CERT_TRACKS, PENTEST_EXCHANGE, RESEARCH, SECURE_AGENT_POLICY, SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, SKILLS, SOC_EVENTS, VULNERABLE_AGENT_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
+  buildStudyPlan, coachAnswer, esc, explainNext, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage, northbridgeReport, passportEntries, reviewQueue, scoreTrack, validateStudio
 } from '../studio/model.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -71,6 +71,11 @@ assert.equal(review[0].objectiveId, 'secplus.architecture');
 assert.equal(reviewQueue(track, perfect).length, 0);
 assert.equal(gradeIamPolicy(SECURE_IAM_POLICY).passed, true);
 assert.equal(gradeIamPolicy(VULNERABLE_IAM_POLICY).passed, false);
+assert.equal(gradeAgentPolicy(SECURE_AGENT_POLICY).passed, true);
+assert.equal(gradeAgentPolicy(VULNERABLE_AGENT_POLICY).passed, false);
+assert.equal(gradeTimeline({ login: 'context', cross: 'finding', gap: 'exclude', reset: 'exclude' }).passed, true);
+assert.equal(gradeTimeline({ cross: 'context' }).passed, false);
+assert.match(northbridgeReport({}), /Assistant boundary not checked/);
 const emptyReport = northbridgeReport({});
 assert.match(emptyReport, /billing\.northbridge\.test/);
 assert.match(emptyReport, /Not checked/);

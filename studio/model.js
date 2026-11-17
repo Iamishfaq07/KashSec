@@ -1060,6 +1060,73 @@ export function gradeIamPolicy(policy) {
   return { results, passed: results.every(result => result.pass), passedCount: results.filter(result => result.pass).length, total: results.length };
 }
 
+export const AGENT_TASK = { tool: 'invoice.read', tenant: 'acme', invoice: '7' };
+
+export const AGENT_CALLS = [
+  {
+    id: 'in-task',
+    title: 'Read the invoice named in the task',
+    call: { tool: 'invoice.read', tenant: 'acme', invoice: '7', approved: false },
+    expect: 'allow',
+    why: 'Tool, tenant, and invoice all match the trusted task.'
+  },
+  {
+    id: 'other-tenant',
+    title: 'The model points the read at Birch',
+    call: { tool: 'invoice.read', tenant: 'birch', invoice: '42', approved: false },
+    expect: 'deny',
+    why: 'The task tenant is Acme. Model text does not get to change it.'
+  },
+  {
+    id: 'other-invoice',
+    title: 'The model keeps Acme and swaps the invoice id',
+    call: { tool: 'invoice.read', tenant: 'acme', invoice: '42', approved: false },
+    expect: 'deny',
+    why: 'The task named invoice 7. A different id is a different object.'
+  },
+  {
+    id: 'send',
+    title: 'The model asks to send the invoice and sets approved true',
+    call: { tool: 'invoice.send', tenant: 'acme', invoice: '7', approved: true },
+    expect: 'deny',
+    why: 'A field named approved inside the call is not a permission. The task only allowed invoice.read.'
+  }
+];
+
+export const VULNERABLE_AGENT_POLICY = { toolSource: 'call', tenantSource: 'call', objectSource: 'call', honorApproved: 'yes' };
+export const SECURE_AGENT_POLICY = { toolSource: 'task', tenantSource: 'task', objectSource: 'task', honorApproved: 'no' };
+
+export function agentDecision(policy, item) {
+  if (policy.honorApproved === 'yes' && item.call.approved) return 'allow';
+  if (policy.toolSource === 'task' && item.call.tool !== AGENT_TASK.tool) return 'deny';
+  if (policy.tenantSource === 'task' && item.call.tenant !== AGENT_TASK.tenant) return 'deny';
+  if (policy.objectSource === 'task' && item.call.invoice !== AGENT_TASK.invoice) return 'deny';
+  return 'allow';
+}
+
+export function gradeAgentPolicy(policy) {
+  const results = AGENT_CALLS.map(item => {
+    const got = agentDecision(policy, item);
+    return { id: item.id, title: item.title, expect: item.expect, got, pass: got === item.expect, why: item.why };
+  });
+  return { results, passed: results.every(result => result.pass), passedCount: results.filter(result => result.pass).length, total: results.length };
+}
+
+export const TIMELINE_ITEMS = [
+  { id: 'login', text: 'Bob signed in with MFA from a known office address.', verdict: 'context', why: 'A login is context. It is not the incident.' },
+  { id: 'cross', text: 'The API returned Birch invoice 42 while the session tenant was Acme.', verdict: 'finding', why: 'This is the finding. The session and the object disagree, and the response was 200.' },
+  { id: 'gap', text: 'No endpoint events arrived, so the laptop is clean.', verdict: 'exclude', why: 'Missing endpoint data is a gap. Do not write it as a clean result.' },
+  { id: 'reset', text: 'Sam’s failed password reset proves the same attacker.', verdict: 'exclude', why: 'A failed reset for a different person is a separate lead. Do not attach it.' }
+];
+
+export function gradeTimeline(answers = {}) {
+  const results = TIMELINE_ITEMS.map(item => {
+    const got = answers[item.id] || '';
+    return { id: item.id, text: item.text, expect: item.verdict, got, pass: got === item.verdict, why: item.why };
+  });
+  return { results, passed: results.every(result => result.pass), passedCount: results.filter(result => result.pass).length, total: results.length };
+}
+
 export function validateStudio() {
   const errors = [];
   const skillIds = new Set();
@@ -1153,6 +1220,11 @@ export function validateStudio() {
   const iamSecure = gradeIamPolicy(SECURE_IAM_POLICY);
   if (!iamSecure.passed) errors.push('secure IAM policy does not pass its own cases');
   if (gradeIamPolicy(VULNERABLE_IAM_POLICY).passed) errors.push('vulnerable IAM policy unexpectedly passes');
+  if (!gradeAgentPolicy(SECURE_AGENT_POLICY).passed) errors.push('secure agent policy does not pass its own cases');
+  if (gradeAgentPolicy(VULNERABLE_AGENT_POLICY).passed) errors.push('vulnerable agent policy unexpectedly passes');
+  const timelineKey = Object.fromEntries(TIMELINE_ITEMS.map(item => [item.id, item.verdict]));
+  if (!gradeTimeline(timelineKey).passed) errors.push('Northbridge timeline key does not pass');
+  if (gradeTimeline({ cross: 'context' }).passed) errors.push('a timeline that hides the finding unexpectedly passes');
   const iamIds = new Set();
   for (const item of IAM_CASES) {
     if (iamIds.has(item.id)) errors.push(`duplicate iam case ${item.id}`);
@@ -1252,7 +1324,19 @@ export function northbridgeReport(state = {}) {
     const grade = gradeIamPolicy(city.iam || VULNERABLE_IAM_POLICY);
     lines.push(grade.passed ? 'The billing role allows invoice reads for the caller tenant and the billing function only.' : `${grade.passedCount} of ${grade.total} role cases passed.`);
   }
-  lines.push('', 'Residual risk: this browser fixture does not include a real session store, a cloud account, or an endpoint agent.');
+  lines.push('', '## Assistant');
+  if (!city.agentRan) lines.push('Assistant boundary not checked.');
+  else {
+    const grade = gradeAgentPolicy(city.agent || VULNERABLE_AGENT_POLICY);
+    lines.push(grade.passed ? 'The assistant may only read the invoice named in the trusted task. A call field named approved does not grant a send.' : `${grade.passedCount} of ${grade.total} assistant calls matched.`);
+  }
+  lines.push('', '## Timeline');
+  if (!city.timelineRan) lines.push('Executive timeline not checked.');
+  else {
+    const grade = gradeTimeline(city.timeline || {});
+    lines.push(grade.passed ? 'The note keeps the cross-tenant read as the finding, the login as context, and does not call the laptop clean or blame the failed reset.' : `${grade.passedCount} of ${grade.total} timeline lines matched.`);
+  }
+  lines.push('', 'Residual risk: this browser fixture does not include a real session store, a cloud account, a model provider, or an endpoint agent.');
   return lines.join('\n');
 }
 
@@ -1278,6 +1362,14 @@ export function passportEntries(state = {}) {
   if (city.iamRan) {
     const grade = gradeIamPolicy(city.iam || VULNERABLE_IAM_POLICY);
     items.push({ id: 'northbridge.iam', title: 'Cloud desk: billing role', level: grade.passed ? 'auto-verified' : 'practiced', note: `${grade.passedCount} of ${grade.total} role cases.` });
+  }
+  if (city.agentRan) {
+    const grade = gradeAgentPolicy(city.agent || VULNERABLE_AGENT_POLICY);
+    items.push({ id: 'northbridge.agent', title: 'Assistant desk: tool boundary', level: grade.passed ? 'auto-verified' : 'practiced', note: `${grade.passedCount} of ${grade.total} calls.` });
+  }
+  if (city.timelineRan) {
+    const grade = gradeTimeline(city.timeline || {});
+    items.push({ id: 'northbridge.timeline', title: 'Incident note: what to include', level: grade.passed ? 'auto-verified' : 'practiced', note: `${grade.passedCount} of ${grade.total} lines.` });
   }
   for (const id of state.researchRead || []) {
     const item = researchById(id);
@@ -1477,7 +1569,7 @@ export function pageCopies() {
       title: 'Northbridge Billing case · KashSec Academy',
       description: 'One fictional invoice bug and a wildcard cloud role, practised as a tester, an AppSec engineer, an analyst, and a cloud defender. No live target.',
       heading: 'Northbridge Billing',
-      body: `<p>Northbridge Billing is not a company you can reach. The host name billing.northbridge.test is reserved for documentation and teaching. Bob at Acme reads Alice’s Birch invoice because the API trusts the query string. A second fixture gives the billing function a wildcard cloud role.</p><p>Use the desks on the same evidence. The tester names the unsafe field. The engineer repairs the API policy. The analyst marks five log lines. The cloud desk shrinks the role. The case note exports only what you have actually checked. None of this is a vendor lab, a Microsoft KQL hunt, or a production incident.</p><p><a href="/fix-verify/">Repair the policy</a> · <a href="/passport/">Open the skill record</a> · <a href="/coach/">Ask the offline coach</a> · <a href="/research/">Read the case card</a></p>`
+      body: `<p>Northbridge Billing is not a company you can reach. The host name billing.northbridge.test is reserved for documentation and teaching. Bob at Acme reads Alice’s Birch invoice because the API trusts the query string. A billing function starts with a wildcard role, and a billing assistant will send an invoice if it trusts a field named approved.</p><p>Use the desks on the same evidence. The tester names the unsafe field. The engineer repairs the API policy. The analyst marks five log lines. The cloud desk shrinks the role. The assistant desk keeps the model inside the trusted task. The incident note says what the finding is, and what it is not. The case note exports only what you have actually checked. None of this is a vendor lab, a live model, or a production incident.</p><p><a href="/fix-verify/">Repair the policy</a> · <a href="/passport/">Open the skill record</a> · <a href="/coach/">Ask the offline coach</a> · <a href="/research/">Read the case card</a></p>`
     },
     {
       file: 'passport/index.html',

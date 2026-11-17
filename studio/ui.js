@@ -1,9 +1,9 @@
 /* Browser UI for CertLab, the Research Vault, the skills graph, and Fix & Verify.
    Loaded on demand from app.js. Progress stays in localStorage under its own key. */
 import {
-  CERT_TRACKS, HUNT_SOURCES, HUNT_TOKENS, PENTEST_EXCHANGE, RESEARCH, SKILLS, SOC_EVENTS, TRIAGE_LABELS,
-  SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
-  buildStudyPlan, coachAnswer, coverage, esc, explainNext, filterEvents, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTriage,
+  CERT_TRACKS, HUNT_SOURCES, HUNT_TOKENS, PENTEST_EXCHANGE, RESEARCH, SKILLS, SOC_EVENTS, TIMELINE_ITEMS, TRIAGE_LABELS,
+  SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, VULNERABLE_AGENT_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
+  buildStudyPlan, coachAnswer, coverage, esc, explainNext, filterEvents, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage,
   lessonHref, northbridgeReport, passportEntries, passportMarkdown, readinessLabel, researchById, researchKindLabel, reviewQueue, scoreTrack, skillById, trackById
 } from './model.js';
 
@@ -17,7 +17,7 @@ function emptyState() {
     objectiveStatus: {},
     researchRead: [],
     fix: { policy: { ...VULNERABLE_INVOICE_POLICY }, notes: '', ran: false },
-    cybercity: { pentest: null, triage: {}, triageRan: false, huntSource: 'api', huntToken: 'status=200', huntRan: false, iam: { ...VULNERABLE_IAM_POLICY }, iamRan: false }
+    cybercity: { pentest: null, triage: {}, triageRan: false, huntSource: 'api', huntToken: 'status=200', huntRan: false, iam: { ...VULNERABLE_IAM_POLICY }, iamRan: false, agent: { ...VULNERABLE_AGENT_POLICY }, agentRan: false, timeline: {}, timelineRan: false }
   };
 }
 
@@ -34,7 +34,9 @@ export function loadState() {
         ...base.cybercity,
         ...(parsed.cybercity || {}),
         triage: { ...((parsed.cybercity && parsed.cybercity.triage) || {}) },
-        iam: { ...base.cybercity.iam, ...((parsed.cybercity && parsed.cybercity.iam) || {}) }
+        iam: { ...base.cybercity.iam, ...((parsed.cybercity && parsed.cybercity.iam) || {}) },
+        agent: { ...base.cybercity.agent, ...((parsed.cybercity && parsed.cybercity.agent) || {}) },
+        timeline: { ...((parsed.cybercity && parsed.cybercity.timeline) || {}) }
       }
     };
   } catch {
@@ -275,9 +277,11 @@ function renderCybercity() {
     ['AppSec', 'Repair the policy and run the allow and deny cases.', '#/fix-verify', 'Fix and verify'],
     ['SOC analyst', 'Mark five synthetic log lines, then narrow a filter.', '#/cybercity/soc', 'Open the log desk'],
     ['Cloud', 'Shrink a wildcard billing role to one action and one tenant.', '#/cybercity/cloud', 'Open the role'],
+    ['Assistant', 'Keep the billing assistant inside the trusted task.', '#/cybercity/agent', 'Open the assistant'],
+    ['Incident note', 'Choose what belongs in the first note, and what does not.', '#/cybercity/timeline', 'Write the timeline'],
     ['Case note', 'Export what you actually checked. Unrun desks stay blank.', '#/cybercity/report', 'Write the note']
   ].map(([role, text, href, label]) => `<article class="ks-card"><p class="ks-kicker">${esc(role)}</p><p>${esc(text)}</p><a class="btn-amber sm" href="${href}">${esc(label)}</a></article>`).join('');
-  return shell('Northbridge Billing', 'One fictional invoice. Three jobs. The host billing.northbridge.test is not a live target.', '<span>Northbridge</span>', `
+  return shell('Northbridge Billing', 'One fictional invoice, several jobs. The host billing.northbridge.test is not a live target.', '<span>Northbridge</span>', `
     <div class="ks-grid">${desks}</div>
     <section class="ks-card">
       <h2>What happened in the fixture</h2>
@@ -344,6 +348,49 @@ function renderSoc(state) {
       <button class="btn-amber sm" type="submit">Run filter</button>
       <div id="ksHuntResult">${huntResult}</div>
       <p class="ks-note">KashSec estimated practice only. Do not paste this filter into a production workspace and call it a detection.</p>
+    </form>`);
+}
+
+function renderAgent(state) {
+  const policy = state.cybercity.agent || VULNERABLE_AGENT_POLICY;
+  const select = (name, options) => `<label>${esc(name)} <select name="${esc(name)}">${options.map(([value, label]) => `<option value="${value}"${policy[name] === value ? ' selected' : ''}>${esc(label)}</option>`).join('')}</select></label>`;
+  const grade = state.cybercity.agentRan ? gradeAgentPolicy(policy) : null;
+  const results = grade ? `<ol>${grade.results.map(result => `<li>${result.pass ? 'Pass' : 'Not yet'} · ${esc(result.title)}. Expected ${esc(result.expect)}, boundary returned ${esc(result.got)}. ${esc(result.why)}</li>`).join('')}</ol><p role="status">${grade.passed ? 'All 4 assistant calls matched. This fixture does not call a model provider.' : `${grade.passedCount} of ${grade.total} assistant calls matched.`}</p>` : '<p>The trusted task is invoice.read for Acme invoice 7. Run the calls before the expected answers are shown.</p>';
+  return shell('Assistant desk', 'Northbridge’s billing assistant may only do what the trusted task already named. Model text is not a new task.', `<a href="#/cybercity">Northbridge</a> · <span>Assistant</span>`, `
+    <form class="ks-card" id="ksAgent">
+      <h2>Boundary</h2>
+      <p class="ks-log">Trusted task: invoice.read · tenant acme · invoice 7 · actor Bob</p>
+      ${select('toolSource', [['call', 'Accept the tool the model names'], ['task', 'Only the tool on the trusted task']])}
+      ${select('tenantSource', [['call', 'Accept the tenant in the call'], ['task', 'Only the tenant on the trusted task']])}
+      ${select('objectSource', [['call', 'Accept the invoice id in the call'], ['task', 'Only the invoice id on the trusted task']])}
+      ${select('honorApproved', [['yes', 'Treat approved:true as permission'], ['no', 'Ignore approved inside the call']])}
+      <button class="btn-amber sm" type="submit">Run assistant calls</button>
+      <div id="ksAgentResult">${results}</div>
+      <p><a href="#/expert-labs/agent-tool-boundary">Continue in the expert lab with the downloadable Python exercise</a></p>
+    </form>`);
+}
+
+function renderTimeline(state) {
+  const answers = state.cybercity.timeline || {};
+  const options = [['finding', 'Put this in the finding'], ['context', 'Context only'], ['exclude', 'Do not use this claim']];
+  const rows = TIMELINE_ITEMS.map(item => `<tr>
+      <td>${esc(item.text)}</td>
+      <td><label>Use <select name="${esc(item.id)}">${options.map(([value, label]) => `<option value="${value}"${answers[item.id] === value ? ' selected' : ''}>${esc(label)}</option>`).join('')}</select></label></td>
+    </tr>`).join('');
+  const grade = state.cybercity.timelineRan ? gradeTimeline(answers) : null;
+  const result = grade ? `<p role="status">${grade.passed ? 'The note matches this fixture. It is still not an executive report for a real company.' : `${grade.passedCount} of ${grade.total} lines match.`}</p><ul>${grade.results.filter(item => !item.pass).map(item => `<li>${esc(item.why)}</li>`).join('')}</ul>` : '<p>Choose a use for each sentence, then check. The key stays hidden until you do.</p>';
+  return shell('Incident note', 'Decide what the first note may say. A gap is not a clean laptop, and a second person’s failed reset is not this finding.', `<a href="#/cybercity">Northbridge</a> · <span>Incident note</span>`, `
+    <form class="ks-card" id="ksTimeline">
+      <h2>Sentences</h2>
+      <div class="ks-table-wrap">
+        <table class="ks-compare">
+          <caption>Claims you might put in the Northbridge note. All of them are about the fixture.</caption>
+          <thead><tr><th scope="col">Sentence</th><th scope="col">Use</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <button class="btn-amber sm" type="submit">Check the note</button>
+      <div id="ksTimelineResult">${result}</div>
     </form>`);
 }
 
@@ -478,6 +525,14 @@ export function renderStudio(root, hash) {
     root.innerHTML = renderCloud(state);
     title = 'Cloud desk · Northbridge';
     wireCloud(root);
+  } else if (section === 'cybercity' && id === 'agent') {
+    root.innerHTML = renderAgent(state);
+    title = 'Assistant desk · Northbridge';
+    wireAgent(root);
+  } else if (section === 'cybercity' && id === 'timeline') {
+    root.innerHTML = renderTimeline(state);
+    title = 'Incident note · Northbridge';
+    wireTimeline(root);
   } else if (section === 'cybercity' && id === 'report') {
     root.innerHTML = renderReport(state);
     title = 'Case note · Northbridge';
@@ -570,6 +625,40 @@ function wireResearchFilters(root) {
       card.hidden = topic !== 'all' && !card.dataset.topics.split(' ').includes(topic);
     });
   }));
+}
+
+function wireAgent(root) {
+  root.querySelector('#ksAgent')?.addEventListener('submit', event => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const next = loadState();
+    next.cybercity.agent = {
+      toolSource: String(data.get('toolSource') || 'call'),
+      tenantSource: String(data.get('tenantSource') || 'call'),
+      objectSource: String(data.get('objectSource') || 'call'),
+      honorApproved: String(data.get('honorApproved') || 'yes')
+    };
+    next.cybercity.agentRan = true;
+    if (gradeAgentPolicy(next.cybercity.agent).passed && !next.mastered.includes('ai.agent.tool-boundary')) {
+      next.mastered.push('ai.agent.tool-boundary');
+    }
+    saveState(next);
+    renderStudio(root, '#/cybercity/agent');
+  });
+}
+
+function wireTimeline(root) {
+  root.querySelector('#ksTimeline')?.addEventListener('submit', event => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const next = loadState();
+    const timeline = {};
+    for (const item of TIMELINE_ITEMS) timeline[item.id] = String(data.get(item.id) || '');
+    next.cybercity.timeline = timeline;
+    next.cybercity.timelineRan = true;
+    saveState(next);
+    renderStudio(root, '#/cybercity/timeline');
+  });
 }
 
 function wireCloud(root) {
