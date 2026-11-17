@@ -2510,6 +2510,10 @@ function canonicalPathForHash(hash){
   if(hash === '#/faq') return '/faq.html';
   if(hash === '#/tasks') return '/practice.html';
   if(hash === '#/exam') return '/exam.html';
+  if(hash === '#/certlab') return '/certlab/';
+  if(hash === '#/research') return '/research/';
+  if(hash === '#/skills') return '/skills/';
+  if(hash === '#/fix-verify') return '/fix-verify/';
   const legal = hash.match(/^#\/(about|contact|privacy|terms)$/);
   if(legal) return `/${legal[1]}.html`;
   const lesson = hash.match(/^#\/lesson\/([a-z0-9-]+)(?:\/([a-z0-9-]+))?$/);
@@ -2530,6 +2534,10 @@ function hashRouteForPath(pathname){
   if(pathname === '/faq.html') return '#/faq';
   if(pathname === '/practice.html') return '#/tasks';
   if(pathname === '/exam.html') return '#/exam';
+  if(pathname === '/certlab/' || pathname === '/certlab/index.html') return '#/certlab';
+  if(pathname === '/research/' || pathname === '/research/index.html') return '#/research';
+  if(pathname === '/skills/' || pathname === '/skills/index.html') return '#/skills';
+  if(pathname === '/fix-verify/' || pathname === '/fix-verify/index.html') return '#/fix-verify';
   const legal = pathname.match(/^\/(about|contact|privacy|terms)\.html$/);
   if(legal) return `#/${legal[1]}`;
   const lesson = pathname.match(/^\/lesson\/([a-z0-9-]+)\/(?:([a-z0-9-]+)\.html)?$/);
@@ -2602,6 +2610,19 @@ window.addEventListener('pagehide', ()=>{currentLessonNotesFlush?.();currentRead
 document.addEventListener('visibilitychange', ()=>{
   if(document.visibilityState === 'hidden'){currentLessonNotesFlush?.();currentReaderFlush?.();currentInvestigationFlush?.();}
 });
+
+function renderStudio(hash){
+  const generation = renderGeneration;
+  app.innerHTML = `<div class="loading" role="status">Opening the studio…</div>`;
+  import('/studio/ui.js').then(mod=>{
+    if(generation !== renderGeneration) return;
+    mod.renderStudio(app, hash);
+    updateActiveNav?.();
+  }).catch(()=>{
+    if(generation !== renderGeneration) return;
+    app.innerHTML = `<section class="sec"><h1>The studio did not open</h1><p>Reload the page and try again. Nothing was saved by this failed load.</p></section>`;
+  });
+}
 
 function route(){
   currentExpertCleanup?.();
@@ -2747,6 +2768,10 @@ function route(){
   else if(hash === '#/transcript') renderTranscript();
   else if(hash === '#/interview/mock') renderMockInterview();
   else if(hash === '#/certs') renderCertTracker();
+  else if(hash === '#/certlab' || hash.startsWith('#/certlab/')) renderStudio(hash);
+  else if(hash === '#/research' || hash.startsWith('#/research/')) renderStudio(hash);
+  else if(hash === '#/skills' || hash.startsWith('#/skills/')) renderStudio(hash);
+  else if(hash === '#/fix-verify') renderStudio(hash);
   else if(hash === '#/skilltree') renderSkillTree();
   else {
     const partsQuiz = hash.match(/^#\/quiz\/([^/]+)$/);
@@ -15681,7 +15706,7 @@ function getCommands(){
     ['About KashSec','#/about','info'],['Contact','#/contact','mail'],
     ['Privacy policy','#/privacy','shield'],['Terms of use','#/terms','scale'],
     ['My Progress','#/progress','gauge'],['Changelog','#/changelog','ledger'],['Take the Final Exam','#/quiz/final','flag'],
-    ['Mock interview','#/interview/mock','timer'],['Certification roadmap','#/certs','ticket'],['Skill tree','#/skilltree','layers'],
+    ['Mock interview','#/interview/mock','timer'],['Certification roadmap','#/certs','ticket'],['Certification prep','#/certlab','ticket'],['Research vault','#/research','scroll'],['Skills graph','#/skills','layers'],['Fix and verify','#/fix-verify','shield'],['Skill tree','#/skilltree','layers'],
     ['Capstone attack chain','#/capstone','castle'],['Weekly challenge chains','#/weekly','clipboard'],
     ['Career-fit quiz','#/career-quiz','puzzle'],['Shuffle quiz','#/quiz/shuffle','dice'],
     ['Learning transcript','#/transcript','doc'],['Review missed questions','#/quiz/missed','refresh']
