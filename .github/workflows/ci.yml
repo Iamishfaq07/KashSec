@@ -36,6 +36,9 @@ jobs:
       - name: Data integrity (committed state)
         run: npm run test:data
 
+      - name: Studio skills graph, CertLab, research vault, and fix-verify
+        run: npm run test:studio
+
       # The social image is a separate, explicit build:og task because PNG
       # bytes vary across Chromium versions and would break this diff check.
       - name: Rebuild generated artifacts
@@ -62,6 +65,11 @@ jobs:
 
       - name: Smoke test all routes
         run: npm run test:smoke
+
+      - name: Studio pages (plans, research filter, invoice repair)
+        run: npm run test:studio-ui
+        env:
+          BASE: http://127.0.0.1:8000
 
       - name: Release feed identities and subscription
         run: npm run test:feed
