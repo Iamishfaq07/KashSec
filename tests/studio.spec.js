@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import { validatePractice, gradeLab, labById, practiceEvidence, foundationFor } from '../studio/practice.js';
 import {
   CERT_TRACKS, PENTEST_EXCHANGE, RESEARCH, SECURE_AGENT_POLICY, SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, SKILLS, SOC_EVENTS, VULNERABLE_AGENT_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
-  buildStudyPlan, coachAnswer, esc, explainNext, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage, northbridgeReport, passportEntries, passportJson, reviewQueue, scoreTrack, shiftQueue, validateStudio
+  buildStudyPlan, careerGaps, coachAnswer, esc, explainNext, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage, northbridgeReport, passportEntries, passportJson, reviewQueue, scoreTrack, shiftQueue, studioPages, validateStudio
 } from '../studio/model.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -119,12 +119,16 @@ const sc200 = CERT_TRACKS.find(item => item.id === 'sc-200');
 assert.match(sc200.versions[0].note, /does not show domain percentages/);
 
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
-for (const file of ['certlab/index.html', 'research/index.html', 'skills/index.html', 'fix-verify/index.html', 'cybercity/index.html', 'passport/index.html', 'coach/index.html', 'practice/index.html', 'foundations/index.html', 'shift/index.html']) {
-  const html = fs.readFileSync(path.join(root, file), 'utf8');
+for (const page of studioPages()) {
+  const html = fs.readFileSync(path.join(root, page.file), 'utf8');
   const canonical = html.match(/<link rel="canonical" href="([^"]+)">/)?.[1];
-  assert.ok(canonical && sitemap.includes(`<loc>${canonical}</loc>`), file);
-  assert.equal((html.match(/<main\b[\s\S]*?<\/main>/)[0].match(/<h1\b/g) || []).length, 1, file);
-  assert.ok(html.includes('ca-pub-7042949574293510'), file);
+  assert.equal(canonical, `https://kashsec.vercel.app${page.path}`, page.file);
+  assert.ok(sitemap.includes(`<loc>${canonical}</loc>`), page.file);
+  assert.equal((html.match(/<main\b[\s\S]*?<\/main>/)[0].match(/<h1\b/g) || []).length, 1, page.file);
+  assert.ok(html.includes('ca-pub-7042949574293510'), page.file);
 }
+const gaps = careerGaps(['foundations.cia']);
+assert.equal(gaps.find(item => item.id === 'soc').have, 1);
+assert.equal(gaps.find(item => item.id === 'aisec').have, 0);
 
 console.log(`PASS: studio graph, ${CERT_TRACKS.length} cert plans, ${RESEARCH.length} research cards, and invoice policy checks.`);

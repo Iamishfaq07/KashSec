@@ -5,7 +5,7 @@ import { execFileSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { pageCopies } from './studio/model.js';
+import { studioPages } from './studio/model.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)));
 const SITE = 'https://kashsec.vercel.app';
@@ -38,7 +38,7 @@ export function publishStudio() {
   if (!header || !footer || !scripts) throw new Error('index.html shell could not be read for studio pages');
   const lastmod = studioLastmod();
   const entries = [];
-  for (const page of pageCopies()) {
+  for (const page of studioPages()) {
     const canonical = `${SITE}${page.path}`;
     const crumbs = [
       { name: 'KashSec Academy', url: SITE + '/' },
@@ -109,7 +109,7 @@ ${scripts}
   }
   const sitemapPath = path.join(ROOT, 'sitemap.xml');
   let sitemap = fs.readFileSync(sitemapPath, 'utf8');
-  sitemap = sitemap.replace(/\n?  <url><loc>https:\/\/kashsec\.vercel\.app\/(?:certlab|research|skills|fix-verify|cybercity|passport|coach|practice|foundations|shift)\/<\/loc>[\s\S]*?<\/url>/g, '');
+  sitemap = sitemap.replace(/\n?  <url><loc>https:\/\/kashsec\.vercel\.app\/(?:certlab|research|skills|fix-verify|cybercity|passport|coach|practice|foundations|shift)\/[^<]*<\/loc>[\s\S]*?<\/url>/g, '');
   if (!sitemap.includes('</urlset>')) throw new Error('sitemap.xml has no urlset');
   sitemap = sitemap.replace('</urlset>', `${entries.join('\n')}\n</urlset>`);
   fs.writeFileSync(sitemapPath, sitemap);

@@ -2520,6 +2520,10 @@ function canonicalPathForHash(hash){
   if(hash === '#/practice') return '/practice/';
   if(hash === '#/foundations') return '/foundations/';
   if(hash === '#/shift') return '/shift/';
+  const skillPage = hash.match(/^#\/skills\/([a-z0-9.-]+)$/);
+  if(skillPage) return `/skills/${skillPage[1]}/`;
+  const studioPage = hash.match(/^#\/(certlab|research|practice|cybercity|coach)\/([a-z0-9-]+)$/);
+  if(studioPage) return `/${studioPage[1]}/${studioPage[2]}/`;
   const legal = hash.match(/^#\/(about|contact|privacy|terms)$/);
   if(legal) return `/${legal[1]}.html`;
   const lesson = hash.match(/^#\/lesson\/([a-z0-9-]+)(?:\/([a-z0-9-]+))?$/);
@@ -2550,6 +2554,10 @@ function hashRouteForPath(pathname){
   if(pathname === '/practice/' || pathname === '/practice/index.html') return '#/practice';
   if(pathname === '/foundations/' || pathname === '/foundations/index.html') return '#/foundations';
   if(pathname === '/shift/' || pathname === '/shift/index.html') return '#/shift';
+  const skillPath = pathname.match(/^\/skills\/([a-z0-9.-]+)\/(?:index\.html)?$/);
+  if(skillPath) return `#/skills/${skillPath[1]}`;
+  const studioPath = pathname.match(/^\/(certlab|research|practice|cybercity|coach)\/([a-z0-9-]+)\/(?:index\.html)?$/);
+  if(studioPath) return `#/${studioPath[1]}/${studioPath[2]}`;
   const legal = pathname.match(/^\/(about|contact|privacy|terms)\.html$/);
   if(legal) return `#/${legal[1]}`;
   const lesson = pathname.match(/^\/lesson\/([a-z0-9-]+)\/(?:([a-z0-9-]+)\.html)?$/);
