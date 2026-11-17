@@ -2,6 +2,7 @@
    Run `node generate-sw.js` after adding/removing/renaming any path or lesson. */
 
 const CACHE_VERSION = 'v5f05808a90ac';
+const CACHE_VERSION = 'vdfcf09afd59b';
 const SHELL_CACHE = 'kashsec-shell-' + CACHE_VERSION;
 // Keep learner-selected paths across shell updates. Older versioned content
 // caches are removed during activation; new saves use this stable name.

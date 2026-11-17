@@ -205,7 +205,7 @@ const missingLabFns = labFns.filter(fn => !definedFns.has(fn));
 check('every lab route points at a defined render function', missingLabFns.length === 0,
   `undefined: ${missingLabFns.join(', ')}`);
 
-const toolDispatch = appJs.match(/\(\{encoder:toolEncoder[\s\S]*?\}\[id\]\)\(body\)/);
+const toolDispatch = appJs.match(/const toolRenderers = \(\{encoder:toolEncoder[\s\S]*?\}\);/);
 const dispatchIds = toolDispatch
   ? new Set([...toolDispatch[0].matchAll(/([a-z0-9]+)\s*:\s*tool\w+/gi)].map(m => m[1]))
   : new Set();
@@ -295,10 +295,17 @@ if (fs.existsSync(path.join(ROOT, 'sitemap.xml'))) {
    The generator throws if an item has no entry in prerender-content.js;
    this catches the subtler regression where an entry exists but is a stub. */
 const MIN_UNIQUE_WORDS = 180;
-const stripTags = h => h
-  .replace(/<script[\s\S]*?<\/script>/g, '')
-  .replace(/<style[\s\S]*?<\/style>/g, '')
-  .replace(/<[^>]+>/g, ' ');
+// Repeat until stable and match tags in any case, so nested or oddly cased
+// script/style blocks can't leave fragments behind (CodeQL: incomplete
+// multi-character sanitization). Only counts words; never renders HTML.
+const stripTags = h => {
+  let prev;
+  do {
+    prev = h;
+    h = h.replace(/<script\b[\s\S]*?<\/script\s*>/gi, '').replace(/<style\b[\s\S]*?<\/style\s*>/gi, '');
+  } while (h !== prev);
+  return h.replace(/<[^>]*>/g, ' ').replace(/</g, ' ');
+};
 const thinPages = [];
 for (const dir of ['tools', 'labs']) {
   if (!fs.existsSync(path.join(ROOT, dir))) continue;
@@ -509,6 +516,52 @@ check('certification ids unique', new Set(certIds).size === certIds.length);
 check('every certification states an exam format',
   CERTS.every(c => c.format && c.format.length > 3),
   CERTS.filter(c => !c.format).map(c => c.id).join(', '));
+
+/* ---- career roadmap ---- */
+/* Each field's plan names paths, certifications, labs and tools by id. A
+   renamed or removed one would silently drop out of the page (the render
+   skips ids it can't resolve), leaving a stage with a gap nobody notices. */
+const roadmapSrc = appJs.match(/const SHARED_FOUNDATION_PATHS = [\s\S]*?\nconst CAREER_ROADMAPS = \[[\s\S]*?\n\];/);
+check('career roadmap data found in app.js', !!roadmapSrc);
+if (roadmapSrc) {
+  const [ROADMAPS, RES] = new Function(roadmapSrc[0] + '; return [CAREER_ROADMAPS, RES];')();
+  const pathIdSet = new Set(PATHS.map(p => p.id)), certIdSet = new Set(certIds);
+  const practiceIds = new Set([...toolIds, ...labIds]);
+  const badRefs = [];
+  ROADMAPS.forEach(r => {
+    const stages = Object.keys(r.stages);
+    if (stages.join() !== 'foundations,core,specialise,job') badRefs.push(`${r.id}: stages ${stages.join()}`);
+    (r.resources || []).forEach(k => RES[k] && /^https?:\/\//.test(RES[k].url) || badRefs.push(`${r.id} resource ${k}`));
+    if (!(r.resources || []).length) badRefs.push(`${r.id} lists no free resources`);
+    Object.entries(r.stages).forEach(([k, st]) => {
+      st.paths.forEach(id => pathIdSet.has(id) || badRefs.push(`${r.id}.${k} path ${id}`));
+      st.certs.forEach(id => certIdSet.has(id) || badRefs.push(`${r.id}.${k} cert ${id}`));
+      st.practice.forEach(id => practiceIds.has(id) || badRefs.push(`${r.id}.${k} practice ${id}`));
+      if (!st.paths.length || !st.skills.length || !st.practice.length) badRefs.push(`${r.id}.${k} has an empty list`);
+    });
+  });
+  check(`every career roadmap reference resolves (${ROADMAPS.length} fields)`, badRefs.length === 0, badRefs.join(', '));
+  check('career roadmap ids unique', new Set(ROADMAPS.map(r => r.id)).size === ROADMAPS.length);
+
+  /* Tools, projects, group and free certificates live in ROADMAP_EXTRAS and
+     are merged in at load. A field missing there would vanish from the
+     grouped picker; a mistyped free-cert key would silently drop a card. */
+  const [GROUPS, EXTRAS, FREE] = new Function(roadmapSrc[0] + '; return [ROADMAP_GROUPS, ROADMAP_EXTRAS, FREE_CERTS];')();
+  const groupKeys = new Set(GROUPS.map(g => g[0]));
+  const extraBad = [];
+  ROADMAPS.forEach(r => {
+    const x = EXTRAS[r.id];
+    if (!x) return extraBad.push(`${r.id} has no extras`);
+    if (!groupKeys.has(x.group)) extraBad.push(`${r.id} group ${x.group}`);
+    if (!(x.tools || []).length || !(x.projects || []).length) extraBad.push(`${r.id} lacks tools or projects`);
+    (x.freeCerts || []).forEach(k => FREE[k] || extraBad.push(`${r.id} free cert ${k}`));
+  });
+  Object.keys(EXTRAS).forEach(id => ROADMAPS.some(r => r.id === id) || extraBad.push(`extras for unknown field ${id}`));
+  GROUPS.forEach(([k]) => ROADMAPS.some(r => EXTRAS[r.id] && EXTRAS[r.id].group === k) || extraBad.push(`group ${k} is empty`));
+  check('every roadmap field has extras in a known group', extraBad.length === 0, extraBad.join(', '));
+  const freeBad = Object.entries(FREE).filter(([, f]) => !/^https:\/\//.test(f.url) || !f.name || !f.org || !f.what).map(([k]) => k);
+  check(`free certificates have https links and text (${Object.keys(FREE).length})`, freeBad.length === 0, freeBad.join(', '));
+}
 
 /* ---- AI crawler access ---- */
 /* robots.txt has one trap worth pinning: a crawler obeys only the most
