@@ -128,8 +128,11 @@ for (const page of studioPages()) {
   assert.ok(html.includes('ca-pub-7042949574293510'), page.file);
 }
 const gaps = careerGaps(['foundations.cia']);
+assert.equal(gaps.length, 21);
 assert.equal(gaps.find(item => item.id === 'soc').have, 1);
 assert.equal(gaps.find(item => item.id === 'aisec').have, 0);
+assert.equal(gaps.find(item => item.id === 'mobile').total, 0);
+assert.equal(new Set(gaps.map(item => item.id)).size, 21);
 for (const experience of ['beginner', 'some', 'experienced']) {
   for (const goal of ['unsure', 'pentest', 'soc', 'appsec', 'cloud', 'ai', 'cert', 'grc']) {
     const route = buildStartRoute({ experience, goal, minutes: 15 });

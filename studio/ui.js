@@ -478,7 +478,7 @@ function renderPassport(state) {
     </section>
     <section class="ks-card">
       <h2>Career gaps in this graph</h2>
-      <ul>${careerGaps(state.mastered).map(career => `<li><a href="${esc(career.href)}">${esc(career.title)}</a> — ${career.have} of ${career.total} starter skills marked. ${career.missing.length ? `Still open: ${career.missing.map(skill => esc(skill.title)).join(', ')}.` : 'Every starter skill for this role is marked.'}</li>`).join('')}</ul>
+      <ul>${careerGaps(state.mastered).map(career => `<li><a href="${esc(career.href)}">${esc(career.title)}</a> — ${career.total ? `${career.have} of ${career.total} mapped starter skills marked. ${career.missing.length ? `Still open: ${career.missing.map(skill => esc(skill.title)).join(', ')}.` : 'Every mapped starter skill is marked. The rest of this roadmap is still outside the graph.'}` : 'No starter skill is mapped. Open the career page. A browser exercise is not a phone keystore or a full job path.'}</li>`).join('')}</ul>
       <p class="ks-note">These are gaps in the small skills graph, not a hiring decision. The full career roadmap still lives on its own page.</p>
     </section>`);
 }

@@ -207,6 +207,96 @@ export const SKILLS = [
     research: ['github-actions-secure'],
     objectives: ['secplus.program'],
     careers: [{ id: 'appsec', title: 'AppSec Engineer' }]
+  },
+  {
+    id: 'grc.control.evidence',
+    title: 'Ask what evidence a control produced',
+    outcome: 'Say what a policy name does not prove, and name one record that would show the control worked.',
+    minutes: 30,
+    difficulty: 'foundation',
+    prerequisites: ['foundations.cia'],
+    lessons: [{ path: '23-grc-compliance', id: 'what-is-grc', title: 'What is GRC' }],
+    labs: [],
+    tools: [],
+    expertLabs: [],
+    research: ['nist-csf-2'],
+    objectives: ['secplus.program'],
+    careers: [{ id: 'grc', title: 'GRC Analyst' }]
+  },
+  {
+    id: 'privacy.footprint',
+    title: 'Name what a digital footprint stores',
+    outcome: 'Separate data a person typed from data a service inferred, and say which of those a deletion request can reach.',
+    minutes: 30,
+    difficulty: 'foundation',
+    prerequisites: ['foundations.cia'],
+    lessons: [{ path: '09-digital-privacy', id: 'digital-footprint', title: 'Digital footprint' }],
+    labs: [],
+    tools: [],
+    expertLabs: [],
+    research: [],
+    objectives: [],
+    careers: [{ id: 'privacy', title: 'Privacy & Data Protection' }]
+  },
+  {
+    id: 'cloud.shared.responsibility',
+    title: 'Say who still patches the application',
+    outcome: 'Point at one control the cloud provider runs and one the customer still has to run.',
+    minutes: 30,
+    difficulty: 'foundation',
+    prerequisites: ['foundations.cia'],
+    lessons: [{ path: '08-cloud-basics', id: 'shared-responsibility-model', title: 'Shared responsibility model' }],
+    labs: [],
+    tools: [],
+    expertLabs: [],
+    research: [],
+    objectives: ['secplus.architecture'],
+    careers: [{ id: 'cloud', title: 'Cloud Security Engineer' }]
+  },
+  {
+    id: 'detect.rule.precision',
+    title: 'Make a detection hit one event',
+    outcome: 'Match the labeled finding and miss the neighboring lines. A rule that matches every row is not a detection.',
+    minutes: 30,
+    difficulty: 'core',
+    prerequisites: ['soc.triage.logs'],
+    lessons: [{ path: '17-malware-re', id: 'sigma-rules-and-detection-engineering', title: 'Sigma rules and detection engineering' }],
+    labs: [],
+    tools: [],
+    expertLabs: [],
+    research: ['kusto-docs'],
+    objectives: ['sc200.hunt'],
+    careers: [{ id: 'detection', title: 'Detection Engineer' }]
+  },
+  {
+    id: 'malware.triage.static',
+    title: 'Triage a file before you run it',
+    outcome: 'List what a static look can support, and what it cannot claim without execution.',
+    minutes: 35,
+    difficulty: 'core',
+    prerequisites: ['foundations.cia'],
+    lessons: [{ path: '17-malware-re', id: 'malware-triage-methodology', title: 'Malware triage methodology' }],
+    labs: [{ id: 'malwarestrings', title: 'Malware strings lab' }],
+    tools: [],
+    expertLabs: [],
+    research: [],
+    objectives: [],
+    careers: [{ id: 'malware', title: 'Malware Analyst' }]
+  },
+  {
+    id: 'ot.boundary.safety',
+    title: 'Keep an office change away from a safety system',
+    outcome: 'Name the boundary between an office network and a safety process, and why a convenience change is not automatically safe to copy across.',
+    minutes: 30,
+    difficulty: 'foundation',
+    prerequisites: ['foundations.cia'],
+    lessons: [{ path: '25-ot-ics-security', id: 'what-is-ot-ics', title: 'What is OT and ICS' }],
+    labs: [],
+    tools: [],
+    expertLabs: [],
+    research: [],
+    objectives: [],
+    careers: [{ id: 'ot', title: 'OT / ICS Security' }]
   }
 ];
 
@@ -1725,11 +1815,27 @@ export function lessonHref(ref) {
 }
 
 export const CAREER_GAPS = [
-  { id: 'soc', title: 'SOC Analyst', href: '#/careers/soc', skills: ['foundations.cia', 'soc.phishing.signals', 'soc.triage.logs'] },
-  { id: 'pentest', title: 'Penetration Tester', href: '#/careers/pentest', skills: ['web.http.status', 'web.injection.sql', 'web.authz.object-level', 'web.xss.context'] },
-  { id: 'appsec', title: 'AppSec Engineer', href: '#/careers/appsec', skills: ['web.http.status', 'web.authz.object-level', 'web.injection.sql', 'web.xss.context', 'appsec.review.trust-boundary', 'appsec.supply.workflow'] },
-  { id: 'cloud', title: 'Cloud Security Engineer', href: '#/careers/cloud', skills: ['cloud.iam.least-privilege', 'appsec.supply.workflow'] },
-  { id: 'aisec', title: 'AI Security Engineer', href: '#/careers/aisec', skills: ['ai.agent.tool-boundary'] }
+  { id: 'soc', title: 'SOC Analyst', href: '#/careers/soc', skills: ['foundations.cia', 'soc.phishing.signals', 'soc.triage.logs', 'detect.rule.precision'] },
+  { id: 'pentest', title: 'Penetration Tester', href: '#/careers/pentest', skills: ['networking.dns.resolution', 'web.http.status', 'web.injection.sql', 'web.authz.object-level', 'web.xss.context'] },
+  { id: 'appsec', title: 'AppSec Engineer', href: '#/careers/appsec', skills: ['web.http.status', 'web.authz.object-level', 'web.injection.sql', 'web.xss.context', 'web.authn.jwt', 'appsec.review.trust-boundary', 'appsec.supply.workflow'] },
+  { id: 'bugbounty', title: 'Bug Bounty Hunter', href: '#/careers/bugbounty', skills: ['web.http.status', 'web.injection.sql', 'web.authz.object-level', 'web.xss.context', 'web.authn.jwt'] },
+  { id: 'cloud', title: 'Cloud Security Engineer', href: '#/careers/cloud', skills: ['cloud.shared.responsibility', 'cloud.iam.least-privilege', 'appsec.supply.workflow'] },
+  { id: 'dfir', title: 'Digital Forensics and IR', href: '#/careers/dfir', skills: ['soc.triage.logs', 'soc.phishing.signals', 'malware.triage.static'] },
+  { id: 'netsec', title: 'Network Security Engineer', href: '#/careers/netsec', skills: ['networking.dns.resolution', 'web.http.status'] },
+  { id: 'threatintel', title: 'Threat Intelligence Analyst', href: '#/careers/threatintel', skills: ['soc.phishing.signals', 'soc.triage.logs'] },
+  { id: 'malware', title: 'Malware Analyst', href: '#/careers/malware', skills: ['malware.triage.static'] },
+  { id: 'ai', title: 'AI Red Teamer', href: '#/careers/ai', skills: ['ai.agent.tool-boundary'] },
+  { id: 'grc', title: 'GRC Analyst', href: '#/careers/grc', skills: ['foundations.cia', 'grc.control.evidence'] },
+  { id: 'ot', title: 'OT / ICS Security', href: '#/careers/ot', skills: ['ot.boundary.safety'] },
+  { id: 'detection', title: 'Detection Engineer', href: '#/careers/detection', skills: ['soc.triage.logs', 'detect.rule.precision'] },
+  { id: 'vulnmgmt', title: 'Vulnerability Management Analyst', href: '#/careers/vulnmgmt', skills: ['soc.triage.logs', 'appsec.review.trust-boundary'] },
+  { id: 'redteam', title: 'Red Team Operator', href: '#/careers/redteam', skills: ['web.http.status', 'web.injection.sql', 'web.authz.object-level'] },
+  { id: 'mobile', title: 'Mobile Security Tester', href: '#/careers/mobile', skills: [] },
+  { id: 'devsecops', title: 'DevSecOps Engineer', href: '#/careers/devsecops', skills: ['appsec.supply.workflow', 'appsec.review.trust-boundary'] },
+  { id: 'iam', title: 'IAM Engineer', href: '#/careers/iam', skills: ['cloud.iam.least-privilege', 'web.authn.jwt'] },
+  { id: 'architect', title: 'Security Architect', href: '#/careers/architect', skills: ['appsec.review.trust-boundary', 'cloud.iam.least-privilege'] },
+  { id: 'aisec', title: 'AI Security Engineer', href: '#/careers/aisec', skills: ['ai.agent.tool-boundary'] },
+  { id: 'privacy', title: 'Privacy and Data Protection', href: '#/careers/privacy', skills: ['privacy.footprint', 'grc.control.evidence'] }
 ];
 
 export function careerGaps(masteredIds = []) {
