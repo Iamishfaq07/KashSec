@@ -9,6 +9,8 @@ import {
 import { FOUNDATIONS, GLOSSARY, LAB_ROADMAP, PRACTICE_LABS, glossaryById, gradeLab, labById, labCoaching, practiceEvidence } from './practice.js';
 
 const STORAGE_KEY = 'kashsec_studio_v1';
+let memory = null;
+let persistFailed = false;
 
 function emptyState() {
   return {
@@ -25,6 +27,7 @@ function emptyState() {
 }
 
 export function loadState() {
+  if (memory && persistFailed) return memory;
   try {
     const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '');
     const base = emptyState();
@@ -45,13 +48,19 @@ export function loadState() {
       studioMode: ['guided', 'standard', 'expert'].includes(parsed.studioMode) ? parsed.studioMode : 'standard'
     };
   } catch {
-    return emptyState();
+    return memory || emptyState();
   }
 }
 
 function saveState(state) {
   const payload = { ...state, version: 1 };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  memory = state;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    persistFailed = false;
+  } catch {
+    persistFailed = true;
+  }
   return payload;
 }
 
@@ -95,6 +104,7 @@ function shell(title, lede, crumbs, body) {
       <a href="#/coach">Coach</a>
     </div>
     ${body}
+    ${persistFailed ? '<p class="ks-note" role="status">This browser did not keep the result. It is visible now, but a reload will lose it.</p>' : ''}
   </section>`;
 }
 
@@ -248,12 +258,19 @@ function renderSkills(state, focusId) {
       <h3>Lessons</h3>
       <ul>${focus.lessons.map(item => `<li><a href="${lessonHref(item)}">${esc(item.title)}</a></li>`).join('') || '<li>None linked yet.</li>'}</ul>
       <h3>Labs and tools</h3>
-      <ul>${focus.labs.map(item => `<li><a href="#/labs/${item.id}">${esc(item.title)}</a></li>`).join('')}${focus.tools.map(item => `<li><a href="#/tools/${item.id}">${esc(item.title)}</a></li>`).join('')}${focus.expertLabs.map(item => `<li><a href="#/expert-labs/${item.id}">${esc(item.title)}</a></li>`).join('') || ''}</ul>
+      ${(() => {
+        const links = [
+          ...focus.labs.map(item => `<li><a href="#/labs/${item.id}">${esc(item.title)}</a></li>`),
+          ...focus.tools.map(item => `<li><a href="#/tools/${item.id}">${esc(item.title)}</a></li>`),
+          ...focus.expertLabs.map(item => `<li><a href="#/expert-labs/${item.id}">${esc(item.title)}</a></li>`)
+        ];
+        return links.length ? `<ul>${links.join('')}</ul>` : '<p>No lab or tool is linked yet.</p>';
+      })()}
       <h3>Research and objectives</h3>
       <ul>${focus.research.map(id => `<li><a href="#/research/${id}">${esc(researchById(id)?.title || id)}</a></li>`).join('')}</ul>
       <button type="button" class="btn-amber sm" id="ksToggleSkill" aria-pressed="${state.mastered.includes(focus.id) ? 'true' : 'false'}">${state.mastered.includes(focus.id) ? 'Marked done' : 'Mark this skill done'}</button>
     </article>` : `<article class="ks-card"><h2>Pick a skill</h2><p>Open one to see the lesson, lab, tool, research note, and certification objective it supports.</p></article>`;
-  return shell('Skills graph', `A connected map of ${SKILLS.length} skills. Completing a path still lives in the course. This graph only records what you explicitly mark.`, '<span>Skills</span>', `
+  return shell(focus ? esc(focus.title) : 'Skills graph', `A connected map of ${SKILLS.length} skills. Completing a path still lives in the course. This graph only records what you explicitly mark.`, focus ? `<a href="#/skills">Skills</a> · <span>${esc(focus.title)}</span>` : '<span>Skills</span>', `
     <p class="ks-note" id="ksNext">${esc(next.reason)}${next.skill ? ` <a href="#/skills/${next.skill.id}">Open ${esc(next.skill.title)}</a>.` : ''}</p>
     <div class="ks-split">
       <ol class="ks-skill-list">${list}</ol>
@@ -669,6 +686,12 @@ export function renderStudio(root, hash) {
     root.innerHTML = shell('Studio', 'Choose a section.', '<span>Studio</span>', '<p><a href="#/certlab">Cert prep</a></p>');
   }
   document.title = title;
+  root.querySelectorAll('.ks-jumps a').forEach(link => {
+    const href = link.getAttribute('href') || '';
+    const current = hash === href || (href.length > 2 && hash.startsWith(`${href}/`));
+    if (current) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  });
 }
 
 function wireCert(root, track) {

@@ -2641,7 +2641,11 @@ function renderStudio(hash){
   import('/studio/ui.js').then(mod=>{
     if(generation !== renderGeneration) return;
     mod.renderStudio(app, hash);
-    updateActiveNav?.();
+    const canonical = new URL(canonicalPathForHash(activeRoute()) || '/', location.origin).href;
+    document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonical);
+    document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonical);
+    syncDocTitle();
+    updateActiveNav();
   }).catch(()=>{
     if(generation !== renderGeneration) return;
     app.innerHTML = `<section class="sec"><h1>The studio did not open</h1><p>Reload the page and try again. Nothing was saved by this failed load.</p></section>`;
