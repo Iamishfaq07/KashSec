@@ -169,12 +169,36 @@ function quizResultHtml(track, answers, statuses) {
   return `<p><strong>${result.correct} of ${result.total} correct.</strong> This is a formative score stored in this browser.</p>${details ? `<ul>${details}</ul>` : '<p>Every answer matched. You can still reread the lessons. This is not a vendor score.</p>'}${due.length ? `<p>${due.length} objective${due.length === 1 ? '' : 's'} marked review due.</p>` : ''}`;
 }
 
+function readyLine(track, statuses, answers) {
+  const ready = readinessLabel(track, statuses, answers);
+  const due = coverage(track, statuses).counts['review-due'];
+  return `${ready.label}. ${ready.summary}.${due ? ` ${due} marked review due.` : ''}`;
+}
+
+function refreshCertChrome(root, track, state) {
+  const statuses = state.objectiveStatus[track.id] || {};
+  const answers = state.answers[track.id] || {};
+  const due = reviewQueue(track, answers, statuses);
+  const existing = root.querySelector('#ks-review')?.closest('section');
+  const html = reviewSection(track, due);
+  if (html) {
+    if (existing) existing.outerHTML = html;
+    else root.querySelector('#ksQuiz')?.insertAdjacentHTML('beforebegin', html);
+  } else existing?.remove();
+  const host = root.querySelector('#ksQuizResult');
+  if (host) host.innerHTML = quizResultHtml(track, answers, statuses);
+  const node = root.querySelector('#ksReady');
+  if (node) node.textContent = readyLine(track, statuses, answers);
+  for (const [id, value] of Object.entries(statuses)) {
+    const select = root.querySelector(`select[data-objective="${CSS.escape(id)}"]`);
+    if (select) select.value = value;
+  }
+}
+
 function renderCertTrack(track, state) {
   const plan = state.plans[track.id] || buildStudyPlan(track, { today: todayISO(), minutesPerDay: 30 });
   const answers = state.answers[track.id] || {};
   const statuses = state.objectiveStatus[track.id] || {};
-  const covered = coverage(track, statuses);
-  const ready = readinessLabel(track, statuses, answers);
   const objectives = track.objectives.map(item => `<li class="ks-objective">
       <div>
         <h3>${esc(item.title)}</h3>
@@ -217,8 +241,8 @@ function renderCertTrack(track, state) {
     </div>
     <section class="ks-card" aria-labelledby="ks-cover">
       <h2 id="ks-cover">Objective coverage</h2>
-      <p id="ksReady"><strong>${esc(ready.label)}.</strong> ${esc(ready.summary)}. ${covered.counts['review-due'] ? esc(String(covered.counts['review-due'])) + ' marked review due.' : ''}</p>
-      <p class="ks-note">${esc(ready.limitation)}</p>
+      <p id="ksReady">${esc(readyLine(track, statuses, answers))}</p>
+      <p class="ks-note">${esc(track.notClaimed)}</p>
       <ul class="ks-objectives">${objectives}</ul>
     </section>
     ${review}
@@ -749,9 +773,7 @@ function wireCert(root, track) {
       const next = loadState();
       next.objectiveStatus[track.id] = { ...(next.objectiveStatus[track.id] || {}), [select.dataset.objective]: select.value };
       saveState(next);
-      const ready = readinessLabel(track, next.objectiveStatus[track.id], next.answers[track.id] || {});
-      const node = root.querySelector('#ksReady');
-      if (node) node.textContent = `${ready.label}. ${ready.summary}.`;
+      refreshCertChrome(root, track, next);
     });
   });
   root.querySelector('#ksQuiz')?.addEventListener('submit', event => {
@@ -780,18 +802,7 @@ function wireCert(root, track) {
       }
     }
     saveState(next);
-    const due = reviewQueue(track, next.answers[track.id], next.objectiveStatus[track.id]);
-    const existing = root.querySelector('#ks-review')?.closest('section');
-    const html = reviewSection(track, due);
-    if (html) {
-      if (existing) existing.outerHTML = html;
-      else root.querySelector('#ksQuiz')?.insertAdjacentHTML('beforebegin', html);
-    } else existing?.remove();
-    const host = root.querySelector('#ksQuizResult');
-    if (host) host.innerHTML = quizResultHtml(track, next.answers[track.id], next.objectiveStatus[track.id]);
-    const ready = readinessLabel(track, next.objectiveStatus[track.id], next.answers[track.id]);
-    const node = root.querySelector('#ksReady');
-    if (node) node.textContent = `${ready.label}. ${ready.summary}.`;
+    refreshCertChrome(root, track, next);
   });
 }
 

@@ -35,6 +35,11 @@ try {
   await page.reload();
   await page.getByText('3 of 4 correct').waitFor();
   await page.getByRole('heading', { name: 'Review these first' }).waitFor();
+  assert.equal(await page.locator('select[data-objective="secplus.architecture"]').inputValue(), 'review-due');
+  assert.match(await page.locator('#ksReady').innerText(), /1 marked review due/);
+  await page.locator('select[data-objective="secplus.concepts"]').selectOption('review-due');
+  await page.getByRole('link', { name: 'Name the goal a control protects' }).waitFor();
+  assert.match(await page.locator('#ksReady').innerText(), /2 marked review due/);
 
   await page.goto(BASE + '/cybercity/');
   await page.getByRole('heading', { name: 'Northbridge Billing', level: 1 }).waitFor();
