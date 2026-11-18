@@ -77,6 +77,15 @@ function wireMode(root, hash) {
   root.querySelectorAll('[data-mode]').forEach(button => {
     button.addEventListener('click', () => {
       const next = loadState();
+      const form = root.querySelector('#ksPractice');
+      if (form?.dataset.lab) {
+        const data = new FormData(form);
+        const input = {};
+        for (const [name, value] of data.entries()) input[name] = String(value);
+        const previous = next.practice[form.dataset.lab] || {};
+        const changed = JSON.stringify(previous.input || {}) !== JSON.stringify(input);
+        next.practice[form.dataset.lab] = { ran: Boolean(previous.ran) && !changed, input };
+      }
       next.studioMode = button.dataset.mode;
       saveState(next);
       renderStudio(root, hash);
@@ -152,6 +161,14 @@ function reviewSection(track, due) {
   }).join('')}</ul></section>`;
 }
 
+function quizResultHtml(track, answers, statuses) {
+  if (!answers || !Object.keys(answers).length) return '';
+  const result = scoreTrack(track, answers);
+  const details = result.missed.filter(item => item.selected !== null).map(item => `<li>${esc(track.questions.find(question => question.id === item.id)?.prompt || item.id)} — ${esc(item.explanation)}</li>`).join('');
+  const due = reviewQueue(track, answers, statuses);
+  return `<p><strong>${result.correct} of ${result.total} correct.</strong> This is a formative score stored in this browser.</p>${details ? `<ul>${details}</ul>` : '<p>Every answer matched. You can still reread the lessons. This is not a vendor score.</p>'}${due.length ? `<p>${due.length} objective${due.length === 1 ? '' : 's'} marked review due.</p>` : ''}`;
+}
+
 function renderCertTrack(track, state) {
   const plan = state.plans[track.id] || buildStudyPlan(track, { today: todayISO(), minutesPerDay: 30 });
   const answers = state.answers[track.id] || {};
@@ -210,7 +227,7 @@ function renderCertTrack(track, state) {
       <p>Original questions. Explanations appear after you check them. They are not timed and they are not sealed.</p>
       ${questions}
       <button class="btn-amber sm" type="submit">Check answers</button>
-      <div id="ksQuizResult" role="status"></div>
+      <div id="ksQuizResult" role="status">${quizResultHtml(track, answers, statuses)}</div>
     </form>`);
 }
 
@@ -771,8 +788,7 @@ function wireCert(root, track) {
       else root.querySelector('#ksQuiz')?.insertAdjacentHTML('beforebegin', html);
     } else existing?.remove();
     const host = root.querySelector('#ksQuizResult');
-    const details = result.missed.filter(item => item.selected !== null).map(item => `<li>${esc(track.questions.find(question => question.id === item.id)?.prompt || item.id)} — ${esc(item.explanation)}</li>`).join('');
-    if (host) host.innerHTML = `<p><strong>${result.correct} of ${result.total} correct.</strong> This is a formative score stored in this browser.</p>${details ? `<ul>${details}</ul>` : '<p>Every answer matched. You can still reread the lessons. This is not a vendor score.</p>'}${due.length ? `<p>${due.length} objective${due.length === 1 ? '' : 's'} marked review due.</p>` : ''}`;
+    if (host) host.innerHTML = quizResultHtml(track, next.answers[track.id], next.objectiveStatus[track.id]);
     const ready = readinessLabel(track, next.objectiveStatus[track.id], next.answers[track.id]);
     const node = root.querySelector('#ksReady');
     if (node) node.textContent = `${ready.label}. ${ready.summary}.`;
