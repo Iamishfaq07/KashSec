@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import { validatePractice, gradeLab, labById, practiceEvidence, foundationFor } from '../studio/practice.js';
 import {
   CERT_TRACKS, PENTEST_EXCHANGE, RESEARCH, SECURE_AGENT_POLICY, SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, SKILLS, SOC_EVENTS, VULNERABLE_AGENT_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
-  buildStudyPlan, buildStartRoute, careerGaps, coachAnswer, esc, explainNext, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage, northbridgeReport, passportEntries, passportJson, reviewQueue, scoreTrack, shiftQueue, studioPages, validateStudio
+  buildStudyPlan, buildStartRoute, careerGaps, coachAnswer, esc, explainNext, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage, northbridgeReport, passportEntries, passportJson, passportMarkdown, reviewQueue, scoreTrack, shiftQueue, studioPages, validateStudio
 } from '../studio/model.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -97,7 +97,21 @@ const oauth = labById('oauth');
 assert.equal(gradeLab(oauth, oauth.secureInput).passed, true);
 assert.equal(practiceEvidence({ oauth: { ran: true, input: oauth.vulnerableInput } })[0].level, 'practiced');
 assert.equal(practiceEvidence({ oauth: { ran: true, input: oauth.secureInput } })[0].level, 'auto-verified');
-assert.match(JSON.parse(passportJson({})).limitation, /Not a certificate/);
+const downloaded = JSON.parse(passportJson({ mastered: ['foundations.cia'] }));
+assert.match(downloaded.limitation, /Not a certificate/);
+assert.equal(downloaded.careerGaps.length, 21);
+assert.equal(downloaded.careerGaps.find(item => item.id === 'soc').have, 1);
+assert.equal(downloaded.careerGaps.find(item => item.id === 'mobile').total, 0);
+assert.match(passportMarkdown({ mastered: ['foundations.cia'] }), /no starter skill is mapped/);
+for (const skill of SKILLS) {
+  for (const lesson of skill.lessons) {
+    assert.ok(fs.existsSync(path.join(root, 'course', lesson.path, `${lesson.id}.md`)), `${skill.id} lesson ${lesson.id}`);
+  }
+  for (const lab of skill.labs) assert.ok(fs.existsSync(path.join(root, 'labs', `${lab.id}.html`)), `${skill.id} lab ${lab.id}`);
+  for (const tool of skill.tools) assert.ok(fs.existsSync(path.join(root, 'tools', `${tool.id}.html`)), `${skill.id} tool ${tool.id}`);
+  for (const lab of skill.expertLabs) assert.ok(fs.existsSync(path.join(root, 'expert-labs', `${lab.id}.html`)), `${skill.id} expert ${lab.id}`);
+  for (const lab of skill.practice || []) assert.ok(fs.existsSync(path.join(root, 'practice', lab.id, 'index.html')), `${skill.id} practice ${lab.id}`);
+}
 assert.equal(foundationFor('10-fundamentals', 'cia-triad').title, 'The CIA triad');
 assert.equal(foundationFor('10-fundamentals', 'missing'), null);
 const shift = shiftQueue({});

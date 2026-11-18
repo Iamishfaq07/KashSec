@@ -264,6 +264,7 @@ export const SKILLS = [
     labs: [],
     tools: [],
     expertLabs: [],
+    practice: [{ id: 'sigma', title: 'Detection rule on a labeled log' }],
     research: ['kusto-docs'],
     objectives: ['sc200.hunt'],
     careers: [{ id: 'detection', title: 'Detection Engineer' }]
@@ -1655,6 +1656,12 @@ export function passportMarkdown(state = {}) {
   ];
   if (!items.length) lines.push('Nothing recorded yet.');
   for (const item of items) lines.push(`- ${item.level}: ${item.title}. ${item.note}`);
+  lines.push('', '## Career gaps in this graph', '');
+  for (const career of careerGaps(state.mastered || [])) {
+    if (!career.total) lines.push(`- ${career.title}: no starter skill is mapped. Use the career page.`);
+    else if (!career.missing.length) lines.push(`- ${career.title}: ${career.have} of ${career.total} mapped skills are marked. The rest of the roadmap is outside this graph.`);
+    else lines.push(`- ${career.title}: ${career.have} of ${career.total} mapped. Still open: ${career.missing.map(skill => skill.title).join(', ')}.`);
+  }
   lines.push('', northbridgeReport(state));
   return lines.join('\n');
 }
@@ -1664,7 +1671,14 @@ export function passportJson(state = {}) {
     product: 'KashSec skill record',
     stored: 'this browser only',
     limitation: 'Not a certificate, not a vendor credential, and not instructor reviewed.',
-    entries: passportEntries(state)
+    entries: passportEntries(state),
+    careerGaps: careerGaps(state.mastered || []).map(career => ({
+      id: career.id,
+      title: career.title,
+      have: career.have,
+      total: career.total,
+      missing: career.missing.map(skill => skill.id)
+    }))
   }, null, 2);
 }
 

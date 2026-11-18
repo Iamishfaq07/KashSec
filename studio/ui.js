@@ -244,6 +244,20 @@ function renderResearchItem(item, state) {
     </article>`);
 }
 
+function renderCareerGaps(mastered) {
+  const rank = career => career.total === 0 ? 2 : career.missing.length ? 1 : 0;
+  const gaps = careerGaps(mastered).slice().sort((a, b) => rank(b) - rank(a) || b.missing.length - a.missing.length || a.title.localeCompare(b.title));
+  return `<ul class="ks-gaps">${gaps.map(career => {
+    const detail = !career.total
+      ? 'No starter skill is mapped. Use the career page. A browser exercise is not a phone lab.'
+      : career.missing.length
+        ? `Still open: ${career.missing.map(skill => esc(skill.title)).join(', ')}.`
+        : 'Every mapped starter skill is marked. The rest of this roadmap is outside the graph.';
+    const count = career.total ? `${career.have} of ${career.total}` : 'Not mapped';
+    return `<li><a href="${esc(career.href)}">${esc(career.title)}</a><span>${count}</span><p>${detail}</p></li>`;
+  }).join('')}</ul>`;
+}
+
 function renderSkills(state, focusId) {
   const focus = focusId ? skillById(focusId) : null;
   const next = explainNext(state.mastered);
@@ -252,22 +266,21 @@ function renderSkills(state, focusId) {
       <span>${state.mastered.includes(skill.id) ? 'marked done' : 'not marked'}</span>
     </li>`).join('');
   const detail = focus ? `<article class="ks-card">
-      <h2>${esc(focus.title)}</h2>
       <p>${esc(focus.outcome)}</p>
       <p>Prerequisites: ${focus.prerequisites.length ? focus.prerequisites.map(id => `<a href="#/skills/${id}">${esc(skillById(id)?.title || id)}</a>`).join(', ') : 'none in this starter graph'}.</p>
-      <h3>Lessons</h3>
+      <h2>Lessons</h2>
       <ul>${focus.lessons.map(item => `<li><a href="${lessonHref(item)}">${esc(item.title)}</a></li>`).join('') || '<li>None linked yet.</li>'}</ul>
-      <h3>Labs and tools</h3>
+      <h2>Labs and tools</h2>
       ${(() => {
         const links = [
           ...focus.labs.map(item => `<li><a href="#/labs/${item.id}">${esc(item.title)}</a></li>`),
+          ...(focus.practice || []).map(item => `<li><a href="#/practice/${item.id}">${esc(item.title)}</a></li>`),
           ...focus.tools.map(item => `<li><a href="#/tools/${item.id}">${esc(item.title)}</a></li>`),
           ...focus.expertLabs.map(item => `<li><a href="#/expert-labs/${item.id}">${esc(item.title)}</a></li>`)
         ];
         return links.length ? `<ul>${links.join('')}</ul>` : '<p>No lab or tool is linked yet.</p>';
       })()}
-      <h3>Research and objectives</h3>
-      <ul>${focus.research.map(id => `<li><a href="#/research/${id}">${esc(researchById(id)?.title || id)}</a></li>`).join('')}</ul>
+      ${focus.research.length ? `<h2>Research</h2><ul>${focus.research.map(id => `<li><a href="#/research/${id}">${esc(researchById(id)?.title || id)}</a></li>`).join('')}</ul>` : ''}
       <button type="button" class="btn-amber sm" id="ksToggleSkill" aria-pressed="${state.mastered.includes(focus.id) ? 'true' : 'false'}">${state.mastered.includes(focus.id) ? 'Marked done' : 'Mark this skill done'}</button>
     </article>` : `<article class="ks-card"><h2>Pick a skill</h2><p>Open one to see the lesson, lab, tool, research note, and certification objective it supports.</p></article>`;
   return shell(focus ? esc(focus.title) : 'Skills graph', `A connected map of ${SKILLS.length} skills. Completing a path still lives in the course. This graph only records what you explicitly mark.`, focus ? `<a href="#/skills">Skills</a> · <span>${esc(focus.title)}</span>` : '<span>Skills</span>', `
@@ -478,7 +491,7 @@ function renderPassport(state) {
     </section>
     <section class="ks-card">
       <h2>Career gaps in this graph</h2>
-      <ul>${careerGaps(state.mastered).map(career => `<li><a href="${esc(career.href)}">${esc(career.title)}</a> — ${career.total ? `${career.have} of ${career.total} mapped starter skills marked. ${career.missing.length ? `Still open: ${career.missing.map(skill => esc(skill.title)).join(', ')}.` : 'Every mapped starter skill is marked. The rest of this roadmap is still outside the graph.'}` : 'No starter skill is mapped. Open the career page. A browser exercise is not a phone keystore or a full job path.'}</li>`).join('')}</ul>
+      ${renderCareerGaps(state.mastered)}
       <p class="ks-note">These are gaps in the small skills graph, not a hiring decision. The full career roadmap still lives on its own page.</p>
     </section>`);
 }
