@@ -1334,6 +1334,11 @@ export function validateStudio() {
       if (!researchById(item)) errors.push(`skill ${skill.id} cites unknown research ${item}`);
     }
   }
+  for (const career of CAREER_GAPS) {
+    for (const skillId of career.skills) {
+      if (!skillById(skillId)) errors.push(`career ${career.id} cites unknown skill ${skillId}`);
+    }
+  }
   const objectiveIds = new Set();
   const questionIds = new Set();
   for (const track of CERT_TRACKS) {
@@ -1719,6 +1724,98 @@ export function lessonHref(ref) {
   return `#/lesson/${ref.path}/${ref.id}`;
 }
 
+export const CAREER_GAPS = [
+  { id: 'soc', title: 'SOC Analyst', href: '#/careers/soc', skills: ['foundations.cia', 'soc.phishing.signals', 'soc.triage.logs'] },
+  { id: 'pentest', title: 'Penetration Tester', href: '#/careers/pentest', skills: ['web.http.status', 'web.injection.sql', 'web.authz.object-level', 'web.xss.context'] },
+  { id: 'appsec', title: 'AppSec Engineer', href: '#/careers/appsec', skills: ['web.http.status', 'web.authz.object-level', 'web.injection.sql', 'web.xss.context', 'appsec.review.trust-boundary', 'appsec.supply.workflow'] },
+  { id: 'cloud', title: 'Cloud Security Engineer', href: '#/careers/cloud', skills: ['cloud.iam.least-privilege', 'appsec.supply.workflow'] },
+  { id: 'aisec', title: 'AI Security Engineer', href: '#/careers/aisec', skills: ['ai.agent.tool-boundary'] }
+];
+
+export function careerGaps(masteredIds = []) {
+  const done = new Set(masteredIds || []);
+  return CAREER_GAPS.map(career => {
+    const known = career.skills.map(id => skillById(id)).filter(Boolean);
+    const missing = known.filter(skill => !done.has(skill.id));
+    return { id: career.id, title: career.title, href: career.href, have: known.length - missing.length, total: known.length, missing };
+  });
+}
+
+const startStep = (title, href, why, minutes) => ({ title, href, why, minutes });
+const CIA = startStep('Read what the three goals mean', '#/lesson/10-fundamentals/cia-triad', 'This lesson already exists. It does not assume Kali or Active Directory.', 15);
+const HTTP = startStep('Say what an HTTP status claims', '#/practice/http', 'Four fictional status codes. No request leaves this browser.', 15);
+const PHISH = startStep('Separate the sender from the display name', '#/practice/phish', 'Four synthetic messages. No mailbox is connected.', 20);
+const FIX = startStep('Repair one invoice policy', '#/fix-verify', 'Allow and deny cases for a fictional API. Nothing is deployed.', 25);
+const CLOUD = startStep('Shrink one cloud role', '#/cybercity/cloud', 'A wildcard billing role on billing.northbridge.test. Nothing is applied.', 20);
+const AGENT = startStep('Keep an assistant inside one task', '#/cybercity/agent', 'A browser fixture. No model is called.', 20);
+const CERT = startStep('Open the Security+ starter plan', '#/certlab/security-plus', 'Original questions and official links. Not a CompTIA exam.', 20);
+const GRC = startStep('Read what GRC is', '#/lesson/23-grc-compliance/what-is-grc', 'The existing GRC path. A policy name is not evidence the control works.', 15);
+const CAREERS = startStep('Look at the career map', '#/careers', 'The roadmap already on the site. It is not a job offer.', 15);
+const SHARED = startStep('Read who still patches the application', '#/lesson/08-cloud-basics/shared-responsibility-model', 'The existing shared-responsibility lesson.', 15);
+const SHIFT = startStep('Open the six-case shift', '#/shift', 'Synthetic cases only. Nothing pages a person.', 20);
+
+const START_ROUTES = {
+  beginner: {
+    unsure: [CIA, CAREERS],
+    pentest: [CIA, HTTP],
+    soc: [CIA, PHISH],
+    appsec: [CIA, HTTP],
+    cloud: [CIA, SHARED],
+    ai: [CIA, HTTP],
+    cert: [CIA, CERT],
+    grc: [CIA, GRC]
+  },
+  some: {
+    unsure: [CAREERS, CIA],
+    pentest: [HTTP, FIX],
+    soc: [PHISH, SHIFT],
+    appsec: [HTTP, FIX],
+    cloud: [SHARED, CLOUD],
+    ai: [HTTP, AGENT],
+    cert: [CERT, CIA],
+    grc: [GRC, CIA]
+  },
+  experienced: {
+    unsure: [CAREERS, CIA],
+    pentest: [FIX, HTTP],
+    soc: [SHIFT, PHISH],
+    appsec: [FIX, HTTP],
+    cloud: [CLOUD, SHARED],
+    ai: [AGENT, HTTP],
+    cert: [CERT, FIX],
+    grc: [GRC, CERT]
+  }
+};
+
+export function buildStartRoute(input = {}) {
+  const experience = ['beginner', 'some', 'experienced'].includes(input.experience) ? input.experience : 'beginner';
+  const goal = Object.prototype.hasOwnProperty.call(START_ROUTES.beginner, input.goal) ? input.goal : 'unsure';
+  const minutes = [15, 30, 60].includes(Number(input.minutes)) ? Number(input.minutes) : 15;
+  const steps = START_ROUTES[experience][goal].map(item => ({ ...item }));
+  const today = [];
+  let used = 0;
+  for (const item of steps) {
+    if (today.length && used + item.minutes > minutes) break;
+    today.push(item);
+    used += item.minutes;
+  }
+  const reasons = {
+    beginner: 'This is first because you said you are starting from zero. The first step is an existing lesson or a browser fixture, not an expert lab.',
+    some: 'This is first because you said you already have some foundations. The CIA lesson stays available as a refresh, and the route still avoids expert labs.',
+    experienced: 'This is first because you said you already practise. The step is still a local fixture or an existing lesson, not a live target.'
+  };
+  return {
+    experience,
+    goal,
+    minutes,
+    skipped: Boolean(input.skipped),
+    first: today[0],
+    today,
+    later: steps.filter(item => !today.includes(item)),
+    reason: reasons[experience]
+  };
+}
+
 export function pageCopies() {
   const certText = CERT_TRACKS.map(track => {
     const versions = track.versions.map(version => `${version.code}: ${version.note}`).join(' ');
@@ -1807,6 +1904,97 @@ export function pageCopies() {
       description: 'Six synthetic cases in one queue: an invoice API, phishing, ransomware, a cloud role, a workflow, and an assistant. Fixture status only.',
       heading: 'Analyst shift',
       body: `<p>This is one practice shift, not a SOC product. Each row is a fixture you already have elsewhere on the site. The status is not-started, attempted, or verified in this browser. Nothing is a live alert.</p><p>Cases: suspicious web API access, phishing mailbox, ransomware precursor, a cloud role that is too wide, workflow and dependency risk, and assistant privilege.</p><p><a href="/cybercity/">Northbridge</a> · <a href="/practice/">Practice labs</a> · <a href="/passport/">Skill record</a></p>`
+    },
+    {
+      file: 'start/index.html',
+      path: '/start/',
+      title: 'Start here · KashSec Academy',
+      description: 'Three questions, then a route made from lessons and labs that already exist. Beginners are not sent to an expert lab.',
+      heading: 'Start here',
+      body: '<p>The start page asks where you are and what you want to explore. You can also add a goal and a time. A complete beginner is sent to an existing lesson, not an expert lab. Choices stay in this browser.</p><p>Goals you can add: not sure, pentest, SOC, AppSec, cloud, AI security, a certification, or GRC.</p><p><a href="/lesson/10-fundamentals/cia-triad.html">Read the CIA lesson</a> · <a href="/lesson/00-fresher-basics/">Computer basics</a></p>'
     }
   ];
+}
+
+const CYBER_PAGES = [
+  ['pentest', 'Tester desk', 'Read one fictional request and name the field that must not decide access. The answer is checked in the browser.'],
+  ['soc', 'Analyst desk', 'Five synthetic log lines and a filter. A login is not the incident. Missing endpoint data is not a clean laptop.'],
+  ['cloud', 'Cloud desk', 'Shrink a wildcard billing role to one action, the caller’s tenant, and one principal. Nothing is deployed.'],
+  ['agent', 'Assistant desk', 'The trusted task is an invoice read. A field named approved inside the model call is not permission.'],
+  ['timeline', 'Incident note', 'Choose what belongs in the first note. Do not call a gap a clean result.'],
+  ['report', 'Case note', 'The download includes a desk only after you run it. Unrun desks stay marked as not checked.']
+];
+
+export function detailPages() {
+  const pages = [];
+  for (const skill of SKILLS) {
+    const lessons = skill.lessons.map(lesson => `<li><a href="/lesson/${lesson.path}/${lesson.id}.html">${esc(lesson.title)}</a></li>`).join('');
+    const needs = skill.prerequisites.map(id => skillById(id)?.title || id).join(', ') || 'None in this graph.';
+    pages.push({
+      file: `skills/${skill.id}/index.html`,
+      path: `/skills/${skill.id}/`,
+      title: `${skill.title} · Skills · KashSec Academy`,
+      description: skill.outcome,
+      heading: skill.title,
+      body: `<p>${esc(skill.outcome)}</p><p>Prerequisites: ${esc(needs)}</p><ul>${lessons}</ul><p><a href="/skills/">All skills</a> · <a href="/passport/">Skill record</a></p>`
+    });
+  }
+  for (const item of RESEARCH) {
+    const source = item.url.startsWith('http') ? `<p><a href="${esc(item.url)}">Open the source</a></p>` : `<p><a href="/cybercity/">Open the related exercise</a></p>`;
+    pages.push({
+      file: `research/${item.id}/index.html`,
+      path: `/research/${item.id}/`,
+      title: `${item.title} · Research · KashSec Academy`,
+      description: item.summary,
+      heading: item.title,
+      body: `<p>${esc(item.summary)}</p><p>${esc(item.license)}</p>${source}<p><a href="/research/">All sources</a> · <a href="/contact.html">Request a correction</a></p>`
+    });
+  }
+  for (const track of CERT_TRACKS) {
+    const objectives = track.objectives.map(item => `<li>${esc(item.title)}</li>`).join('');
+    const official = track.official.map(link => `<li><a href="${esc(link.url)}">${esc(link.label)}</a></li>`).join('');
+    pages.push({
+      file: `certlab/${track.id}/index.html`,
+      path: `/certlab/${track.id}/`,
+      title: `${track.name} prep · KashSec Academy`,
+      description: track.notClaimed,
+      heading: track.name,
+      body: `<p>${esc(track.status)} ${esc(track.notClaimed)}</p><h2>Objectives in this starter plan</h2><ul>${objectives}</ul><h2>Official pages</h2><ul>${official}</ul><p><a href="/certlab/">All three plans</a></p>`
+    });
+  }
+  for (const lab of PRACTICE_LABS) {
+    pages.push({
+      file: `practice/${lab.id}/index.html`,
+      path: `/practice/${lab.id}/`,
+      title: `${lab.title} · Practice · KashSec Academy`,
+      description: lab.summary,
+      heading: lab.title,
+      body: `<p>${esc(lab.summary)}</p><p>The check runs in this browser. A pass is not a production test.</p><p><a href="/practice/">All practice labs</a></p>`
+    });
+  }
+  for (const [id, heading, text] of CYBER_PAGES) {
+    pages.push({
+      file: `cybercity/${id}/index.html`,
+      path: `/cybercity/${id}/`,
+      title: `${heading} · Northbridge · KashSec Academy`,
+      description: text,
+      heading,
+      body: `<p>${esc(text)}</p><p>Host names stay on <span class="ks-log">billing.northbridge.test</span>. There is no live target.</p><p><a href="/cybercity/">All desks</a></p>`
+    });
+  }
+  for (const entry of GLOSSARY) {
+    pages.push({
+      file: `coach/${entry.id}/index.html`,
+      path: `/coach/${entry.id}/`,
+      title: `${entry.term} · Coach · KashSec Academy`,
+      description: entry.body,
+      heading: entry.term,
+      body: `<p>${esc(entry.body)}</p><p>This is a KashSec study definition, not a standard’s official wording. No model is called.</p><p><a href="/coach/">All coach questions</a></p>`
+    });
+  }
+  return pages;
+}
+
+export function studioPages() {
+  return pageCopies().concat(detailPages());
 }

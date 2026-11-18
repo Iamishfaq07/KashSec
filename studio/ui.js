@@ -4,7 +4,7 @@ import {
   CERT_TRACKS, HUNT_SOURCES, HUNT_TOKENS, PENTEST_EXCHANGE, RESEARCH, SKILLS, SOC_EVENTS, TIMELINE_ITEMS, TRIAGE_LABELS,
   SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, VULNERABLE_AGENT_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
   buildStudyPlan, coachAnswer, coverage, esc, explainNext, filterEvents, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage,
-  lessonHref, northbridgeReport, passportEntries, passportJson, passportMarkdown, readinessLabel, researchById, researchKindLabel, reviewQueue, scoreTrack, shiftQueue, skillById, trackById
+  lessonHref, northbridgeReport, passportEntries, passportJson, passportMarkdown, readinessLabel, researchById, researchKindLabel, reviewQueue, scoreTrack, shiftQueue, skillById, trackById, careerGaps
 } from './model.js';
 import { FOUNDATIONS, GLOSSARY, LAB_ROADMAP, PRACTICE_LABS, glossaryById, gradeLab, labById, labCoaching, practiceEvidence } from './practice.js';
 
@@ -82,6 +82,7 @@ function shell(title, lede, crumbs, body) {
     <h1 class="sec-title">${title}</h1>
     <p class="sec-sub">${lede}</p>
     <div class="ks-jumps" role="navigation" aria-label="Studio sections">
+      <a href="#/start">Start</a>
       <a href="#/certlab">Cert prep</a>
       <a href="#/research">Research</a>
       <a href="#/skills">Skills</a>
@@ -457,13 +458,19 @@ function renderPassport(state) {
       <button class="btn-ghost sm" type="button" id="ksPassportJson">Download JSON</button>
       <p id="ksPassportStatus" role="status"></p>
       <p class="ks-note">Levels used here: read, practiced, auto-verified, self-reported. Instructor reviewed is not offered, because nobody else has seen this work. There is no public profile and no account sync.</p>
+    </section>
+    <section class="ks-card">
+      <h2>Career gaps in this graph</h2>
+      <ul>${careerGaps(state.mastered).map(career => `<li><a href="${esc(career.href)}">${esc(career.title)}</a> — ${career.have} of ${career.total} starter skills marked. ${career.missing.length ? `Still open: ${career.missing.map(skill => esc(skill.title)).join(', ')}.` : 'Every starter skill for this role is marked.'}</li>`).join('')}</ul>
+      <p class="ks-note">These are gaps in the small skills graph, not a hiring decision. The full career roadmap still lives on its own page.</p>
     </section>`);
 }
 
 function renderCoach(state, kind, termId) {
+  const glossaryId = kind === 'term' ? termId : (glossaryById(kind) ? kind : '');
   let result = '';
-  if (kind === 'term') {
-    const entry = glossaryById(termId);
+  if (glossaryId || kind === 'term') {
+    const entry = glossaryById(glossaryId);
     result = entry
       ? `<article class="ks-card"><h2>${esc(entry.term)}</h2><p>${esc(entry.body)}</p><p class="ks-note">This is a KashSec definition for study. It is not a standard’s official wording.</p></article>`
       : '<p>Choose a term. The coach does not invent a definition.</p>';
@@ -471,7 +478,7 @@ function renderCoach(state, kind, termId) {
     const answer = coachAnswer(kind, state);
     result = `<article class="ks-card"><h2>${esc(answer.title)}</h2><p>${esc(answer.body)}</p><p><a href="${esc(answer.href)}">${esc(answer.label)}</a></p></article>`;
   }
-  const terms = GLOSSARY.map(entry => `<a href="#/coach/term/${esc(entry.id)}">${esc(entry.term)}</a>`).join('');
+  const terms = GLOSSARY.map(entry => `<a href="#/coach/${esc(entry.id)}">${esc(entry.term)}</a>`).join('');
   return shell('Offline coach', 'Fixed questions and a short glossary. No model is called.', '<span>Coach</span>', `
     <div class="ks-filters" role="group" aria-label="Coach questions">
       <a href="#/coach/next">What should I do next?</a>

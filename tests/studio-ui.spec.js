@@ -107,6 +107,11 @@ try {
   await page.goto(BASE + '/coach/');
   await page.getByRole('link', { name: 'BOLA', exact: true }).click();
   await page.getByText('Broken object-level authorization').waitFor();
+  await page.goto(BASE + '/start/');
+  await page.locator('#sgForm').waitFor();
+  await page.locator('input[name="goal"][value="pentest"]').check();
+  await page.locator('input[name="minutes"][value="15"]').check();
+  await page.getByRole('link', { name: 'Read what the three goals mean' }).waitFor();
   await page.goto(BASE + '/foundations/');
   await page.getByRole('heading', { name: 'The CIA triad', level: 2 }).waitFor();
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
