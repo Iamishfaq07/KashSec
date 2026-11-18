@@ -1760,6 +1760,12 @@ export function readinessLabel(track, statusMap, answers) {
   };
 }
 
+export function localISODate(date = new Date()) {
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}-${month}-${day}`;
+}
+
 function parseISODate(value) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value || '')) return null;
   const [year, month, day] = value.split('-').map(Number);
@@ -1774,7 +1780,7 @@ function formatISODate(date) {
 
 export function buildStudyPlan(track, options = {}) {
   const minutesPerDay = Math.min(180, Math.max(15, Number(options.minutesPerDay) || 30));
-  const today = parseISODate(options.today) || parseISODate(new Date().toISOString().slice(0, 10));
+  const today = parseISODate(options.today) || parseISODate(localISODate());
   const start = parseISODate(options.start) || today;
   const exam = parseISODate(options.examDate);
   const days = [];

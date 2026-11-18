@@ -4,7 +4,7 @@ import {
   CERT_TRACKS, HUNT_SOURCES, HUNT_TOKENS, PENTEST_EXCHANGE, RESEARCH, SKILLS, SOC_EVENTS, TIMELINE_ITEMS, TRIAGE_LABELS,
   SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, VULNERABLE_AGENT_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
   buildStudyPlan, coachAnswer, coverage, esc, explainNext, filterEvents, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage,
-  lessonHref, northbridgeReport, passportEntries, passportJson, passportMarkdown, readinessLabel, researchById, researchKindLabel, reviewQueue, scoreTrack, shiftQueue, skillById, trackById, careerGaps
+  lessonHref, localISODate, northbridgeReport, passportEntries, passportJson, passportMarkdown, readinessLabel, researchById, researchKindLabel, reviewQueue, scoreTrack, shiftQueue, skillById, trackById, careerGaps
 } from './model.js';
 import { FOUNDATIONS, GLOSSARY, LAB_ROADMAP, PRACTICE_LABS, glossaryById, gradeLab, labById, labCoaching, practiceEvidence } from './practice.js';
 
@@ -65,7 +65,7 @@ function saveState(state) {
 }
 
 function todayISO() {
-  return new Date().toISOString().slice(0, 10);
+  return localISODate();
 }
 
 function modeSwitch(mode) {
@@ -144,6 +144,14 @@ function renderCertHome() {
     <p class="ks-note">Prices, languages, and booking rules change. Use the vendor link on the plan before you pay. Formative answers ship in the public source, so this is practice, not a sealed exam. The <a href="#/cybercity">Northbridge case</a> is the shared practical for the invoice bug.</p>`);
 }
 
+function reviewSection(track, due) {
+  if (!due.length) return '';
+  return `<section class="ks-card" aria-labelledby="ks-review"><h2 id="ks-review">Review these first</h2><ul>${due.map(item => {
+    const objective = track.objectives.find(entry => entry.id === item.objectiveId);
+    return `<li><a href="${objective ? lessonHref(objective.lesson) : '#/skills'}">${esc(objective?.title || item.objectiveId)}</a> — ${esc(item.reason)}</li>`;
+  }).join('')}</ul></section>`;
+}
+
 function renderCertTrack(track, state) {
   const plan = state.plans[track.id] || buildStudyPlan(track, { today: todayISO(), minutesPerDay: 30 });
   const answers = state.answers[track.id] || {};
@@ -169,10 +177,7 @@ function renderCertTrack(track, state) {
   const domains = track.domains.map(domain => `<li>${esc(domain.version)}: ${esc(domain.name)} — ${esc(domain.weight)}</li>`).join('');
   const links = track.official.map(link => `<li><a href="${esc(link.url)}" rel="noopener noreferrer">${esc(link.label)}</a></li>`).join('');
   const due = reviewQueue(track, answers, statuses);
-  const review = due.length ? `<section class="ks-card" aria-labelledby="ks-review"><h2 id="ks-review">Review these first</h2><ul>${due.map(item => {
-    const objective = track.objectives.find(entry => entry.id === item.objectiveId);
-    return `<li><a href="${objective ? lessonHref(objective.lesson) : '#/skills'}">${esc(objective?.title || item.objectiveId)}</a> — ${esc(item.reason)}</li>`;
-  }).join('')}</ul></section>` : '';
+  const review = reviewSection(track, due);
   return shell(esc(track.name), esc(track.status), `<a href="#/certlab">Cert prep</a> · <span>${esc(track.name)}</span>`, `
     <div class="ks-split">
       <section class="ks-card" aria-labelledby="ks-official">
@@ -758,10 +763,16 @@ function wireCert(root, track) {
       }
     }
     saveState(next);
-    const host = root.querySelector('#ksQuizResult');
-    const details = result.missed.map(item => `<li>${esc(track.questions.find(question => question.id === item.id)?.prompt || item.id)} — ${esc(item.explanation)}</li>`).join('');
     const due = reviewQueue(track, next.answers[track.id], next.objectiveStatus[track.id]);
-    host.innerHTML = `<p><strong>${result.correct} of ${result.total} correct.</strong> This is a formative score stored in this browser.</p>${details ? `<ul>${details}</ul>` : '<p>Every answer matched. You can still reread the lessons. This is not a vendor score.</p>'}${due.length ? `<p>${due.length} objective${due.length === 1 ? '' : 's'} marked review due. Reload the plan to see them listed above the questions.</p>` : ''}`;
+    const existing = root.querySelector('#ks-review')?.closest('section');
+    const html = reviewSection(track, due);
+    if (html) {
+      if (existing) existing.outerHTML = html;
+      else root.querySelector('#ksQuiz')?.insertAdjacentHTML('beforebegin', html);
+    } else existing?.remove();
+    const host = root.querySelector('#ksQuizResult');
+    const details = result.missed.filter(item => item.selected !== null).map(item => `<li>${esc(track.questions.find(question => question.id === item.id)?.prompt || item.id)} — ${esc(item.explanation)}</li>`).join('');
+    if (host) host.innerHTML = `<p><strong>${result.correct} of ${result.total} correct.</strong> This is a formative score stored in this browser.</p>${details ? `<ul>${details}</ul>` : '<p>Every answer matched. You can still reread the lessons. This is not a vendor score.</p>'}${due.length ? `<p>${due.length} objective${due.length === 1 ? '' : 's'} marked review due.</p>` : ''}`;
     const ready = readinessLabel(track, next.objectiveStatus[track.id], next.answers[track.id]);
     const node = root.querySelector('#ksReady');
     if (node) node.textContent = `${ready.label}. ${ready.summary}.`;

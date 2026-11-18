@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import { validatePractice, gradeLab, labById, practiceEvidence, foundationFor } from '../studio/practice.js';
 import {
   CERT_TRACKS, PENTEST_EXCHANGE, RESEARCH, SECURE_AGENT_POLICY, SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, SKILLS, SOC_EVENTS, VULNERABLE_AGENT_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
-  buildStudyPlan, buildStartRoute, careerGaps, coachAnswer, esc, explainNext, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage, northbridgeReport, passportEntries, passportJson, passportMarkdown, reviewQueue, scoreTrack, shiftQueue, studioPages, validateStudio
+  buildStudyPlan, buildStartRoute, careerGaps, coachAnswer, esc, explainNext, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage, localISODate, northbridgeReport, passportEntries, passportJson, passportMarkdown, reviewQueue, scoreTrack, shiftQueue, studioPages, validateStudio
 } from '../studio/model.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -50,6 +50,7 @@ const plan = buildStudyPlan(track, { minutesPerDay: 30, start: '2026-11-18', exa
 assert.ok(plan.days.length > 1);
 assert.equal(plan.overflowsExam, true);
 assert.equal(plan.days[0].date, '2026-11-18');
+assert.equal(localISODate(new Date(2026, 10, 18, 1, 15)), '2026-11-18');
 
 const first = explainNext([]);
 assert.equal(first.skill.id, 'foundations.cia');
