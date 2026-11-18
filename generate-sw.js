@@ -74,6 +74,9 @@ const deferredUrls = [
   'investigations.js',
   'playground.js',
   'learning-guide.js',
+  'studio/model.js',
+  'studio/ui.js',
+  'studio/practice.js',
   'threat-studio.js',
   'expert-labs.js',
   'expert-labs.css',
@@ -271,12 +274,15 @@ self.addEventListener('fetch', event => {
   if (url.origin === self.location.origin) {
     const isLesson = LESSON_PATHS.has(url.pathname);
     const resource = RESOURCE_PATHS.get(url.pathname);
+    const isStudioPage = ['/certlab/','/research/','/skills/','/fix-verify/','/cybercity/','/passport/','/coach/','/practice/','/foundations/','/shift/','/start/']
+      .some(prefix => url.pathname === prefix || url.pathname.startsWith(prefix));
     const isCanonicalPage = request.mode === 'navigate' &&
+      (isStudioPage ||
       ((url.pathname.endsWith('.html') &&
         (['/lesson/', '/labs/', '/tools/', '/expert-labs/'].some(prefix => url.pathname.startsWith(prefix)) ||
          ['/faq.html', '/practice.html', '/exam.html'].includes(url.pathname))) ||
        ['/lesson/', '/labs/', '/tools/', '/expert-labs/', '/start/'].includes(url.pathname) ||
-       (url.pathname.startsWith('/lesson/') && url.pathname.endsWith('/')));
+       (url.pathname.startsWith('/lesson/') && url.pathname.endsWith('/'))));
     event.respondWith(isCanonicalPage ? canonicalNavigation(request, event) :
       staleWhileRevalidate(request, isLesson || resource ? CONTENT_CACHE : SHELL_CACHE, event, isLesson ? {lesson:true} : resource));
     return;

@@ -4,11 +4,13 @@ import {
   CERT_TRACKS, HUNT_SOURCES, HUNT_TOKENS, PENTEST_EXCHANGE, RESEARCH, SKILLS, SOC_EVENTS, TIMELINE_ITEMS, TRIAGE_LABELS,
   SECURE_IAM_POLICY, SECURE_INVOICE_POLICY, VULNERABLE_AGENT_POLICY, VULNERABLE_IAM_POLICY, VULNERABLE_INVOICE_POLICY,
   buildStudyPlan, coachAnswer, coverage, esc, explainNext, filterEvents, gradeAgentPolicy, gradeHunt, gradeIamPolicy, gradeInvoicePolicy, gradePentest, gradeTimeline, gradeTriage,
-  lessonHref, northbridgeReport, passportEntries, passportJson, passportMarkdown, readinessLabel, researchById, researchKindLabel, reviewQueue, scoreTrack, shiftQueue, skillById, trackById, careerGaps
+  lessonHref, localISODate, northbridgeReport, passportEntries, passportJson, passportMarkdown, readinessLabel, researchById, researchKindLabel, reviewQueue, scoreTrack, shiftQueue, skillById, trackById, careerGaps
 } from './model.js';
 import { FOUNDATIONS, GLOSSARY, LAB_ROADMAP, PRACTICE_LABS, glossaryById, gradeLab, labById, labCoaching, practiceEvidence } from './practice.js';
 
 const STORAGE_KEY = 'kashsec_studio_v1';
+let memory = null;
+let persistFailed = false;
 
 function emptyState() {
   return {
@@ -25,6 +27,7 @@ function emptyState() {
 }
 
 export function loadState() {
+  if (memory && persistFailed) return memory;
   try {
     const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '');
     const base = emptyState();
@@ -45,18 +48,24 @@ export function loadState() {
       studioMode: ['guided', 'standard', 'expert'].includes(parsed.studioMode) ? parsed.studioMode : 'standard'
     };
   } catch {
-    return emptyState();
+    return memory || emptyState();
   }
 }
 
 function saveState(state) {
   const payload = { ...state, version: 1 };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  memory = state;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    persistFailed = false;
+  } catch {
+    persistFailed = true;
+  }
   return payload;
 }
 
 function todayISO() {
-  return new Date().toISOString().slice(0, 10);
+  return localISODate();
 }
 
 function modeSwitch(mode) {
@@ -68,6 +77,15 @@ function wireMode(root, hash) {
   root.querySelectorAll('[data-mode]').forEach(button => {
     button.addEventListener('click', () => {
       const next = loadState();
+      const form = root.querySelector('#ksPractice');
+      if (form?.dataset.lab) {
+        const data = new FormData(form);
+        const input = {};
+        for (const [name, value] of data.entries()) input[name] = String(value);
+        const previous = next.practice[form.dataset.lab] || {};
+        const changed = JSON.stringify(previous.input || {}) !== JSON.stringify(input);
+        next.practice[form.dataset.lab] = { ran: Boolean(previous.ran) && !changed, input };
+      }
       next.studioMode = button.dataset.mode;
       saveState(next);
       renderStudio(root, hash);
@@ -95,6 +113,7 @@ function shell(title, lede, crumbs, body) {
       <a href="#/coach">Coach</a>
     </div>
     ${body}
+    ${persistFailed ? '<p class="ks-note" role="status">This browser did not keep the result. It is visible now, but a reload will lose it.</p>' : ''}
   </section>`;
 }
 
@@ -134,12 +153,52 @@ function renderCertHome() {
     <p class="ks-note">Prices, languages, and booking rules change. Use the vendor link on the plan before you pay. Formative answers ship in the public source, so this is practice, not a sealed exam. The <a href="#/cybercity">Northbridge case</a> is the shared practical for the invoice bug.</p>`);
 }
 
+function reviewSection(track, due) {
+  if (!due.length) return '';
+  return `<section class="ks-card" aria-labelledby="ks-review"><h2 id="ks-review">Review these first</h2><ul>${due.map(item => {
+    const objective = track.objectives.find(entry => entry.id === item.objectiveId);
+    return `<li><a href="${objective ? lessonHref(objective.lesson) : '#/skills'}">${esc(objective?.title || item.objectiveId)}</a> — ${esc(item.reason)}</li>`;
+  }).join('')}</ul></section>`;
+}
+
+function quizResultHtml(track, answers, statuses) {
+  if (!answers || !Object.keys(answers).length) return '';
+  const result = scoreTrack(track, answers);
+  const details = result.missed.filter(item => item.selected !== null).map(item => `<li>${esc(track.questions.find(question => question.id === item.id)?.prompt || item.id)} — ${esc(item.explanation)}</li>`).join('');
+  const due = reviewQueue(track, answers, statuses);
+  return `<p><strong>${result.correct} of ${result.total} correct.</strong> This is a formative score stored in this browser.</p>${details ? `<ul>${details}</ul>` : '<p>Every answer matched. You can still reread the lessons. This is not a vendor score.</p>'}${due.length ? `<p>${due.length} objective${due.length === 1 ? '' : 's'} marked review due.</p>` : ''}`;
+}
+
+function readyLine(track, statuses, answers) {
+  const ready = readinessLabel(track, statuses, answers);
+  const due = coverage(track, statuses).counts['review-due'];
+  return `${ready.label}. ${ready.summary}.${due ? ` ${due} marked review due.` : ''}`;
+}
+
+function refreshCertChrome(root, track, state) {
+  const statuses = state.objectiveStatus[track.id] || {};
+  const answers = state.answers[track.id] || {};
+  const due = reviewQueue(track, answers, statuses);
+  const existing = root.querySelector('#ks-review')?.closest('section');
+  const html = reviewSection(track, due);
+  if (html) {
+    if (existing) existing.outerHTML = html;
+    else root.querySelector('#ksQuiz')?.insertAdjacentHTML('beforebegin', html);
+  } else existing?.remove();
+  const host = root.querySelector('#ksQuizResult');
+  if (host) host.innerHTML = quizResultHtml(track, answers, statuses);
+  const node = root.querySelector('#ksReady');
+  if (node) node.textContent = readyLine(track, statuses, answers);
+  for (const [id, value] of Object.entries(statuses)) {
+    const select = root.querySelector(`select[data-objective="${CSS.escape(id)}"]`);
+    if (select) select.value = value;
+  }
+}
+
 function renderCertTrack(track, state) {
   const plan = state.plans[track.id] || buildStudyPlan(track, { today: todayISO(), minutesPerDay: 30 });
   const answers = state.answers[track.id] || {};
   const statuses = state.objectiveStatus[track.id] || {};
-  const covered = coverage(track, statuses);
-  const ready = readinessLabel(track, statuses, answers);
   const objectives = track.objectives.map(item => `<li class="ks-objective">
       <div>
         <h3>${esc(item.title)}</h3>
@@ -159,10 +218,7 @@ function renderCertTrack(track, state) {
   const domains = track.domains.map(domain => `<li>${esc(domain.version)}: ${esc(domain.name)} — ${esc(domain.weight)}</li>`).join('');
   const links = track.official.map(link => `<li><a href="${esc(link.url)}" rel="noopener noreferrer">${esc(link.label)}</a></li>`).join('');
   const due = reviewQueue(track, answers, statuses);
-  const review = due.length ? `<section class="ks-card" aria-labelledby="ks-review"><h2 id="ks-review">Review these first</h2><ul>${due.map(item => {
-    const objective = track.objectives.find(entry => entry.id === item.objectiveId);
-    return `<li><a href="${objective ? lessonHref(objective.lesson) : '#/skills'}">${esc(objective?.title || item.objectiveId)}</a> — ${esc(item.reason)}</li>`;
-  }).join('')}</ul></section>` : '';
+  const review = reviewSection(track, due);
   return shell(esc(track.name), esc(track.status), `<a href="#/certlab">Cert prep</a> · <span>${esc(track.name)}</span>`, `
     <div class="ks-split">
       <section class="ks-card" aria-labelledby="ks-official">
@@ -185,8 +241,8 @@ function renderCertTrack(track, state) {
     </div>
     <section class="ks-card" aria-labelledby="ks-cover">
       <h2 id="ks-cover">Objective coverage</h2>
-      <p id="ksReady"><strong>${esc(ready.label)}.</strong> ${esc(ready.summary)}. ${covered.counts['review-due'] ? esc(String(covered.counts['review-due'])) + ' marked review due.' : ''}</p>
-      <p class="ks-note">${esc(ready.limitation)}</p>
+      <p id="ksReady">${esc(readyLine(track, statuses, answers))}</p>
+      <p class="ks-note">${esc(track.notClaimed)}</p>
       <ul class="ks-objectives">${objectives}</ul>
     </section>
     ${review}
@@ -195,7 +251,7 @@ function renderCertTrack(track, state) {
       <p>Original questions. Explanations appear after you check them. They are not timed and they are not sealed.</p>
       ${questions}
       <button class="btn-amber sm" type="submit">Check answers</button>
-      <div id="ksQuizResult" role="status"></div>
+      <div id="ksQuizResult" role="status">${quizResultHtml(track, answers, statuses)}</div>
     </form>`);
 }
 
@@ -234,6 +290,20 @@ function renderResearchItem(item, state) {
     </article>`);
 }
 
+function renderCareerGaps(mastered) {
+  const rank = career => career.total === 0 ? 2 : career.missing.length ? 1 : 0;
+  const gaps = careerGaps(mastered).slice().sort((a, b) => rank(b) - rank(a) || b.missing.length - a.missing.length || a.title.localeCompare(b.title));
+  return `<ul class="ks-gaps">${gaps.map(career => {
+    const detail = !career.total
+      ? 'No starter skill is mapped. Use the career page. A browser exercise is not a phone lab.'
+      : career.missing.length
+        ? `Still open: ${career.missing.map(skill => esc(skill.title)).join(', ')}.`
+        : 'Every mapped starter skill is marked. The rest of this roadmap is outside the graph.';
+    const count = career.total ? `${career.have} of ${career.total}` : 'Not mapped';
+    return `<li><a href="${esc(career.href)}">${esc(career.title)}</a><span>${count}</span><p>${detail}</p></li>`;
+  }).join('')}</ul>`;
+}
+
 function renderSkills(state, focusId) {
   const focus = focusId ? skillById(focusId) : null;
   const next = explainNext(state.mastered);
@@ -242,18 +312,24 @@ function renderSkills(state, focusId) {
       <span>${state.mastered.includes(skill.id) ? 'marked done' : 'not marked'}</span>
     </li>`).join('');
   const detail = focus ? `<article class="ks-card">
-      <h2>${esc(focus.title)}</h2>
       <p>${esc(focus.outcome)}</p>
       <p>Prerequisites: ${focus.prerequisites.length ? focus.prerequisites.map(id => `<a href="#/skills/${id}">${esc(skillById(id)?.title || id)}</a>`).join(', ') : 'none in this starter graph'}.</p>
-      <h3>Lessons</h3>
+      <h2>Lessons</h2>
       <ul>${focus.lessons.map(item => `<li><a href="${lessonHref(item)}">${esc(item.title)}</a></li>`).join('') || '<li>None linked yet.</li>'}</ul>
-      <h3>Labs and tools</h3>
-      <ul>${focus.labs.map(item => `<li><a href="#/labs/${item.id}">${esc(item.title)}</a></li>`).join('')}${focus.tools.map(item => `<li><a href="#/tools/${item.id}">${esc(item.title)}</a></li>`).join('')}${focus.expertLabs.map(item => `<li><a href="#/expert-labs/${item.id}">${esc(item.title)}</a></li>`).join('') || ''}</ul>
-      <h3>Research and objectives</h3>
-      <ul>${focus.research.map(id => `<li><a href="#/research/${id}">${esc(researchById(id)?.title || id)}</a></li>`).join('')}</ul>
+      <h2>Labs and tools</h2>
+      ${(() => {
+        const links = [
+          ...focus.labs.map(item => `<li><a href="#/labs/${item.id}">${esc(item.title)}</a></li>`),
+          ...(focus.practice || []).map(item => `<li><a href="#/practice/${item.id}">${esc(item.title)}</a></li>`),
+          ...focus.tools.map(item => `<li><a href="#/tools/${item.id}">${esc(item.title)}</a></li>`),
+          ...focus.expertLabs.map(item => `<li><a href="#/expert-labs/${item.id}">${esc(item.title)}</a></li>`)
+        ];
+        return links.length ? `<ul>${links.join('')}</ul>` : '<p>No lab or tool is linked yet.</p>';
+      })()}
+      ${focus.research.length ? `<h2>Research</h2><ul>${focus.research.map(id => `<li><a href="#/research/${id}">${esc(researchById(id)?.title || id)}</a></li>`).join('')}</ul>` : ''}
       <button type="button" class="btn-amber sm" id="ksToggleSkill" aria-pressed="${state.mastered.includes(focus.id) ? 'true' : 'false'}">${state.mastered.includes(focus.id) ? 'Marked done' : 'Mark this skill done'}</button>
     </article>` : `<article class="ks-card"><h2>Pick a skill</h2><p>Open one to see the lesson, lab, tool, research note, and certification objective it supports.</p></article>`;
-  return shell('Skills graph', `A connected map of ${SKILLS.length} skills. Completing a path still lives in the course. This graph only records what you explicitly mark.`, '<span>Skills</span>', `
+  return shell(focus ? esc(focus.title) : 'Skills graph', `A connected map of ${SKILLS.length} skills. Completing a path still lives in the course. This graph only records what you explicitly mark.`, focus ? `<a href="#/skills">Skills</a> · <span>${esc(focus.title)}</span>` : '<span>Skills</span>', `
     <p class="ks-note" id="ksNext">${esc(next.reason)}${next.skill ? ` <a href="#/skills/${next.skill.id}">Open ${esc(next.skill.title)}</a>.` : ''}</p>
     <div class="ks-split">
       <ol class="ks-skill-list">${list}</ol>
@@ -461,7 +537,7 @@ function renderPassport(state) {
     </section>
     <section class="ks-card">
       <h2>Career gaps in this graph</h2>
-      <ul>${careerGaps(state.mastered).map(career => `<li><a href="${esc(career.href)}">${esc(career.title)}</a> — ${career.have} of ${career.total} starter skills marked. ${career.missing.length ? `Still open: ${career.missing.map(skill => esc(skill.title)).join(', ')}.` : 'Every starter skill for this role is marked.'}</li>`).join('')}</ul>
+      ${renderCareerGaps(state.mastered)}
       <p class="ks-note">These are gaps in the small skills graph, not a hiring decision. The full career roadmap still lives on its own page.</p>
     </section>`);
 }
@@ -669,6 +745,12 @@ export function renderStudio(root, hash) {
     root.innerHTML = shell('Studio', 'Choose a section.', '<span>Studio</span>', '<p><a href="#/certlab">Cert prep</a></p>');
   }
   document.title = title;
+  root.querySelectorAll('.ks-jumps a').forEach(link => {
+    const href = link.getAttribute('href') || '';
+    const current = hash === href || (href.length > 2 && hash.startsWith(`${href}/`));
+    if (current) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  });
 }
 
 function wireCert(root, track) {
@@ -691,9 +773,7 @@ function wireCert(root, track) {
       const next = loadState();
       next.objectiveStatus[track.id] = { ...(next.objectiveStatus[track.id] || {}), [select.dataset.objective]: select.value };
       saveState(next);
-      const ready = readinessLabel(track, next.objectiveStatus[track.id], next.answers[track.id] || {});
-      const node = root.querySelector('#ksReady');
-      if (node) node.textContent = `${ready.label}. ${ready.summary}.`;
+      refreshCertChrome(root, track, next);
     });
   });
   root.querySelector('#ksQuiz')?.addEventListener('submit', event => {
@@ -722,13 +802,7 @@ function wireCert(root, track) {
       }
     }
     saveState(next);
-    const host = root.querySelector('#ksQuizResult');
-    const details = result.missed.map(item => `<li>${esc(track.questions.find(question => question.id === item.id)?.prompt || item.id)} — ${esc(item.explanation)}</li>`).join('');
-    const due = reviewQueue(track, next.answers[track.id], next.objectiveStatus[track.id]);
-    host.innerHTML = `<p><strong>${result.correct} of ${result.total} correct.</strong> This is a formative score stored in this browser.</p>${details ? `<ul>${details}</ul>` : '<p>Every answer matched. You can still reread the lessons. This is not a vendor score.</p>'}${due.length ? `<p>${due.length} objective${due.length === 1 ? '' : 's'} marked review due. Reload the plan to see them listed above the questions.</p>` : ''}`;
-    const ready = readinessLabel(track, next.objectiveStatus[track.id], next.answers[track.id]);
-    const node = root.querySelector('#ksReady');
-    if (node) node.textContent = `${ready.label}. ${ready.summary}.`;
+    refreshCertChrome(root, track, next);
   });
 }
 

@@ -210,7 +210,7 @@ export const PRACTICE_LABS = [
     title: 'Detection on the invoice log',
     minutes: 15,
     summary: 'Build a filter for the fictional Northbridge log. Precise means the cross-tenant 200, and not the 404 or Alice’s own invoice.',
-    skillId: 'soc.triage.logs',
+    skillId: 'detect.rule.precision',
     mode: 'policy',
     fields: [
       { name: 'status', label: 'Status', options: [['any', 'Any status'], ['200', '200 only'], ['404', '404 only']] },

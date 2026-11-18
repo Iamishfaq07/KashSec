@@ -2827,8 +2827,8 @@ label.tool-note{display:block}
 .ks-studio{max-width:1080px}
 .ks-crumbs,.ks-meta,.ks-note{color:var(--muted);font-size:.92rem;line-height:1.55}
 .ks-jumps,.ks-filters{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 1.4rem}
-.ks-jumps a,.ks-filters button,.ks-filters a,.ks-card .btn-ghost{border:1px solid var(--line);background:transparent;color:inherit;border-radius:999px;padding:.45rem .8rem;text-decoration:none}
-.ks-filters button[aria-pressed="true"]{background:var(--amber);color:#1a1203;border-color:transparent}
+.ks-jumps a,.ks-filters button,.ks-filters a,.ks-card .btn-ghost{border:1px solid var(--line);background:transparent;color:inherit;border-radius:999px;padding:.55rem .9rem;min-height:44px;display:inline-flex;align-items:center;text-decoration:none}
+.ks-jumps a[aria-current="page"],.ks-filters button[aria-pressed="true"]{background:var(--amber);color:#1a1203;border-color:transparent;font-weight:600}
 .ks-grid,.ks-split{display:grid;gap:1rem}
 .ks-grid{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .ks-split{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));align-items:start}
@@ -2842,6 +2842,10 @@ label.tool-note{display:block}
 .ks-card label{display:grid;gap:.3rem;font-size:.92rem;margin:.4rem 0}
 .ks-card input,.ks-card select,.ks-card textarea{width:100%;max-width:100%;font:inherit;color:inherit;background:transparent;border:1px solid var(--line);border-radius:10px;padding:.55rem .7rem}
 .ks-card textarea{resize:vertical}
+.ks-gaps{list-style:none;padding:0;margin:0;display:grid;gap:.85rem}
+.ks-gaps li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.15rem .75rem;align-items:baseline}
+.ks-gaps span{color:var(--muted);font-variant-numeric:tabular-nums}
+.ks-gaps p{grid-column:1 / -1;margin:0;color:var(--muted)}
 .ks-skill-list a[aria-current="page"]{font-weight:700}
 .ks-table-wrap{overflow-x:auto}
 .ks-bridge{border:1px solid var(--line);border-radius:16px;padding:1rem 1.1rem;margin:0 0 1.25rem}

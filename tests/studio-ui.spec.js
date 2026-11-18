@@ -32,6 +32,14 @@ try {
   await page.getByText('3 of 4 correct').waitFor();
   assert.match(await page.locator('#ksQuizResult').innerText(), /trusted session/);
   assert.match(await page.locator('#ksQuizResult').innerText(), /review due/);
+  await page.reload();
+  await page.getByText('3 of 4 correct').waitFor();
+  await page.getByRole('heading', { name: 'Review these first' }).waitFor();
+  assert.equal(await page.locator('select[data-objective="secplus.architecture"]').inputValue(), 'review-due');
+  assert.match(await page.locator('#ksReady').innerText(), /1 marked review due/);
+  await page.locator('select[data-objective="secplus.concepts"]').selectOption('review-due');
+  await page.getByRole('link', { name: 'Name the goal a control protects' }).waitFor();
+  assert.match(await page.locator('#ksReady').innerText(), /2 marked review due/);
 
   await page.goto(BASE + '/cybercity/');
   await page.getByRole('heading', { name: 'Northbridge Billing', level: 1 }).waitFor();
@@ -112,6 +120,12 @@ try {
   await page.locator('input[name="goal"][value="pentest"]').check();
   await page.locator('input[name="minutes"][value="15"]').check();
   await page.getByRole('link', { name: 'Read what the three goals mean' }).waitFor();
+  await page.goto(BASE + '/practice/http/');
+  await page.locator('#ksPractice select[name="ok"]').selectOption('missing');
+  await page.getByRole('button', { name: 'Expert' }).click();
+  assert.equal(await page.locator('#ksPractice select[name="ok"]').inputValue(), 'missing');
+  await page.getByText('Expert hides the hint').waitFor();
+
   await page.goto(BASE + '/foundations/');
   await page.getByRole('heading', { name: 'The CIA triad', level: 2 }).waitFor();
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
